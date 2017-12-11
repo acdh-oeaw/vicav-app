@@ -1,0 +1,282 @@
+.navbar {
+   z-index: 2000;   
+}
+
+.navbar .navbar-nav {
+    display: inline-block;
+    float: none;
+}
+
+.navbar .navbar-collapse {
+    text-align: center;
+}
+
+.dvPopup {
+    position: absolute;
+    left: 1800px;
+    top: 170px;
+    background: white;
+    color: red;
+   z-index: 2000;
+}
+
+.dvTryButtons {
+    position: absolute; 
+    left: 1020px; 
+    top: 70px;   
+}
+
+.dvOpenPanels {
+    position: absolute; 
+    left: 10px; 
+    top: 500px;   
+}
+
+.labelTooltip {    
+    background: none;   
+}
+
+.leafIco {
+    opacity: 0.9;
+}
+
+.tryButton {
+    color: white;
+    background: black;
+}
+ 
+.h1Main {
+    color: black;
+    background: white !important;
+    padding: 0px;
+    border: 1px solid black;
+}
+
+.hrMenuSeparator {
+    margin: 0px;
+    height: 2px !important;
+}
+
+/********************************/
+/******** Panels ****************/
+/********************************/
+.ui-widget-content {
+   position: absolute;
+   top: 200px;
+   left: 800px;
+   width: 650px; 
+   height: 450px; 
+   padding-top: 0.5em;
+   border-top-left-radius: 25px;
+   border-top-right-radius: 25px;
+   border: 1px solid black;
+   background: #e3e991;
+   z-index: 1000;
+}
+
+.visibleLink {
+    text-decoration: underline;     
+}
+
+.dvCaption {
+   position: absolute;
+   top: 2px;
+   left: 40px;   
+}
+
+.dvExplanations {
+    position: absolute; 
+    left: 20px; 
+    top: 70px;       
+}
+
+.dvQuery {
+   position: absolute;
+   top: 30px;
+   left: 40px;   
+}
+
+.dvCont  {
+   overflow-y: scroll;
+   float: left;
+   border: 1px solid black;
+   background: rgb(230, 234, 195);
+   padding: 5px;
+   position: absolute;
+   left: 5px; 
+   top: 60px;  
+   height: 370px; 
+   width: 638px; 
+}
+
+.btClosePanel {
+    position:absolute;
+    top: 2px;
+    left: 550px;
+    color: white;
+}
+
+
+/********************************/
+/******** MAPs ******************/
+/********************************/
+
+/* Position of maps */
+.dvBiblio,.dvProfiles,.dvMainMapCont {
+    position: absolute; 
+    left: 20px; 
+    top: 90px;   
+    height: 400px;
+    width: 100%;
+}
+
+
+.dvMainMap {
+    height: 400px;
+    width: 900px;
+    z-index: 100;
+}
+
+.dvHelp,.dvProject { 
+  position: absolute; 
+  left: 50px; 
+  top: 100px;
+  width: 1600px; 
+  height: 400px; 
+  border: 1px solid black;
+}
+
+.dvHideFirst {
+    visibility: hidden;    
+}
+
+.dvNormDiv {
+    margin-bottom: 3px;
+}
+
+.dvOnMapText {
+    position: absolute; 
+    left: 20px; 
+    top: 310px;
+    width: 820px;
+    border: 1px solid black;
+    padding: 8px;
+    background: white;
+    opacity: 0.8;
+    z-index: 105;
+}
+
+.dvHeader {
+    font-size: large;    
+}
+
+.dvHeader1 {
+    font-size: larger;    
+}
+
+/********************************/
+/******** Biblio Formatting ****/
+/********************************/
+.dvBibArticle {
+    border: 1px solid green;
+    color: green;
+    margin-top: 2px;
+    background: white;
+    padding-left: 5px;
+}
+
+.dvBibBook {
+    border: 1px solid blue;
+    color: blue;
+    margin-top: 2px;
+    background: white;
+    padding-left: 5px;
+}
+
+.dvBibBookSection {
+    border: 1px solid red;
+    color: red;
+    margin-top: 2px;
+    background: white;
+    padding-left: 5px;
+}
+
+.dvBiblBlock {
+    margin-left: 20px;    
+}
+
+/********************************/
+/*********Profile Formatting ****/
+/********************************/
+.h2Profile {
+    padding: 0px;
+    font-size: 16pt;
+    font-weight: bold;
+}
+
+.h3Profile {
+    margin-top:10px;
+    padding: 0px;
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.imgCaption {
+    color: blue;    
+}
+
+.pNorm {
+    margin-top: 5px;    
+}
+
+.tbProfile {
+    border-collapse: collapse;
+}
+
+.tdHead {
+    border: 1px solid black;
+    text-align: right;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.tdArabicText {
+    border: 1px solid black;
+    direction: rtl;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.tdProfile {
+  border: 1px solid black;
+  vertical-align: top;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.imgProfile {
+    width: 320px;
+    float:right;
+}
+
+/*********************************/
+/*********Features Formatting ****/
+/*********************************/
+
+.tbFeature {
+  border-collapse: collapse;
+  width: 95%;
+}
+
+.tdFeatureRight {
+  border: 1px solid black;
+}
+
+.tdFeatureLeft {  
+   border: 1px solid black;
+  width: 200px;
+}
+
+.tdFeatureCom {
+  border: 1px solid black;    
+}

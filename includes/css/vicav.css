@@ -1,0 +1,19 @@
+.navbar {
+  background-color: #335276;
+  color: #fff;
+}
+
+body .navbar ul.navbar-nav .navbar-icons a {
+  color: #fff;
+}
+
+.dvBiblio, .dvProfiles, .dvMainMapCont {
+    height: 400px;
+    width: 100%;
+}
+
+.dvMainMap {
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+}

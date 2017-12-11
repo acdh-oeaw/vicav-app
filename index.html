@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>VICAV - DEV</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="includes/vendor/leaflet.css"></link>
+    <!-- Fontawesome icons -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Fundament core CSS -->
+    <link href="includes/fundament/fundament.css?v=00001" rel="stylesheet">
+    <!-- VICAV App CSS -->
+    <link href="includes/css/vicav.css?v=00001" rel="stylesheet">
+  </head>
+  <body>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="../docs/index.php">vicav</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="../docs/index.php">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="liBibliographyLocations" href="#">liBibliographyLocations</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Examples</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Customizer</a>
+            </li>
+            <!--
+            <div class="navbar-search input-group-sm">
+              <span class="input-group-btn">
+                <button class="btn btn-secondary" type="button"><i class="material-icons">search</i></button>
+              </span>
+              <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for...">
+            </div>
+            -->
+            <li class="navbar-icons">
+              <a href="https://github.com/acdh-oeaw/fundament" target="_blank" rel="noopener" aria-label="GitHub">
+                <i class="fa fa-github" aria-hidden="true" title="GitHub"></i>
+              </a>
+              <a href="#">
+                <i class="fa fa-search" aria-hidden="true" title="Search"></i>
+              </a>
+            </li>
+          </ul>
+          <div class="acdh-nav-brand">
+            <p>A Service of Austrian Centre for Digital Humanities</p>
+            <a href="https://www.oeaw.ac.at/acdh/acdh-home/" target="_blank" rel="noopener" aria-label="ACDH">
+              <img src="includes/images/acdh_logo120h.png" alt="ACDH" title="Austrian Center for Digital Humanities">
+            </a>
+          </div>
+          <div class="oeaw-nav-brand">
+            <a href="https://www.oeaw.ac.at" target="_blank" rel="noopener" aria-label="ÖAW">
+              <img src="includes/images/oeaw_logo.png" alt="ÖAW" title="Österreichische Akademie der Wissenschaften">
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+
+        <!-- Explanation of map contents -->
+        <div id="dvExplanations" class="dvExplanations"> </div>
+        
+        <!-- EMPTY MAP -->
+        <div id="dvMainMapCont" class="dvMainMapCont">
+            <div id="dvOnMapText" class="dvOnMapText">abc</div>            
+            <div id="dvMainMap" class="dvMainMap"></div>
+        </div>
+        
+        <div class="dvOpenPanels" id="dvOpenPanels">OpenPanels</div>
+
+
+
+
+  <main>
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="container-fluid">
+      <div class="jumbotron">
+        <div class="container">
+
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4 grid-col">
+          <div class="grid-wrap">
+            <h3>I’m a h3 heading for grids.</h3>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+            <p><a class="btn btn-main" href="#" role="button">View details &raquo;</a></p>
+          </div>
+        </div>
+        <div class="col-md-4 grid-col">
+          <div class="grid-wrap">
+            <h3>I’m a h3 heading for grids.</h3>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+            <p><a class="btn btn-main" href="#" role="button">View details &raquo;</a></p>
+          </div>
+        </div>
+        <div class="col-md-4 grid-col">
+          <div class="grid-wrap">
+            <h3>I’m a h3 heading for grids.</h3>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+            <p><a class="btn btn-main" href="#" role="button">View details &raquo;</a></p>
+          </div>
+        </div>
+      </div>
+    </div><!-- /container -->
+  </main>
+    <footer class="main-footer">
+    <div class="container-fluid">
+      <div class="footer-wrapper">
+        <div class="footer-sep">
+          <i aria-hidden="true" class="fa fa-comment-o"></i> CONTACT <span class="footer-login-button"><a href="https://arche.acdh.oeaw.ac.at/browser/user/login"><i aria-hidden="true" class="fa fa-sign-in"></i></a></span>
+        </div>
+        <div class="el-block col-md-3 first">
+          <iframe allowfullscreen height="230" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2033.7249785477802!2d16.37577444283506!3d48.20990150015764!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476d079f8cc04aef%3A0xee66fb1ed728ec45!2sAustrian+Centre+for+Digital+Humanities!5e0!3m2!1sen!2sus!4v1507743890390" width="280"></iframe>
+        </div>
+        <div class="el-block col-md-4">
+          <div class="csc-textpic-text">
+            <p class="bodytext">ACDH-ÖAW<br>
+            Austrian Centre for Digital Humanities<br>
+            Austrian Academy of Sciences</p>
+            <p class="bodytext">Sonnenfelsgasse 19,<br>
+            1010 Vienna</p>
+            <p class="bodytext">T: +43 1 51581-2200<br>
+            E: <a href="mailto:acdh@oeaw.ac.at" style="font-weight:600;">acdh(at)oeaw.ac.at</a></p>
+          </div>
+        </div>
+        <div class="el-block col-md-3 last">
+          <h3>HELPDESK</h3>
+          <p class="bodytext">ACDH runs a helpdesk offering advice for questions related to various digital humanities topics.</p>
+          <p class="bodytext"><a class="helpdesk-button" href="mailto:acdh@oeaw.ac.at">ASK US!</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-imprint-bar">
+      © Copyright OEAW | <a href="https://arche.acdh.oeaw.ac.at/browser/imprint">Impressum/Imprint</a>
+    </div>
+  </footer><!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="includes/vendor/jquery.js"></script>
+  <script src="includes/vendor/jquery.sha256.min.js"></script>            
+  <script src="includes/vendor/jquery-ui.js"></script>
+  <script src="includes/vendor/popper.min.js"></script>
+  <script src="includes/fundament/fundament.min.js"></script>
+  <script src="includes/vendor/leaflet.js"></script>
+  <script src="includes/js/vicav_funcs.js"></script>
+  <script src="includes/js/geo_data.js"></script>
+  <script src="includes/js/tunico5_dict_funcs.js"></script>
+  <script src="includes/js/vicav.js"></script>
+</body>
+</html>

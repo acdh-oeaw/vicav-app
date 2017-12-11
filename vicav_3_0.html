@@ -1,0 +1,339 @@
+<html>
+    <head>        
+        <title>VICAV 3.0 - Dev</title>
+        
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="stylesheet" href="jquery-ui.css"></link>
+        <link rel="stylesheet" href="leaflet.css"></link>
+        <link rel="stylesheet" type="text/css" href="vicav.css"></link>
+        <link rel="stylesheet" type="text/css" href="tunico5_dict.css"/>
+
+        <script type="text/javascript" src="jquery-3.1.0.min.js"></script>
+        <script type="text/javascript" src="jquery.sha256.min.js"></script>            
+        <script type="text/javascript" src="jquery-ui.js"></script>
+        <script type="text/javascript" src="leaflet.js"></script>
+        <script type="text/javascript" src="vicav_funcs.js"></script>
+        <script type="text/javascript" src="geo_data.js"></script>
+
+        <script type="text/javascript" src="tunico5_dict_funcs.js"></script>
+                
+        <link href="css/bootstrap.min.css" rel="stylesheet"></link>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        
+        <script type="text/javascript">
+            function onBiblMapClick(e) {
+               query = e.latlng.lat.toFixed(2) + '.*' + e.latlng.lng.toFixed(2);
+               execBiblQuery(query, e.layer.options.alt, e.layer.options.biblType, e.layer.options.locType);
+	         }            
+
+             function onProfilesMapClick(e) {
+               query = e.latlng.lat.toFixed(2) + '.*' + e.latlng.lng.toFixed(2);
+               getProfile_(query, e.layer.options.alt);
+	         }
+	         
+             function onFeaturesMapClick(e) {
+               query = e.latlng.lat.toFixed(2) + '.*' + e.latlng.lng.toFixed(2);
+               getFeature_(query, e.layer.options.alt, e.layer.options.id);
+	         }     
+	         
+        </script>
+    </head>
+    
+    <body id="body">                
+
+        <!-- MENU -->
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <span class="navbar-brand" href="#">VICAV 3.0</span>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Project<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a id="liVicavMission" href="#">Mission</a></li>
+                                <li><a id="liProject" href="#">Project</a></li>
+                                <li><a id="liContributors" href="#">Contributors</a></li>
+                                <li><a id="liDictionaries" href="#">Dictionaries</a></li>
+                                <li><a id="liLinguistics" href="#">Linguistics</a></li>
+                                <li><a id="liTextTechnology" href="#">Text Technology</a></li>                            
+                            </ul>
+                        </li>
+
+                        <li class="dropdown" ><a class="dropdown-toggle" data-toggle="dropdown" href="#">Bibliographies<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a id="liBibliographyLocations" href="#">Locations</a></li>
+                                <li><a id="liBibliographyRegions" href="#">Regions</a></li>
+                                <li><hr class="hrMenuSeparator"/></li>
+                                
+                                <li><a id="liGeoDicts" href="#">Bibliography (Dictionaries)</a></li>
+                                <li><a id="liGeoTextbooks" href="#">Bibliography (Textbooks)</a></li>
+                            </ul>
+                        </li>
+                    
+                        <li class="dropdown" ><a class="dropdown-toggle" data-toggle="dropdown" href="#">Profiles<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a id="liProfilesExplanation" href="#">Explanation</a></li>
+                                <li><hr class="hrMenuSeparator"/></li>
+                                
+                                <li><a id="liProfiles" href="#">All Locations</a></li>
+                                <li><hr class="hrMenuSeparator"/></li>
+
+                                <li><a id="liProfileRabat" href="#">Rabat (Salé)</a></li>
+                                <li><a id="liProfileTunis" href="#">Tunis</a></li>
+                                <li><a id="liProfileSousse" href="#">Sousse</a></li>
+                                <li><a id="liProfileCairo" href="#">Cairo</a></li>
+                                <li><a href="#">...</a></li>
+                                
+                                <li><hr class="hrMenuSeparator"/></li>
+                                <li><a href="#">Contribute</a></li>
+                            </ul>                                                        
+                        </li>
+
+                        <li class="dropdown" ><a class="dropdown-toggle" data-toggle="dropdown" href="#">Features<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a id="liFeaturesExplanation" href="#">Explanation</a></li>
+                                <li><hr class="hrMenuSeparator"/></li>
+                                
+                                <li><a id="liFeatures" href="#">All Locations</a></li>
+                                <li><hr class="hrMenuSeparator"/></li>
+
+                                <li><a id="liFeatureCairo" href="#">Cairo</a></li>
+                                <li><a id="liFeatureDamascus" href="#">Damascus</a></li>
+                                <li><a href="#">...</a></li>
+                                
+                                <li><hr class="hrMenuSeparator"/></li>
+                                <li><a href="#">Contribute</a></li>
+                            </ul>                                                        
+                        </li>
+                        
+                        <li class="dropdown" ><a class="dropdown-toggle" data-toggle="dropdown" href="#">Sample Texts<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a id="liNotYet" href="#">Explanation</a></li>
+                                <li><hr class="hrMenuSeparator"/></li>
+
+                                <li><a id="liNotYet" href="#">All Locations</a></li>
+                                <li><hr class="hrMenuSeparator"/></li>
+                                
+                                <li><a id="liSampleCairo" href="#">Cairo</a></li>
+                                <li><a id="liSampleDamascus" href="#">Damascus</a></li>
+                                <li><a id="liSampleBaghdad" href="#">Baghdad</a></li>
+                                <li><a href="#">...</a></li>
+                                
+                                
+                                <li><hr class="hrMenuSeparator"/></li>
+                                <li><a href="#">Contribute</a></li>
+                            </ul>                                                        
+                        </li>
+                        
+                        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Dictionaries<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Bibliography of Dictionaries</a></li>
+                                <li><a id="liTunico" href="#">TUNICO Dictionary (Tunisian - German - English)</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li class="dropdown" ><a class="dropdown-toggle" data-toggle="dropdown" href="#">Tools<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a id="liDictionaryEncoding" href="#">Dictionary Encoding</a></li>
+                                <li><a id="liArabicNLP" href="#">Arabic NLP</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Explanation of map contents -->
+        <div id="dvExplanations" class="dvExplanations"> </div>
+        
+        <!-- EMPTY MAP -->
+        <div id="dvMainMapCont" class="dvMainMapCont">
+            <div id="dvOnMapText" class="dvOnMapText">abc</div>            
+            <div id="dvMainMap" class="dvMainMap"></div>
+        </div>
+        
+        <div class="dvOpenPanels" id="dvOpenPanels">OpenPanels</div>
+        
+        <div id="dvIntroText" class="dvHideFirst">
+            <div class="dvHeader">Mission</div>
+            <div class="dvNormDiv">The Vienna Corpus of Arabic Varieties (VICAV) is an international project aiming at the collection of digital language resources 
+                documenting varieties of spoken Arabic. It provides a wide range of materials such as language profiles, dictionaries, 
+                annotated texts, bibliographies and more.</div>                
+            <div class="dvNormDiv">The Vienna Corpus of Arabic Varieties has been started as a co-operation between the Department of Oriental Studies 
+                of the University of Vienna and the Austrian Centre for Digital Humanities (ACDH) of the Austrian Academy of Sciences.</div>
+        </div>
+        
+        <div id="dvProjectText" class="dvHideFirst">
+            <div class="dvHeader">Project Outline</div>
+            <div class="dvNormDiv">The Vienna Corpus of Arabic Varieties (VICAV) is an international project aimed at the collection of digital language 
+                resources documenting varieties of spoken Arabic. It is meant to provide a variety of relevant materials such as language 
+                profiles (concise linguistic descriptions of particular varieties), dictionaries, annotated texts, bibliographies and more.</div>                
+            <div class="dvNormDiv">VICAV has been started as a co-operation between the Department of Oriental Studies of the University of Vienna and the 
+                Austrian Centre for Digital Humanities (ACDH) of the Austrian Academy of Sciences. It is also part of CLARIAH.AT’s project 
+                bundle striving to make available more language resources for under-resourced linguistic varieties.</div>
+            <div class="dvNormDiv">Apart from its linguistic goals, the project has been pursuing strong interests in various aspects of text technology. 
+                The output of the work of the contributors is published in form of different types of digital language resources. The ACDH’s 
+                research interests in this project have been related to issues of digital lexicography, visualisation of digital language resources in a multilingual environment und the application of standards and (de-facto) standards such as TEI and/or LMF in the creation of digital language resources.</div>
+        </div>
+        
+        <div id="dvContributorsText" class="dvHideFirst">
+            <div class="dvHeader">Contributors</div>
+            <div class="dvNormDiv">The project has been conducted as a co-operation between the Department of Oriental Studies of the University of Vienna and the Institute of Corpus Linguistics and Text Technology of the Austrian Academy of Sciences. It is also part of CLARIN-AT’s project bundle aiming at more language resources for under-resourced linguistic varieties. </div>
+            <div class="dvNormDiv">VICAV is a collaborative undertaking. We are aiming at serving the community at large and want to be as inclusive as possible. Contact us if you want to participate in our efforts.</div>
+            <div class="dvNormDiv">So far the following researchers have contributed to the pool of data.</div>
+            
+            <div class="dvHeader1">Rima Aldoukhi</div>
+            <div class="dvNormDiv">… is a first language speaker of Damascus Arabic and lecturer at the University of Vienna. She has been working extensively on the Damascus dictionary</div>
+
+            <div class="dvHeader1">Carmen Berlinches Ramos</div>
+            <div class="dvNormDiv">… has a PhD in Arabic Studies from the Complutense University of Madrid and is one of our Damascus specialists. She prepared many entries of the Damascus dictionary.</div>
+            
+            <div class="dvHeader1">Ines Dallaji</div>
+            <div class="dvNormDiv">… is a specialist in Tunisian Arabic, was working on the Tunisian dictionary and provided the language profile of Tunis.</div>
+            
+            <div class="dvHeader1">Ines Gabsi</div>
+            <div class="dvNormDiv">… is a specialist in Tunisian Arabic and was working on the Tunisian dictionary.</div>
+            
+            <div class="dvHeader1">Charly Mörth</div>
+            <div class="dvNormDiv">… has prepared some of our Egyptian material. He takes a great interest in the interface between linguistics and digital language ressources doing research in the fields of virtual research environments and language related standards.</div>
+            
+            <div class="dvHeader1">Lea Müller-Funk</div>
+            <div class="dvNormDiv">… has prepared our MSA dictionary.</div>
+            
+            <div class="dvHeader1">Stephan Procházka</div>
+            <div class="dvNormDiv">… is professor of Arabic language at the University of Vienna and the president of AIDA. Together with Charly Moerth he initiated the VICAV project.</div>
+
+            <div class="dvHeader1">Veronika Ritt-Benmimoun</div>
+            <div class="dvNormDiv">… is assistant professor of Arabic linguistics at the Institute of Oriental Studies of the University of Vienna and a leading specialist in Tunisian Bedouin dialects. She prepared the profile of Douz.</div>
+
+            <div class="dvHeader1">Naima Sekiati</div>
+            <div class="dvNormDiv">… is lecturer for Moroccan Arabic at the University of Vienna and prepared the profile of Salé.</div>
+
+            <div class="dvHeader1">Omar Siam</div>
+            <div class="dvNormDiv">… has been in charge of many text technological aspects of this site.</div>
+
+            <div class="dvHeader1">Anna Telič</div>
+            <div class="dvNormDiv">… is lecturer for Syrian Arabic at the University of Vienna and has been responsible for the re-checking of the data in the Damascus dictionary.</div>
+
+            <div class="dvHeader1">Other Contributors</div>
+            <div class="dvNormDiv">A number of MA and PhD students in Arabic Studies at the University of Vienna contributed profiles to this website. Among these are Natanja Faschinger, Lea Bäumler, Faiz Alshehri and others.</div>
+
+        </div>
+            
+        <div id="dvDictionariesText" class="dvHideFirst">
+            <div class="dvHeader">Dictionaries</div>
+            
+            <div class="dvNormDiv"></div>
+        </div>
+        
+        <div id="dvLinguisticsText" class="dvHideFirst">
+            <div class="dvHeader">Linguistics</div>
+            
+            <div class="dvNormDiv">The VICAV Research Environment has been designed as a tool for the presentation of digital material concerning Arabic dialectology. It was intended as a means to promote the efficient exchange of ideas and experiences in an active international community.
+            <div class="dvNormDiv">VICAV serves as an interface between areal and corpus linguistics. The aim is to gather varying digital language resources for a number of different localities. The description of the different varieties hinges on a particular type of text which we call ’language profiles’, concise and standardised ‘form sheets’ that display uniformly arranged information on research history, available literature, salient grammatical features etc. The website will also make accessible bibliographies, dictionaries, glossaries, and different types of transcribed texts. </div>
+            <div class="dvNormDiv">The project proceeds from two basic assumptions: In Arabic dialectology, information on new findings and current developments is mainly exchanged at international conferences and in scientific journals. Due to a steadily increasing number of projects which produce digital data too there is an increasing need to make these data quickly available to others in the field. There already exist a couple of individual webpages which - due to the lack of resources - often do not match professional standards. There is a big gap between the linguistics communities and Arabic Studies in general and Arabic dialectology in particular. Linguistic studies in Arabic dialects have widely ignored the works of traditional, i.e. philologically based, dialectology and vice versa. We are convinced that VICAV has the potential to help to bridge this gap to the benefit of both disciplines. </div>
+        </div>
+        
+        
+        <div id="dvTextTechnologyText" class="dvHideFirst">TT</div>
+        
+        <script type="text/javascript">
+            var mainMap = L.map('dvMainMap').setView([32.064, 20.544], 4);
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+                maxZoom: 20,
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                id: 'mapbox.light'
+                }).addTo(mainMap);
+            
+                
+            var fgProfileMarkers = L.featureGroup().addTo(mainMap).on("click", onProfilesMapClick);
+            var fgFeatureMarkers = L.featureGroup().addTo(mainMap).on("click", onFeaturesMapClick);
+            var fgBiblMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);            
+            var fgGeoDictMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);            
+        </script>
+       
+        <div class="dvTryButtons" id="dvTryButtons">
+            <button type="button" id="btnMap1" class="tryButton">Map1</button><br/>
+            <button type="button" id="btnMap2" class="tryButton">Map2</button><br/>
+        </div>
+        
+        <div id="dvProfilesExplanation" class="dvHideFirst">
+            <div class="dvHeader">Profiles</div>
+            
+            <div class="dvNormDiv">... are short standardised descriptions of linguistic varieties.</div>
+        </div>
+        
+        <div id="dvFeaturesExplanation" class="dvHideFirst">
+            <div class="dvHeader">Features</div>
+            
+            <div class="dvNormDiv">... are ...</div>
+        </div>
+            
+            
+        <div id="dvProject" class="dvProject">
+            <h3>Project</h3>
+        </div>
+        <div id="dvHelp" class="dvHelp">
+            <h3>Help</h3>
+        </div>
+        
+        <!-- TUNICO DICT -->
+        <div id="tunicoDict" class="ui-widget-content">
+            <div class=""></div>
+            <div class="dvUser" id="dvUser"><label>User </label><input type="text" id="usr1" value="charly"/><label class="lbPw">PW </label><input type="password" id="pw1" value="charly123"/></div>
+            
+            <div class="dvInpText" id="dvInpText">
+                <table class="tbInputFrame">
+                    <tr>
+                        <td class="tdInputFrameLeft"><img class="imgQuery" src="looking_glass_16.png" alt="Query"/></td>
+                        <td class="tdInputFrameMiddle"><input type="text" id="txt1" value="" class="inpText"/></td>
+                        <td class="tdInputFrameMiddle"><img class="imgPleaseWait" id="imgPleaseWait" src="balls_in_circle.gif" alt="Query"/></td>
+                        <td class="tdInputFrameRight"><input type="submit" id="btnX" class="btnX" value="✕"/></td>
+                    </tr>
+
+                    <tr>
+                        <td class="tdFieldSelectorLeft"> </td>
+                        <td class="tdFieldSelectorRight" colspan="3">
+                            <div id="dvFieldSelect" class="dvFieldSelect">                  
+                                <select id="slFieldSelect" class="slFieldSelect">
+                                    <option value="any">Any field</option>
+                                    <option value="lem">Arabic</option>
+                                    <option value="infl">Arabic (infl.)</option>
+                                    <option value="en">Trans. English</option>
+                                    <option value="de">Trans. German</option>
+                                    <option value="fr">Trans. French</option>
+                                    <option value="pos">POS</option>
+                                    <option value="root">Roots</option>
+                                    <option value="dom">Domain</option>
+                                    <option value="subc">subc</option>
+                                    <option value="etymLang">Lang. in etymologies</option>
+                                    <option value="etymSrc">Words in etymologies</option>
+                                </select>
+                            </div>   
+                        </td>
+                    </tr>
+                </table>
+                
+                <div id="dvWordSelector" class="dvWordSelector">
+                    <select size="10" id="slWordSelector">
+                        <option></option>
+                    </select>
+                </div>
+                
+            </div>
+            <p class="dvKWICs" id="dvKWICs"></p>
+            
+        </div>        
+    </body>
+</html>

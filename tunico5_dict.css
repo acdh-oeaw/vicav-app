@@ -1,0 +1,364 @@
+body {
+  margin: 0;
+  background: rgb(236, 217, 175);
+}
+               
+table {
+  border-collapse: collapse;  
+}
+
+button {
+  background: black; 
+  color: white;
+}
+
+td {
+  border: 1px solid black;
+  padding-left: 5px;
+  vertical-align: top;
+  background: white;
+}
+
+div {
+   margin: 0px; 
+}
+
+.dvKWICs  {
+   overflow-y: scroll;
+   float: left;
+   border: 1px solid black;
+   background: rgb(230, 234, 195);
+   padding: 5px;
+   position: absolute;
+   left: 5px; 
+   top: 120px;  
+   height: 320px; 
+   width: 638px; 
+}
+
+.dvInnerFrame {
+    margin-top: 15px;
+    padding: 5px;
+    background: rgb(255,255,254);
+    border: 5px solid rgb(255,255,255);
+    width: 40%;
+    opacity: 0.5;
+}
+
+.dvCharTable {
+   border: 1px solid grey;
+   margin-top: 3px;
+   background: rgb(255,255,251);
+   left: 65px;
+   max-width: 425px;
+   padding: 2px;
+}
+                         
+.dvInpText {
+    position: absolute;
+    top: 70px;
+    left: 80px;    
+}
+               
+.dvHelp,.dvLang,.dvImprint,.dvProject {
+   padding-left: 25px;   
+}
+
+.dvLetter {
+  padding-left: 2px;  
+  padding-right: 2px;
+  border: 0.5px dotted grey;
+  background: rgb(249, 213, 128);
+  width: 10px;
+  text-align: center;
+  box-shadow: 3px 3px 5px #888888;
+  margin-top: 2px;
+  display: inline-block;
+}
+
+.dvMobileMenu {
+   width: 60%;
+}
+
+.dvFieldSelect {
+  height: 20px;    
+}
+
+.dvStart {
+   padding-left: 25px;
+   background: rgb(119, 180, 242);
+   background: rgb(236, 217, 175);
+   background-image: url('');
+   background-repeat: no-repeat;
+   height: 1000px;
+   margin-top: 0px;
+}
+
+.dvTop {
+   font-size: 26pt;
+   color: black;
+   border: 1px solid black;
+   vertical-align: bottom;
+   padding: 0px;
+   padding-left: 20px;
+   margin: 0px;
+
+   width: 100%;
+   background: rgb(249, 213, 128);
+}
+
+.dvUser {
+   padding-left: 20px;
+   padding-top: 5px;
+}
+
+.dvWordSelector {
+    left: 165px;
+    width: 200px;    
+}
+
+.imgQuery {
+  vertical-align: middle;  
+}
+
+.imgPleaseWait {
+  vertical-align: middle;
+  visibility: visible;  
+  height: 14px;
+  width: 14px;
+}
+
+.inpText {
+  border: 0px;
+}
+
+.pStandard {
+   margin: 0px;
+   color:  rgb(0,0,0);
+}
+             
+
+.slFieldSelect {
+  width: 100%;    
+  height: 20px;
+  border: 0px;
+}              
+
+.tbInputFrame {
+  border: 0px solid black;
+  padding-left: 1px;
+  padding-right: 1px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  height: 20px;
+  width: 200px;
+}
+
+.tdInputFrameLeft {
+  border: 0px solid white;
+  border-bottom: 1px solid grey;
+  border-left: 1px solid grey;
+  border-top: 1px solid grey;   
+}
+
+.tdInputFrameRight {
+  border: 0px solid white;
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
+  border-top: 1px solid grey;   
+}
+
+ .tdInputFrameMiddle {
+  border: 0px solid white;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+ }
+ 
+.tdFieldSelectorLeft {
+  border: 0px solid rgb(236, 217, 175);
+  background: rgb(236, 217, 175);  
+} 
+
+.tdFieldSelectorRight {
+  border: 1px solid grey;
+  background: white;  
+} 
+           
+.dvDef {
+  padding-left: 3px;
+  padding-right: 3px;
+  font-style: italic;
+  margin-left: 0pt;
+  font-size: 12pt;
+}
+
+.dvExamples {
+  border: 1px solid black;
+  background: rgb(255, 255, 255);
+  font-size: smaller;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin: 3px;
+}
+
+.dvLangSep {
+   border-top: 0.5px dotted rgb(85, 99, 201);
+   margin-right: 20px;
+}
+.dvMWUExamples {
+  border: 1px solid black;
+  background: rgb(234,202,255);
+}
+
+.dvRoundLemmaBox_ltr {
+    text-align: left;
+    direction: ltr;
+    padding-top: 3px;
+    padding-left: 5px;
+    position: relative;
+    top: 3px;
+    left: 0px;
+    max-width: 420px;
+    border-radius: 5px;
+    background: rgb(249, 213, 128);
+    font-weight: bold;
+    font-size: larger;
+    color: rgb(131, 46, 46);
+    border: 1px solid rgb(140,70,0);
+}
+
+.dvStats {
+    background: rgb(249, 213, 128);
+    border: 1px solid rgb(140,70,0);
+    padding-left: 5px;
+    margin-bottom: 3px;
+    position: relative;
+    top: 3px;
+    left: 0px;
+    max-width: 420px;
+}
+
+.dvUsg {
+  font-style: italic;   
+  margin-left: 5pt;
+  font-size: 10pt;
+}
+
+.spBibl {
+  font-style: italic;
+  font-size: small;
+  text-align: left;
+  color: grey;
+}
+
+.spEditors {
+  font-style: italic;
+  color: grey;
+  font-size: small;  
+}
+
+.spEtym {
+  font-style: italic;
+  color: grey;
+  font-size: small;  
+}
+
+.spGramGrp {
+  color: rgb(255,128,0);
+   font-style: italic;
+}
+
+.spTrans {
+    border: 0px;
+    font-style: italic;
+    color: rgb(123, 120, 255);
+}
+
+.opWordList_ar-aeb-x-tunis-vicav {
+    border: 0px;
+    font-weight: bold;
+    color: rgb(128,0,64); 
+}
+
+.opWordList_infl {
+    border: 0px;
+    font-weight: bold;
+    color: rgb(240, 184, 86);  
+}
+
+.opWordList_lem {
+    border: 0px;
+    font-weight: bold;
+    color: rgb(128,0,64);  
+}
+
+.opWordList_root {
+    border: 0px;
+    font-weight: bold;
+    color: rgb(53, 189, 39);
+}
+
+.spTransDe,.opWordList_de,.opWordList_en,de,fr {
+    border: 0px;
+    font-style: italic;
+    color: rgb(144, 113, 183);
+}
+
+.spTransEn,.opWordList_en {
+    border: 0px;
+    font-style: italic;
+    color: rgb(123, 120, 255);
+}
+
+.spTransFr,.opWordList_fr {
+    border: 0px;
+    font-style: italic;
+    color: rgb(173, 82, 117);
+}
+
+.tbEntry {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  border: 0.5px solid rgb(0,0,0);
+  width: 90%;
+  max-width: 400px;
+}
+
+.tdHead {
+  font-weight: bold;
+  color: rgb(188, 61, 61);
+  background: rgb(255, 219, 132);
+  text-align: right;
+  padding-right: 5px;
+  width: 90px;
+  word-wrap: break-word;
+}
+
+.tdNoBorder {
+    border: 0px solid black;
+    padding-left: 0px;
+    vertical-align: top;
+  word-wrap: break-word;
+}
+
+.tdSense {
+    background: rgb(220, 222, 198);
+    border-style: solid;
+    word-wrap: break-word;
+}
+
+.tdSenseHead {
+    font-weight: bold;
+    font-style: italic;
+    color: rgb(188, 61, 61);
+    background: rgb(255, 219, 132);
+    text-align: right;
+    padding-right: 5px;
+    word-wrap: break-word;
+    width: 100px;
+}
+
+              
+.lbPw {
+   padding-left: 20px;
+}
