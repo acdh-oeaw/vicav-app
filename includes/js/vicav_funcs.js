@@ -94,6 +94,25 @@ function createNewPanel() {
     
 }
 
+function appendToPanel(result) {
+
+  $('.content-panel').each(function(){
+    var filled = $(this).data("filled");
+    if (filled == false) {
+      panelID = "#" + $(this).attr('id');
+      console.log(panelID);
+      return false;
+    }
+  }); 
+
+  if (!panelID) {
+
+    panelID = "#content-panel-3";
+  }
+  $(panelID).children(".grid-wrap").html(result);
+  $(panelID).data("filled", "true");
+}
+
 function setExplanation(s_) {
     document.getElementById("dvExplanations").innerHTML = s_;    
 }
@@ -154,9 +173,11 @@ function execSampleQuery(id_) {
         if (result.includes('error type="user authentication"')) {
             alert('Error: authentication did not work');                  
         } else {
-            createNewPanel();
-            $("#dvCaption_" + lastTextPanelID).html('SAMPLE TEXT');
-            $("#" + lastTextPanelID).html(result);
+          console.log(result); 
+          appendToPanel(result);
+            //createNewPanel();
+            //$("#dvCaption_" + lastTextPanelID).html('SAMPLE TEXT');
+            //$("#" + lastTextPanelID).html(result);
         }
      },
      error: function (error) {
@@ -209,9 +230,11 @@ function execBiblQuery(query_, loc_, keyword_, locType_) {
             alert('Error: authentication did not work');                  
         } else {            
             //createNewPanel();
-            $("#pLibrary").html(result);
-            $("#dvCaption").html('<b>Query: </b>' + query_);
-            $('#dvLibrary').show();
+          console.log(result); 
+          appendToPanel(result);
+            //$("#pLibrary").html(result);
+            //$("#dvCaption").html('<b>Query: </b>' + query_);
+            //$('#dvLibrary').show();
         }
      },
      error: function (error) {
