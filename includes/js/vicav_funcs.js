@@ -96,21 +96,31 @@ function createNewPanel() {
 
 function appendToPanel(result) {
 
+
   $('.content-panel').each(function(){
     var filled = $(this).data("filled");
     if (filled == false) {
-      panelID = "#" + $(this).attr('id');
-      console.log(panelID);
+      panelFree = $(this);
       return false;
     }
-  }); 
+    panelFree = false;
+  });
 
-  if (!panelID) {
-
-    panelID = "#content-panel-3";
+  if (!panelFree) {
+    var firstCont = $("#content-panel-first").children(".grid-wrap").html();
+    firstCont = "<div class='grid-wrap'>"+firstCont+"</div>";
+    //var closedCont = $("<div>", {"class": "content-panel closed-panel"});
+    $(".initial-closed-panel").clone().appendTo( ".panels-wrap" ).append(firstCont).removeClass("initial-closed-panel").detach().insertBefore("#content-panel-first");
+    var secCont = $("#content-panel-2").children(".grid-wrap").html();
+    var thirdCont = $("#content-panel-3").children(".grid-wrap").html();
+    $("#content-panel-1").children(".grid-wrap").html(secCont);
+    $("#content-panel-2").children(".grid-wrap").html(thirdCont);
+    panelFree = $("#content-panel-last");
   }
-  $(panelID).children(".grid-wrap").html(result);
-  $(panelID).data("filled", "true");
+  //console.log(panelID);
+  
+  $(panelFree).children(".grid-wrap").html(result);
+  $(panelFree).data("filled", "true");
 }
 
 function setExplanation(s_) {
@@ -189,8 +199,8 @@ function execSampleQuery(id_) {
 function execBiblQuery(query_, loc_, keyword_, locType_) {
   query01 = query_.replace(/\./g, '\\\.');
   var subs = '';
-  console.log('execBiblQuery');
-  console.log(query_ + ' : ' + loc_ + ' : ' + keyword_ + ' : ' + locType_);        
+  //console.log('execBiblQuery');
+  //console.log(query_ + ' : ' + loc_ + ' : ' + keyword_ + ' : ' + locType_);        
   //var sarray = query01.split('|');
   //for(var i = 0; i < sarray.length; i++) {
     
@@ -214,7 +224,7 @@ function execBiblQuery(query_, loc_, keyword_, locType_) {
   qs = '/vicav_001/biblio?q=let $art := collection(\'vicav_biblio\')//' +
           'node()[(name()="bib:Article") or (name()="bib:Book") or (name()="bib:BookSection")]' + subs + ' return $art&s=biblio_01.xslt';
   
-  console.log(qs);        
+  //console.log(qs);        
             
   $.ajax({
      url: qs,
@@ -230,7 +240,7 @@ function execBiblQuery(query_, loc_, keyword_, locType_) {
             alert('Error: authentication did not work');                  
         } else {            
             //createNewPanel();
-          console.log(result); 
+          //console.log(result); 
           appendToPanel(result);
             //$("#pLibrary").html(result);
             //$("#dvCaption").html('<b>Query: </b>' + query_);
@@ -369,6 +379,9 @@ $(document).ready(
        hideAllTabs();
        $("#dvMainMapCont").show();
        createBiblioPanel();
+       
+       insertBiblGeoMarkers();
+       
        $('#tunicoDict').draggable({cancel : 'p, input, .dvFieldSelect', stack: ".ui-widget-content"});
        //**** "stack" makes sure that the last dragged panel gets on top
        //**** "cancel" allows to transfer the input focus to the elements in the list

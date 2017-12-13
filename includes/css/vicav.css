@@ -1,3 +1,7 @@
+body {
+    padding-top: 100px;
+}
+
 .navbar {
   background-color: #335276;
   color: #fff;
@@ -8,7 +12,7 @@ body .navbar ul.navbar-nav .navbar-icons a {
 }
 
 .dvBiblio, .dvProfiles, .dvMainMapCont {
-    height: 400px;
+    height: 300px;
     width: 100%;
 }
 
@@ -18,22 +22,51 @@ body .navbar ul.navbar-nav .navbar-icons a {
     z-index: 100;
 }
 
-
 .panels-wrap {
     display: flex;
     flex-direction: row;
     width: 100%;
 }
 
-.content-panel.closed-panel {
-    width: 25px;
-    background-color: #333;
-    height: 500px;
+.closed-panels-wrap {
+    display: flex;
 }
 
-.open-panels-wrap {
-    flex: 1;
+.content-panel.closed-panel {
+    width: 25px;
+    background-color: #B3AA82;
+    height: 500px;
+    overflow: hidden;
+}
+
+
+.content-panel {
+    height: 450px;
     display: flex;
+    max-height: 450px;
+    margin-left: 10px;
+}
+
+.content-panel.open-panel {
+    flex: 1;
+}
+
+.content-panel .grid-wrap {
+    border-top: 0;
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.panel-chrome.vertical {
+    max-width: 25px;
+    height: 100%;
+    max-height: initial;
+    padding: 10px 2px;
+}
+
+.content-panel.initial-closed-panel {
+    display: none;
 }
 
 .main-map-col {
@@ -63,26 +96,12 @@ body .navbar ul.navbar-nav .navbar-icons a {
     color: #fff;
 }
 
-.content-panel {
-    height: 450px;
-    display: flex;
-    max-height: 450px;
-}
-
-.content-panel .grid-wrap {
-    border-top: 0;
-    flex: 1;
-    height: 100%;
-    overflow-y: auto;
-}
-
-.panel-chrome.vertical {
-    max-width: 25px;
-    height: 100%;
-    max-height: initial;
-    padding: 10px 2px;
+.panel-chrome i.material-icons {
+    color: #fff;
+    font-size: 21px;
 }
 
 #dvExplanations, #dvOpenPanels {
     display: none;
 }
+

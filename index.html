@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="includes/vendor/leaflet.css"></link>
     <!-- Fontawesome icons -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Material icons font -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Fundament core CSS -->
     <link href="includes/fundament/fundament.css?v=00001" rel="stylesheet">
     <!-- VICAV App CSS -->
@@ -29,7 +31,7 @@
         <div class="collapse navbar-collapse" id="navbarsExampleDefault">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="../docs/index.php">Home <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="https://basex-dev.eos.arz.oeaw.ac.at/vicav_001/dev/index.html">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" id="liBibliographyLocations" href="#">liBibliographyLocations</a>
@@ -84,22 +86,13 @@
 
         <div class="panel-chrome">
           <span class="chrome-close">
-            <span class="fa-stack fa-lg">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-times fa-stack-1x fa-inverse"></i>
-            </span>
+            <i class="material-icons">highlight_off</i>
           </span>
           <span class="chrome-minimize">
-            <span class="fa-stack fa-lg">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-compress fa-stack-1x fa-inverse"></i>
-            </span>
+            <i class="material-icons">remove_circle_outline</i>
           </span>
           <span class="chrome-info">
-            <span class="fa-stack fa-lg">
-              <i class="fa fa-circle fa-stack-2x"></i>
-              <i class="fa fa-info fa-stack-1x fa-inverse"></i>
-            </span>
+            <i class="material-icons">info_outline</i>
           </span>
         </div>
 
@@ -117,31 +110,31 @@
       </div>
     </div>
     <div class="container-fluid panels-wrap">
-      <div class="closed-panels-wrap">
-        <div class="content-panel closed-panel">
 
-        </div>
-      </div><!-- /closed-panels-wrap -->
-      <div class="open-panels-wrap">
-        <div id="content-panel-1" class="content-panel col-md-4 grid-col" data-filled="false">
+        <div class="content-panel closed-panel initial-closed-panel grid-col" data-filled="true">
           <div class="panel-chrome vertical">
             <span class="chrome-close">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x"></i>
-                <i class="fa fa-times fa-stack-1x fa-inverse"></i>
-              </span>
+              <i class="material-icons">highlight_off</i>
             </span>
             <span class="chrome-minimize">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x"></i>
-                <i class="fa fa-compress fa-stack-1x fa-inverse"></i>
-              </span>
+              <i class="material-icons">remove_circle_outline</i>
             </span>
             <span class="chrome-info">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x"></i>
-                <i class="fa fa-info fa-stack-1x fa-inverse"></i>
-              </span>
+              <i class="material-icons">info_outline</i>
+            </span>
+          </div>
+        </div>
+
+        <div class="content-panel open-panel grid-col" id="content-panel-first" data-filled="false">
+          <div class="panel-chrome vertical">
+            <span class="chrome-close">
+              <i class="material-icons">highlight_off</i>
+            </span>
+            <span class="chrome-minimize">
+              <i class="material-icons">remove_circle_outline</i>
+            </span>
+            <span class="chrome-info">
+              <i class="material-icons">info_outline</i>
             </span>
           </div>
           <div class="grid-wrap">
@@ -149,25 +142,16 @@
           </div>
         </div>
 
-        <div id="content-panel-2" class="content-panel col-md-4 grid-col" data-filled="false">
+        <div class="content-panel open-panel grid-col" data-filled="false">
           <div class="panel-chrome vertical">
             <span class="chrome-close">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x"></i>
-                <i class="fa fa-times fa-stack-1x fa-inverse"></i>
-              </span>
+              <i class="material-icons">highlight_off</i>
             </span>
             <span class="chrome-minimize">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x"></i>
-                <i class="fa fa-compress fa-stack-1x fa-inverse"></i>
-              </span>
+              <i class="material-icons">remove_circle_outline</i>
             </span>
             <span class="chrome-info">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x"></i>
-                <i class="fa fa-info fa-stack-1x fa-inverse"></i>
-              </span>
+              <i class="material-icons">info_outline</i>
             </span>
           </div>
           <div class="grid-wrap">
@@ -175,32 +159,23 @@
           </div>
         </div>
         
-        <div id="content-panel-3" class="content-panel col-md-4 grid-col" data-filled="false">
+        <div class="content-panel open-panel grid-col" id="content-panel-last" data-filled="false">
           <div class="panel-chrome vertical">
             <span class="chrome-close">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x"></i>
-                <i class="fa fa-times fa-stack-1x fa-inverse"></i>
-              </span>
+              <i class="material-icons">highlight_off</i>
             </span>
             <span class="chrome-minimize">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x"></i>
-                <i class="fa fa-compress fa-stack-1x fa-inverse"></i>
-              </span>
+              <i class="material-icons">remove_circle_outline</i>
             </span>
             <span class="chrome-info">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-circle fa-stack-2x"></i>
-                <i class="fa fa-info fa-stack-1x fa-inverse"></i>
-              </span>
+              <i class="material-icons">info_outline</i>
             </span>
           </div>
           <div class="grid-wrap">
 
           </div>
         </div>
-      </div><!-- /row -->
+
     </div><!-- /container-fluid -->
   </main>
     <footer class="main-footer">
