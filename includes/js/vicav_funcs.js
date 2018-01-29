@@ -94,33 +94,65 @@ function createNewPanel() {
     
 }
 
-function appendToPanel(result) {
+function appendToPanel(result, resType, loc) {
 
-
+/*
   $('.content-panel').each(function(){
-    var filled = $(this).data("filled");
-    if (filled == false) {
+    var filled = $(this).attr("data-filled");
+    if (filled == "empty") {
       panelFree = $(this);
       return false;
     }
     panelFree = false;
   });
+*/
+  var openPans = 0;
+  $('.content-panel').each(function(){
+    if ($(this).hasClass("open-panel")) {
+      openPans += 1;
+    }
+  });
 
-  if (!panelFree) {
-    var firstCont = $("#content-panel-first").children(".grid-wrap").html();
-    firstCont = "<div class='grid-wrap'>"+firstCont+"</div>";
-    //var closedCont = $("<div>", {"class": "content-panel closed-panel"});
-    $(".initial-closed-panel").clone().appendTo( ".panels-wrap" ).append(firstCont).removeClass("initial-closed-panel").detach().insertBefore("#content-panel-first");
-    var secCont = $("#content-panel-2").children(".grid-wrap").html();
-    var thirdCont = $("#content-panel-3").children(".grid-wrap").html();
-    $("#content-panel-1").children(".grid-wrap").html(secCont);
-    $("#content-panel-2").children(".grid-wrap").html(thirdCont);
-    panelFree = $("#content-panel-last");
+/*  if (!panelFree) {*/
+
+  if (resType == "profile") {
+    resType = "Profile: ";
+  } else if (resType == "bibl") {
+    resType = "Bibliography: ";
   }
-  //console.log(panelID);
-  
+
+  if (openPans < 3) {
+    var resCont = "<div class='grid-wrap'>"+result+"</div>";
+    $(".initial-closed-panel").clone().appendTo( ".panels-wrap" ).append(resCont).removeClass("initial-closed-panel").removeClass("closed-panel").addClass("open-panel").find(".chrome-title").html(resType + loc);
+  } else {
+    var firstPan = $(".open-panel").first();
+    var firstCont = firstPan.children(".grid-wrap").html();
+    var firstTitl = firstPan.find(".chrome-title").html();
+    firstCont = "<div class='grid-wrap'>"+firstCont+"</div>";
+    $(".initial-closed-panel").clone().appendTo( ".panels-wrap" ).append(firstCont).removeClass("initial-closed-panel").detach().insertBefore(firstPan).find(".chrome-title").html(firstTitl);
+    var secCont = $(".open-panel").eq(1).children(".grid-wrap").html();
+    var secTitl = $(".open-panel").eq(1).find(".chrome-title").html();
+    var thirdCont = $(".open-panel").eq(2).children(".grid-wrap").html();
+    var thirdTitl = $(".open-panel").eq(2).find(".chrome-title").html();
+    $(".open-panel").eq(0).children(".grid-wrap").html(secCont);
+    $(".open-panel").eq(0).find(".chrome-title").html(secTitl);
+    $(".open-panel").eq(1).children(".grid-wrap").html(thirdCont);
+    $(".open-panel").eq(1).find(".chrome-title").html(thirdTitl);
+    panelFree = $(".open-panel").eq(2);
+    $(panelFree).children(".grid-wrap").html(result);
+    $(panelFree).find(".chrome-title").html(resType + loc);
+    $(panelFree).attr("data-filled", "filled");
+    $(panelFree).addClass("open-panel");
+  }
+    
+/*  } */
+
+/*
   $(panelFree).children(".grid-wrap").html(result);
-  $(panelFree).data("filled", "true");
+  $(panelFree).attr("data-filled", "filled");
+  $(panelFree).addClass("open-panel");
+*/
+
 }
 
 function setExplanation(s_) {
@@ -200,7 +232,7 @@ function execBiblQuery(query_, loc_, keyword_, locType_) {
   query01 = query_.replace(/\./g, '\\\.');
   var subs = '';
   //console.log('execBiblQuery');
-  //console.log(query_ + ' : ' + loc_ + ' : ' + keyword_ + ' : ' + locType_);        
+  console.log(query_ + ' : ' + loc_ + ' : ' + keyword_ + ' : ' + locType_);        
   //var sarray = query01.split('|');
   //for(var i = 0; i < sarray.length; i++) {
     
@@ -241,7 +273,7 @@ function execBiblQuery(query_, loc_, keyword_, locType_) {
         } else {            
             //createNewPanel();
           //console.log(result); 
-          appendToPanel(result);
+          appendToPanel(result, "bibl", loc_);
             //$("#pLibrary").html(result);
             //$("#dvCaption").html('<b>Query: </b>' + query_);
             //$('#dvLibrary').show();
@@ -304,9 +336,12 @@ function getProfile_(query_, caption_) {
         if (result.includes('error type="user authentication"')) {
             alert('Error: authentication did not work');                  
         } else {
+          appendToPanel(result, "profile", caption_);
+          /*
             createNewPanel();
             $("#dvCaption_" + lastTextPanelID).html('PROFILE: ' + caption_);
             $("#" + lastTextPanelID).html(result);
+          */
         }
      },
      error: function (error) {
@@ -331,9 +366,12 @@ function getProfile__(caption_, id_) {
         if (result.includes('error type="user authentication"')) {
             alert('Error: authentication did not work');                  
         } else {
+          appendToPanel(result, "profile", id_);
+          /*
             createNewPanel();
             $("#dvCaption_" + lastTextPanelID).html('PROFILE: ' + caption_);
             $("#" + lastTextPanelID).html(result);
+            */
         }
      },
      error: function (error) {
@@ -371,7 +409,6 @@ function showTextScreen(id_) {
     document.getElementById("dvOnMapText").innerHTML = document.getElementById(id_).innerHTML 
     $("#dvOnMapText").show();
 }
-
 
 $(document).ready(
     
@@ -424,8 +461,8 @@ $(document).ready(
           if(!$( this ).hasClass('dropdown-toggle')){
             $('.navbar-collapse').collapse('hide');
           }
-       })       
-       
+       })
+
        $("#liGeoDicts").mousedown (
           function(event) {
             hideAllTabs();
@@ -513,7 +550,23 @@ $(document).ready(
              alert('');
           }
        )
-                                   
+
+
+      /* PANEL BEHAVIOR */
+      $(document).on("click", '.chrome-minimize', function(){
+        if($(this).parents(':eq(1)').hasClass('open-panel')){
+          $(this).parents(':eq(1)').removeClass('open-panel');
+          $(this).parents(':eq(1)').addClass('closed-panel');
+        } else if($(this).parents(':eq(1)').hasClass('closed-panel')){
+          $(this).parents(':eq(1)').removeClass('closed-panel');
+          $(this).parents(':eq(1)').addClass('open-panel');
+        }
+      });
+
+      $(document).on("click", '.chrome-close', function(){
+        $(this).parents(':eq(1)').remove();
+      });
+
     }
   );
   
@@ -531,4 +584,22 @@ function refEvent(url_) {
    }      
 }
 
+/* Search Button */
 
+// When clicked on search icon show the overlay
+$('.search-button').on( 'click', function() {
+  $('.search-container').fadeIn(300);
+  $( ".header_search" ).focus();
+}); 
+
+// When pressed on ESC icon hide the overlay
+$('body').keydown(function(e) {
+    if (e.keyCode == 27) {
+        $('.search-container').fadeOut(300);
+    }
+});
+
+// When clicked on search cancel icon hide the overlay
+$('.search-cancel-icon').on( 'click', function() {
+  $('.search-container').fadeOut(300);
+}); 

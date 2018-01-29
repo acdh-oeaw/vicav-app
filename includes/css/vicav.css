@@ -1,5 +1,5 @@
 body {
-    padding-top: 100px;
+    padding-top: 84px;
 }
 
 .navbar {
@@ -12,7 +12,7 @@ body .navbar ul.navbar-nav .navbar-icons a {
 }
 
 .dvBiblio, .dvProfiles, .dvMainMapCont {
-    height: 300px;
+    height: 800px;
     width: 100%;
 }
 
@@ -26,6 +26,7 @@ body .navbar ul.navbar-nav .navbar-icons a {
     display: flex;
     flex-direction: row;
     width: 100%;
+    margin-top: -470px;
 }
 
 .closed-panels-wrap {
@@ -45,6 +46,12 @@ body .navbar ul.navbar-nav .navbar-icons a {
     display: flex;
     max-height: 450px;
     margin-left: 10px;
+    max-width: 33.3%;
+    z-index: 999;
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 2px 2px 3px 0px #e2e2e2;
 }
 
 .content-panel.open-panel {
@@ -105,3 +112,162 @@ body .navbar ul.navbar-nav .navbar-icons a {
     display: none;
 }
 
+.container-fluid.main-map-container {
+    padding: 0;
+}
+
+
+.content-panel[data-filled="empty"] {
+    display: none;
+}
+
+.chrome-button {
+  cursor: pointer;
+}
+
+.open-panel .min-2 {
+  display: none;
+}
+
+.closed-panel .min-1 {
+  display: none;
+}
+
+.chrome-title {
+  writing-mode: vertical-lr;
+  color: #ffffff;
+  margin-top: 10px;
+  padding-left: 1px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.navbar-brand img {
+    height: 52px;
+}
+
+.content-panel img {
+    max-width: 100%;
+}
+
+
+/* Search Overlay */
+.search-container {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 99999;
+  text-align: center;
+  display: none;
+}
+
+.search-container .container {
+  display: table;
+  height: 100%;
+  position: relative;
+}
+
+.searchform {
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+  text-align: left;
+}
+
+.header_search {
+  font-weight: 400;
+  color: #fff;
+  font-size: 85px;
+  line-height: 105px;
+  background: 0 0;
+  border: 0;
+  float: left;
+  width: calc(100% - 100px);
+}
+
+.searchsubmit {
+  background: 0 0;
+  border: none;
+  color: #a9a9a9;
+  font-size: 80px;
+  margin-top: 17px;
+  margin-left: -5px;
+  width: auto;
+  float: left;
+  text-align: left;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  -webkit-backface-visibility: hidden;
+}
+
+.search-cancel-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.search-cancel-icon i {
+  color: #a9a9a9;
+  font-size: 55px;
+  background: 0;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  -webkit-backface-visibility: hidden;
+}
+
+.search-cancel-icon:hover > i, .searchsubmit:hover {
+  color: #fff;
+}
+
+.search-button {
+    cursor: pointer;
+}
+
+input.header_search:focus {
+    outline: 0;
+}
+
+.h2Profile {
+    margin-bottom: 0.5rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    color: inherit;
+    font-size: 1.75rem;
+}
+
+.h2Profile:after {
+    content: '';
+    display: block;
+    width: 60px;
+    border-top: 4px solid #88dbdf;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.pNorm {
+    margin-bottom: 10px;
+}
+
+.h3Profile {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+    margin-top: 0.3rem;
+}
+
+.imgProfile {
+    margin-bottom: 10px;
+}

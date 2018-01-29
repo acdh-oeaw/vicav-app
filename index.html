@@ -23,7 +23,9 @@
   <body>
       <nav class="navbar navbar-expand-md navbar-dark fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="../docs/index.php">vicav</a>
+        <a class="navbar-brand mr-0 mr-md-2" href="/" aria-label="Vicav" href="#">
+          <img src="includes/images/vicav_logo_01.svg"/>
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -33,68 +35,62 @@
             <li class="nav-item active">
               <a class="nav-link" href="https://basex-dev.eos.arz.oeaw.ac.at/vicav_001/dev/index.html">Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" id="liBibliographyLocations" href="#">liBibliographyLocations</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bibliographies</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown01">
+                <a class="dropdown-item" id="liBibliographyLocations" href="#">Locations</a>
+                <a class="dropdown-item" id="liBibliographyRegions" href="#">Regions</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" id="liGeoDicts" href="#">Bibliography (Dictionaries)</a>
+                <a class="dropdown-item" id="liGeoTextbooks" href="#">Bibliography (Textbooks)</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profiles</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown02">
+                <a class="dropdown-item" id="liProfiles" href="#">All Locations</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Contribute</a>
+              </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Examples</a>
+              <a class="nav-link" href="#">Features</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Customizer</a>
+              <a class="nav-link" href="#">Dictionaries</a>
             </li>
-            <!--
-            <div class="navbar-search input-group-sm">
-              <span class="input-group-btn">
-                <button class="btn btn-secondary" type="button"><i class="material-icons">search</i></button>
-              </span>
-              <input type="text" class="form-control" placeholder="Search for..." aria-label="Search for...">
-            </div>
-            -->
+            <li class="nav-item">
+              <a class="nav-link" href="#">Tools</a>
+            </li>
             <li class="navbar-icons">
               <a href="https://github.com/acdh-oeaw/fundament" target="_blank" rel="noopener" aria-label="GitHub">
                 <i class="fa fa-github" aria-hidden="true" title="GitHub"></i>
               </a>
-              <a href="#">
+              <a class="search-button" href="#">
                 <i class="fa fa-search" aria-hidden="true" title="Search"></i>
               </a>
             </li>
           </ul>
-          <div class="acdh-nav-brand">
-            <p>A Service of Austrian Centre for Digital Humanities</p>
-            <a href="https://www.oeaw.ac.at/acdh/acdh-home/" target="_blank" rel="noopener" aria-label="ACDH">
-              <img src="includes/images/acdh_logo120h.png" alt="ACDH" title="Austrian Center for Digital Humanities">
-            </a>
-          </div>
-          <div class="oeaw-nav-brand">
-            <a href="https://www.oeaw.ac.at" target="_blank" rel="noopener" aria-label="ÖAW">
-              <img src="includes/images/oeaw_logo.png" alt="ÖAW" title="Österreichische Akademie der Wissenschaften">
-            </a>
-          </div>
         </div>
       </div>
     </nav>
 
-
-
-
-
-
+    <div class="search-container">
+        <div class="container">
+            <div class="search-cancel-icon"><i class="material-icons">clear</i></div>
+            <!-- Search Overlay -->
+            <form class="searchform ng-pristine ng-valid" role="search" method="get" action="#">
+                <input type="submit" value="search" class="searchsubmit material-icons">
+                <input type="search" name="ftSearch" class="header_search" value="" placeholder="Search..." autocomplete="off">
+            </form>
+        </div>
+    </div>
 
   <main>
-    <div class="container-fluid">
+    <div class="container-fluid main-map-container">
       <div class="col-md-12 grid-col main-map-col">
 
-        <div class="panel-chrome">
-          <span class="chrome-close">
-            <i class="material-icons">highlight_off</i>
-          </span>
-          <span class="chrome-minimize">
-            <i class="material-icons">remove_circle_outline</i>
-          </span>
-          <span class="chrome-info">
-            <i class="material-icons">info_outline</i>
-          </span>
-        </div>
+
 
         <!-- Explanation of map contents -->
         <div id="dvExplanations" class="dvExplanations"></div>
@@ -113,66 +109,36 @@
 
         <div class="content-panel closed-panel initial-closed-panel grid-col" data-filled="true">
           <div class="panel-chrome vertical">
-            <span class="chrome-close">
+            <span class="chrome-button chrome-close">
               <i class="material-icons">highlight_off</i>
             </span>
-            <span class="chrome-minimize">
-              <i class="material-icons">remove_circle_outline</i>
+            <span class="chrome-button chrome-minimize">
+              <i class="material-icons min-1">first_page</i>
+              <i class="material-icons min-2">last_page</i>
             </span>
-            <span class="chrome-info">
-              <i class="material-icons">info_outline</i>
+            <span class="chrome-title">
             </span>
           </div>
         </div>
 
-        <div class="content-panel open-panel grid-col" id="content-panel-first" data-filled="false">
+        <div class="content-panel open-panel grid-col" data-filled="filled">
           <div class="panel-chrome vertical">
-            <span class="chrome-close">
+            <span class="chrome-button chrome-close">
               <i class="material-icons">highlight_off</i>
             </span>
-            <span class="chrome-minimize">
-              <i class="material-icons">remove_circle_outline</i>
+            <span class="chrome-button chrome-minimize">
+              <i class="material-icons min-1">first_page</i>
+              <i class="material-icons min-2">last_page</i>
             </span>
-            <span class="chrome-info">
-              <i class="material-icons">info_outline</i>
+            <span class="chrome-title">
+              VICAV - Introduction
             </span>
           </div>
           <div class="grid-wrap">
-
-          </div>
-        </div>
-
-        <div class="content-panel open-panel grid-col" data-filled="false">
-          <div class="panel-chrome vertical">
-            <span class="chrome-close">
-              <i class="material-icons">highlight_off</i>
-            </span>
-            <span class="chrome-minimize">
-              <i class="material-icons">remove_circle_outline</i>
-            </span>
-            <span class="chrome-info">
-              <i class="material-icons">info_outline</i>
-            </span>
-          </div>
-          <div class="grid-wrap">
-
-          </div>
-        </div>
-        
-        <div class="content-panel open-panel grid-col" id="content-panel-last" data-filled="false">
-          <div class="panel-chrome vertical">
-            <span class="chrome-close">
-              <i class="material-icons">highlight_off</i>
-            </span>
-            <span class="chrome-minimize">
-              <i class="material-icons">remove_circle_outline</i>
-            </span>
-            <span class="chrome-info">
-              <i class="material-icons">info_outline</i>
-            </span>
-          </div>
-          <div class="grid-wrap">
-
+            <h3 class="panel-heading">VICAV - Vienna Corpus of Arabic Varieties</h3>
+            The Vienna Corpus of Arabic Varieties (VICAV) is set up with two main purposes in mind: to serve as a virtual research platform targeting the particular needs of Arabic dialectology and to serve as a test bed for newly developed text technological methodologies and tools. 
+            </br></br>
+            The project is conducted as a co-operation between the Department of Oriental Studies of the University of Vienna and the ACDH.
           </div>
         </div>
 
@@ -184,8 +150,10 @@
         <div class="footer-sep">
           <i aria-hidden="true" class="fa fa-comment-o"></i> CONTACT <span class="footer-login-button"><a href="https://arche.acdh.oeaw.ac.at/browser/user/login"><i aria-hidden="true" class="fa fa-sign-in"></i></a></span>
         </div>
-        <div class="el-block col-md-3 first">
-          <iframe allowfullscreen height="230" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2033.7249785477802!2d16.37577444283506!3d48.20990150015764!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476d079f8cc04aef%3A0xee66fb1ed728ec45!2sAustrian+Centre+for+Digital+Humanities!5e0!3m2!1sen!2sus!4v1507743890390" width="280"></iframe>
+        <div class="el-block col-md-1 first">
+          <a href="https://www.oeaw.ac.at/acdh/acdh-home/" target="_blank" rel="noopener" aria-label="ACDH">
+            <img src="includes/images/acdh_logo120h.png" alt="ACDH" title="Austrian Center for Digital Humanities">
+          </a>
         </div>
         <div class="el-block col-md-4">
           <div class="csc-textpic-text">
