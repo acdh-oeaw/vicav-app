@@ -271,3 +271,12 @@ input.header_search:focus {
 .imgProfile {
     margin-bottom: 10px;
 }
+
+.dvStats {
+    padding-bottom: 20px;
+}
+
+.dvBiblBlock {
+    margin-top: -20px;
+    margin-bottom: 20px;
+}
