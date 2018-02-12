@@ -121,6 +121,8 @@ function appendToPanel(result, resType, loc) {
     resType = "Bibliography: ";
   } else if (resType = "feat") {
     resType = "Ling. Feature: ";
+  } else if (resType = "search") {
+    resType = "Custom Query";
   }
 
   if (openPans < 3) {
@@ -175,7 +177,12 @@ function createDictPanel() {
     '<p id="' + lastTextPanelID + '" class="dvCont">' + lastTextPanelID + '</p></div>');
     $('#' + sContainerID).draggable({cancel : 'p', stack: ".ui-widget-content"});    
 }
-                          
+
+function createNewQueryPanel() {
+  var searchContainer = "<div class='newQueryForm form-inline mt-2 mt-md-0'><input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in library...' aria-label='Search'><button class='btn btn-outline-success my-2 my-sm-0 newQuerybtn'>Search</button></div>";
+  appendToPanel(searchContainer, "search", "");
+}
+
 function createBiblioPanel() {   
     addID("dvLibrary");
     $("#body").append('<div id="dvLibrary" class="ui-widget-content">' + 
@@ -491,7 +498,13 @@ $(document).ready(
              createDictPanel();
           }
        )
-       
+
+       $("#liBiblNewQuery").mousedown (
+          function(event) {
+             createNewQueryPanel();
+          }
+       )
+
        /* ********************** */
        /* ****  PROFILES ******* */
        $("#liProfiles").mousedown (
@@ -589,6 +602,11 @@ $(document).ready(
 
       $(document).on("click", '.chrome-close', function(){
         $(this).parents(':eq(1)').remove();
+      });
+
+      $(document).on("click", '.newQuerybtn', function(){
+        keyword = $(this).prev().val()
+        execBiblQuery("", "", keyword, "");
       });
 
     }
