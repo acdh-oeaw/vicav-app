@@ -119,6 +119,8 @@ function appendToPanel(result, resType, loc) {
     resType = "Profile: ";
   } else if (resType == "bibl") {
     resType = "Bibliography: ";
+  } else if (resType = "feat") {
+    resType = "Ling. Feature: ";
   }
 
   if (openPans < 3) {
@@ -302,9 +304,12 @@ function getFeature_(caption_, id_) {
         if (result.includes('error type="user authentication"')) {
             alert('Error: authentication did not work');                  
         } else {
+/*
             createNewPanel();
             $("#dvCaption_" + lastTextPanelID).html('Ling. Feature: ' + caption_);
             $("#" + lastTextPanelID).html(result);
+*/
+            appendToPanel(result, "feat", caption_);
         }
      },
      error: function (error) {
@@ -504,6 +509,25 @@ $(document).ready(
             getProfile__('Rabat (Salé)', 'profile_sale_01');
           }
        )
+
+       $("#liProfileTunis").mousedown (
+          function(event) {
+            getProfile__('Tunis', 'profile_tunis_01');
+          }
+       )
+
+       $("#liProfileSousse").mousedown (
+          function(event) {
+            getProfile__('Sousse', 'profile_sousse_01');
+          }
+       )
+
+       $("#liProfileCairo").mousedown (
+          function(event) {
+            getProfile__('Cairo', 'profile_cairo_01');
+          }
+       )
+
        
        /* ********************** */
        /* ****  FEATURES ******* */
