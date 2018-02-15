@@ -94,7 +94,7 @@ function createNewPanel() {
     
 }
 
-function appendToPanel(result, resType, loc) {
+function appendToPanel(result, windowType, windowVar) {
 
 /*
   $('.content-panel').each(function(){
@@ -115,6 +115,7 @@ function appendToPanel(result, resType, loc) {
 
 /*  if (!panelFree) {*/
 
+/*
   if (resType == "profile") {
     resType = "Profile: ";
   } else if (resType == "bibl") {
@@ -124,10 +125,11 @@ function appendToPanel(result, resType, loc) {
   } else if (resType = "search") {
     resType = "Custom Query";
   }
+*/
 
   if (openPans < 3) {
     var resCont = "<div class='grid-wrap'>"+result+"</div>";
-    $(".initial-closed-panel").clone().appendTo( ".panels-wrap" ).append(resCont).removeClass("initial-closed-panel").removeClass("closed-panel").addClass("open-panel").find(".chrome-title").html(resType + loc);
+    $(".initial-closed-panel").clone().appendTo( ".panels-wrap" ).append(resCont).removeClass("initial-closed-panel").removeClass("closed-panel").addClass("open-panel").find(".chrome-title").html(windowType + windowVar);
   } else {
     var firstPan = $(".open-panel").first();
     var firstCont = firstPan.children(".grid-wrap").html();
@@ -144,7 +146,7 @@ function appendToPanel(result, resType, loc) {
     $(".open-panel").eq(1).find(".chrome-title").html(thirdTitl);
     panelFree = $(".open-panel").eq(2);
     $(panelFree).children(".grid-wrap").html(result);
-    $(panelFree).find(".chrome-title").html(resType + loc);
+    $(panelFree).find(".chrome-title").html(windowType + windowVar);
     $(panelFree).attr("data-filled", "filled");
     $(panelFree).addClass("open-panel");
   }
@@ -180,7 +182,7 @@ function createDictPanel() {
 
 function createNewQueryPanel() {
   var searchContainer = "<div class='newQueryForm form-inline mt-2 mt-md-0'><input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in library...' aria-label='Search'><button class='btn btn-outline-success my-2 my-sm-0 newQuerybtn'>Search</button></div>";
-  appendToPanel(searchContainer, "search", "");
+  appendToPanel(searchContainer, "Custom Query", "");
 }
 
 function createBiblioPanel() {   
@@ -225,7 +227,7 @@ function execSampleQuery(id_) {
             alert('Error: authentication did not work');                  
         } else {
           console.log(result); 
-          appendToPanel(result);
+          appendToPanel(result, "Sample Query: ", id_);
             //createNewPanel();
             //$("#dvCaption_" + lastTextPanelID).html('SAMPLE TEXT');
             //$("#" + lastTextPanelID).html(result);
@@ -282,7 +284,7 @@ function execBiblQuery(query_, loc_, keyword_, locType_) {
         } else {            
             //createNewPanel();
           //console.log(result); 
-          appendToPanel(result, "bibl", loc_);
+          appendToPanel(result, "Bibliography: ", loc_);
             //$("#pLibrary").html(result);
             //$("#dvCaption").html('<b>Query: </b>' + query_);
             //$('#dvLibrary').show();
@@ -316,7 +318,7 @@ function getFeature_(caption_, id_) {
             $("#dvCaption_" + lastTextPanelID).html('Ling. Feature: ' + caption_);
             $("#" + lastTextPanelID).html(result);
 */
-            appendToPanel(result, "feat", caption_);
+            appendToPanel(result, "Ling. Feature: ", caption_);
         }
      },
      error: function (error) {
@@ -348,7 +350,7 @@ function getProfile_(query_, caption_) {
         if (result.includes('error type="user authentication"')) {
             alert('Error: authentication did not work');                  
         } else {
-          appendToPanel(result, "profile", caption_);
+          appendToPanel(result, "Profile: ", caption_);
           /*
             createNewPanel();
             $("#dvCaption_" + lastTextPanelID).html('PROFILE: ' + caption_);
@@ -378,7 +380,7 @@ function getProfile__(caption_, id_) {
         if (result.includes('error type="user authentication"')) {
             alert('Error: authentication did not work');                  
         } else {
-          appendToPanel(result, "profile", id_);
+          appendToPanel(result, "Profile: ", id_);
           /*
             createNewPanel();
             $("#dvCaption_" + lastTextPanelID).html('PROFILE: ' + caption_);
@@ -606,7 +608,7 @@ $(document).ready(
 
       $(document).on("click", '.newQuerybtn', function(){
         keyword = $(this).prev().val()
-        execBiblQuery("", "", keyword, "");
+        execBiblQuery(keyword);
       });
 
     }
