@@ -181,7 +181,7 @@ function createDictPanel() {
 }
 
 function createNewQueryPanel() {
-  var searchContainer = "<div class='newQueryForm form-inline mt-2 mt-md-0'><input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in library...' aria-label='Search'><button class='btn btn-outline-success my-2 my-sm-0 newQuerybtn'>Search</button></div>";
+  var searchContainer = "<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'><input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in bibliographies...' aria-label='Search'><button class='btn btn-outline-success my-2 my-sm-0 newQuerybtn'>Search</button></form>";
   appendToPanel(searchContainer, "Custom Query", "");
 }
 
