@@ -160,7 +160,7 @@ body .navbar ul.navbar-nav .navbar-icons a {
   bottom: 0;
   right: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(255,255,255,0.89);
   z-index: 99999;
   text-align: center;
   display: none;
@@ -181,7 +181,7 @@ body .navbar ul.navbar-nav .navbar-icons a {
 
 .header_search {
   font-weight: 400;
-  color: #fff;
+  color: #6c757d;
   font-size: 85px;
   line-height: 105px;
   background: 0 0;
@@ -193,7 +193,7 @@ body .navbar ul.navbar-nav .navbar-icons a {
 .searchsubmit {
   background: 0 0;
   border: none;
-  color: #a9a9a9;
+  color: #6c757d;
   font-size: 80px;
   margin-top: 17px;
   margin-left: -5px;
@@ -216,7 +216,7 @@ body .navbar ul.navbar-nav .navbar-icons a {
 }
 
 .search-cancel-icon i {
-  color: #a9a9a9;
+  color: #6c757d;
   font-size: 55px;
   background: 0;
   -webkit-transition: all 0.3s ease;
@@ -228,7 +228,7 @@ body .navbar ul.navbar-nav .navbar-icons a {
 }
 
 .search-cancel-icon:hover > i, .searchsubmit:hover {
-  color: #fff;
+  color: #88dbdf;
 }
 
 .search-button {
