@@ -262,6 +262,7 @@ function execBiblQuery(query_, loc_, keyword_, locType_) {
   
   if ((keyword_ != '')&&(keyword_ != undefined)) {
     subs = subs + '[dc:subject[text() contains text "' + keyword_ + '" using wildcards using diacritics sensitive]]';
+    customQuery = "biblQuery";
   }  
  
   qs = '/vicav_001/biblio?q=let $art := collection(\'vicav_biblio\')//' +
@@ -284,7 +285,7 @@ function execBiblQuery(query_, loc_, keyword_, locType_) {
         } else {            
             //createNewPanel();
           //console.log(result); 
-          appendToPanel(result, "Bibliography: ", loc_);
+          appendToPanel(result, "Search in Bibliography: ", keyword_);
             //$("#pLibrary").html(result);
             //$("#dvCaption").html('<b>Query: </b>' + query_);
             //$('#dvLibrary').show();
@@ -632,10 +633,12 @@ function refEvent(url_) {
 
 // When clicked on search icon show the overlay
 $('.search-button').on( 'click', function() {
-  $('.search-container').fadeIn(300);
-  $( ".header_search" ).focus();
+  //$('.search-container').fadeIn(300);
+  //$( ".header_search" ).focus();
+  createNewQueryPanel();
 }); 
 
+/*
 // When pressed on ESC icon hide the overlay
 $('body').keydown(function(e) {
     if (e.keyCode == 27) {
@@ -647,3 +650,4 @@ $('body').keydown(function(e) {
 $('.search-cancel-icon').on( 'click', function() {
   $('.search-container').fadeOut(300);
 }); 
+*/
