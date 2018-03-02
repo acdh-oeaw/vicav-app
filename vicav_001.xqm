@@ -5,7 +5,7 @@ declare namespace bib = 'http://purl.org/net/biblio#';
 declare namespace dc = 'http://purl.org/dc/elements/1.1/';
 
 declare 
-    %rest:path("vicav_001/dev/biblio")
+    %rest:path("vicav_001/biblio")
     %rest:query-param("q", "{$q}")
     %rest:query-param("s", "{$style}")
    
@@ -25,7 +25,7 @@ function vicav_001:query-index($q as xs:string*, $style as xs:string) {
 };
 
 declare 
-    %rest:path("vicav_001/dev/profile")
+    %rest:path("vicav_001/profile")
     %rest:query-param("q", "{$q}")
     %rest:query-param("s", "{$style}")
    
@@ -42,7 +42,7 @@ function vicav_001:get_profile($q as xs:string*, $style as xs:string) {
 };
 
 declare 
-    %rest:path("vicav_001/dev/text")
+    %rest:path("vicav_001/text")
     %rest:query-param("q", "{$q}")
     %rest:query-param("s", "{$style}")
    
@@ -64,7 +64,7 @@ function vicav_001:get_text($q as xs:string*, $style as xs:string) {
  : @return rest response and binary file
  :)
 declare
-  %rest:path("vicav_001/dev/{$file=.+}")
+  %rest:path("vicav_001/{$file=.+}")
   %rest:GET
 
 function vicav_001:deliver_file($file as xs:string) as item()+ {

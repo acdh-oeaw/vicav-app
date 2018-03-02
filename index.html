@@ -1,25 +1,26 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <link rel="icon" href="favicon.ico"></link>
 
     <title>VICAV - DEV</title>
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="includes/vendor/leaflet.css"></link>
     <!-- Fontawesome icons -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"></link>
     <!-- Material icons font -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
     <!-- Fundament core CSS -->
-    <link href="includes/fundament/fundament.css?v=00001" rel="stylesheet">
+    <link href="includes/fundament/fundament.css?v=00001" rel="stylesheet"></link>
     <!-- VICAV App CSS -->
-    <link href="includes/css/vicav.css?v=00001" rel="stylesheet">
+    <link href="includes/css/vicav.css?v=00001" rel="stylesheet"></link>
   </head>
+  
   <body>
       <nav class="navbar navbar-expand-md navbar-dark fixed-top">
       <div class="container-fluid">
@@ -36,22 +37,37 @@
               <a class="nav-link" href="https://basex-dev.eos.arz.oeaw.ac.at/vicav_001/dev/index.html">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Project</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown00">
+                <a class="dropdown-item" id="liVicavMission" href="#">Mission</a>
+                <a class="dropdown-item" id="liVicavTypesOfText" href="#">Types of Text/Data</a>
+                <a class="dropdown-item" id="liVicavContributors" href="#">Contributors</a>
+                <a class="dropdown-item" id="liVicavLinguistics" href="#">Linguistics</a>
+                <a class="dropdown-item" id="liVicavDictionaries" href="#">Dictionaries</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bibliographies</a>
               <div class="dropdown-menu" aria-labelledby="dropdown01">
-                <a class="dropdown-item" id="liBibliographyLocations" href="#">Locations</a>
-                <a class="dropdown-item" id="liBibliographyRegions" href="#">Regions</a>
+                <a class="dropdown-item" id="liVicavBibliographyExplanation" href="#">Explanation</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" id="liBibliographyLocations" href="#">Show All Locations</a>
+                <a class="dropdown-item" id="liBibliographyRegions" href="#">Show All Regions</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="liGeoDicts" href="#">Bibliography (Dictionaries)</a>
                 <a class="dropdown-item" id="liGeoTextbooks" href="#">Bibliography (Textbooks)</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liBiblNewQuery" href="#">New Query</a>
+                <a class="dropdown-item" id="liBiblNewQuery" href="#">Query</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" id="liVicavContributionBibliography" href="#">Contributing</a>
               </div>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profiles</a>
               <div class="dropdown-menu" aria-labelledby="dropdown02">
                 <a class="dropdown-item" id="liProfilesExplanation" href="#">Explanation</a>
-                <a class="dropdown-item" id="liProfiles" href="#">All Locations</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" id="liProfiles" href="#">Show All Locations</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="liProfileRabat" href="#">Rabat (Salé)</a>
                 <a class="dropdown-item" id="liProfileTunis" href="#">Tunis</a>
@@ -64,7 +80,7 @@
               <div class="dropdown-menu" aria-labelledby="dropdown03">
                 <a class="dropdown-item" id="liFeaturesExplanation" href="#">Explanation</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liFeatures" href="#">All Locations</a>
+                <a class="dropdown-item" id="liFeatures" href="#">Show All Locations</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="liFeatureCairo" href="#">Cairo</a>
                 <a class="dropdown-item" id="liFeatureDamascus" href="#">Damascus</a>
@@ -75,7 +91,7 @@
               <div class="dropdown-menu" aria-labelledby="dropdown04">
                 <a class="dropdown-item" id="liNotYet" href="#">Explanation</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liNotYet" href="#">All Locations</a>
+                <a class="dropdown-item" id="liNotYet" href="#">Show All Locations</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="liSampleCairo" href="#">Cairo</a>
                 <a class="dropdown-item" id="liSampleDamascus" href="#">Damascus</a>
@@ -90,11 +106,15 @@
               </div>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdown06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tools</a>
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Text Technology</a>
               <div class="dropdown-menu" aria-labelledby="dropdown06">
-                <a class="dropdown-item" id="liDictionaryEncoding" href="#">Dictionary Encoding</a>
-                <a class="dropdown-item" id="liArabicNLP" href="#">Arabic NLP</a>
+                <a class="dropdown-item" id="liVicavDictionaryEncoding" href="#">Dictionary Encoding</a>
+                <a class="dropdown-item" id="liVicavVLE" href="#">VLE</a>
+                <a class="dropdown-item" id="liVicavArabicTools" href="#">Arabic Tools</a>
               </div>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" id="liTryButton" href="https://basex-dev.eos.arz.oeaw.ac.at/vicav_001/dev/index.html">TRY</a>
             </li>
             <li class="navbar-icons">
               <a href="https://github.com/acdh-oeaw/vicav-app" target="_blank" rel="noopener" aria-label="GitHub">
@@ -114,8 +134,8 @@
             <div class="search-cancel-icon"><i class="material-icons">clear</i></div>
             <!-- Search Overlay -->
             <form class="searchform ng-pristine ng-valid" role="search" method="get" action="#">
-                <input type="submit" value="search" class="searchsubmit material-icons">
-                <input type="search" name="ftSearch" class="header_search" value="" placeholder="Search..." autocomplete="off">
+                <input type="submit" value="search" class="searchsubmit material-icons"/>
+                <input type="search" name="ftSearch" class="header_search" value="" placeholder="Search..." autocomplete="off"/>
             </form>
         </div>
     </div>
@@ -139,6 +159,7 @@
 
       </div>
     </div>
+    
     <div class="container-fluid panels-wrap">
 
         <div class="content-panel closed-panel initial-closed-panel grid-col" data-filled="true">
@@ -155,6 +176,7 @@
           </div>
         </div>
 
+        <!--
         <div class="content-panel open-panel grid-col" data-filled="filled">
           <div class="panel-chrome vertical">
             <span class="chrome-button chrome-close">
@@ -164,21 +186,21 @@
               <i class="material-icons min-1">first_page</i>
               <i class="material-icons min-2">last_page</i>
             </span>
-            <span class="chrome-title">
-              VICAV - Introduction
-            </span>
+            <span class="chrome-title">VICAV - Introduction</span>
           </div>
+          
           <div class="grid-wrap">
             <h3 class="panel-heading">VICAV - Vienna Corpus of Arabic Varieties</h3>
             The Vienna Corpus of Arabic Varieties (VICAV) is set up with two main purposes in mind: to serve as a virtual research platform targeting the particular needs of Arabic dialectology and to serve as a test bed for newly developed text technological methodologies and tools. 
-            </br></br>
+            <br/><br/>
             The project is conducted as a co-operation between the Department of Oriental Studies of the University of Vienna and the ACDH.
           </div>
         </div>
-
+        -->
     </div><!-- /container-fluid -->
   </main>
-    <footer class="main-footer">
+  
+  <footer class="main-footer">
     <div class="container-fluid">
       <div class="footer-wrapper">
         <div class="footer-sep">
@@ -186,17 +208,17 @@
         </div>
         <div class="el-block col-md-1 first">
           <a href="https://www.oeaw.ac.at/acdh/acdh-home/" target="_blank" rel="noopener" aria-label="ACDH">
-            <img src="includes/images/acdh_logo120h.png" alt="ACDH" title="Austrian Center for Digital Humanities">
+            <img src="includes/images/acdh_logo120h.png" alt="ACDH" title="Austrian Center for Digital Humanities"/>
           </a>
         </div>
         <div class="el-block col-md-4">
           <div class="csc-textpic-text">
-            <p class="bodytext">ACDH-ÖAW<br>
-            Austrian Centre for Digital Humanities<br>
+            <p class="bodytext">ACDH-ÖAW<br/>
+            Austrian Centre for Digital Humanities<br/>
             Austrian Academy of Sciences</p>
-            <p class="bodytext">Sonnenfelsgasse 19,<br>
+            <p class="bodytext">Sonnenfelsgasse 19,<br/>
             1010 Vienna</p>
-            <p class="bodytext">T: +43 1 51581-2200<br>
+            <p class="bodytext">T: +43 1 51581-2200<br/>
             E: <a href="mailto:acdh@oeaw.ac.at" style="font-weight:600;">acdh(at)oeaw.ac.at</a></p>
           </div>
         </div>
@@ -223,5 +245,7 @@
   <script src="includes/js/geo_data.js"></script>
   <script src="includes/js/tunico5_dict_funcs.js"></script>
   <script src="includes/js/vicav.js"></script>
-</body>
+    
+  <script type="text/javascript">execTextQuery('vicavMission', 'MISSION & OUTLINE', '');</script>
+  </body>
 </html>

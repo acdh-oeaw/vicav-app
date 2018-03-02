@@ -239,6 +239,32 @@ function execSampleQuery(id_) {
   });
 }
 
+function execTextQuery(id_, windowType_, windowVar_) {
+    qs = '/vicav_001/text?q=let $out := collection("vicav_texts")//tei:div[@xml:id="' + id_ + '"] return $out&s=vicavTexts.xslt';
+    //console.log(qs);        
+  
+   
+    $.ajax({
+     url: qs,
+     type: 'GET',
+     dataType: 'html',
+     cache: false,
+     crossDomain: true,
+     contentType: 'application/html; ',
+     success: function (result) {
+        //console.log(result);
+        if (result.includes('error type="user authentication"')) {
+            alert('Error: authentication did not work');                  
+        } else {
+          appendToPanel(result, windowType_, '');
+        }
+     },
+     error: function (error) {
+        alert('Error: ' + error);
+     }                           
+  });
+}
+
 function execBiblQuery(query_, loc_, keyword_, locType_) {
   query01 = query_.replace(/\./g, '\\\.');
   var subs = '';
@@ -420,9 +446,10 @@ function clearMarkerLayers() {
 }
 
 function showTextScreen(id_) {
-    clearMarkerLayers();
-    document.getElementById("dvOnMapText").innerHTML = document.getElementById(id_).innerHTML 
-    $("#dvOnMapText").show();
+    //clearMarkerLayers();
+    //document.getElementById("dvOnMapText").innerHTML = document.getElementById(id_).innerHTML 
+    //$("#dvOnMapText").show();
+    appendToPanel('ABC', 'VICAV - Mission', '');
 }
 
 $(document).ready(
@@ -438,16 +465,23 @@ $(document).ready(
        //**** "stack" makes sure that the last dragged panel gets on top
        //**** "cancel" allows to transfer the input focus to the elements in the list
                           
-       $("#liVicavMission").mousedown ( function(event) { showTextScreen("dvIntroText"); } )
-       $("#liProject").mousedown ( function(event) { showTextScreen("dvProjectText"); } )       
-       $("#liContributors").mousedown ( function(event) { showTextScreen("dvContributorsText"); } )              
-       $("#liDictionaries").mousedown ( function(event) { showTextScreen("dvDictionariesText"); } )
-       $("#liLinguistics").mousedown ( function(event) { showTextScreen("dvLinguisticsText"); } )
-       $("#liTextTechnology").mousedown ( function(event) { showTextScreen("dvTextTechnologyText"); } )       
+       $("#liVicavMission").mousedown ( function(event) { execTextQuery('vicavMission', 'MISSION', ''); } )              
+       $("#liVicavContributors").mousedown ( function(event) { execTextQuery('vicavContributors', 'CONTRIBUTORS', ''); } )              
+       $("#liVicavLinguistics").mousedown ( function(event) { execTextQuery('vicavLinguistics', 'LINGUISTICS', ''); } )              
+       $("#liVicavDictionaries").mousedown ( function(event) { execTextQuery('vicavDictionaries', 'DICTIONARIES', ''); } )
+       $("#liVicavTypesOfText").mousedown ( function(event) { execTextQuery('vicavTypesOfText', 'TYPES OF TEXT/DATA', ''); } )
+       $("#liVicavDictionaryEncoding").mousedown ( function(event) { execTextQuery('vicavDictionaryEncoding', 'DICTIONARY ENCODING', ''); } )       
+       $("#liVicavVLE").mousedown ( function(event) { execTextQuery('vicavVLE', 'DICTIONARY ENCODING', ''); } )       
+       $("#liVicavArabicTools").mousedown ( function(event) { execTextQuery('vicavArabicTools', 'ARABIC TOOLS', ''); } )       
+       
+       
+       $("#liVicavBibliographyExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationBibliography', 'BIBLIOGRAPHY: Explanation', ''); } )
+       $("#liVicavContributionBibliography").mousedown ( function(event) { execTextQuery('vicavContributionBibliography', 'BIBLIOGRAPHY: Contributing', ''); } )
+           
        $("#liProfilesExplanation").mousedown ( function(event) { showTextScreen("dvProfilesExplanation"); } )
        $("#liFeaturesExplanation").mousedown ( function(event) { showTextScreen("dvFeaturesExplanation"); } )
 
-       $("#liNotYet").mousedown ( function(event) { alert('Not yet implemented'); } )
+       $("#liTryButton").mousedown ( function(event) { alert('Not yet implemented'); } )
 
              
        $("#liBibliographyLocations").mousedown (
