@@ -9,6 +9,11 @@ body {
 
 body .navbar ul.navbar-nav .navbar-icons a {
   color: #fff;
+  padding-left: 15px;
+}
+
+body .navbar ul.navbar-nav .navbar-icons a:hover {
+  color: #88dcdf;
 }
 
 .dvBiblio, .dvProfiles, .dvMainMapCont {
@@ -27,6 +32,7 @@ body .navbar ul.navbar-nav .navbar-icons a {
     flex-direction: row;
     width: 100%;
     margin-top: -470px;
+    min-height: 470px;
 }
 
 .closed-panels-wrap {
