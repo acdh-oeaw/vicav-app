@@ -317,10 +317,18 @@ input.header_search:focus {
     margin-top: 20px;
 }
 
+@media (min-width: 1450px) {
+  .info-block {
+    flex: 0 0 16.6666666667%;
+    max-width: 16.6666666667%;
+  }
+}
+
+
 .info-block-wrap i {
     font-size: 60px;
     color: #335175;
-    margin-right: 15px;
+    margin-right: 10px;
     align-items: center;
 }
 

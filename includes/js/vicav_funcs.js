@@ -294,7 +294,11 @@ function execBiblQuery(query_, loc_, keyword_, locType_) {
   qs = '/vicav_001/biblio?q=let $art := collection(\'vicav_biblio\')//' +
           'node()[(name()="bib:Article") or (name()="bib:Book") or (name()="bib:BookSection")]' + subs + ' return $art&s=biblio_01.xslt';
   
-  //console.log(qs);        
+  //console.log(qs);
+  
+  if (loc_ == undefined) {
+    loc_ = query_;
+  }
             
   $.ajax({
      url: qs,
@@ -311,7 +315,7 @@ function execBiblQuery(query_, loc_, keyword_, locType_) {
         } else {            
             //createNewPanel();
           //console.log(result); 
-          appendToPanel(result, "Search in Bibliography: ", keyword_);
+          appendToPanel(result, "Search in Bibliography: ", loc_);
             //$("#pLibrary").html(result);
             //$("#dvCaption").html('<b>Query: </b>' + query_);
             //$('#dvLibrary').show();
