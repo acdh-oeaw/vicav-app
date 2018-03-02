@@ -140,12 +140,15 @@ body .navbar ul.navbar-nav .navbar-icons a:hover {
 }
 
 .chrome-title {
-  writing-mode: vertical-lr;
   color: #ffffff;
-  margin-top: 10px;
-  padding-left: 1px;
   font-size: 15px;
   font-weight: 500;
+}
+
+.vertical .chrome-title {
+  writing-mode: vertical-lr;
+  margin-top: 10px;
+  padding-left: 1px;
 }
 
 .navbar-brand img {
@@ -286,3 +289,78 @@ input.header_search:focus {
     margin-top: -20px;
     margin-bottom: 20px;
 }
+
+.how-to-panel {
+    float: left;
+    border-radius: 3px;
+    box-shadow: 2px 2px 3px 0px #e2e2e2;
+    padding: 0 15px 20px 20px;
+    width: 100%;
+}
+
+.panel-chrome.horizontal {
+    width: 100%;
+}
+
+.panel-wrap {
+    float: left;
+    background: #fff;
+    width: 100%;
+    padding: 10px 5px 20px 5px;
+}
+
+.info-block-wrap {
+    background: #ececec;
+    padding: 20px;
+    border-radius: 6px;
+    display: flex;
+    margin-top: 20px;
+}
+
+.info-block-wrap i {
+    font-size: 60px;
+    color: #335175;
+    margin-right: 15px;
+    align-items: center;
+}
+
+h2.how-to-heading {
+    border-bottom: 1px solid #ececec;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    margin-top: 10px;
+}
+
+.horizontal .chrome-title {
+    vertical-align: top;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

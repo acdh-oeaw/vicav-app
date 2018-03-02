@@ -51,7 +51,7 @@
   </xsl:template>
 
   <xsl:template match="tei:ref">
-    <a>
+    <a target="_blank">
       <xsl:attribute name="href">
         <xsl:value-of select="@target"/>
       </xsl:attribute>
