@@ -13,28 +13,30 @@
   </xsl:template>
 
   <xsl:template match="tei:div">
-    <xsl:apply-templates/>
+    <xsl:choose>
+      <xsl:when test="count(ancestor::tei:div) = 1"><div style="margin-left:20px"><xsl:apply-templates/></div></xsl:when>
+      <xsl:when test="count(ancestor::tei:div) = 2"><div style="margin-left:30px"><xsl:apply-templates/></div></xsl:when>
+      <xsl:when test="count(ancestor::tei:div) = 3"><div style="margin-left:40px"><xsl:apply-templates/></div></xsl:when>
+      <xsl:when test="count(ancestor::tei:div) = 4"><div style="margin-left:50px"><xsl:apply-templates/></div></xsl:when>
+      <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="tei:head">
     <xsl:choose>
       <xsl:when test="count(ancestor::tei:div) = 1">
-        <h2>1: <xsl:apply-templates/></h2>
+        <h2><xsl:apply-templates/></h2>
       </xsl:when>
       <xsl:when test="count(ancestor::tei:div) = 2">
-        <h3>2: <xsl:apply-templates/></h3>
+        <h3><xsl:apply-templates/></h3>
       </xsl:when>
       <xsl:when test="count(ancestor::tei:div) = 3">
-        <h4>3: <xsl:apply-templates/></h4>
+        <h4><xsl:apply-templates/></h4>
       </xsl:when>
       <xsl:when test="count(ancestor::tei:div) = 4">
-        <h5>4: <xsl:apply-templates/></h5>
+        <h5><xsl:apply-templates/></h5>
       </xsl:when>
-      <xsl:otherwise>
-        <h3>
-          <xsl:apply-templates/>
-        </h3>
-      </xsl:otherwise>
+      <xsl:otherwise><h3><xsl:apply-templates/></h3></xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
@@ -45,9 +47,7 @@
   </xsl:template>
 
   <xsl:template match="tei:p">
-    <p>
-      <xsl:apply-templates/>
-    </p>
+    <p><xsl:apply-templates/></p>        
   </xsl:template>
 
   <xsl:template match="tei:ref">

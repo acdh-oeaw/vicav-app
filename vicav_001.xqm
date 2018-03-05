@@ -32,6 +32,7 @@ declare
     %rest:GET 
     
 function vicav_001:get_profile($q as xs:string*, $style as xs:string) {
+    
   let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
   let $query := $ns||$q
   let $results := xquery:eval($query)   

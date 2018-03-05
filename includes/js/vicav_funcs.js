@@ -181,7 +181,16 @@ function createDictPanel() {
 }
 
 function createNewQueryPanel() {
-  var searchContainer = "<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'><input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in bibliographies...' aria-label='Search'><button class='btn btn-outline-success my-2 my-sm-0 newQuerybtn'>Search</button></form>";
+  var searchContainer = "<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
+                        "   <input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in bibliographies ...' aria-label='Search'>" + 
+                        "   <button class='btn btn-outline-success my-2 my-sm-0 newBiblQuerybtn'>Search</button></form>";
+  appendToPanel(searchContainer, "Custom Query", "");
+}
+
+function createNewDictQueryPanel() {
+  var searchContainer = "<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
+                        "<input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in dictionary ...' aria-label='Search'>"+
+                        "<button class='btn btn-outline-success my-2 my-sm-0 newDictQuerybtn'>Search</button></form>";
   appendToPanel(searchContainer, "Custom Query", "");
 }
 
@@ -241,8 +250,7 @@ function execSampleQuery(id_) {
 
 function execTextQuery(id_, windowType_, windowVar_) {
     qs = '/vicav_001/text?q=let $out := collection("vicav_texts")//tei:div[@xml:id="' + id_ + '"] return $out&s=vicavTexts.xslt';
-    //console.log(qs);        
-  
+    //console.log(qs);  
    
     $.ajax({
      url: qs,
@@ -479,12 +487,16 @@ $(document).ready(
        $("#liVicavArabicTools").mousedown ( function(event) { execTextQuery('vicavArabicTools', 'ARABIC TOOLS', ''); } )       
        
        
-       $("#liVicavBibliographyExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationBibliography', 'BIBLIOGRAPHY: Explanation', ''); } )
-       $("#liVicavContributionBibliography").mousedown ( function(event) { execTextQuery('vicavContributionBibliography', 'BIBLIOGRAPHY: Contributing', ''); } )
-           
+       $("#liVicavBibliographyExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationBibliography', 'BIBLIOGRAPHY: Explanation', ''); } )          
        $("#liProfilesExplanation").mousedown ( function(event) { showTextScreen("dvProfilesExplanation"); } )
        $("#liFeaturesExplanation").mousedown ( function(event) { showTextScreen("dvFeaturesExplanation"); } )
 
+       $("#liVicavContributeBibliography").mousedown ( function(event) { execTextQuery('vicavContributionBibliography', 'BIBLIOGRAPHY: Contributing', ''); } )
+       $("#liVicavContributeProfile").mousedown ( function(event) { execTextQuery('vicavContributeProfile', 'PROFILES: Contributing', ''); } )
+       $("#liVicavContributeFeature").mousedown ( function(event) { execTextQuery('vicavContributeFeature', 'FEATURES: Contributing', ''); } )
+       $("#liVicavContributeSampleText").mousedown ( function(event) { execTextQuery('vicavContributeSampleText', 'SAMPLE TEXTS: Contributing', ''); } )
+       $("#liVicavContributeDictionary").mousedown ( function(event) { execTextQuery('vicavContributeDictionary', 'DICTIONARY/GLOSSARY: Contributing', ''); } )
+       
        $("#liTryButton").mousedown ( function(event) { alert('Not yet implemented'); } )
 
              
@@ -525,6 +537,15 @@ $(document).ready(
           }
        )
        
+       $("#liGeoDicts1").mousedown (
+          function(event) {
+            hideAllTabs();
+             
+            clearMarkerLayers();
+            insertGeoDictMarkers();
+          }
+       )
+       
        $("#liGeoTextbooks").mousedown (
           function(event) {
             hideAllTabs();
@@ -534,15 +555,15 @@ $(document).ready(
           }
        )       
        
-       $("#liTunico").mousedown (
-          function(event) {
-             createDictPanel();
-          }
-       )
-
        $("#liBiblNewQuery").mousedown (
           function(event) {
              createNewQueryPanel();
+          }
+       )
+
+       $("#liVicavDictQueryTunis").mousedown (
+          function(event) {
+             createNewDictQueryPanel();
           }
        )
 
@@ -570,17 +591,14 @@ $(document).ready(
           }
        )
 
-       $("#liProfileSousse").mousedown (
-          function(event) {
-            getProfile__('Sousse', 'profile_sousse_01');
-          }
-       )
+       $("#liProfileSousse").mousedown ( function(event) { getProfile__('Sousse', 'profile_sousse_01'); } )
 
-       $("#liProfileCairo").mousedown (
-          function(event) {
-            getProfile__('Cairo', 'profile_cairo_01');
-          }
-       )
+       $("#liProfileCairo").mousedown ( function(event) { getProfile__('Cairo', 'profile_cairo_01'); } )
+       $("#liProfileDamascus").mousedown ( function(event) { getProfile__('Damascus', 'profile_damascus_01'); } )      
+       $("#liProfileBaghdad").mousedown ( function(event) { getProfile__('Baghdad', 'profile_baghdad_01'); } )      
+       $("#liProfileKhabura").mousedown ( function(event) { getProfile__('al-Khabura', 'profile_khabura_01'); })      
+       $("#liProfileDouz").mousedown ( function(event) { getProfile__('Douz', 'profile_douz_01'); })
+       $("#liProfileUrfa").mousedown ( function(event) { getProfile__('Şanlıurfa', 'profile_urfa_01'); })
 
        
        /* ********************** */
@@ -645,11 +663,15 @@ $(document).ready(
         $(this).parents(':eq(1)').remove();
       });
 
-      $(document).on("click", '.newQuerybtn', function(){
+      $(document).on("click", '.newBiblQuerybtn', function(){
         keyword = $(this).prev().val()
         execBiblQuery(keyword);
       });
-
+      
+      $(document).on("click", '.newDictQuerybtn', function(){
+        keyword = $(this).prev().val()
+        execBiblQuery(keyword);
+      });
     }
   );
   

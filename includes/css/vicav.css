@@ -343,32 +343,22 @@ h2.how-to-heading {
     vertical-align: top;
 }
 
+/* profile table */
+.tbProfile {
+}
 
+.tdFeaturesLeft {
+    vertical-align: top;
+    background: #b3aa824d;
+    border: 1px solid #b3aa824d;
+    width: 110px;
+    padding-left: 3px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+.tdFeaturesRight {
+    border: 1px solid #b3aa824d;
+    vertical-align: top;
+    width: 80%;
+    padding-left: 3px;
+}
 

@@ -7,9 +7,7 @@
     <xsl:output method="html"/>
     <xsl:template match="/">
         
-        <div class="h2Profile"><xsl:value-of select="//tei:name[@xml:lang='eng']"/>
-            &#160;(<xsl:value-of select="//tei:div[@type='positioning']/tei:p/tei:geo"/>)
-        </div>
+        <div class="h2Profile"><xsl:value-of select="//tei:name[@xml:lang='eng']"/></div>
         
         <div class="imgProfile">
             <img class="imgProfile">
@@ -18,7 +16,7 @@
             </img>
         </div>    
             
-        <table class="tbProfile">
+        <table class="table table-striped">
             <tr>
                 <td class="tdHead">Official name</td>
                 <td class="tdProfile"><xsl:value-of select="//tei:name[@xml:lang='ara-x-DMG']"/></td>
@@ -33,6 +31,7 @@
             </xsl:if>
         </table>
         <div>Contributed by&#160;<i><xsl:value-of select="//tei:author"/></i> </div>
+        <div>Geo location:&#160;<i><xsl:value-of select="//tei:div[@type='positioning']/tei:p/tei:geo"/></i> </div>
         
         <xsl:apply-templates select="//tei:div"/>        
         
@@ -45,6 +44,10 @@
         <xsl:choose>
             <xsl:when test="@type='typology'">
                 <div class="h3Profile">Typology</div>
+                <xsl:apply-templates/>
+            </xsl:when>
+            <xsl:when test="@type='lingFeatures'">
+                <div class="h3Profile">Linguistic Features</div>
                 <xsl:apply-templates/>
             </xsl:when>
             <xsl:when test="@type='general'">
