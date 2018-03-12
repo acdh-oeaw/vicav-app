@@ -1,5 +1,5 @@
 body {
-    padding-top: 84px;
+    padding-top: 114px;
 }
 
 .navbar {
@@ -343,8 +343,16 @@ h2.how-to-heading {
     vertical-align: top;
 }
 
-/* profile table */
-.tbProfile {
+/* features list */
+.tdFeaturesCom {
+    
+}
+
+.tdFeaturesHead {
+   font-size: large; 
+   border: 1px solid #b3aa824d;
+    background: #b3aa82;
+    color: white;
 }
 
 .tdFeaturesLeft {
@@ -360,5 +368,24 @@ h2.how-to-heading {
     vertical-align: top;
     width: 80%;
     padding-left: 3px;
+}
+
+.sub-nav {
+    background-color: #b3aa82;
+    color: #fff;
+    padding: 3px 20px;
+    box-shadow: 1px 1px 1px #cacaca;
+    margin-bottom: 1px;
+    position: fixed;
+    top: 84px;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+.sub-nav span {
+    margin-right: 30px;
+    font-size: 14px;
+    cursor: pointer;
 }
 

@@ -9,35 +9,62 @@
       </div>
       
       <div>
+         
+         <!-- ********************************************* -->
+         <!-- *** EXPORT: HTML 2 DOC ********************** -->
+         <!-- ********************************************* -->
+         <!--  
+         <table class="tbProfile">
+            <xsl:for-each select="//tei:div[@type = 'feature']">
+               <tr>
+                  <td><h3><xsl:value-of select="tei:head"/></h3></td>
+               </tr>
+               <xsl:for-each select="tei:table/tei:row">
+                  <tr>
+                     <td class="tdFeaturesLeft"><xsl:copy-of select="tei:cell[@rend = 'tdLeft']"/></td>
+                     <td class="tdFeaturesRight"><xsl:copy-of select="tei:cell[@rend = 'tdCom']"/></td>
+                     <td class="tdFeaturesRight"><xsl:apply-templates select="tei:cell[@rend = 'tdRight']/tei:cit/tei:cit[@type = 'translation'][@xml:lang='en']"/></td>
+                     <td class="tdFeaturesRight"><xsl:apply-templates select="tei:cell[@rend = 'tdRight']/tei:cit[@type = 'example']/tei:quote[1]"/></td>
+                     <td class="tdFeaturesRight"><xsl:value-of select="tei:cell[@rend = 'tdRight']/tei:cit/@corresp"/></td>
+                   </tr>
+                </xsl:for-each>
+            </xsl:for-each>
+         </table>
+         -->
          <!-- ********************************************* -->
          <!-- ***  **************************************** -->
          <!-- ********************************************* -->
-         <xsl:for-each select="//tei:div[@type = 'feature']">
-            <div>
-               <h3>
-                  <xsl:value-of select="tei:head"/>
-               </h3>
-               <table class="tbProfile">
-                  <xsl:for-each select="tei:table/tei:row">
 
+            <div>
+               <table class="tbProfile">
+                  <xsl:for-each select="//tei:table/tei:row">
                      <xsl:choose>
+                        <!-- ******************************************************* -->
+                        <!-- HEADER LINE ******************************************* -->
+                        <!-- ******************************************************* -->
+                        <xsl:when test="string-length(tei:cell[@rend = 'tdRight']) = 0">
+                           <tr>
+                              <td colspan="2" class="tdFeaturesHead"><xsl:copy-of select="tei:cell[@rend = 'tdLeft']"/></td>
+                           </tr>
+                        </xsl:when>
+                        
                         <xsl:when test="string-length(tei:cell[@rend = 'tdCom']) &gt; 0">
                            <tr>
                               <td class="tdFeaturesLeft" rowspan="3">
                                  <xsl:copy-of select="tei:cell[@rend = 'tdLeft']"/>
                               </td>
-                              <td class="tdFeaturesRight">
+                              <td class="tdFeaturesCom">
                                  <xsl:apply-templates select="tei:cell[@rend = 'tdCom']"/>
                               </td>
                            </tr>
                            <tr>
                               <td class="tdFeaturesRight">
-                                 <xsl:apply-templates select="tei:cell[@rend = 'tdRight']/tei:cit/tei:cit[@type = 'translation'][@xml:lang='en']"/>
+                                 <xsl:apply-templates select="tei:cell[@rend = 'tdCentre']"/>
                               </td>
                            </tr>
                            <tr>
                               <td class="tdFeaturesRight">
-                                 <xsl:apply-templates select="tei:cell[@rend = 'tdRight']/tei:cit[@type = 'example']/tei:quote[1]"/>
+                                 <xsl:apply-templates select="tei:cell[@rend = 'tdRight']"/>
                               </td>
                            </tr>
                         </xsl:when>
@@ -47,12 +74,12 @@
                                  <xsl:copy-of select="tei:cell[@rend = 'tdLeft']"/>
                               </td>
                               <td class="tdFeaturesRight">
-                                 <xsl:apply-templates select="tei:cell[@rend = 'tdRight']/tei:cit/tei:cit[@type = 'translation'][@xml:lang='en']"/>
+                                 <xsl:apply-templates select="tei:cell[@rend = 'tdCentre']"/>
                               </td>
                            </tr>
                            <tr>
                               <td class="tdFeaturesRight">
-                                 <xsl:apply-templates select="tei:cell[@rend = 'tdRight']/tei:cit[@type = 'example']/tei:quote[1]"/>
+                                 <xsl:apply-templates select="tei:cell[@rend = 'tdRight']"/>
                               </td>
                            </tr>
                         </xsl:otherwise>
@@ -61,8 +88,7 @@
                   </xsl:for-each>
                </table>
             </div>
-         </xsl:for-each>
-
+         -->
       </div>
    </xsl:template>
    
