@@ -677,10 +677,16 @@ $(document).ready(
           if(!$( this ).hasClass('panels-expanded')){
             $('.panels-wrap').addClass('panels-wrap-expanded');
             $(this).addClass('panels-expanded');
+            $(this).html('<i class="fa fa-compress" aria-hidden="true"></i> Minimize Panels Below Map');
           } else {
             $(this).removeClass('panels-expanded');
             $('.panels-wrap').removeClass('panels-wrap-expanded');
+            $(this).html('<i class="fa fa-expand" aria-hidden="true"></i> Expand Panels Over Map');
           }
+       });
+
+       $('#sub-nav-close').on('click', function(){
+          $('.content-panel:not(.initial-closed-panel)').remove();
        });
 
     }

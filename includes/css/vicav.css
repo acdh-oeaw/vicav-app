@@ -387,6 +387,11 @@ h2.how-to-heading {
     margin-right: 30px;
     font-size: 14px;
     cursor: pointer;
+    transition: color 0.1s ease-in;
+}
+
+.sub-nav span:hover {
+    color: #292a2a;
 }
 
 .not-implented {
