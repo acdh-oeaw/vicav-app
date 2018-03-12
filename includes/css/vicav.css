@@ -389,3 +389,16 @@ h2.how-to-heading {
     cursor: pointer;
 }
 
+.not-implented {
+    color: #d6d6d6;
+}
+
+.panels-wrap.panels-wrap-expanded {
+    min-height: 800px;
+    margin-top: -800px;
+}
+
+.panels-wrap.panels-wrap-expanded .content-panel {
+    height: 780px;
+    max-height: 780px;
+}

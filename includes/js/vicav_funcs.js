@@ -672,6 +672,17 @@ $(document).ready(
         keyword = $(this).prev().val()
         execBiblQuery(keyword);
       });
+
+       $('#sub-nav-expand').on('click', function(){
+          if(!$( this ).hasClass('panels-expanded')){
+            $('.panels-wrap').addClass('panels-wrap-expanded');
+            $(this).addClass('panels-expanded');
+          } else {
+            $(this).removeClass('panels-expanded');
+            $('.panels-wrap').removeClass('panels-wrap-expanded');
+          }
+       });
+
     }
   );
   
