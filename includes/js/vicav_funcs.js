@@ -188,9 +188,11 @@ function createNewQueryPanel() {
 }
 
 function createNewDictQueryPanel() {
-  var searchContainer = "<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
-                        "<input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in dictionary ...' aria-label='Search'>"+
-                        "<button class='btn btn-outline-success my-2 my-sm-0 newDictQuerybtn'>Search</button></form>";
+  var searchContainer = 
+    "<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
+    "   <input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in dictionary ...' aria-label='Search'>"+
+    "   <button class='btn btn-outline-success my-2 my-sm-0 newDictQuerybtn'>Search</button>"+
+    "</form>";
   appendToPanel(searchContainer, "Custom Query", "");
 }
 
@@ -592,28 +594,20 @@ $(document).ready(
        /* ********************** */
        /* ****  FEATURES ******* */
        /* ********************** */
-       $("#liFeatures").mousedown (
-          function(event) {
-            hideAllTabs();
-            
-            clearMarkerLayers();
-            insertFeatureMarkers();
-          }
-       )
+       $("#liFeatures").mousedown ( function(event) { hideAllTabs(); clearMarkerLayers(); insertFeatureMarkers(); } )
        
+       $("#liFeatureBaghdad").mousedown ( function(event) { getFeature_('Cairo', 'ling_features_baghdad'); } )      
        $("#liFeatureCairo").mousedown ( function(event) { getFeature_('Cairo', 'ling_features_cairo'); } )      
        $("#liFeatureDamascus").mousedown ( function(event) { getFeature_('Damascus', 'ling_features_damascus'); } )
+       $("#liFeatureDouz").mousedown ( function(event) { getFeature_('Damascus', 'ling_features_douz'); } )
        $("#liFeatureTunis").mousedown ( function(event) { getFeature_('Tunis', 'ling_features_tunis'); } )
+       $("#liFeatureUrfa").mousedown ( function(event) { getFeature_('Urfa', 'ling_features_urfa'); } )
             
        /* ********************** */
        /* ****  SAMPLES ******** */
        /* ********************** */
-       $("#liSampleCairo").mousedown (
-          function(event) { execSampleQuery('cairo_sample_01'); })       
-
-       $("#liSampleBaghdad").mousedown (
-          function(event) { execSampleQuery('baghdad_sample_01'); })       
-       
+       $("#liSampleCairo").mousedown ( function(event) { execSampleQuery('cairo_sample_01'); })       
+       $("#liSampleBaghdad").mousedown ( function(event) { execSampleQuery('baghdad_sample_01'); })              
        $("#liSampleDamascus").mousedown ( function(event) { execSampleQuery('damascus_sample_01');  })       
        
        
