@@ -5,7 +5,8 @@
    <xsl:preserve-space elements="*"/>
    <xsl:template match="/">
       <div>
-         <xsl:apply-templates select="//tei:div[@type='intro']"/>   
+         <h2><xsl:value-of select="//tei:table[1]/tei:row[1]/tei:cell[2]"/></h2>
+         <p>By&#160;&#160;<i><xsl:value-of select="//tei:table[1]/tei:row[2]/tei:cell[2]"/>&#160;(<xsl:value-of select="//tei:table[1]/tei:row[3]/tei:cell[2]"/>)</i></p>
       </div>
       
       <div>
@@ -37,12 +38,12 @@
 
             <div>
                <table class="tbProfile">
-                  <xsl:for-each select="//tei:table/tei:row">
+                  <xsl:for-each select="//tei:table[2]/tei:row">
                      <xsl:choose>
                         <!-- ******************************************************* -->
                         <!-- HEADER LINE ******************************************* -->
                         <!-- ******************************************************* -->
-                        <xsl:when test="string-length(tei:cell[@rend = 'tdRight']) = 0">
+                        <xsl:when test="(string-length(tei:cell[@rend = 'tdRight']) = 0) and (string-length(tei:cell[@rend = 'tdCentre']) = 0)">
                            <tr>
                               <td colspan="2" class="tdFeaturesHead"><xsl:copy-of select="tei:cell[@rend = 'tdLeft']"/></td>
                            </tr>
@@ -58,12 +59,12 @@
                               </td>
                            </tr>
                            <tr>
-                              <td class="tdFeaturesRight">
+                              <td class="tdFeaturesRightSource">
                                  <xsl:apply-templates select="tei:cell[@rend = 'tdCentre']"/>
                               </td>
                            </tr>
                            <tr>
-                              <td class="tdFeaturesRight">
+                              <td class="tdFeaturesRightTarget">
                                  <xsl:apply-templates select="tei:cell[@rend = 'tdRight']"/>
                               </td>
                            </tr>
@@ -73,13 +74,13 @@
                               <td class="tdFeaturesLeft" rowspan="2">
                                  <xsl:copy-of select="tei:cell[@rend = 'tdLeft']"/>
                               </td>
-                              <td class="tdFeaturesRight">
+                              <td class="tdFeaturesRightSource">
                                  <xsl:apply-templates select="tei:cell[@rend = 'tdCentre']"/>
                               </td>
                            </tr>
                            <tr>
-                              <td class="tdFeaturesRight">
-                                 <xsl:apply-templates select="tei:cell[@rend = 'tdRight']"/>
+                              <td class="tdFeaturesRightTarget">
+                                 <xsl:apply-templates select="tei:cell[@rend = 'tdRight']"/>&#160;
                               </td>
                            </tr>
                         </xsl:otherwise>
@@ -87,14 +88,15 @@
 
                   </xsl:for-each>
                </table>
-            </div>
-         -->
+            </div>         
       </div>
    </xsl:template>
    
    <xsl:template match="tei:fs"></xsl:template>
    <xsl:template match="tei:head"><h2><xsl:apply-templates/></h2></xsl:template>
    <xsl:template match="tei:hi[@rend = 'italic']"><i><xsl:apply-templates/></i></xsl:template>
+   <xsl:template match="tei:hi[@rend = 'bold']"><b><xsl:apply-templates/></b></xsl:template>
+   <xsl:template match="tei:hi[@rend = 'red']"><span style="color:red"><xsl:apply-templates/></span></xsl:template>
    <xsl:template match="tei:p"><p><xsl:apply-templates/></p></xsl:template>
    
    <!-- 

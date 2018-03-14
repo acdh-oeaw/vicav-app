@@ -345,7 +345,7 @@ h2.how-to-heading {
 
 /* features list */
 .tdFeaturesCom {
-    
+   background: #e7e2ca4d;
 }
 
 .tdFeaturesHead {
@@ -363,11 +363,21 @@ h2.how-to-heading {
     padding-left: 3px;
 }
 
-.tdFeaturesRight {
+.tdFeaturesRightSource {
     border: 1px solid #b3aa824d;
     vertical-align: top;
     width: 80%;
     padding-left: 3px;
+    color: #7f960a;
+}
+
+.tdFeaturesRightTarget {
+    border: 1px solid #b3aa824d;
+    vertical-align: top;
+    width: 80%;
+    padding-left: 3px;
+    color: #a58103;
+    font-style: italic;
 }
 
 .sub-nav {
@@ -406,4 +416,22 @@ h2.how-to-heading {
 .panels-wrap.panels-wrap-expanded .content-panel {
     height: 780px;
     max-height: 780px;
+}
+
+h3::after {
+    content: '';
+    display: block;
+    width: 100%;
+    border-top: 4px solid #b3aa82;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+h4::after {
+    content: '';
+    display: block;
+    width: 100%;
+    border-top: 1px solid #b3aa82;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }

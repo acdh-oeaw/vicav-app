@@ -473,7 +473,7 @@ $(document).ready(
        
        insertBiblGeoMarkers();
        
-       $('#tunicoDict').draggable({cancel : 'p, input, .dvFieldSelect', stack: ".ui-widget-content"});
+       //$('#tunicoDict').draggable({cancel : 'p, input, .dvFieldSelect', stack: ".ui-widget-content"});
        //**** "stack" makes sure that the last dragged panel gets on top
        //**** "cancel" allows to transfer the input focus to the elements in the list
                           
@@ -487,9 +487,9 @@ $(document).ready(
        $("#liVicavArabicTools").mousedown ( function(event) { execTextQuery('vicavArabicTools', 'ARABIC TOOLS', ''); } )       
        
        
-       $("#liVicavBibliographyExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationBibliography', 'BIBLIOGRAPHY: Explanation', ''); } )          
+       $("#liBibliographyExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationBibliography', 'BIBLIOGRAPHY: Explanation', ''); } )          
        $("#liProfilesExplanation").mousedown ( function(event) { showTextScreen("dvProfilesExplanation"); } )
-       $("#liFeaturesExplanation").mousedown ( function(event) { showTextScreen("dvFeaturesExplanation"); } )
+       $("#liFeaturesExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationFeatures', 'LING. FEATURES: Explanation', ''); } )
 
        $("#liVicavContributeBibliography").mousedown ( function(event) { execTextQuery('vicavContributionBibliography', 'BIBLIOGRAPHY: Contributing', ''); } )
        $("#liVicavContributeProfile").mousedown ( function(event) { execTextQuery('vicavContributeProfile', 'PROFILES: Contributing', ''); } )
@@ -576,28 +576,16 @@ $(document).ready(
             clearMarkerLayers();
             insertProfileMarkers();
           }
-       )
-       
-       $("#liProfileRabat").mousedown (
-          function(event) {
-            /*  getProfile_('34.02.*-6.83', 'Salé');*/
-            getProfile__('Rabat (Salé)', 'profile_sale_01');
-          }
-       )
+       )     
 
-       $("#liProfileTunis").mousedown (
-          function(event) {
-            getProfile__('Tunis', 'profile_tunis_01');
-          }
-       )
-
-       $("#liProfileSousse").mousedown ( function(event) { getProfile__('Sousse', 'profile_sousse_01'); } )
-
+       $("#liProfileBaghdad").mousedown ( function(event) { getProfile__('Baghdad', 'profile_baghdad_01'); } )      
        $("#liProfileCairo").mousedown ( function(event) { getProfile__('Cairo', 'profile_cairo_01'); } )
        $("#liProfileDamascus").mousedown ( function(event) { getProfile__('Damascus', 'profile_damascus_01'); } )      
-       $("#liProfileBaghdad").mousedown ( function(event) { getProfile__('Baghdad', 'profile_baghdad_01'); } )      
-       $("#liProfileKhabura").mousedown ( function(event) { getProfile__('al-Khabura', 'profile_khabura_01'); })      
        $("#liProfileDouz").mousedown ( function(event) { getProfile__('Douz', 'profile_douz_01'); })
+       $("#liProfileKhabura").mousedown ( function(event) { getProfile__('al-Khabura', 'profile_khabura_01'); })      
+       $("#liProfileRabat").mousedown ( function(event) { getProfile__('Rabat (Salé)', 'profile_sale_01'); } )
+       $("#liProfileSousse").mousedown ( function(event) { getProfile__('Sousse', 'profile_sousse_01'); } )
+       $("#liProfileTunis").mousedown ( function(event) { getProfile__('Tunis', 'profile_tunis_01'); } )
        $("#liProfileUrfa").mousedown ( function(event) { getProfile__('Şanlıurfa', 'profile_urfa_01'); })
 
        
@@ -613,17 +601,9 @@ $(document).ready(
           }
        )
        
-       $("#liFeatureCairo").mousedown (
-          function(event) {
-            getFeature_('Cairo', 'ling_features_cairo');            
-          }
-       )
-      
-       $("#liFeatureDamascus").mousedown (
-          function(event) {
-            getFeature_('Damascus', 'ling_features_damascus');            
-          }
-       )
+       $("#liFeatureCairo").mousedown ( function(event) { getFeature_('Cairo', 'ling_features_cairo'); } )      
+       $("#liFeatureDamascus").mousedown ( function(event) { getFeature_('Damascus', 'ling_features_damascus'); } )
+       $("#liFeatureTunis").mousedown ( function(event) { getFeature_('Tunis', 'ling_features_tunis'); } )
             
        /* ********************** */
        /* ****  SAMPLES ******** */
