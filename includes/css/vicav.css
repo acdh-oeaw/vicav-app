@@ -435,3 +435,301 @@ h4::after {
     margin-top: 4px;
     margin-bottom: 4px;
 }
+
+/* ********************************* */
+/* ***DICT QUERY ******************* */
+/* ********************************* */
+.tbInputFrame {
+  border: 0px solid black;
+  padding-left: 1px;
+  padding-right: 1px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  height: 20px;
+  background: white;
+}
+
+.tdInputFrameLeft {
+  border: 0px solid white;
+  border-bottom: 1px solid grey;
+  border-left: 1px solid grey;
+  border-top: 1px solid grey;   
+}
+
+.tdInputFrameRight {
+  border: 0px solid white;
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
+  border-top: 1px solid grey;
+}
+
+ .tdInputFrameMiddle {
+  border: 0px solid white;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+ }
+ 
+.tdFieldSelectorLeft {
+  border-left: 1px solid rgb(236, 217, 175);
+  border-top: 1px solid rgb(236, 217, 175);
+  border-bottom: 1px solid rgb(236, 217, 175);
+  background: rgb(236, 217, 175);  
+} 
+
+.tdFieldSelectorRight {
+  border: 1px solid grey;
+  background: white;  
+} 
+
+.dvCharTable {
+   border: 1px solid grey;
+   margin-top: 3px;
+   background: rgb(255,255,251);
+   left: 65px;
+   max-width: 425px;
+   padding: 2px;
+}
+                         
+.dvInpText {
+   padding-left: 20px;
+   padding-top: 5px;
+  
+}
+               
+.dvWordSelector {
+    left: 165px;
+    width: 200px;    
+}
+
+.dvLetter {
+  padding-left: 2px;  
+  padding-right: 2px;
+  border: 0.5px dotted grey;
+  background: rgb(249, 213, 128);
+  width: 20px;
+  text-align: center;
+  box-shadow: 3px 3px 5px #888888;
+  margin-top: 2px;
+  display: inline-block;
+}
+
+/* *************************************** */
+/* *** Dict Query Results **************** */
+/* *************************************** */
+.aInternal {
+  text-decoration: none;
+  color: inherit;
+}
+
+.dvArguments {
+}
+                          
+.dvDef {
+  padding-left: 3px;
+  padding-right: 3px;
+  font-style: italic;
+  margin-left: 0pt;
+  font-size: 12pt;
+}
+
+.dvExamples {
+  border: 1px solid black;
+  background: rgb(255, 255, 255);
+  font-size: smaller;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin: 3px;
+}
+
+.dvLangSep {
+   border-top: 0.5px dotted rgb(85, 99, 201);
+   margin-right: 20px;
+}
+
+.dvMWUExamples {
+  border: 1px solid black;
+  background: rgb(234,202,255);
+}
+
+.dvRoundLemmaBox {
+    text-align: right;
+    direction: rtl;
+    padding-top: 3px;
+    padding-right: 5px;
+    position: relative;
+    top: 3px;
+    left: -20px;
+    width: 100px;
+    border-radius: 5px;
+    background: white;
+    font-weight: bold;
+    font-size: larger;
+    color: rgb(93, 75, 24);
+    border: 1px solid rgb(93, 75, 24);
+}
+
+.dvRoundLemmaBox_ltr {
+    text-align: left;
+    direction: ltr;
+    padding-top: 3px;
+    padding-left: 5px;
+    padding-bottom: 2px;
+    position: relative;
+    top: 3px;
+    left: -20px;
+    max-width: 420px;
+    border-radius: 5px;
+    background: white;
+    font-weight: bold;
+    font-size: larger;
+    color: rgb(93, 75, 24);
+    border: 1px solid rgb(93, 75, 24);
+    vertical-align: bottom; 
+}
+
+.dvStats {
+    padding-left: 5px;
+    margin-bottom: 3px;
+    position: relative;
+    top: 3px;
+    left: -20px;
+    max-width: 420px;
+}
+
+.dvUsg {
+  font-style: italic;   
+  margin-left: 5pt;
+  font-size: 10pt;
+}
+
+.spBibl {
+  font-style: italic;
+  font-size: small;
+  text-align: left;
+  color: rgb(93, 75, 24);
+}
+
+.spEditors {
+  font-style: italic;
+  color: rgb(93, 75, 24);
+  font-size: small;  
+}
+
+.spEtym {
+  font-style: italic;
+  color: grey;
+  font-size: small;  
+}
+
+.spGramGrp {
+  color: rgb(164, 135, 92);
+  font-style: italic;
+  font-size: smaller;
+  vertical-align: bottom;
+}
+
+.spRoot {
+    font-size: smaller;
+    color: rgb(164, 135, 92);
+    vertical-align: bottom;    
+}
+
+.spTrans {
+    border: 0px;
+    font-style: italic;
+    color: rgb(123, 120, 255);
+}
+
+.spTransDe,.opWordList_de {
+    border: 0px;
+    font-style: italic;
+    color: rgb(144, 113, 183);
+}
+
+.spTransEn,.opWordList_en {
+    border: 0px;
+    font-style: italic;
+    color: rgb(123, 120, 255);
+}
+
+.spTransFr,.opWordList_fr {
+    border: 0px;
+    font-style: italic;
+    color: rgb(173, 82, 117);
+}
+
+.opWordList_ar {
+    border: 0px;
+    font-style: italic;
+    color: rgb(144, 113, 183);
+}
+
+.tbEntry {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.tdHead {
+  color: rgb(188, 61, 61);
+  text-align: right;
+  padding-right: 5px;
+  width: 70px;
+  word-wrap: break-word;
+  border-top: 1px dotted rgb(188, 61, 61);
+}
+
+.tdMain {
+  background: rgb(254, 255, 244);
+  min-width: 300px;
+  word-wrap: break-word;
+}
+
+.tdKWICMain {
+  border: 1px solid black;
+  color: rgb(93, 75, 24);
+  background: rgb(249, 246, 224);   
+}
+
+.tdNoBorderRTL {
+    border: 0px solid black;
+    padding-left: 0px;
+    vertical-align: top;
+    direction: rtl;
+  word-wrap: break-word;
+}
+
+.tdNoBorder {
+    border: 0px solid black;
+    padding-left: 0px;
+    vertical-align: top;
+  word-wrap: break-word;
+}
+
+.tdSense {
+  background: rgb(249, 246, 224);
+  border: 1px solid black;
+  word-wrap: break-word;
+}
+
+
+               .tdUsg {
+                  border: 0px;
+                  font-style: italic;
+                  color: blue;
+  word-wrap: break-word;
+               }
+
+.inpNavButton {
+  background: rgb(200, 200, 200);
+  color: red;
+}
+               
+.inpUser {
+  position: absolute;
+  left: 30px;
+  top: 60px;
+  visibility: visible;
+}
+               

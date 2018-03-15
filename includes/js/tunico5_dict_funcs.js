@@ -77,111 +77,12 @@ function createMatchString(s_) {
   return res;
 }
 
-function prepareQuery(sq_) {   
-   ok = -1;   
-   sq_ = trim(sq_);
-   sq_ = sq_.replace("((", "(");
-   sq_ = sq_.replace("))", ")");
-   sq_ = sq_.replace("[[", "[");
-   sq_ = sq_.replace("]]", "]");
-   iBrackets = countChar(sq_, ')');
-
-   var str_array = sq_.split('&');
-   var res = '/dict_api1/' + sDict + '/' + sXSLT + '/' + sSubDir + '?q=declare namespace tei = \'http://www.tei-c.org/ns/1.0\';' + 'collection(\'' + sDict + '\')//tei:entry';
-      
-   for(var i = 0; i < str_array.length; i++) {
-     s = str_array[i];
-     s = trim(s);
-     n = s.indexOf('=');  
-     
-     if (n > -1) {
-        field = s.substring(0, n);
-        field = field.replace("(", "");
-        field = field.replace(")", "");
-        
-        tail = s.substring(n + 1, s.length);                
-        tail = tail.replace("(", "");
-        tail = tail.replace(")", "");
-        tail = createMatchString(tail)
-        
-        if ((iBrackets == 1)&&(field == 'any')) {
-            res = '/dict_api1/' + sDict + '/' + sXSLT + '/' + sSubDir + '?q=declare namespace tei = \'http://www.tei-c.org/ns/1.0\';' + 
-                           'collection(\'' + sDict + '\')//tei:entry[tei:form/tei:orth[' + tail + ']] |' +
-                           'collection(\'' + sDict + '\')//tei:entry[tei:sense/tei:cit[@type="translation"][@xml:lang="de"]/tei:quote[' + tail + ']] |' +
-                           'collection(\'' + sDict + '\')//tei:entry[tei:sense/tei:cit[@type="translation"][@xml:lang="en"]/tei:quote[' + tail + ']] |' +
-                           'collection(\'' + sDict + '\')//tei:entry[tei:sense/tei:cit[@type="translation"][@xml:lang="fr"]/tei:quote[' + tail + ']] |' +
-                           'collection(\'' + sDict + '\')//tei:entry[tei:etym/tei:mentioned[' + tail + ']] |' +
-                           'collection(\'' + sDict + '\')//tei:entry[tei:etym/tei:lang[' + tail + ']] |' +
-                           'collection(\'' + sDict + '\')//tei:entry[tei:gramGrp/tei:gram[@type="root"][' + tail + ']]';
-            ok = 0;
-        } else {            
-            switch (field) {
-   case 'ar-aeb-x-tunis-vicav': res = res + '[tei:form[@type="lemma"]/tei:orth[' + tail + ']]'; 
-                           ok = 0; break;
-case 'en': res = res  + '[tei:sense/tei:cit[@type="translation"][@xml:lang="en"]/tei:quote[' + tail + ']]';
-ok = 0; break;
-case 'de': res = res  + '[tei:sense/tei:cit[@type="translation"][@xml:lang="de"]/tei:quote[' + tail + ']]';
-ok = 0; break;
-case 'fr': res = res  + '[tei:sense/tei:cit[@type="translation"][@xml:lang="fr"]/tei:quote[' + tail + ']]';
-ok = 0; break;
-
-   case 'etymLang': res = res  + '[tei:etym/tei:lang[' + tail + ']]';
-                           ok = 0; break;                           
-           case 'etymSrc': res = res  + '[tei:etym/tei:mentioned[' + tail + ']]';
-                           ok = 0; break;                           
-              case 'root': res = res + '[tei:gramGrp/tei:gram[@type="root"][' + tail + ']]';
-                           ok = 0; break;
-              case 'subc': res = res + '[tei:gramGrp/tei:gram[@type="subc"][' + tail + ']]';
-                           ok = 0; break;
-               case 'pos': res = res + '[tei:gramGrp/tei:gram[@type="pos"][' + tail + ']]';
-                           ok = 0; break;
-          }
-        }
-     }     
-   }
-   
-   if (ok == 0) {
-      return res  + '';    
-   } else {
-      return ''; 
-   }
-}
-
  function initUser() {
     ramz = $("#pw1").val();
     ramz = $.sha256(ramz).toUpperCase();
     usr = $("#usr1").val();         
  }
          
-function execQuery(query_) {
-    $("#imgPleaseWait").css('visibility', 'visible');
-    initUser();
-    
-    $.ajax({
-       url: query_,
-       type: 'GET',
-       dataType: 'html',
-       cache: false,
-       crossDomain: true,
-       //headers: {'From': usr, 'Pragma': ramz,},
-       headers: {'autho': usr + ':' + ramz},
-       contentType: 'application/html; charset=utf-8',
-       success: function (result) {                 
-          showKWICsTab();
-          if (result.includes('error type="user authentication"')) {
-              alert('Error: authentication did not work');                  
-          } else {
-              $("#dvKWICs").html(result);
-              $("#dvWordSelector").hide();
-              $("#imgPleaseWait").css('visibility', 'hidden');                     
-          }
-       },
-       error: function (error) {
-          alert('Error: ' + error);
-       }                           
-    });
-}
-
 function hideAllTabs() {
   $("#btnQuery").attr('class', 'btnInActive');
   $("#btnProject").attr('class', 'btnInActive');
@@ -214,33 +115,6 @@ function insert(str, index, value) {
    return str.substr(0, index) + value + str.substr(index);
 }
          
-function fillWordSelector(q_) {
-    $("#imgPleaseWait").css('visibility', 'visible');
-
-    if (q_.length == 0) { q_ = '*'; }
-    sInd = $("#slFieldSelect").val();
-    sUrl1 = '/dict_index/' + sDictInd + '/' + sInd + '/' + q_;
-    $.ajax({
-    url: sUrl1,
-            type: 'GET',
-            dataType: 'html',
-               contentType: 'application/html; charset=utf-8',
-               success: function(result) {
-                  if (result.indexOf('option') !== -1) {
-                     $("#dvWordSelector").show();
-                     $("#slWordSelector").html(result);
-                  } else {
-                     $("#dvWordSelector").hide();
-                  }
-                  $("#imgPleaseWait").css('visibility', 'hidden');
-               },
-               error: function (error) {
-                  alert('Error: ' + error);
-               }                           
-    });
-
-}
-
 function showKWICsTab() {
     hideAllTabs();
     $("#dvInpText").show();
