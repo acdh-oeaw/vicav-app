@@ -786,7 +786,17 @@ $(document).ready(
              insertBiblGeoMarkers();
           }
        );
-             
+
+       $("#sub-nav-biblLoc").mousedown (
+          function(event) {
+             hideAllTabs();
+             clearMarkerLayers();
+             insertBiblGeoMarkers();
+             $(".sub-nav-map-items .active").removeClass("active");
+             $(this).addClass("active");
+          }
+       );
+
        $("#liBibliographyRegions").mousedown (
           function(event) {
              hideAllTabs();
@@ -797,8 +807,20 @@ $(document).ready(
             //$('.nav-collapse').collapse('hide');
           }
        );
-       
-       
+
+       $("#sub-nav-biblReg").mousedown (
+          function(event) {
+             hideAllTabs();
+             
+             clearMarkerLayers();
+             insertBiblRegMarkers();
+            //$('.navbar-toggle').click();
+            //$('.nav-collapse').collapse('hide');
+             $(".sub-nav-map-items .active").removeClass("active");
+             $(this).addClass("active");
+          }
+       );
+
        /* This is needed to collapse the menu after click in small screens */
        $('.navbar-nav li a').on('click', function(){
           if(!$( this ).hasClass('dropdown-toggle')){
@@ -814,7 +836,18 @@ $(document).ready(
             insertGeoDictMarkers();
           }
        );
-       
+
+       $("#sub-nav-allDict").mousedown (
+          function(event) {
+            hideAllTabs();
+             
+            clearMarkerLayers();
+            insertGeoDictMarkers();
+            $(".sub-nav-map-items .active").removeClass("active");
+            $(this).addClass("active");
+          }
+       );
+
        $("#liGeoDicts1").mousedown (
           function(event) {
             hideAllTabs();
@@ -831,8 +864,19 @@ $(document).ready(
             clearMarkerLayers();
             insertGeoTextbookMarkers();
           }
-       );       
-       
+       );
+
+       $("#sub-nav-allText").mousedown (
+          function(event) {
+            hideAllTabs();
+             
+            clearMarkerLayers();
+            insertGeoTextbookMarkers();
+            $(".sub-nav-map-items .active").removeClass("active");
+            $(this).addClass("active");
+          }
+       );
+
        $("#liBiblNewQuery").mousedown ( function(event) { createNewQueryPanel(); } );
 
        /* ************************** */
@@ -855,6 +899,17 @@ $(document).ready(
           }
        );     
 
+       $("#sub-nav-allProf").mousedown (
+          function(event) {
+             hideAllTabs();
+            
+            clearMarkerLayers();
+            insertProfileMarkers();
+            $(".sub-nav-map-items .active").removeClass("active");
+            $(this).addClass("active");
+          }
+       );
+
        $("#liProfileBaghdad").mousedown ( function(event) { getProfile__('Baghdad', 'profile_baghdad_01'); } );      
        $("#liProfileCairo").mousedown ( function(event) { getProfile__('Cairo', 'profile_cairo_01'); } );
        $("#liProfileDamascus").mousedown ( function(event) { getProfile__('Damascus', 'profile_damascus_01'); } );      
@@ -870,7 +925,15 @@ $(document).ready(
        /* ****  FEATURES ******* */
        /* ********************** */
        $("#liFeatures").mousedown ( function(event) { hideAllTabs(); clearMarkerLayers(); insertFeatureMarkers(); } );
-       
+
+       $("#sub-nav-allFeat").mousedown ( function(event) { 
+         hideAllTabs(); 
+         clearMarkerLayers(); 
+         insertFeatureMarkers(); 
+         $(".sub-nav-map-items .active").removeClass("active");
+         $(this).addClass("active"); 
+        } );
+
        $("#liFeatureBaghdad").mousedown ( function(event) { getFeature_('Cairo', 'ling_features_baghdad'); } );      
        $("#liFeatureCairo").mousedown ( function(event) { getFeature_('Cairo', 'ling_features_cairo'); } );      
        $("#liFeatureDamascus").mousedown ( function(event) { getFeature_('Damascus', 'ling_features_damascus'); } );

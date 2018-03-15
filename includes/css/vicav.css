@@ -401,7 +401,7 @@ h2.how-to-heading {
 }
 
 .sub-nav span:hover {
-    color: #292a2a;
+    color: #335276;
 }
 
 .not-implented {
@@ -732,4 +732,15 @@ h4::after {
   top: 60px;
   visibility: visible;
 }
-               
+
+.sub-nav .container-fluid {
+  display: flex;
+}
+
+.sub-nav-actions {
+  margin-left: auto;
+}
+
+.sub-nav span.active {
+  color: #335276;
+}
