@@ -175,9 +175,9 @@ function appendToPanel(result, windowType, windowVar) {
     $(".open-panel").eq(1).children(".grid-wrap").html(thirdCont);
     $(".open-panel").eq(1).find(".chrome-title").html(thirdTitl);
     panelFree = $(".open-panel").eq(2);
-    $(panelFree).children(".grid-wrap").html(result);
+    $(panelFree).children(".grid-wrap").html(result).scrollTop(0);
     $(panelFree).find(".chrome-title").html(windowType + windowVar);
-    $(panelFree).attr("data-filled", "filled");
+    $(panelFree).attr("data-filled", "true");
     $(panelFree).addClass("open-panel");
   }
     
