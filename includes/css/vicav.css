@@ -281,10 +281,6 @@ input.header_search:focus {
     margin-bottom: 10px;
 }
 
-.dvStats {
-    padding-bottom: 20px;
-}
-
 .dvBiblBlock {
     margin-top: -20px;
     margin-bottom: 20px;
@@ -492,8 +488,7 @@ h4::after {
                          
 .dvInpText {
    padding-left: 20px;
-   padding-top: 5px;
-  
+   padding-top: 5px; 
 }
                
 .dvWordSelector {
@@ -511,6 +506,7 @@ h4::after {
   box-shadow: 3px 3px 5px #888888;
   margin-top: 2px;
   display: inline-block;
+  cursor: auto;
 }
 
 /* *************************************** */
@@ -521,9 +517,6 @@ h4::after {
   color: inherit;
 }
 
-.dvArguments {
-}
-                          
 .dvDef {
   padding-left: 3px;
   padding-right: 3px;
@@ -588,11 +581,6 @@ h4::after {
 }
 
 .dvStats {
-    padding-left: 5px;
-    margin-bottom: 3px;
-    position: relative;
-    top: 3px;
-    left: -20px;
     max-width: 420px;
 }
 
@@ -686,10 +674,11 @@ h4::after {
   word-wrap: break-word;
 }
 
-.tdKWICMain {
+.dvDictResults {
   border: 1px solid black;
   color: rgb(93, 75, 24);
-  background: rgb(249, 246, 224);   
+  background: rgb(249, 246, 224);
+  left: 65px;
 }
 
 .tdNoBorderRTL {

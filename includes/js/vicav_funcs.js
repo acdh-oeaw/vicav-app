@@ -4,34 +4,35 @@ var usr = "";
 var containerCount = 0;
 var lastTextPanelID = '';
 var panelIDs = [];
+var inpSel = 0;
 
 var charTableDamascus =
-    "   <div class='dvCharTable' id='dvCharTable'>"+
-    "   <div id='ct_a' class='dvLetter'>’</div>"+
-    "   <div id='ct_a1' class='dvLetter'>ʔ</div>"+                 
-    "   <div id='ct_a2' class='dvLetter'>ā</div>"+         
-    "   <div id='ct_b' class='dvLetter'>ḅ</div>"+         
-    "   <div id='ct_c' class='dvLetter'>ʕ</div>"+
-    "   <div id='ct_d' class='dvLetter'>ḏ</div>"+
-    "   <div id='ct_d1' class='dvLetter'>̣ḏ</div>"+
-    "   <div id='ct_e' class='dvLetter'>ē</div>"+
-    "   <div id='ct_gh' class='dvLetter'>ġ</div>"+
-    "   <div id='ct_gj' class='dvLetter'>ǧ</div>"+
-    "   <div id='ct_h' class='dvLetter'>ḥ</div>"+
-    "   <div id='ct_i' class='dvLetter'>ī</div>"+
-    "   <div id='ct_i1' class='dvLetter'>ᴵ</div>"+
-    "   <div id='ct_l' class='dvLetter'>ḷ</div>"+
-    "   <div id='ct_m' class='dvLetter'>ṃ</div>"+
-    "   <div id='ct_o' class='dvLetter'>ō</div>"+
-    "   <div id='ct_r' class='dvLetter'>ṛ</div>"+
-    "   <div id='ct_s' class='dvLetter'>ṣ</div>"+
-    "   <div id='ct_s1' class='dvLetter'>s̠</div>"+
-    "   <div id='ct_s2' class='dvLetter'>š</div>"+
-    "   <div id='ct_t' class='dvLetter'>ṭ</div>"+
-    "   <div id='ct_t1' class='dvLetter'>ṯ</div>"+
-    "   <div id='ct_u' class='dvLetter'>ū</div>"+
-    "   <div id='ct_z' class='dvLetter'>ẓ</div>"+
-    "   <div id='ct_z1' class='dvLetter'>ž</div>"+  
+    "   <div class='dvCharTable' id='dvCharTable_tunis'>"+
+    "   <div id='ct_tunis' class='dvLetter'>’</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ʔ</div>"+                 
+    "   <div id='ct_tunis' class='dvLetter'>ā</div>"+         
+    "   <div id='ct_tunis' class='dvLetter'>ḅ</div>"+         
+    "   <div id='ct_tunis' class='dvLetter'>ʕ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ḏ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>̣ḏ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ē</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ġ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ǧ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ḥ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ī</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ᴵ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ḷ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ṃ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ō</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ṛ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ṣ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>s̠</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>š</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ṭ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ṯ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ū</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ẓ</div>"+
+    "   <div id='ct_tunis' class='dvLetter'>ž</div>"+  
     "   </div>";
 
 
@@ -219,7 +220,6 @@ function createNewQueryPanel() {
 
 function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
   var searchContainer =
-    ""+
     
     //"<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
     "   <div id='dv_" + dict_ + "'>" + dictName_ + "</div>"+
@@ -228,7 +228,7 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
     "      <tr>"+
     "        <td class='tdInputFrameLeft'><img class='imgQuery' src='looking_glass_16.png' alt='Query' /></td>"+
     "        <td class='tdInputFrameMiddle'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='" + path_ + "' dict='" + dict_ + "' value='' placeholder='Search in dictionary ...' class='inpDictQuery" + idSuffix_ + "'/></td>"+
-    "        <td class='tdInputFrameMiddle'><img class='imgPleaseWait' id='imgPleaseWait' src='balls_in_circle.gif' alt='Query' /></td>"+
+    "        <td class='tdInputFrameMiddle'><img class='imgPleaseWait' id='imgPleaseWait" + idSuffix_ + "' src='balls_in_circle.gif' alt='Query' /></td>"+
     "        <td class='tdInputFrameRight'><input type='submit' id='btnX' class='btnX' value='✕' /></td>"+
     "        <td class='tdInputFrameRight'><button class='btn btn-outline-success my-2 my-sm-0 newDictQuerybtn'>Search</button></td>"+
     "      </tr>"+
@@ -256,14 +256,17 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
        
     charTableDamascus + 
          
-    "   <div id='dvWordSelector' class='dvWordSelector'>"+
+    "   <div id='dvWordSelector'" + idSuffix_ + " class='dvWordSelector'>"+
     "      <select size='10' id='slWordSelector" + idSuffix_ + "'>"+
     "         <option></option>"+
     "       </select>"+
-    "   </div>";
+    "   </div>"+
+    "   <div id='dvDictResults" + idSuffix_ + "' class='dvDictResults'></div>"+
+    "";
+    
     //"</form>";
      
-  appendToPanel(searchContainer, "DICTIONARY", "");
+   appendToPanel(searchContainer, "DICTIONARY", "");
 }
 
 function createBiblioPanel() {   
@@ -551,12 +554,13 @@ function prepareDictQuery(sq_, dict_, xslt_, subdir_) {
      
      if (n > -1) {
         field = s.substring(0, n);
-        field = field.replace("(", "");
-        field = field.replace(")", "");
+        field = field.replace(/\(/g, "");
+        field = field.replace(/\)/g, "");
         
         tail = s.substring(n + 1, s.length);                
-        tail = tail.replace("(", "");
-        tail = tail.replace(")", "");
+        tail = tail.replace(/\"/g, "");
+        tail = tail.replace(/\(/g, "");
+        tail = tail.replace(/\)/g, "");
         tail = createMatchString(tail)
         
         if ((iBrackets == 1)&&(field == 'any')) {
@@ -571,8 +575,10 @@ function prepareDictQuery(sq_, dict_, xslt_, subdir_) {
             ok = 0;
         } else {            
             switch (field) {
-                case 'ar-aeb-x-tunis-vicav': res = res + '[tei:form[@type="lemma"]/tei:orth[' + tail + ']]'; 
+                case 'lem': res = res + '[tei:form[@type="lemma"]/tei:orth[' + tail + ']]'; 
                                              ok = 0; break;
+                case 'infl': res = res + '[tei:form[@type="inflected"]/tei:orth[' + tail + ']]'; 
+                           ok = 0; break;
                 case 'en': res = res  + '[tei:sense/tei:cit[@type="translation"][@xml:lang="en"]/tei:quote[' + tail + ']]';
                            ok = 0; break;
                 case 'de': res = res  + '[tei:sense/tei:cit[@type="translation"][@xml:lang="de"]/tei:quote[' + tail + ']]';
@@ -610,8 +616,8 @@ function initDictUser() {
    usr = 'webuser';         
 }
  
-function execDictQuery(query_) {
-    $("#imgPleaseWait").css('visibility', 'visible');
+function execDictQuery(query_, idSuffix_) {
+    $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
     initDictUser();
     
     $.ajax({
@@ -628,10 +634,13 @@ function execDictQuery(query_) {
           if (result.includes('error type="user authentication"')) {
               alert('Error: authentication did not work');                  
           } else {
-              appendToPanel(result, 'TYPE', '');  
-              //$("#dvKWICs").html(result);
-              //$("#dvWordSelector").hide();
-              //$("#imgPleaseWait").css('visibility', 'hidden');                     
+              //appendToPanel(result, 'TYPE', '');  
+              //console.log('suffix_: ' + suffix_);
+              //console.log('res: ' + result);
+              $("#dvWordSelector" + idSuffix_).hide();
+              $("#slWordSelector" + idSuffix_).hide();
+              $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');                     
+              $("#dvDictResults" + idSuffix_).html(result);
           }
        },
        error: function (error) {
@@ -641,9 +650,11 @@ function execDictQuery(query_) {
 }
 
 function fillWordSelector(q_, dictInd_, idSuffix_) {
-    console.log('fillWordSelector: ' + dictInd_);
+    //console.log('fillWordSelector: ' + dictInd_);
+    //console.log('q_: ' + q_);
+    //console.log('idSuffix_: ' + idSuffix_);
     
-    $("#imgPleaseWait").css('visibility', 'visible');
+    $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
 
     if (q_.length == 0) { q_ = '*'; }
     sInd = $("#slFieldSelect" + idSuffix_).val();
@@ -658,9 +669,10 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
                      $("#dvWordSelector" + idSuffix_).show();
                      $("#slWordSelector" + idSuffix_).html(result);
                   } else {
+                       
                      $("#dvWordSelector" + idSuffix_).hide();
                   }
-                  $("#imgPleaseWait").css('visibility', 'hidden');
+                  $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
                },
                error: function (error) {
                   alert('Error: ' + error);
@@ -683,14 +695,19 @@ function showTextScreen(id_) {
 }
 
 function dealWithDictKeyInput(event_, idSuffix_) {
+   console.log('suf: ' + idSuffix_);
    collName = $("#inpDictQuery" + idSuffix_).attr('dict');
    XSLTName = $("#inpDictQuery" + idSuffix_).attr('xslt'); 
-   pathName = $("#inpDictQuery" + idSuffix_).attr('path'); 
+   pathName = $("#inpDictQuery" + idSuffix_).attr('path');
+   inpSel = document.getElementById('inpDictQuery' + idSuffix_).selectionStart;
              
    if ( event_.which == 13 ) {
-      $("#dvCharTable").hide();
-      $("#imgPleaseWait").css('visibility', 'visible');
-      //$("#dvKWICs").html('');
+      /* *************************************/
+      /* ********** Launch Query *************/
+      /* *************************************/
+      $("#dvCharTable" + idSuffix_).hide();
+      $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
+      $("#dvDictResults" + idSuffix_).html('');
              
       var sq = $("#inpDictQuery" + idSuffix_).val();
       var field = $("#slFieldSelect" + idSuffix_).val();
@@ -706,8 +723,8 @@ function dealWithDictKeyInput(event_, idSuffix_) {
                  
       console.log("SQuery: " + sQuery);
       if (sQuery.length > 0) {                           
-        execDictQuery(sQuery);    
-        console.log('dvStats: ' + $("#dvStats").text());
+        execDictQuery(sQuery, idSuffix_);    
+        //console.log('dvStats: ' + $("#dvStats").text());
       } else {
         alert('Could not create query.');
       }                                        
@@ -717,7 +734,7 @@ function dealWithDictKeyInput(event_, idSuffix_) {
        $("#slWordSelector" + idSuffix_).focus();
        $("#slWordSelector" + idSuffix_ + " option:first").attr('selected','selected');                                                      
     } else {
-       $("#dvCharTable").show();
+       $("#dvCharTable" + idSuffix_).show();
        var sq = $("#inpDictQuery" + idSuffix_).val();
 
        if (sq.indexOf('=') > -1) {
@@ -740,6 +757,8 @@ function dealWithDictKeyInput(event_, idSuffix_) {
 $(document).ready(
     
    function() {
+   
+   
        hideAllTabs();
        $("#dvMainMapCont").show();
        createBiblioPanel();
@@ -879,11 +898,20 @@ $(document).ready(
 
        $("#liBiblNewQuery").mousedown ( function(event) { createNewQueryPanel(); } );
 
-       /* ************************** */
-       /* ****  DICTIONARIES ******* */
-       /* ************************** */
-       $("#liVicavDictQueryTunis").mousedown ( function(event) { createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary', '_tunis', 'tunis_001.xslt', 'tunico'); } );
-       $("#liVicavDictQueryDamascus").mousedown ( function(event) { createNewDictQueryPanel('dc_acp_eng_003', 'Damascus Dictionary', '_damascus', 'damascus_001.xslt', 'tunico'); } );
+       /* ********************************** */
+       /* ****  DICTIONARY FRONTPAGE ******* */
+       /* ********************************** */
+       $("#liVicavDict_Tunis").mousedown ( function(event) { execTextQuery('dictFrontPage_Tunis', 'ARABIC TOOLS', ''); } );       
+       $("#liVicavDict_Damascus").mousedown ( function(event) { execTextQuery('dictFrontPage_Damascus', 'ARABIC TOOLS', ''); } );       
+       $("#liVicavDict_Cairo").mousedown ( function(event) { execTextQuery('dictFrontPage_Cairo', 'ARABIC TOOLS', ''); } );       
+       $("#liVicavDict_MSA").mousedown ( function(event) { execTextQuery('dictFrontPage_MSA', 'ARABIC TOOLS', ''); } );       
+       
+       /* ******************************** */
+       /* ****  DICTIONARY QUERIES ******* */
+       /* ******************************** */
+       $(document).on("click", '#liVicavDictQuery_Tunis', function(){ createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary', '_tunis', 'tunis_001.xslt', 'tunico'); });
+       $("#liVicavDictQueryDamascus").mousedown ( function(event) { createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary', '_damascus', 'damascus_001.xslt', 'tunico'); } );
+       
        $("#liVicavDictQueryCairo").mousedown ( function(event) { alert('To be implemented'); } );
        $("#liVicavDictQueryMSA").mousedown ( function(event) { alert('To be implemented'); } );
 
@@ -974,10 +1002,10 @@ $(document).ready(
        $(document).on("keyup", '[id^=slWordSelect]',
           function(event) {
              suf = getSufixID($(this).attr('id'));
-             console.log('suf: ' + suf);
+             //console.log('suf: ' + suf);
 
-             inpID = 'inpDictQuery_' + suf;
-             $('#' + inpID).val($("#slWordSelector_" + suf + " option:selected").text());
+             inpID = '#inpDictQuery_' + suf;
+             $(inpID).val($("#slWordSelector_" + suf + " option:selected").text());
           }
        );
                
@@ -1001,13 +1029,56 @@ $(document).ready(
             }
        });
 
-               
        $(document).on("click", '[id^=slWordSelect]', function(){
           alert($(this).attr('id'));
           //$('#txt1').val($("#slWordSelector option:selected").text());
           }
        );
+
        /* *******************************************************/
+       /* ********* CHAR-TABLE **********************************/
+       /* *******************************************************/
+               
+       $(document).on("mousedown", '[id^=ct]',
+       //$("[id^=ct]").mousedown (
+          function(event) {
+             suf = getSufixID($(this).attr('id'));
+             inpID = 'inpDictQuery_' + suf;
+             //console.log(inpID);
+             var s1 = $('#' + inpID).val();
+             var s2 = $(this).text();
+             //console.log(s2);             
+             var s = insert(s1, inpSel, s2);
+             $('#' + inpID).val(s);
+             inpSel += 1;
+             document.getElementById(inpID).selectionStart = inpSel + 1;
+             var sq = $("#" + inpID).val();
+             //console.log('s3: ' + s3);             
+             collName = $("#" + inpID).attr('dict');
+             fillWordSelector(sq, collName + '__ind', '_' + suf);
+          }
+        );
+               
+        $(document).on("mouseover", '[id^=ct]',
+        //$("[id^=ct]").mouseover (
+           function(event) {
+             //console.log('mouseover');
+             $(this).css( 'cursor', 'pointer' );
+           }
+        );
+           
+        //$("[id^=ct]").mouseout (
+        $(document).on("mouseout", '[id^=ct]',
+            function(event) {
+               //console.log('mouseout');
+               $(this).css( 'cursor', 'auto' );
+            }
+        );
+               
+
+      /* *******************************************************/
+       
+       
                
       $(document).on("click", '.chrome-close', function(){
         $(this).parents(':eq(1)').remove();
@@ -1078,3 +1149,6 @@ $('.search-cancel-icon').on( 'click', function() {
   $('.search-container').fadeOut(300);
 }); 
 */
+
+
+

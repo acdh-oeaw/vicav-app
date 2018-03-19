@@ -51,12 +51,22 @@
   </xsl:template>
 
   <xsl:template match="tei:ref">
-    <a target="_blank">
-      <xsl:attribute name="href">
-        <xsl:value-of select="@target"/>
-      </xsl:attribute>
-      <xsl:apply-templates/>
-    </a>
+    <xsl:choose>
+      <xsl:when test="@xml:id">
+        <a href="#">      
+          <xsl:attribute name="id"><xsl:value-of select="@xml:id"/></xsl:attribute>
+          <xsl:apply-templates/>
+        </a>        
+      </xsl:when>
+      <xsl:otherwise>
+        <a target="_blank">      
+          <xsl:attribute name="href">
+            <xsl:value-of select="@target"/>
+          </xsl:attribute>
+          <xsl:apply-templates/>
+        </a>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="tei:row">
