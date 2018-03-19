@@ -703,11 +703,8 @@ h4::after {
 }
 
 
-               .tdUsg {
-                  border: 0px;
-                  font-style: italic;
-                  color: blue;
-  word-wrap: break-word;
+.tdExpl {border: 1px solid black;
+background: rgb(249, 246, 224);
                }
 
 .inpNavButton {

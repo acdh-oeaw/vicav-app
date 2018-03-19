@@ -7,7 +7,7 @@
   </xsl:template>
 
   <xsl:template match="tei:cell">
-    <td>
+    <td class="tdExpl">
       <xsl:apply-templates/>
     </td>
   </xsl:template>
@@ -52,17 +52,21 @@
 
   <xsl:template match="tei:ref">
     <xsl:choose>
-      <xsl:when test="@xml:id">
+      <xsl:when test="@type='dictQuery'">
         <a href="#">      
+          <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
+          <xsl:apply-templates/>
+        </a>
+      </xsl:when>
+      <xsl:when test="@xml:id">
+          <a href="#">      
           <xsl:attribute name="id"><xsl:value-of select="@xml:id"/></xsl:attribute>
           <xsl:apply-templates/>
-        </a>        
-      </xsl:when>
+        </a>
+      </xsl:when>        
       <xsl:otherwise>
         <a target="_blank">      
-          <xsl:attribute name="href">
-            <xsl:value-of select="@target"/>
-          </xsl:attribute>
+          <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>
       </xsl:otherwise>

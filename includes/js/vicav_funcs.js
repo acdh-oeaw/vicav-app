@@ -6,7 +6,9 @@ var lastTextPanelID = '';
 var panelIDs = [];
 var inpSel = 0;
 
-var charTableDamascus =
+/* 
+ 
+ var charTableDamascus =
     "   <div class='dvCharTable' id='dvCharTable_tunis'>"+
     "   <div id='ct_tunis' class='dvLetter'>’</div>"+
     "   <div id='ct_tunis' class='dvLetter'>ʔ</div>"+                 
@@ -35,6 +37,16 @@ var charTableDamascus =
     "   <div id='ct_tunis' class='dvLetter'>ž</div>"+  
     "   </div>";
 
+*/
+
+function createCharTable(idSuffix_, chars_) {
+   sarr = chars_.split(',');
+   s = '';
+   for (var i = 0, len = sarr.length; i < len; i++) {
+     s = s + "   <div id='ct" + idSuffix_ + "' class='dvLetter'>" + sarr[i] + "</div>";     
+   }
+   return "   <div class='dvCharTable' id='dvCharTable" + idSuffix_ + "'>" + s + "   </div>";
+}
 
 function xmlToString(xmlData) { 
   var xmlString;
@@ -121,8 +133,7 @@ function createNewPanel() {
     '<p id="' + lastTextPanelID + '" class="dvCont">' + 
     lastTextPanelID + '</p></div>' +
     '');
-    $('#' + sContainerID).draggable({cancel : 'p', stack: ".ui-widget-content"});
-    
+    $('#' + sContainerID).draggable({cancel : 'p', stack: ".ui-widget-content"});   
 }
 
 function appendToPanel(result, windowType, windowVar) {
@@ -230,7 +241,7 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
     "        <td class='tdInputFrameMiddle'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='" + path_ + "' dict='" + dict_ + "' value='' placeholder='Search in dictionary ...' class='inpDictQuery" + idSuffix_ + "'/></td>"+
     "        <td class='tdInputFrameMiddle'><img class='imgPleaseWait' id='imgPleaseWait" + idSuffix_ + "' src='balls_in_circle.gif' alt='Query' /></td>"+
     "        <td class='tdInputFrameRight'><input type='submit' id='btnX' class='btnX' value='✕' /></td>"+
-    "        <td class='tdInputFrameRight'><button class='btn btn-outline-success my-2 my-sm-0 newDictQuerybtn'>Search</button></td>"+
+    "        <td class='tdInputFrameRight'><button class='btn btn-outline-success my-2 my-sm-0' id='newDictQuerybtn" + idSuffix_ + "'>Search</button></td>"+
     "      </tr>"+
     "      <tr>"+
     "         <td class='tdFieldSelectorLeft'>&nbsp;</td>"+
@@ -254,7 +265,9 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
     "       </tr>"+
     "    </table>"+
        
-    charTableDamascus + 
+    //charTableDamascus +
+    createCharTable(idSuffix_, '’,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž') +  
+    
          
     "   <div id='dvWordSelector'" + idSuffix_ + " class='dvWordSelector'>"+
     "      <select size='10' id='slWordSelector" + idSuffix_ + "'>"+
@@ -267,6 +280,22 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
     //"</form>";
      
    appendToPanel(searchContainer, "DICTIONARY", "");
+   
+}
+
+function autoDictQuery(idSuffix_, query_, field_) {
+ 
+    ob = document.getElementById('inpDictQuery' + idSuffix_);
+    if (ob==null) {
+      createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary', '_tunis', 'tunis_001.xslt', 'tunico');           
+    }
+    
+    ob = document.getElementById('inpDictQuery' + idSuffix_);
+    if (ob) {
+        $('#' + 'inpDictQuery' + idSuffix_).val(query_);        
+        $('#slFieldSelect' + idSuffix_).val(field_).change();
+        launchDictQuery(idSuffix_);
+    } 
 }
 
 function createBiblioPanel() {   
@@ -694,40 +723,46 @@ function showTextScreen(id_) {
     appendToPanel('ABC', 'VICAV - Mission', '');
 }
 
-function dealWithDictKeyInput(event_, idSuffix_) {
-   console.log('suf: ' + idSuffix_);
+function launchDictQuery(idSuffix_) {    
+    XSLTName = $("#inpDictQuery" + idSuffix_).attr('xslt'); 
+    pathName = $("#inpDictQuery" + idSuffix_).attr('path');
+    collName = $("#inpDictQuery" + idSuffix_).attr('dict');
+    console.log('XSLT: ' + XSLTName);
+
+    $("#dvCharTable" + idSuffix_).hide();
+    $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
+    $("#dvDictResults" + idSuffix_).html('');
+         
+    var sq = $("#inpDictQuery" + idSuffix_).val();
+    var field = $("#slFieldSelect" + idSuffix_).val();
+    console.log('suf: ' + idSuffix_);
+    //console.log('sq: ' + sq);
+    //console.log('field: ' + field);
+       
+    if (sq.indexOf("=") == -1) {
+     sq = "(" + field + "=" + sq + ")";
+    }
+    //sQuery = prepareDictQuery(sq, 'dc_tunico', 'tunis_001.xslt', 'tunico');
+    //sQuery = prepareDictQuery(sq, 'dc_apc_eng_03', 'damascus_001.xslt', 'tunico');
+    sQuery = prepareDictQuery(sq, collName, XSLTName, pathName);
+             
+    console.log("SQuery: " + sQuery);
+    if (sQuery.length > 0) {                           
+    execDictQuery(sQuery, idSuffix_);    
+    //console.log('dvStats: ' + $("#dvStats").text());
+    } else {
+    alert('Could not create query.');
+    }                                            
+}
+
+function dealWithDictQueryKeyInput(event_, idSuffix_) {
+   //console.log('suf: ' + idSuffix_);
    collName = $("#inpDictQuery" + idSuffix_).attr('dict');
-   XSLTName = $("#inpDictQuery" + idSuffix_).attr('xslt'); 
-   pathName = $("#inpDictQuery" + idSuffix_).attr('path');
-   inpSel = document.getElementById('inpDictQuery' + idSuffix_).selectionStart;
+   //inpSel = document.getElementById('inpDictQuery' + idSuffix_).selectionStart;
              
    if ( event_.which == 13 ) {
-      /* *************************************/
-      /* ********** Launch Query *************/
-      /* *************************************/
-      $("#dvCharTable" + idSuffix_).hide();
-      $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
-      $("#dvDictResults" + idSuffix_).html('');
-             
-      var sq = $("#inpDictQuery" + idSuffix_).val();
-      var field = $("#slFieldSelect" + idSuffix_).val();
-      //console.log('sq: ' + sq);
-      //console.log('field: ' + field);
-                                        
-      if (sq.indexOf("=") == -1) {
-         sq = "(" + field + "=" + sq + ")";
-      }
-      //sQuery = prepareDictQuery(sq, 'dc_tunico', 'tunis_001.xslt', 'tunico');
-      //sQuery = prepareDictQuery(sq, 'dc_apc_eng_03', 'damascus_001.xslt', 'tunico');
-      sQuery = prepareDictQuery(sq, collName, XSLTName, pathName);
-                 
-      console.log("SQuery: " + sQuery);
-      if (sQuery.length > 0) {                           
-        execDictQuery(sQuery, idSuffix_);    
-        //console.log('dvStats: ' + $("#dvStats").text());
-      } else {
-        alert('Could not create query.');
-      }                                        
+      launchDictQuery(idSuffix_);
+      
     } else if ( event_.which == 40 )
       /* Arrow Down */
     { 
@@ -745,7 +780,8 @@ function dealWithDictKeyInput(event_, idSuffix_) {
                 
       if (sq.length > 1) {
         if (sq.indexOf('=') == -1) {
-          //console.log('fillWordSelector');  
+          //console.log('fillWordSelector');
+            
           fillWordSelector(sq, collName + '__ind', idSuffix_);
         }
       } else {
@@ -756,17 +792,15 @@ function dealWithDictKeyInput(event_, idSuffix_) {
 
 $(document).ready(
     
-   function() {
-   
-   
+   function() {      
        hideAllTabs();
        $("#dvMainMapCont").show();
        createBiblioPanel();
        
        insertBiblGeoMarkers();
        
-       $(document).on("keyup", '.inpDictQuery_tunis', function(event){ dealWithDictKeyInput(event, '_tunis'); } );
-       $(document).on("keyup", '.inpDictQuery_damascus', function(event){ dealWithDictKeyInput(event, '_damascus'); } );
+       $(document).on("keyup", '.inpDictQuery_tunis', function(event){ dealWithDictQueryKeyInput(event, '_tunis'); } );
+       $(document).on("keyup", '.inpDictQuery_damascus', function(event){ dealWithDictQueryKeyInput(event, '_damascus'); } );
       
        //$('#tunicoDict').draggable({cancel : 'p, input, .dvFieldSelect', stack: ".ui-widget-content"});
        //**** "stack" makes sure that the last dragged panel gets on top
@@ -910,7 +944,7 @@ $(document).ready(
        /* ****  DICTIONARY QUERIES ******* */
        /* ******************************** */
        $(document).on("click", '#liVicavDictQuery_Tunis', function(){ createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary', '_tunis', 'tunis_001.xslt', 'tunico'); });
-       $("#liVicavDictQueryDamascus").mousedown ( function(event) { createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary', '_damascus', 'damascus_001.xslt', 'tunico'); } );
+       $(document).on("click", '#liVicavDictQuery_Damascus', function(){ createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary', '_damascus', 'damascus_001.xslt', 'tunico'); } );
        
        $("#liVicavDictQueryCairo").mousedown ( function(event) { alert('To be implemented'); } );
        $("#liVicavDictQueryMSA").mousedown ( function(event) { alert('To be implemented'); } );
@@ -1089,9 +1123,10 @@ $(document).ready(
         execBiblQuery(keyword);
       });
       
-      $(document).on("click", '.newDictQuerybtn', function(){
-        keyword = $(this).prev().val()
-        execBiblQuery(keyword);
+      $(document).on("click", '[id^=newDictQuerybtn]', function(){
+         //console.log('');
+         suf = getSufixID($(this).attr('id'));
+         launchDictQuery('_' + suf);         
       });
 
        $('#sub-nav-expand').on('click', function(){
