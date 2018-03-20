@@ -675,10 +675,10 @@ h4::after {
 }
 
 .dvDictResults {
-  border: 1px solid black;
-  color: rgb(93, 75, 24);
-  background: rgb(249, 246, 224);
-  left: 65px;
+    border: 1px solid black;
+    color: rgb(93, 75, 24);
+    background: rgb(249, 246, 224);
+    margin-top: 120px;
 }
 
 .tdNoBorderRTL {
@@ -729,4 +729,13 @@ background: rgb(249, 246, 224);
 
 .sub-nav span.active {
   color: #335276;
+}
+
+.dict-search-wrapper {
+    position: absolute;
+    background: #fff;
+    z-index: 9;
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 80px);
 }

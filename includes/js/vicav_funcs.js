@@ -182,6 +182,7 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
     //"<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
     "   <div id='dv_" + dict_ + "'>" + dictName_ + "</div>"+
     
+    "   <div class='dict-search-wrapper'>"+
     "   <table class='tbInputFrame'>" + 
     "      <tr>"+
     "        <td class='tdInputFrameLeft'><img class='imgQuery' src='looking_glass_16.png' alt='Query' /></td>"+
@@ -221,10 +222,12 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
     "         <option></option>"+
     "       </select>"+
     "   </div>"+
+    "   </div>"+
     "   <div id='dvDictResults" + idSuffix_ + "' class='dvDictResults'></div>"+
     "";
     
     //"</form>";
+
      
    appendToPanel(searchContainer, "DICTIONARY", "");
    
