@@ -137,70 +137,17 @@ function createNewPanel() {
 }
 
 function appendToPanel(result, windowType, windowVar) {
-
-/*
-  $('.content-panel').each(function(){
-    var filled = $(this).attr("data-filled");
-    if (filled == "empty") {
-      panelFree = $(this);
-      return false;
-    }
-    panelFree = false;
-  });
-*/
   var openPans = 0;
   $('.content-panel').each(function(){
     if ($(this).hasClass("open-panel")) {
       openPans += 1;
     }
   });
-
-/*  if (!panelFree) {*/
-
-/*
-  if (resType == "profile") {
-    resType = "Profile: ";
-  } else if (resType == "bibl") {
-    resType = "Bibliography: ";
-  } else if (resType = "feat") {
-    resType = "Ling. Feature: ";
-  } else if (resType = "search") {
-    resType = "Custom Query";
+  if (openPans > 2) {
+    $(".open-panel").first().removeClass('open-panel').addClass('closed-panel');
   }
-*/
-
-  if (openPans < 3) {
-    var resCont = "<div class='grid-wrap'>"+result+"</div>";
-    $(".initial-closed-panel").clone().appendTo( ".panels-wrap" ).append(resCont).removeClass("initial-closed-panel").removeClass("closed-panel").addClass("open-panel").find(".chrome-title").html(windowType + windowVar);
-  } else {
-    var firstPan = $(".open-panel").first();
-    var firstCont = firstPan.children(".grid-wrap").html();
-    var firstTitl = firstPan.find(".chrome-title").html();
-    firstCont = "<div class='grid-wrap'>"+firstCont+"</div>";
-    $(".initial-closed-panel").clone().appendTo( ".panels-wrap" ).append(firstCont).removeClass("initial-closed-panel").detach().insertBefore(firstPan).find(".chrome-title").html(firstTitl);
-    var secCont = $(".open-panel").eq(1).children(".grid-wrap").html();
-    var secTitl = $(".open-panel").eq(1).find(".chrome-title").html();
-    var thirdCont = $(".open-panel").eq(2).children(".grid-wrap").html();
-    var thirdTitl = $(".open-panel").eq(2).find(".chrome-title").html();
-    $(".open-panel").eq(0).children(".grid-wrap").html(secCont);
-    $(".open-panel").eq(0).find(".chrome-title").html(secTitl);
-    $(".open-panel").eq(1).children(".grid-wrap").html(thirdCont);
-    $(".open-panel").eq(1).find(".chrome-title").html(thirdTitl);
-    panelFree = $(".open-panel").eq(2);
-    $(panelFree).children(".grid-wrap").html(result).scrollTop(0);
-    $(panelFree).find(".chrome-title").html(windowType + windowVar);
-    $(panelFree).attr("data-filled", "true");
-    $(panelFree).addClass("open-panel");
-  }
-    
-/*  } */
-
-/*
-  $(panelFree).children(".grid-wrap").html(result);
-  $(panelFree).attr("data-filled", "filled");
-  $(panelFree).addClass("open-panel");
-*/
-
+  var resCont = "<div class='grid-wrap'>"+result+"</div>";
+  $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass('open-panel').appendTo( ".panels-wrap" ).append(resCont).find(".chrome-title").html(windowType + windowVar);
 }
 
 function setExplanation(s_) {
