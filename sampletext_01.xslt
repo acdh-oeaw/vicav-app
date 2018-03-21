@@ -11,11 +11,22 @@
         
         <xsl:for-each select="//tei:s">
             <xsl:for-each select="tei:w | tei:c">
-                <span>
-                    <xsl:attribute name="onmouseover">omi('<xsl:value-of select="tei:fs/tei:f[@name='translation']"/>')</xsl:attribute>
+                <!-- <span >
+                    <xsl:attribute name="onmouseover">omi('')</xsl:attribute>
                     <xsl:attribute name="onmouseout">omo()</xsl:attribute>
+                    
+                </span>
+                 -->
+                
+                <span class="sample-text-tooltip" data-toggle="tooltip" data-placement="top" title="">
+                    <xsl:attribute name="title">
+                        <span>
+                            POS: <xsl:value-of select="tei:fs/tei:f[@name='pos']"/><br/>
+                            Lemma: <xsl:value-of select="tei:fs/tei:f[@name='lemma']"/><br/>
+                            English: <xsl:value-of select="tei:fs/tei:f[@name='translation']"/></span>
+                    </xsl:attribute>
                     <xsl:if test="name()='w'"><xsl:value-of select="tei:fs/tei:f[@name='wordform']"/></xsl:if>
-                </span>               
+                </span>
                 <xsl:if test="name()='c'"><xsl:value-of select="."/></xsl:if>               
             </xsl:for-each>
             <br/>
