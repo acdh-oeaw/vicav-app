@@ -739,3 +739,7 @@ background: rgb(249, 246, 224);
     flex-direction: column;
     width: calc(100% - 80px);
 }
+
+[data-toggle="tooltip"] {
+    cursor: pointer;
+}

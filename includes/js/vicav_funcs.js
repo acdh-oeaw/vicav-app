@@ -1095,6 +1095,10 @@ $(document).ready(
           $('.content-panel:not(.initial-closed-panel)').remove();
        });
 
+      $("body").tooltip({
+          selector: '[data-toggle="tooltip"]'
+      });
+
     }
   );
   
