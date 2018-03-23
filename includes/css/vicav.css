@@ -282,8 +282,8 @@ input.header_search:focus {
 }
 
 .dvBiblBlock {
-    margin-top: -20px;
-    margin-bottom: 20px;
+    margin-top: -24px;
+    margin-bottom: 24px;
 }
 
 .how-to-panel {
@@ -754,9 +754,25 @@ background: rgb(249, 246, 224);
 div.imgProfile {
     max-height: 250px;
     overflow: hidden;
+    justify-content: center;
+    display: flex;
+    align-items: center;
 }
 
 .grid-wrap i.fa {
     margin-right: 6px;
     color: #335175;
+}
+
+img.imgProfile {
+    width: 100%;
+    height: 100%;
+}
+
+.imgCaption {
+    font-size: 12px;
+    margin-top: -6px;
+    padding-bottom: 8px;
+    text-align: right;
+    font-style: italic;
 }

@@ -20,7 +20,7 @@
                         <xsl:variable name="n" select="@n"/>
                         <xsl:value-of select="//tei:s[@type='translationSentence'][@n=$n]"/>
                     </xsl:attribute>
-                    <xsl:text>✻&#160;</xsl:text>
+                    <i class="fa fa-commenting-o" aria-hidden="true"></i>
                 </span>
                 
                 <xsl:for-each select="tei:w | tei:c">

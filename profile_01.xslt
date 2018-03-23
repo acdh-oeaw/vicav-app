@@ -12,9 +12,9 @@
         <div class="imgProfile">
             <img class="imgProfile">
             <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:ref[1]/@target"/></xsl:attribute>
-                <div class="imgCaption"><xsl:value-of select="//tei:head/tei:ref[1]"/></div>
             </img>
-        </div>    
+        </div>
+        <div class="imgCaption"><xsl:value-of select="//tei:head/tei:ref[1]"/></div>  
             
         <table class="table table-striped">
             <tr>
