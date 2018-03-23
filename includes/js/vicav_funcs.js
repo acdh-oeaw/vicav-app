@@ -959,6 +959,10 @@ $(document).ready(
        $("#liSampleCairo").mousedown ( function(event) { execSampleQuery('cairo_sample_01'); });       
        $("#liSampleBaghdad").mousedown ( function(event) { execSampleQuery('baghdad_sample_01'); });              
        $("#liSampleDamascus").mousedown ( function(event) { execSampleQuery('damascus_sample_01');  });             
+       $("#liSampleUrfa").mousedown ( function(event) { execSampleQuery('urfa_sample_01');  });             
+       $("#liSampleTunis").mousedown ( function(event) { execSampleQuery('tunis_sample_01');  });             
+       $("#liSampleDouz").mousedown ( function(event) { execSampleQuery('douz_sample_01');  });             
+       $("#liSampleMSA").mousedown ( function(event) { execSampleQuery('msa_sample_01');  });             
        
        
        /* *******************************************************/
