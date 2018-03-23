@@ -260,10 +260,10 @@ input.header_search:focus {
 .h2Profile:after {
     content: '';
     display: block;
-    width: 60px;
-    border-top: 4px solid #88dbdf;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    width: 40px;
+    border-top: 3px solid #88dbdf;
+    margin-top: 10px;
+    margin-bottom: 15px;
 }
 
 .pNorm {
@@ -274,7 +274,7 @@ input.header_search:focus {
     font-size: 1.2rem;
     font-weight: 500;
     margin-bottom: 0.2rem;
-    margin-top: 0.3rem;
+    margin-top: 1rem;
 }
 
 .imgProfile {
@@ -581,7 +581,9 @@ h4::after {
 }
 
 .dvStats {
-    max-width: 420px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #88dcdf;
 }
 
 .dvUsg {
@@ -663,7 +665,7 @@ h4::after {
   color: rgb(188, 61, 61);
   text-align: right;
   padding-right: 5px;
-  width: 70px;
+  width: 150px;
   word-wrap: break-word;
   border-top: 1px dotted rgb(188, 61, 61);
 }
@@ -747,4 +749,14 @@ background: rgb(249, 246, 224);
 
 [data-toggle="tooltip"] {
     cursor: pointer;
+}
+
+div.imgProfile {
+    max-height: 250px;
+    overflow: hidden;
+}
+
+.grid-wrap i.fa {
+    margin-right: 6px;
+    color: #335175;
 }

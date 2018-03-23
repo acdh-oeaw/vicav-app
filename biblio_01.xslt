@@ -51,6 +51,7 @@
                   -->
                   
                   <!-- AUTHORS -->
+                  <i class="fa fa-user" aria-hidden="true"></i>
                   <xsl:if test="bib:authors/.//foaf:Person">
                      <b>
                      <xsl:for-each select="bib:authors/.//foaf:Person">
@@ -65,6 +66,7 @@
                                                                       
                   <div class="dvBiblBlock">                                                    
                      <!-- TITLE -->
+                     <i class="fa fa-book" aria-hidden="true"></i>
                      <xsl:value-of select="dc:title"/>.&#160;
 
                      <xsl:if test="dcterms:isPartOf/bib:Journal">
