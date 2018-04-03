@@ -185,7 +185,6 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
     "   <div class='dict-search-wrapper'>"+
     "   <table class='tbInputFrame'>" + 
     "      <tr>"+
-    "        <td class='tdInputFrameLeft'><img class='imgQuery' src='looking_glass_16.png' alt='Query' /></td>"+
     "        <td class='tdInputFrameMiddle'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='" + path_ + "' dict='" + dict_ + "' value='' placeholder='Search in dictionary ...' class='inpDictQuery" + idSuffix_ + "'/></td>"+
     "        <td class='tdInputFrameMiddle'><img class='imgPleaseWait' id='imgPleaseWait" + idSuffix_ + "' src='balls_in_circle.gif' alt='Query' /></td>"+
     "        <td class='tdInputFrameRight'><input type='submit' id='btnX' class='btnX' value='✕' /></td>"+
@@ -269,11 +268,11 @@ function hideElement(id_) {
     $(id_).hide();
 }
          
-function execSampleQuery(id_) {
+function execSampleQuery(coll_, id_) {
   //alert(query_);
   id_ = id_.replace(/sampleText:/, '');
  
-  qs = '/vicav_001/profile?q=let $out := collection("vicav_samples")//tei:TEI[@xml:id="' + id_ + '"] return $out&s=sampletext_01.xslt';
+  qs = '/vicav_001/profile?q=let $out := collection("' + coll_ + '")//tei:TEI[@xml:id="' + id_ + '"] return $out&s=sampletext_01.xslt';
   console.log(qs);        
   
    
@@ -769,6 +768,8 @@ $(document).ready(
        $("#liBibliographyExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationBibliography', 'BIBLIOGRAPHY: Explanation', ''); } );          
        $("#liProfilesExplanation").mousedown ( function(event) { showTextScreen("dvProfilesExplanation"); } );
        $("#liFeaturesExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationFeatures', 'LING. FEATURES: Explanation', ''); } );
+       $("#liSamplesExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationSampleTexts', 'SAMPLE TEXTS: Explanation', ''); } );
+       $("#liCorpusTextsExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationCorpusTexts', 'TEXTS: Explanation', ''); } );
 
 
        /* *************************** */
@@ -956,15 +957,21 @@ $(document).ready(
        /* ********************** */
        /* ****  SAMPLES ******** */
        /* ********************** */
-       $("#liSampleCairo").mousedown ( function(event) { execSampleQuery('cairo_sample_01'); });       
-       $("#liSampleBaghdad").mousedown ( function(event) { execSampleQuery('baghdad_sample_01'); });              
-       $("#liSampleDamascus").mousedown ( function(event) { execSampleQuery('damascus_sample_01');  });             
-       $("#liSampleUrfa").mousedown ( function(event) { execSampleQuery('urfa_sample_01');  });             
-       $("#liSampleTunis").mousedown ( function(event) { execSampleQuery('tunis_sample_01');  });             
-       $("#liSampleDouz").mousedown ( function(event) { execSampleQuery('douz_sample_01');  });             
-       $("#liSampleMSA").mousedown ( function(event) { execSampleQuery('msa_sample_01');  });             
+       $("#liSampleCairo").mousedown ( function(event) { execSampleQuery('vicav_samples', 'cairo_sample_01'); });       
+       $("#liSampleBaghdad").mousedown ( function(event) { execSampleQuery('vicav_samples', 'baghdad_sample_01'); });              
+       $("#liSampleDamascus").mousedown ( function(event) { execSampleQuery('vicav_samples', 'damascus_sample_01');  });             
+       $("#liSampleUrfa").mousedown ( function(event) { execSampleQuery('vicav_samples', 'urfa_sample_01');  });             
+       $("#liSampleTunis").mousedown ( function(event) { execSampleQuery('vicav_samples', 'tunis_sample_01');  });             
+       $("#liSampleDouz").mousedown ( function(event) { execSampleQuery('vicav_samples', 'douz_sample_01');  });             
+       $("#liSampleMSA").mousedown ( function(event) { execSampleQuery('vicav_samples', 'msa_sample_01');  });             
        
        
+       /* ******************************** */
+       /* ****  CORPUS ******* */
+       /* ******************************** */
+       $("#liTextCukurova_001").mousedown ( function(event) { execSampleQuery('vicav_corpus', 'cukurova_001'); });
+       
+
        /* *******************************************************/
        /* ***********PANEL BEHAVIOR *****************************/
        /* *******************************************************/

@@ -67,6 +67,7 @@
                   <div class="dvBiblBlock">                                                    
                      <!-- TITLE -->
                      <i class="fa fa-book" aria-hidden="true"></i>
+                     <i class="fa fa-file-text" aria-hidden="true"></i>
                      <xsl:value-of select="dc:title"/>.&#160;
 
                      <xsl:if test="dcterms:isPartOf/bib:Journal">

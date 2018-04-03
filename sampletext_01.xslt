@@ -12,18 +12,25 @@
             <xsl:if test="//tei:publicationStmt/tei:date">&#160;(<xsl:value-of select="//tei:publicationStmt/tei:date"/>)</xsl:if>
         </i></p>
         
-        <xsl:for-each select="//tei:div[@type='sampleText']/tei:p/tei:s">
+        <xsl:if test="string-length(//tei:teiHeader/tei:profileDesc/tei:particDesc/tei:p[1])&gt;0">
+            <xsl:for-each select="//tei:teiHeader/tei:profileDesc/tei:particDesc/tei:p">
+                <xsl:apply-templates/>
+            </xsl:for-each>
+            <hr/>
+        </xsl:if>
+        
+        <xsl:for-each select="//tei:div[@type='sampleText']/tei:p/tei:s | //tei:div[@type='corpusText']/tei:u">
             <span class="spSentence">
                 <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
                     
                     <xsl:attribute name="title">                    
                         <xsl:variable name="n" select="@n"/>
-                        <xsl:value-of select="//tei:s[@type='translationSentence'][@n=$n]"/>
+                        <xsl:value-of select="//tei:s[@type='translationSentence'][@n=$n] | //tei:div[@type='dvTranslations']/tei:u[@n=$n]"/>
                     </xsl:attribute>
                     <i class="fa fa-commenting-o" aria-hidden="true"></i>
                 </span>
                 
-                <xsl:for-each select="tei:w | tei:c">
+                <xsl:for-each select="tei:w | tei:c | tei:seg">
                     <!-- <span >
                         <xsl:attribute name="onmouseover">omi('')</xsl:attribute>
                         <xsl:attribute name="onmouseout">omo()</xsl:attribute>
@@ -41,6 +48,10 @@
                     </span>
                     
                     <xsl:if test="name()='c'">
+                        <xsl:value-of select="."/>
+                    </xsl:if>
+                    
+                    <xsl:if test="name()='seg'">
                         <xsl:value-of select="."/>
                     </xsl:if>               
                 </xsl:for-each>

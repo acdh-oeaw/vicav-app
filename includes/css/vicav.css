@@ -766,7 +766,6 @@ div.imgProfile {
 
 img.imgProfile {
     width: 100%;
-    height: 100%;
 }
 
 .imgCaption {
@@ -775,4 +774,8 @@ img.imgProfile {
     padding-bottom: 8px;
     text-align: right;
     font-style: italic;
+}
+
+.dvBibArticle .fa-book, .dvBibBook .fa-file-text, .dvBibBookSection .fa-file-text {
+    display: none;
 }
