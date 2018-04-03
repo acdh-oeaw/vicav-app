@@ -24,8 +24,8 @@
                 <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
                     
                     <xsl:attribute name="title">                    
-                        <xsl:variable name="n" select="@n"/>
-                        <xsl:value-of select="//tei:s[@type='translationSentence'][@n=$n] | //tei:div[@type='dvTranslations']/tei:u[@n=$n]"/>
+                        <xsl:variable name="nn" select="@n"/>
+                        <xsl:value-of select="//tei:s[@type='translationSentence'][@n=$nn] | //tei:div[@type='dvTranslations']/tei:u[@n=$nn]"/>
                     </xsl:attribute>
                     <i class="fa fa-commenting-o" aria-hidden="true"></i>
                 </span>

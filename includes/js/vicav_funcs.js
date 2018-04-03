@@ -180,37 +180,44 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
   var searchContainer =
     
     //"<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
-    "   <div class='loading-wrapper' id='loading-wrapper" + idSuffix_ + "'><img class='imgPleaseWait' id='imgPleaseWait" + idSuffix_ + "' src='balls_in_circle.gif' alt='Query'></div>"+
+    "   <div id='dv_" + dict_ + "'>" + dictName_ + "</div>"+
+    
     "   <div class='dict-search-wrapper'>"+
-    "   <div class='dict-heading' id='dv_" + dict_ + "'>" + dictName_ + "</div>"+
     "   <table class='tbInputFrame'>" + 
-    "      <div class='form-inline mt-2 mt-md-0'>"+
-    "        <div class='tdInputFrameMiddle' class='mr-sm-2' style='flex: 1;'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='" + path_ + "' dict='" + dict_ + "' value='' placeholder='Search in dictionary ...' class='form-control inpDictQuery" + idSuffix_ + "'/></div>"+
-"            <div id='dvFieldSelect" + idSuffix_ + "' class='dvFieldSelect'>"+                  
-"               <select id='slFieldSelect" + idSuffix_ + "' class='slFieldSelect form-control'>"+
-"                   <option value='any'>Any field</option>"+
-"                   <option value='lem'>Arabic lemma</option>"+
-"                   <option value='infl'>Arabic (infl.)</option>"+
-"                   <option value='en'>Trans. (English)</option>"+
-"                   <option value='de'>Trans. (German)</option>"+
-"                   <option value='fr'>Trans. (French)</option>"+
-"                   <option value='pos'>POS</option>"+
-"                   <option value='root'>Roots</option>"+
-"                   <option value='subc'>subc</option>"+
-"                   <option value='etymLang'>Lang. in etymologies</option>"+
-"                   <option value='etymSrc'>Words in etymologies</option>"+
-"               </select>"+
-"            </div>"+  
-    "        <div class='tdInputFrameRight my-2 my-sm-0'><button class='btn btn-outline-success' id='newDictQuerybtn" + idSuffix_ + "'>Search</button></div>"+
-    "      </div>"+
+    "      <tr>"+
+    "        <td class='tdInputFrameMiddle'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='" + path_ + "' dict='" + dict_ + "' value='' placeholder='Search in dictionary ...' class='inpDictQuery" + idSuffix_ + "'/></td>"+
+    "        <td class='tdInputFrameMiddle'><img class='imgPleaseWait' id='imgPleaseWait" + idSuffix_ + "' src='balls_in_circle.gif' alt='Query' /></td>"+
+    "        <td class='tdInputFrameRight'><input type='submit' id='btnX' class='btnX' value='✕' /></td>"+
+    "        <td class='tdInputFrameRight'><button class='btn btn-outline-success my-2 my-sm-0' id='newDictQuerybtn" + idSuffix_ + "'>Search</button></td>"+
+    "      </tr>"+
+    "      <tr>"+
+    "         <td class='tdFieldSelectorLeft'>&nbsp;</td>"+
+    "         <td class='tdFieldSelectorRight' colspan='3'>"+
+    "            <div id='dvFieldSelect" + idSuffix_ + "' class='dvFieldSelect'>"+                  
+    "               <select id='slFieldSelect" + idSuffix_ + "' class='slFieldSelect'>"+
+    "                   <option value='any'>Any field</option>"+
+    "                   <option value='lem'>Arabic lemma</option>"+
+    "                   <option value='infl'>Arabic (infl.)</option>"+
+    "                   <option value='en'>Trans. (English)</option>"+
+    "                   <option value='de'>Trans. (German)</option>"+
+    "                   <option value='fr'>Trans. (French)</option>"+
+    "                   <option value='pos'>POS</option>"+
+    "                   <option value='root'>Roots</option>"+
+    "                   <option value='subc'>subc</option>"+
+    "                   <option value='etymLang'>Lang. in etymologies</option>"+
+    "                   <option value='etymSrc'>Words in etymologies</option>"+
+    "               </select>"+
+    "            </div>"+   
+    "         </td>"+
+    "       </tr>"+
     "    </table>"+
        
     //charTableDamascus +
     createCharTable(idSuffix_, '’,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž') +  
     
          
-    "   <div id='dvWordSelector" + idSuffix_ + "' class='dvWordSelector'>"+
-    "      <select class='form-control' size='10' id='slWordSelector" + idSuffix_ + "'>"+
+    "   <div id='dvWordSelector'" + idSuffix_ + " class='dvWordSelector'>"+
+    "      <select size='10' id='slWordSelector" + idSuffix_ + "'>"+
     "         <option></option>"+
     "       </select>"+
     "   </div>"+
@@ -589,7 +596,6 @@ function initDictUser() {
  
 function execDictQuery(query_, idSuffix_) {
     $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
-    $("#loading-wrapper" + idSuffix_).css('visibility', 'visible');
     initDictUser();
     
     $.ajax({
@@ -611,8 +617,7 @@ function execDictQuery(query_, idSuffix_) {
               //console.log('res: ' + result);
               $("#dvWordSelector" + idSuffix_).hide();
               $("#slWordSelector" + idSuffix_).hide();
-              $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
-              $("#loading-wrapper" + idSuffix_).css('visibility', 'hidden');                     
+              $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');                     
               $("#dvDictResults" + idSuffix_).html(result);
           }
        },
@@ -641,7 +646,6 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
                   if (result.indexOf('option') !== -1) {
                      $("#dvWordSelector" + idSuffix_).show();
                      $("#slWordSelector" + idSuffix_).html(result);
-                     $("#slWordSelector" + idSuffix_).show();
                   } else {
                        
                      $("#dvWordSelector" + idSuffix_).hide();
@@ -674,7 +678,7 @@ function launchDictQuery(idSuffix_) {
     collName = $("#inpDictQuery" + idSuffix_).attr('dict');
     console.log('XSLT: ' + XSLTName);
 
-    //$("#dvCharTable" + idSuffix_).hide();
+    $("#dvCharTable" + idSuffix_).hide();
     $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
     $("#dvDictResults" + idSuffix_).html('');
          
@@ -965,7 +969,8 @@ $(document).ready(
        /* ******************************** */
        /* ****  CORPUS ******* */
        /* ******************************** */
-       $("#liTextCukurova_001").mousedown ( function(event) { execSampleQuery('vicav_corpus', 'cukurova_001'); });
+       $(document).on("click", '#liTextCukurova_001', function(){ execSampleQuery('vicav_corpus', 'cukurova_001'); });
+       $(document).on("click", '#liTextJakal_001', function(){ execSampleQuery('vicav_corpus', 'killing_jackal'); });     
        
 
        /* *******************************************************/
@@ -1021,11 +1026,7 @@ $(document).ready(
        });
 
        $(document).on("click", '[id^=slWordSelect]', function(){
-          //alert($(this).attr('id'));
-          var selectedVal = $(this).val();
-          var idSuffix = $(this).attr('id').split('_');
-          var idSuffix = idSuffix[1];
-          $('#inpDictQuery_'+idSuffix).val(selectedVal);
+          alert($(this).attr('id'));
           //$('#txt1').val($("#slWordSelector option:selected").text());
           }
        );
@@ -1079,11 +1080,6 @@ $(document).ready(
         $(this).parents(':eq(1)').remove();
       });
 
-      $(document).on("click", '.grid-wrap', function(){
-        $(this).find('.dvWordSelector').hide();
-      });
-
-
       $(document).on("click", '.newBiblQuerybtn', function(){
         keyword = $(this).prev().val()
         execBiblQuery(keyword);
@@ -1112,8 +1108,7 @@ $(document).ready(
        });
 
       $("body").tooltip({
-          selector: '[data-toggle="tooltip"]',
-          trigger: 'hover focus'
+          selector: '[data-toggle="tooltip"]'
       });
 
     }
