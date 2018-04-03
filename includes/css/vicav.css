@@ -779,3 +779,21 @@ img.imgProfile {
 .dvBibArticle .fa-book, .dvBibBook .fa-file-text, .dvBibBookSection .fa-file-text {
     display: none;
 }
+
+.imgPleaseWait {
+    position: absolute;
+    left: calc(50% - 32px);
+    top: 0px;
+    visibility: hidden;
+}
+
+.loading-wrapper {
+    position: absolute;
+    width: calc(100% - 25px);
+    height: 100%;
+    top: 0px;
+    left: 25px;
+    z-index: 9999;
+    background: #b3aa817d;
+    visibility: hidden;
+}

@@ -109,6 +109,7 @@ function hideAllTabs() {
   $("#dvCharTable").hide();
   
   $("#imgPleaseWait").css('visibility', 'hidden');
+  $(".loading-wrapper").css('visibility', 'hidden');
 }
 
 function insert(str, index, value) {
@@ -179,6 +180,7 @@ $(document).ready(
           function(event) {
              hideAllTabs();
              $("#imgPleaseWait").css('visibility', 'hidden');
+             $(".loading-wrapper").css('visibility', 'hidden');
              $(this).attr('class', 'btnActive');
              $("#dvInpText").show();
           }

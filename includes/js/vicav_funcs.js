@@ -180,14 +180,13 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
   var searchContainer =
     
     //"<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
+    "   <div class='loading-wrapper' id='loading-wrapper" + idSuffix_ + "'><img class='imgPleaseWait' id='imgPleaseWait" + idSuffix_ + "' src='balls_in_circle.gif' alt='Query'></div>"+
     "   <div id='dv_" + dict_ + "'>" + dictName_ + "</div>"+
-    
+
     "   <div class='dict-search-wrapper'>"+
     "   <table class='tbInputFrame'>" + 
     "      <tr>"+
-    "        <td class='tdInputFrameMiddle'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='" + path_ + "' dict='" + dict_ + "' value='' placeholder='Search in dictionary ...' class='inpDictQuery" + idSuffix_ + "'/></td>"+
-    "        <td class='tdInputFrameMiddle'><img class='imgPleaseWait' id='imgPleaseWait" + idSuffix_ + "' src='balls_in_circle.gif' alt='Query' /></td>"+
-    "        <td class='tdInputFrameRight'><input type='submit' id='btnX' class='btnX' value='✕' /></td>"+
+    "        <td class='tdInputFrameMiddle' class='mr-sm-2' style='flex: 1;'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='" + path_ + "' dict='" + dict_ + "' value='' placeholder='Search in dictionary ...' class='form-control inpDictQuery" + idSuffix_ + "'/></td>"+
     "        <td class='tdInputFrameRight'><button class='btn btn-outline-success my-2 my-sm-0' id='newDictQuerybtn" + idSuffix_ + "'>Search</button></td>"+
     "      </tr>"+
     "      <tr>"+
@@ -596,6 +595,7 @@ function initDictUser() {
  
 function execDictQuery(query_, idSuffix_) {
     $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
+    $("#loading-wrapper" + idSuffix_).css('visibility', 'visible');
     initDictUser();
     
     $.ajax({
@@ -617,7 +617,8 @@ function execDictQuery(query_, idSuffix_) {
               //console.log('res: ' + result);
               $("#dvWordSelector" + idSuffix_).hide();
               $("#slWordSelector" + idSuffix_).hide();
-              $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');                     
+              $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
+              $("#loading-wrapper" + idSuffix_).css('visibility', 'hidden');                     
               $("#dvDictResults" + idSuffix_).html(result);
           }
        },
