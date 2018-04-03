@@ -181,9 +181,8 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
     
     //"<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
     "   <div class='loading-wrapper' id='loading-wrapper" + idSuffix_ + "'><img class='imgPleaseWait' id='imgPleaseWait" + idSuffix_ + "' src='balls_in_circle.gif' alt='Query'></div>"+
-    "   <div id='dv_" + dict_ + "'>" + dictName_ + "</div>"+
-
     "   <div class='dict-search-wrapper'>"+
+    "   <div class='dict-heading' id='dv_" + dict_ + "'>" + dictName_ + "</div>"+
     "   <table class='tbInputFrame'>" + 
     "      <div class='form-inline mt-2 mt-md-0'>"+
     "        <div class='tdInputFrameMiddle' class='mr-sm-2' style='flex: 1;'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='" + path_ + "' dict='" + dict_ + "' value='' placeholder='Search in dictionary ...' class='form-control inpDictQuery" + idSuffix_ + "'/></div>"+
@@ -210,8 +209,8 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
     createCharTable(idSuffix_, '’,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž') +  
     
          
-    "   <div id='dvWordSelector'" + idSuffix_ + " class='dvWordSelector'>"+
-    "      <select size='10' id='slWordSelector" + idSuffix_ + "'>"+
+    "   <div id='dvWordSelector" + idSuffix_ + "' class='dvWordSelector'>"+
+    "      <select class='form-control' size='10' id='slWordSelector" + idSuffix_ + "'>"+
     "         <option></option>"+
     "       </select>"+
     "   </div>"+
@@ -642,6 +641,7 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
                   if (result.indexOf('option') !== -1) {
                      $("#dvWordSelector" + idSuffix_).show();
                      $("#slWordSelector" + idSuffix_).html(result);
+                     $("#slWordSelector" + idSuffix_).show();
                   } else {
                        
                      $("#dvWordSelector" + idSuffix_).hide();
@@ -674,7 +674,7 @@ function launchDictQuery(idSuffix_) {
     collName = $("#inpDictQuery" + idSuffix_).attr('dict');
     console.log('XSLT: ' + XSLTName);
 
-    $("#dvCharTable" + idSuffix_).hide();
+    //$("#dvCharTable" + idSuffix_).hide();
     $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
     $("#dvDictResults" + idSuffix_).html('');
          
@@ -1021,7 +1021,11 @@ $(document).ready(
        });
 
        $(document).on("click", '[id^=slWordSelect]', function(){
-          alert($(this).attr('id'));
+          //alert($(this).attr('id'));
+          var selectedVal = $(this).val();
+          var idSuffix = $(this).attr('id').split('_');
+          var idSuffix = idSuffix[1];
+          $('#inpDictQuery_'+idSuffix).val(selectedVal);
           //$('#txt1').val($("#slWordSelector option:selected").text());
           }
        );
@@ -1075,6 +1079,11 @@ $(document).ready(
         $(this).parents(':eq(1)').remove();
       });
 
+      $(document).on("click", '.grid-wrap', function(){
+        $(this).find('.dvWordSelector').hide();
+      });
+
+
       $(document).on("click", '.newBiblQuerybtn', function(){
         keyword = $(this).prev().val()
         execBiblQuery(keyword);
@@ -1103,7 +1112,8 @@ $(document).ready(
        });
 
       $("body").tooltip({
-          selector: '[data-toggle="tooltip"]'
+          selector: '[data-toggle="tooltip"]',
+          trigger: 'hover focus'
       });
 
     }
