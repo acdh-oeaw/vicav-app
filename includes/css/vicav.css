@@ -744,6 +744,7 @@ background: rgb(249, 246, 224);
     display: flex;
     flex-direction: column;
     width: calc(100% - 80px);
+    margin-top: 10px;
 }
 
 
@@ -783,7 +784,7 @@ img.imgProfile {
 .imgPleaseWait {
     position: absolute;
     left: calc(50% - 32px);
-    top: 0px;
+    top: 40px;
     visibility: hidden;
 }
 
@@ -796,4 +797,21 @@ img.imgProfile {
     z-index: 9999;
     background: #b3aa817d;
     visibility: hidden;
+}
+
+.tdInputFrameMiddle, .tdInputFrameRight {
+    border: 0;
+}
+
+.tdInputFrameMiddle .form-control {
+    width: calc(100% - 10px);
+}
+
+.dvFieldSelect {
+    margin-right: 10px;
+}
+
+.slFieldSelect {
+    width: 140px !important;
+    font-size: 13px;
 }

@@ -185,30 +185,25 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, path_) {
 
     "   <div class='dict-search-wrapper'>"+
     "   <table class='tbInputFrame'>" + 
-    "      <tr>"+
-    "        <td class='tdInputFrameMiddle' class='mr-sm-2' style='flex: 1;'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='" + path_ + "' dict='" + dict_ + "' value='' placeholder='Search in dictionary ...' class='form-control inpDictQuery" + idSuffix_ + "'/></td>"+
-    "        <td class='tdInputFrameRight'><button class='btn btn-outline-success my-2 my-sm-0' id='newDictQuerybtn" + idSuffix_ + "'>Search</button></td>"+
-    "      </tr>"+
-    "      <tr>"+
-    "         <td class='tdFieldSelectorLeft'>&nbsp;</td>"+
-    "         <td class='tdFieldSelectorRight' colspan='3'>"+
-    "            <div id='dvFieldSelect" + idSuffix_ + "' class='dvFieldSelect'>"+                  
-    "               <select id='slFieldSelect" + idSuffix_ + "' class='slFieldSelect'>"+
-    "                   <option value='any'>Any field</option>"+
-    "                   <option value='lem'>Arabic lemma</option>"+
-    "                   <option value='infl'>Arabic (infl.)</option>"+
-    "                   <option value='en'>Trans. (English)</option>"+
-    "                   <option value='de'>Trans. (German)</option>"+
-    "                   <option value='fr'>Trans. (French)</option>"+
-    "                   <option value='pos'>POS</option>"+
-    "                   <option value='root'>Roots</option>"+
-    "                   <option value='subc'>subc</option>"+
-    "                   <option value='etymLang'>Lang. in etymologies</option>"+
-    "                   <option value='etymSrc'>Words in etymologies</option>"+
-    "               </select>"+
-    "            </div>"+   
-    "         </td>"+
-    "       </tr>"+
+    "      <div class='form-inline mt-2 mt-md-0'>"+
+    "        <div class='tdInputFrameMiddle' class='mr-sm-2' style='flex: 1;'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='" + path_ + "' dict='" + dict_ + "' value='' placeholder='Search in dictionary ...' class='form-control inpDictQuery" + idSuffix_ + "'/></div>"+
+"            <div id='dvFieldSelect" + idSuffix_ + "' class='dvFieldSelect'>"+                  
+"               <select id='slFieldSelect" + idSuffix_ + "' class='slFieldSelect form-control'>"+
+"                   <option value='any'>Any field</option>"+
+"                   <option value='lem'>Arabic lemma</option>"+
+"                   <option value='infl'>Arabic (infl.)</option>"+
+"                   <option value='en'>Trans. (English)</option>"+
+"                   <option value='de'>Trans. (German)</option>"+
+"                   <option value='fr'>Trans. (French)</option>"+
+"                   <option value='pos'>POS</option>"+
+"                   <option value='root'>Roots</option>"+
+"                   <option value='subc'>subc</option>"+
+"                   <option value='etymLang'>Lang. in etymologies</option>"+
+"                   <option value='etymSrc'>Words in etymologies</option>"+
+"               </select>"+
+"            </div>"+  
+    "        <div class='tdInputFrameRight my-2 my-sm-0'><button class='btn btn-outline-success' id='newDictQuerybtn" + idSuffix_ + "'>Search</button></div>"+
+    "      </div>"+
     "    </table>"+
        
     //charTableDamascus +
