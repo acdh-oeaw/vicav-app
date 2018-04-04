@@ -746,6 +746,7 @@ $(document).ready(
        
        $(document).on("keyup", '.inpDictQuery_tunis', function(event){ dealWithDictQueryKeyInput(event, '_tunis'); } );
        $(document).on("keyup", '.inpDictQuery_damascus', function(event){ dealWithDictQueryKeyInput(event, '_damascus'); } );
+       $(document).on("keyup", '.inpDictQuery_cairo', function(event){ dealWithDictQueryKeyInput(event, '_cairo'); } );
       
        //$('#tunicoDict').draggable({cancel : 'p, input, .dvFieldSelect', stack: ".ui-widget-content"});
        //**** "stack" makes sure that the last dragged panel gets on top
@@ -892,6 +893,7 @@ $(document).ready(
        /* ******************************** */
        $(document).on("click", '#liVicavDictQuery_Tunis', function(){ createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary', '_tunis', 'tunis_001.xslt', 'tunico'); });
        $(document).on("click", '#liVicavDictQuery_Damascus', function(){ createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary', '_damascus', 'damascus_001.xslt', 'tunico'); } );
+       $(document).on("click", '#liVicavDictQuery_Cairo', function(){ createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary', '_cairo', 'cairo_001.xslt', 'tunico'); } );
        
        $("#liVicavDictQueryCairo").mousedown ( function(event) { alert('To be implemented'); } );
        $("#liVicavDictQueryMSA").mousedown ( function(event) { alert('To be implemented'); } );
