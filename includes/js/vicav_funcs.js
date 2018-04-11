@@ -110,7 +110,7 @@ function createNewPanel() {
 */
 
 
-function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, teiLink_) {
+function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, teiLink_, pID_, pVisiblity_) {
   var openPans = 0;
   result_ = result_.replace(/{query}/, query_);
   $('.content-panel').each(function(){
@@ -133,6 +133,12 @@ function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, tei
   "<div class='" + contClass_ + "'>" +
   result_ + "</div>";
   $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass('open-panel').appendTo( ".panels-wrap" ).append(resCont).find(".chrome-title").html(windowType_ + windowVar_);
+
+  // Add view
+  //var currentURL = window.location.toString();
+  //window.history.replaceState( {} , "", currentURL+"&p="+query );
+
+
 }
 
 function setExplanation(s_) {
@@ -302,12 +308,12 @@ function execTextQuery(id_, windowType_, style_) {
   });
 }
 
-function execBiblQuery(query_, loc_, keyword_, locType_) {
+function execBiblQuery(query_, loc_, keyword_, locType_, pID_, pVisiblity_) {
   /* query01 = query_.replace(/\./g, '\\\.'); */
   query01 = query_;
   var subs = '';
   //console.log('execBiblQuery');
-  //console.log(query_ + ' : ' + loc_ + ' : ' + keyword_ + ' : ' + locType_);        
+  console.log(query_ + ' : ' + loc_ + ' : ' + keyword_ + ' : ' + locType_);        
   //var sarray = query01.split('|');
   //for(var i = 0; i < sarray.length; i++) {
     
@@ -368,7 +374,7 @@ function execBiblQuery(query_, loc_, keyword_, locType_) {
             //createNewPanel();
           //console.log(result);
            
-          appendToPanel(result, "Search in Bibliography: ", loc_, "grid-wrap", query_, '', '');
+          appendToPanel(result, "Search in Bibliography: ", loc_, "grid-wrap", query_, '', pID_, pVisiblity_);
             //$("#pLibrary").html(result);
             //$("#dvCaption").html('<b>Query: </b>' + query_);
             //$('#dvLibrary').show();
@@ -719,8 +725,33 @@ $(document).ready(
        /* createBiblioPanel(); */
        
        insertBiblGeoMarkers();
-       
-                         
+
+       // Parse the given url parameters for views
+       var currentURL = window.location.toString();
+       var args = currentURL.split('?');
+       var args = args[1].split('&');
+       // Parse the map
+       var mapArg = args[0].split('=');
+       if (mapArg[0] == 'map') {
+         hideAllTabs();
+         clearMarkerLayers();
+         window["insert"+mapArg[1]]();
+         //TODO make the selected subnav item active
+       }
+       // Parse the panels
+       for (var i = 1; i < args.length; i++) {
+          var pArgs = args[i].split('=');
+          var pID_ = pArgs[0];
+          pArgs = pArgs[1].replace(/((\[\s*)|(\s*\]))/g,"");
+          pArgs = pArgs.split(',');
+          var queryFunc = pArgs[0];
+          var loc_ = pArgs[1];
+          var locType_ = pArgs[2];
+          var pVisiblity_ = pArgs[3];
+          window["exec"+queryFunc]('', loc_, '', locType_, pID_, pVisiblity_);
+       }
+
+
        $("#liVicavMission").mousedown ( function(event) { execTextQuery('vicavMission', 'MISSION', 'vicavTexts.xslt'); } );              
        $("#liVicavContributors").mousedown ( function(event) { execTextQuery('vicavContributors', 'CONTRIBUTORS', 'vicavTexts.xslt'); } );              
        $("#liVicavLinguistics").mousedown ( function(event) { execTextQuery('vicavLinguistics', 'LINGUISTICS', 'vicavTexts.xslt'); } );              
