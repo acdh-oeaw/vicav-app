@@ -110,10 +110,11 @@ function createNewPanel() {
 */
 
 
-function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, teiLink_, pID_, pVisiblity_) {
+function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, teiLink_, locType_, pID_, pVisiblity_, pURL_) {
   var openPans = 0;
   result_ = result_.replace(/{query}/, query_);
   $('.content-panel').each(function(){
+    var panelID = $(this).data('pid');
     if ($(this).hasClass("open-panel")) {
       openPans += 1;
     }
@@ -128,15 +129,23 @@ function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, tei
   } else { teiLink = ''; }
   console.log('teiLink: ' + teiLink);  
   result_ = result_.replace(/{teiLink}/, teiLink);
-  
+
+  // Add view to URL
+  if (!pID_) {
+    var pID = $('.content-panel').last().data('pid') + 1;
+    if (!pURL_) {
+      var currentURL = window.location.toString();
+      window.history.replaceState( {} , "", currentURL+"&"+pID+"=["+windowType_+","+windowVar_+","+locType_+",open]");
+    }
+  } else {
+    var pID = pID_;
+  }
+
   var resCont = 
   "<div class='" + contClass_ + "'>" +
   result_ + "</div>";
-  $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass('open-panel').appendTo( ".panels-wrap" ).append(resCont).find(".chrome-title").html(windowType_ + windowVar_);
+  $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass('open-panel').attr("data-pid",pID).appendTo( ".panels-wrap" ).append(resCont).find(".chrome-title").html(windowType_ + windowVar_);
 
-  // Add view
-  //var currentURL = window.location.toString();
-  //window.history.replaceState( {} , "", currentURL+"&p="+query );
 
 
 }
@@ -284,7 +293,7 @@ function execSampleQuery(coll_, id_, style_) {
   });
 }
 
-function execTextQuery(id_, windowType_, style_) {
+function execTextQuery(id_, windowType_, style_, pID_, pVisiblity_, pURL_) {
     qs = '/vicav_001/text?q=let $out := collection("vicav_texts")//tei:div[@xml:id="' + id_ + '"] return $out&s=' + style_;
     //console.log(qs);  
    
@@ -301,14 +310,14 @@ function execTextQuery(id_, windowType_, style_) {
             alert('Error: authentication did not work');                  
         } else {
           teiLink = 'execTextQuery("' + id_ + '", "' + windowType_ + '", "tei_2_html__v004__gen.xsl")';
-          appendToPanel(result, windowType_, '', "grid-wrap", '', teiLink);
+          appendToPanel(result, "TextQuery", '', "grid-wrap", '', teiLink, '', pID_, pVisiblity_, pURL_);
         }
      },
      error: function (error) { alert('Error: ' + error); }                           
   });
 }
 
-function execBiblQuery(query_, loc_, keyword_, locType_, pID_, pVisiblity_) {
+function execBiblQuery(query_, loc_, keyword_, locType_, pID_, pVisiblity_, pURL_) {
   /* query01 = query_.replace(/\./g, '\\\.'); */
   query01 = query_;
   var subs = '';
@@ -373,8 +382,7 @@ function execBiblQuery(query_, loc_, keyword_, locType_, pID_, pVisiblity_) {
         } else {            
             //createNewPanel();
           //console.log(result);
-           
-          appendToPanel(result, "Search in Bibliography: ", loc_, "grid-wrap", query_, '', pID_, pVisiblity_);
+          appendToPanel(result, "BiblQuery", loc_, "grid-wrap", query_, '', locType_, pID_, pVisiblity_, pURL_);
             //$("#pLibrary").html(result);
             //$("#dvCaption").html('<b>Query: </b>' + query_);
             //$('#dvLibrary').show();
@@ -728,28 +736,43 @@ $(document).ready(
 
        // Parse the given url parameters for views
        var currentURL = window.location.toString();
-       var args = currentURL.split('?');
-       var args = args[1].split('&');
-       // Parse the map
-       var mapArg = args[0].split('=');
-       if (mapArg[0] == 'map') {
-         hideAllTabs();
-         clearMarkerLayers();
-         window["insert"+mapArg[1]]();
-         //TODO make the selected subnav item active
+       if (currentURL.includes('?')) {
+         var args = currentURL.split('?');
+         var args = args[1].split('&');
+         // Parse the map
+         var mapArg = args[0].split('=');
+         if (mapArg[0] == 'map') {
+           hideAllTabs();
+           clearMarkerLayers();
+           window["insert"+mapArg[1]]();
+           //TODO make the selected subnav item active
+         }
+         // Parse the panels
+         for (var i = 1; i < args.length; i++) {
+              setTimeout(function(y) {
+                  var pArgs = args[y].split('=');
+                  var pID_ = pArgs[0];
+                  pArgs = pArgs[1].replace(/((\[\s*)|(\s*\]))/g,"");
+                  pArgs = pArgs.split(',');
+                  var queryFunc = pArgs[0];
+                  if (queryFunc == 'BiblQuery') {
+                    var loc_ = pArgs[1];
+                    var locType_ = pArgs[2];
+                    var pVisiblity_ = pArgs[3];
+                    execBiblQuery('', loc_, '', locType_, pID_, pVisiblity_, true);
+                  } else if (queryFunc == 'TextQuery') {
+                    var id_ = pArgs[1];
+                    var pVisiblity_ = pArgs[2];
+                    execTextQuery(id_, 'HEADING', 'vicavTexts.xslt', pID_, pVisiblity_, true);
+                  }
+                  
+              }, 250 * i, i);
+         }
+       } else {
+         window.history.replaceState( {} , "", currentURL+"?map=BiblGeoMarkers&1=[TextQuery,vicavMission,open]");
+         execTextQuery('vicavMission', 'MISSION & OUTLINE', 'vicavTexts.xslt', 1, 'open', true);
        }
-       // Parse the panels
-       for (var i = 1; i < args.length; i++) {
-          var pArgs = args[i].split('=');
-          var pID_ = pArgs[0];
-          pArgs = pArgs[1].replace(/((\[\s*)|(\s*\]))/g,"");
-          pArgs = pArgs.split(',');
-          var queryFunc = pArgs[0];
-          var loc_ = pArgs[1];
-          var locType_ = pArgs[2];
-          var pVisiblity_ = pArgs[3];
-          window["exec"+queryFunc]('', loc_, '', locType_, pID_, pVisiblity_);
-       }
+
 
 
        $("#liVicavMission").mousedown ( function(event) { execTextQuery('vicavMission', 'MISSION', 'vicavTexts.xslt'); } );              
@@ -1089,7 +1112,21 @@ $(document).ready(
 
       /* *******************************************************/               
       $(document).on("click", '.chrome-close', function(){
-        $(this).parents(':eq(1)').remove();
+        var panel = $(this).parents(':eq(1)');
+        var pID = panel.data('pid');
+        var currentURL = window.location.toString();
+        var args = currentURL.split('?');
+        var baseUrl = args[0];
+        var args = args[1].split('&');
+        for (var i = 1; i < args.length; i++) {
+          if (args[i].charAt(0) == pID) {
+            args.splice(i, 1);
+            break;
+          }
+        }
+        args = args.join("&");
+        window.history.replaceState( {} , "", baseUrl+"?"+args);
+        panel.remove();
       });
 
       $(document).on("click", '.grid-wrap', function(){
