@@ -54,8 +54,8 @@
                 <a class="dropdown-item" id="liGeoDicts" href="#">All Dictionaries (Locations + Regions)</a>
                 <a class="dropdown-item" id="liGeoTextbooks" href="#">All Textbooks (Locations + Regions)</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liBiblNewQuery" href="#"><i class="fa fa-search" aria-hidden="true"></i> Query</a>
-                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" id="liBiblNewQuery" href="#">Query</a>
+                <div class="dropdown-divider"></div>                
                 <a class="dropdown-item" id="liVicavContributeBibliography" href="#">Contribute to the Bibliography</a>
               </div>
             </li>
@@ -101,7 +101,7 @@
               <div class="dropdown-menu" aria-labelledby="dropdown04">
                 <a class="dropdown-item" id="liSamplesExplanation" href="#">Explanation</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liNotYet" href="#">Show All Locations</a>
+                <a class="dropdown-item" id="liSamples" href="#">Show All Locations</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="liSampleBaghdad" href="#">Baghdad</a>
                 <a class="dropdown-item" id="liSampleCairo" href="#">Cairo</a>
@@ -119,10 +119,6 @@
               <div class="dropdown-menu" aria-labelledby="dropdown04">
                 <a class="dropdown-item" id="liCorpusTextsExplanation" href="#">Explanation and Overview</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liNotYet" href="#">Show All Locations</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liTextCukurova_001" href="#">Çukurova</a>
-                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="liNotYet" href="#">Contribute a Corpus Text</a>
               </div>
             </li>
@@ -130,6 +126,9 @@
               <a class="nav-link dropdown-toggle" href="#" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dictionaries</a>
               <div class="dropdown-menu" aria-labelledby="dropdown05">
                 <a class="dropdown-item" id="liGeoDicts1" href="#">Bibliography (Dictionaries)</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" id="liDicts" href="#">Show All Locations</a>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="liVicavDict_Tunis" href="#">TUNICO Dictionary</a>
                 <a class="dropdown-item" id="liVicavDict_Damascus" href="#">Damascus Dictionary</a>
                 <a class="dropdown-item" id="liVicavDict_Cairo" href="#">Cairo Dictionary</a>
@@ -142,8 +141,9 @@
               <a class="nav-link dropdown-toggle" href="#" id="dropdown06" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Text Technology</a>
               <div class="dropdown-menu" aria-labelledby="dropdown06">
                 <a class="dropdown-item" id="liVicavDictionaryEncoding" href="#">Dictionary Encoding</a>
-                <a class="dropdown-item" id="liVicavVLE" href="#">VLE</a>
-                <a class="dropdown-item" id="liVicavArabicTools" href="#">Arabic Tools</a>
+                <a class="dropdown-item" id="liVicavVLE" href="#">Dictionary Editor (VLE)</a>
+                <a class="dropdown-item" id="liVicavArabicTools" href="#">Tools</a>
+                <a class="dropdown-item" id="liVicavArabicTools" href="#">&#160;&#160;&#160;Corpora (Spoken Varieties)</a>
               </div>
             </li>
             <li class="navbar-icons">
@@ -151,7 +151,7 @@
                 <i class="fa fa-github" aria-hidden="true" title="GitHub"></i>
               </a>
               <a class="search-button" href="#">
-                <i class="fa fa-search" aria-hidden="true" title="Search"></i>
+                <i class="fa fa-search" aria-hidden="true" title="Search Bibliography"></i>
               </a>
             </li>
           </ul>
@@ -164,10 +164,12 @@
         <div class="sub-nav-map-items">
           <span id="sub-nav-biblLoc" class="active"><i class="fa fa-map" aria-hidden="true"></i> Bibl. Locations</span>
           <span id="sub-nav-biblReg"><i class="fa fa-map" aria-hidden="true"></i> Bibl. Regions</span>
-          <span id="sub-nav-allDict"><i class="fa fa-map" aria-hidden="true"></i> Dictionaries</span>
-          <span id="sub-nav-allText"><i class="fa fa-map" aria-hidden="true"></i> Textbooks</span>
+          <span id="sub-nav-allDict"><i class="fa fa-map" aria-hidden="true"></i> Bibl. (Dictionaries)</span>
+          <span id="sub-nav-allText"><i class="fa fa-map" aria-hidden="true"></i> Bibl. (Textbooks)</span>
           <span id="sub-nav-allProf"><i class="fa fa-map" aria-hidden="true"></i> Profiles</span>
           <span id="sub-nav-allFeat"><i class="fa fa-map" aria-hidden="true"></i> Features</span>
+          <span id="sub-nav-allSamp"><i class="fa fa-map" aria-hidden="true"></i> Samples</span>
+          <span id="sub-nav-allDict"><i class="fa fa-map" aria-hidden="true"></i> Dictionaries</span>
         </div>
         <div class="sub-nav-actions">
           <span id="sub-nav-expand"><i class="fa fa-expand" aria-hidden="true"></i> Expand Panels Over Map</span>
@@ -180,8 +182,6 @@
   <main>
     <div class="container-fluid main-map-container">
       <div class="col-md-12 grid-col main-map-col">
-
-
         <!-- Explanation of map contents -->
         <div id="dvExplanations" class="dvExplanations"></div>
         
@@ -315,6 +315,6 @@
   <!--<script src="includes/js/tunico5_dict_funcs.js"></script>-->
   <script src="includes/js/vicav.js"></script>
     
-  <script type="text/javascript">execTextQuery('vicavMission', 'MISSION & OUTLINE', '');</script>
+  <script type="text/javascript">execTextQuery('vicavMission', 'MISSION & OUTLINE', 'vicavTexts.xslt');</script>
   </body>
 </html>

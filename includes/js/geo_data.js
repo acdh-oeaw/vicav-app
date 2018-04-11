@@ -2,14 +2,52 @@
  /* Create geodata with http://www.latlong.net/ */
 /* ******************************************** */
 
+function insertDictMarkers() {
+    setExplanation('Dictionaries');   
+
+    fgDictMarkers.addLayer(L.marker([30.05, 31.23], {alt:'Cairo', id:'dict_cairo'}).bindTooltip('Cairo'));
+    fgDictMarkers.addLayer(L.marker([33.51, 36.29], {alt:'Damascus', id:'dict_damascus'}).bindTooltip('Damascus'));
+    fgDictMarkers.addLayer(L.marker([36.8, 10.18], {alt:'Tunis', id:'dict_tunis'}).bindTooltip('Tunis'));
+}
+
 function insertFeatureMarkers() {
     /* ******************************** */
     /* Create with loc_features__001.xq */
     /* ******************************** */
 
     setExplanation('Features');   
+    /* 
     fgFeatureMarkers.addLayer(L.marker([30.05, 31.23], {alt:'Cairo', id:'ling_features_cairo'}));
     fgFeatureMarkers.addLayer(L.marker([33.51, 36.29], {alt:'Damascus', id:'ling_features_damascus'}));
+    */
+    fgFeatureMarkers.addLayer(L.marker([30.05, 31.23], {alt:'Cairo', id:'ling_features_cairo'}).bindTooltip('Cairo'));
+    fgFeatureMarkers.addLayer(L.marker([33.51, 36.29], {alt:'Damascus', id:'ling_features_damascus'}).bindTooltip('Damascus'));
+    fgFeatureMarkers.addLayer(L.marker([36.8, 10.18], {alt:'Tunis', id:'ling_features_tunis'}).bindTooltip('Tunis'));
+    fgFeatureMarkers.addLayer(L.marker([37.15, 38.79], {alt:'Şanlıurfa', id:'ling_features_urfa'}).bindTooltip('Şanlıurfa'));
+    fgFeatureMarkers.addLayer(L.marker([33.45, 9.01], {alt:'Douz', id:'ling_features_douz'}).bindTooltip('Douz'));
+    fgFeatureMarkers.addLayer(L.marker([33.33, 44.38], {alt:'Baghdad', id:'ling_features_baghdad'}).bindTooltip('Baghdad'));    
+}
+
+function insertSampleMarkers() {
+    /* ******************************** */
+    /* Create with geo_samples_txt__001.xq */
+    /* ******************************** */
+/* 
+    setExplanation('Samples');   
+    fgSampleMarkers.addLayer(L.marker([33.51, 36.29], {alt:'Damascus'}).bindTooltip('Damascus'));
+    fgSampleMarkers.addLayer(L.marker([30.05, 31.23], {alt:'Cairo'}).bindTooltip('Cairo'));
+    fgSampleMarkers.addLayer(L.marker([33.33, 44.38], {alt:'Baghdad'}).bindTooltip('Baghdad'));
+    fgSampleMarkers.addLayer(L.marker([37.15, 38.79], {alt:'Şanlıurfa'}).bindTooltip('Şanlıurfa'));
+    fgSampleMarkers.addLayer(L.marker([36.80, 10.18], {alt:'Tunis'}).bindTooltip('Tunis'));
+    fgSampleMarkers.addLayer(L.marker([33.45, 9.01], {alt:'Douz'}).bindTooltip('Douz'));
+ */
+    fgSampleMarkers.addLayer(L.marker([33.51, 36.29], {alt:'Damascus', id:'damascus_sample_01'}).bindTooltip('Damascus'));
+    fgSampleMarkers.addLayer(L.marker([30.05, 31.23], {alt:'Cairo', id:'cairo_sample_01'}).bindTooltip('Cairo'));
+    fgSampleMarkers.addLayer(L.marker([33.33, 44.38], {alt:'Baghdad', id:'baghdad_sample_01'}).bindTooltip('Baghdad'));
+    fgSampleMarkers.addLayer(L.marker([37.15, 38.79], {alt:'Şanlıurfa', id:'urfa_sample_01'}).bindTooltip('Şanlıurfa'));
+    fgSampleMarkers.addLayer(L.marker([36.8, 10.18], {alt:'Tunis', id:'tunis_sample_01'}).bindTooltip('Tunis'));
+    fgSampleMarkers.addLayer(L.marker([33.45, 9.01], {alt:'Douz', id:'douz_sample_01'}).bindTooltip('Douz'));
+
 }
 
 function insertProfileMarkers() {
@@ -24,17 +62,18 @@ function insertProfileMarkers() {
 
     /* ******************************** */
     /* Create with geo_profiles_txt__002.xq */
-    /* ******************************** */
+    /* ******************************** */   
+          
+    fgProfileMarkers.addLayer(L.marker([33.51, 36.29], {alt:'Damascus', id:'profile_damascus_01'}).bindTooltip('Damascus'));
+    fgProfileMarkers.addLayer(L.marker([30.05, 31.23], {alt:'Cairo', id:'profile_cairo_01'}).bindTooltip('Cairo'));
+    fgProfileMarkers.addLayer(L.marker([36.80, 10.18], {alt:'Tunis', id:'profile_tunis_01'}).bindTooltip('Tunis'));
+    fgProfileMarkers.addLayer(L.marker([34.02, -6.83], {alt:'Salé', id:'profile_sale_01'}).bindTooltip('Salé'));
+    fgProfileMarkers.addLayer(L.marker([23.96, 57.09], {alt:'al-Khaburah', id:'profile_khabura_01'}).bindTooltip('al-Khaburah'));
+    fgProfileMarkers.addLayer(L.marker([33.45, 9.01], {alt:'Douz', id:'profile_douz_01'}).bindTooltip('Douz'));
+    fgProfileMarkers.addLayer(L.marker([35.82, 10.64], {alt:'Sousse', id:'profile_sousse_001'}).bindTooltip('Sousse'));
+    fgProfileMarkers.addLayer(L.marker([37.15, 38.79], {alt:'Şanlıurfa', id:'profile_urfa_01'}).bindTooltip('Şanlıurfa'));
+    fgProfileMarkers.addLayer(L.marker([33.33, 44.38], {alt:'Baghdad', id:'profile_baghdad_01'}).bindTooltip('Baghdad'));
     
-    fgProfileMarkers.addLayer(L.marker([33.51, 36.29], {alt:'Damascus'}));
-    fgProfileMarkers.addLayer(L.marker([30.05, 31.23], {alt:'Cairo'}));
-    fgProfileMarkers.addLayer(L.marker([36.8, 10.18], {alt:'Tunis'}));
-    fgProfileMarkers.addLayer(L.marker([34.02, -6.83], {alt:'Salé'}));
-    fgProfileMarkers.addLayer(L.marker([23.96, 57.09], {alt:'al-Khaburah'}));
-    fgProfileMarkers.addLayer(L.marker([33.45, 9.01], {alt:'Douz'}));
-    fgProfileMarkers.addLayer(L.marker([35.82, 10.64], {alt:'Sousse'}));
-    fgProfileMarkers.addLayer(L.marker([37.15, 38.79], {alt:'Şanlıurfa'}));
-            
 }
 
 function insertBiblRegMarkers() {

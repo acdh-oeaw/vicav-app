@@ -4,10 +4,13 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:z="http://www.zotero.org/namespaces/export#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prism="http://prismstandard.org/namespaces/1.2/basic/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:bib="http://purl.org/net/biblio#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:vcard="http://nwalsh.com/rdf/vCard#" 
    version="2.0">
    
-    <xsl:output method="html"/>
+    <xsl:output method="xhtml"/>
     <xsl:template match="/">
         
         <div>
+           <div class="dvStats">
+              Query:&#160;&#160;<span class="spQueryText">{query}</span>
+           </div>
            <div class="dvStats">
               <xsl:variable name="num" select="//@num"/>
               <xsl:choose>
@@ -21,7 +24,8 @@
             <!-- ***  ENTRY ********************************** -->
             <!-- ********************************************* -->
            <xsl:for-each select="results/bib:Article | results/bib:Book | results/bib:BookSection">
-               <div>
+              <xsl:if test="bib:authors/.//foaf:Person">
+                 <div>
                   
                   <!-- TYPE -->
                   <xsl:choose>
@@ -51,24 +55,35 @@
                   -->
                   
                   <!-- AUTHORS -->
-                  <i class="fa fa-user" aria-hidden="true"></i>
-                  <xsl:if test="bib:authors/.//foaf:Person">
-                     <b>
-                     <xsl:for-each select="bib:authors/.//foaf:Person">
-                        <xsl:if test="position()&gt;1">;&#160;</xsl:if>
-                        <xsl:choose>
-                           <xsl:when test="string-length(foaf:givenname)&gt;0"><xsl:value-of select="foaf:surname"/>,&#160;<xsl:value-of select="foaf:givenname"/></xsl:when>
-                           <xsl:otherwise><xsl:value-of select="foaf:surname"/></xsl:otherwise>
-                        </xsl:choose>
-                     </xsl:for-each>
-                     </b><br/>
-                  </xsl:if>
+                  <!-- <i class="fa fa-user" aria-hidden="true"></i> -->
+                  <!-- <xsl:if test="bib:authors/.//foaf:Person"> -->
+                     <div class="dvAuthor">
+                        <b>
+                           <xsl:for-each select="bib:authors/.//foaf:Person">
+                              <xsl:if test="position()&gt;1">;&#160;</xsl:if>
+                              <xsl:choose>
+                                 <xsl:when test="string-length(foaf:givenname)&gt;0"><xsl:value-of select="foaf:surname"/>,&#160;<xsl:value-of select="foaf:givenname"/></xsl:when>
+                                 <xsl:otherwise><xsl:value-of select="foaf:surname"/></xsl:otherwise>
+                              </xsl:choose>
+                           </xsl:for-each>
+                        </b>
+                     </div>
+                    <!-- </xsl:if> -->
                                                                       
                   <div class="dvBiblBlock">                                                    
                      <!-- TITLE -->
-                     <i class="fa fa-book" aria-hidden="true"></i>
-                     <i class="fa fa-file-text" aria-hidden="true"></i>
+                     <!-- <i class="fa fa-book" aria-hidden="true"></i>
+                     <i class="fa fa-file-text" aria-hidden="true"></i> -->
+                     
+                     <xsl:choose>
+                        <xsl:when test="name()='bib:Book'"><img class="imgBiblItem" src="images/book_001.jpg"/></xsl:when>
+                        <xsl:when test="name()='bib:BookSection'"><img class="imgBiblItem" src="images/booksection_001.jpg"/></xsl:when>
+                        <xsl:when test="name()='bib:Article'"><img class="imgBiblItem" src="images/article_001.jpg"/></xsl:when>
+                     </xsl:choose>
                      <xsl:value-of select="dc:title"/>.&#160;
+                     
+                     <!-- VICAV ID -->
+                     <!-- <xsl:value-of select="substring-after(.//dcterms:abstract, '(biblid:')"/>&#160; -->
 
                      <xsl:if test="dcterms:isPartOf/bib:Journal">
                         In:&#160;<i><xsl:value-of select="dcterms:isPartOf/bib:Journal/dc:title"/>
@@ -78,11 +93,29 @@
                         </i>   
                      </xsl:if>
 
+                     <!-- ORT, Verlag -->
+                     <xsl:choose>
+                        <xsl:when test="dc:publisher[1]/foaf:Organization[1]/vcard:adr[1]/vcard:Address[1]/vcard:locality[1]">
+                           <xsl:value-of select="dc:publisher[1]/foaf:Organization[1]/vcard:adr[1]/vcard:Address[1]/vcard:locality[1]"/>
+                           
+                           <xsl:if test="dc:publisher[1]/foaf:Organization[1]/foaf:name[1]">
+                              &#160;(<xsl:value-of select="dc:publisher[1]/foaf:Organization[1]/foaf:name[1]"/>)
+                           </xsl:if>                           
+                        </xsl:when>
+                        <xsl:when test="not(dc:publisher[1]/foaf:Organization[1]/vcard:adr[1]/vcard:Address[1]/vcard:locality[1])">
+                           <xsl:if test="dc:publisher[1]/foaf:Organization[1]/foaf:name[1]">
+                              &#160;<xsl:value-of select="dc:publisher[1]/foaf:Organization[1]/foaf:name[1]"/>
+                           </xsl:if>                           
+                        </xsl:when>
+                     </xsl:choose>
+                    
+                     
                      <!-- DATE -->
                      <xsl:if test="string-length(dc:date)&gt;0"><xsl:text> </xsl:text>&#160;<xsl:value-of select="dc:date"/>.&#160;</xsl:if>                 
                   </div>
                   
-               </div>   
+               </div>
+              </xsl:if>
             </xsl:for-each>
   
          </div>

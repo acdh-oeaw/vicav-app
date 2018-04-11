@@ -1,2 +1,2 @@
 # vicav-app
-A map-based web application for VICAV project.
+A map-based web application for the VICAV project.

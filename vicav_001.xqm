@@ -13,10 +13,12 @@ declare
     
 function vicav_001:query-index($q as xs:string*, $style as xs:string) {
   let $ns := "declare namespace bib = 'http://purl.org/net/biblio#'; "||
+             "declare namespace rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'; "||
+             "declare namespace foaf= 'http://xmlns.com/foaf/0.1/'; "||  
              "declare namespace dc = 'http://purl.org/dc/elements/1.1/';"
   let $query := $ns||$q
   let $results := xquery:eval($query)   
-  let $stylePath := file:base-dir() || $style
+  let $stylePath := file:base-dir() || 'xslt/' || $style
   let $style := doc($stylePath)
   let $num := count($results)
   let $results := <results num="{$num}">{$results}</results>
@@ -36,7 +38,7 @@ function vicav_001:get_profile($q as xs:string*, $style as xs:string) {
   let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
   let $query := $ns||$q
   let $results := xquery:eval($query)   
-  let $stylePath := file:base-dir() || $style
+  let $stylePath := file:base-dir() || 'xslt/' || $style
   let $style := doc($stylePath)
   let $sHTML := xslt:transform-text($results, $style)
   return $sHTML
@@ -53,7 +55,7 @@ function vicav_001:get_text($q as xs:string*, $style as xs:string) {
   let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
   let $query := $ns||$q
   let $results := xquery:eval($query)   
-  let $stylePath := file:base-dir() || $style
+  let $stylePath := file:base-dir() || 'xslt/' || $style
   let $style := doc($stylePath)
   let $sHTML := xslt:transform-text($results, $style)
   return $sHTML

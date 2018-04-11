@@ -3,11 +3,18 @@
 
   <xsl:output method="html"/>
   <xsl:template match="/">
-    <xsl:apply-templates/>
+    <div><xsl:apply-templates/></div>
   </xsl:template>
 
   <xsl:template match="tei:cell">
-    <td class="tdExpl">
+    <td>
+      <xsl:choose>
+        <xsl:when test="@rend='tdCommentSpan'">
+          <xsl:attribute name="class"><xsl:value-of select="@rend"/></xsl:attribute>
+          <xsl:attribute name="colspan">4</xsl:attribute>
+        </xsl:when>
+        <xsl:when test="@rend"><xsl:attribute name="class"><xsl:value-of select="@rend"/></xsl:attribute></xsl:when>
+      </xsl:choose>
       <xsl:apply-templates/>
     </td>
   </xsl:template>
@@ -25,7 +32,9 @@
   <xsl:template match="tei:head">
     <xsl:choose>
       <xsl:when test="count(ancestor::tei:div) = 1">
-        <h2><xsl:apply-templates/></h2>
+        <table class="tbHeader">
+          <tr><td><h2><xsl:apply-templates/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
+        </table>            
       </xsl:when>
       <xsl:when test="count(ancestor::tei:div) = 2">
         <h3><xsl:apply-templates/></h3>
@@ -41,13 +50,20 @@
   </xsl:template>
 
   <xsl:template match="tei:hi[@rend = 'italic']">
-    <i>
-      <xsl:apply-templates/>
-    </i>
+    <i><xsl:apply-templates/></i>
+  </xsl:template>
+  
+  <xsl:template match="tei:item">
+    <li><xsl:apply-templates/></li>
+  </xsl:template>
+  
+  <xsl:template match="tei:list">
+    <ul><xsl:apply-templates/></ul>
   </xsl:template>
 
   <xsl:template match="tei:p">
-    <p><xsl:apply-templates/></p>        
+    <p>
+      <xsl:apply-templates/></p>        
   </xsl:template>
 
   <xsl:template match="tei:ref">
@@ -55,6 +71,12 @@
       <xsl:when test="@type='dictQuery'">
         <a href="#">      
           <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
+          <xsl:apply-templates/>
+        </a>
+      </xsl:when>
+      <xsl:when test="@type='jsLink'">
+        <a href="#">      
+          <xsl:attribute name="onClick"><xsl:value-of select="@target"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>
       </xsl:when>
@@ -81,6 +103,9 @@
 
   <xsl:template match="tei:table">
     <table>
+      <xsl:choose>
+        <xsl:when test="@rend"><xsl:attribute name="class"><xsl:value-of select="@rend"/></xsl:attribute></xsl:when>
+      </xsl:choose>
       <xsl:apply-templates/>
     </table>
   </xsl:template>
