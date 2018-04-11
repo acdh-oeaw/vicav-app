@@ -109,6 +109,52 @@ function createNewPanel() {
 }
 */
 
+function changePanelVisibility(panel, type) {
+
+  var pID = panel.data('pid');
+  var currentURL = window.location.toString();
+  var args = currentURL.split('?');
+  var baseUrl = args[0];
+  var args = args[1].split('&');
+
+  if (type == 'minimize' ||	type == 'maximize') {
+    if (type == 'minimize') {
+      var visState = 'closed';
+      panel.removeClass('open-panel');
+      panel.addClass('closed-panel');
+    } else {
+      var visState = 'open';
+      panel.removeClass('closed-panel');
+      panel.addClass('open-panel');
+    }
+    for (var i = 1; i < args.length; i++) {
+      if (args[i].charAt(0) == pID) {
+        var pArgs = args[i].split('=');
+        pArgs = pArgs[1].replace(/((\[\s*)|(\s*\]))/g,"");
+        pArgs = pArgs.split(',');
+        pArgs.pop();
+        pArgs.push(visState);
+        pArgs = "[" + pArgs.join(",") + "]";
+        args[i] = pID+"="+pArgs;
+        break;
+      }
+    }
+    args = args.join("&");
+    window.history.replaceState( {} , "", baseUrl+"?"+args);
+  } else if (type == 'close') {
+    for (var i = 1; i < args.length; i++) {
+      if (args[i].charAt(0) == pID) {
+        args.splice(i, 1);
+        break;
+      }
+    }
+    args = args.join("&");
+    window.history.replaceState( {} , "", baseUrl+"?"+args);
+    panel.remove();
+  }
+
+}
+
 
 function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, teiLink_, locType_, pID_, pVisiblity_, pURL_) {
   var openPans = 0;
@@ -119,8 +165,9 @@ function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, tei
       openPans += 1;
     }
   });
-  if (openPans > 2) {
-    $(".open-panel").first().removeClass('open-panel').addClass('closed-panel');
+  if (openPans > 2 && !pURL_) {
+    var firstOpenPan = $(".open-panel").first();
+    changePanelVisibility(firstOpenPan, 'minimize')
   }
   
   var teiLink = '';
@@ -141,12 +188,16 @@ function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, tei
     var pID = pID_;
   }
 
+  if (pURL_) {
+    var cssClass = pVisiblity_+"-panel";
+  } else {
+    var cssClass = "open-panel";
+  }
+
   var resCont = 
   "<div class='" + contClass_ + "'>" +
   result_ + "</div>";
-  $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass('open-panel').attr("data-pid",pID).appendTo( ".panels-wrap" ).append(resCont).find(".chrome-title").html(windowType_ + windowVar_);
-
-
+  $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass(cssClass).attr("data-pid",pID).appendTo( ".panels-wrap" ).append(resCont).find(".chrome-title").html(windowType_ + windowVar_);
 
 }
 
@@ -766,7 +817,7 @@ $(document).ready(
                     execTextQuery(id_, 'HEADING', 'vicavTexts.xslt', pID_, pVisiblity_, true);
                   }
                   
-              }, 250 * i, i);
+              }, 100 * i, i);
          }
        } else {
          window.history.replaceState( {} , "", currentURL+"?map=BiblGeoMarkers&1=[TextQuery,vicavMission,open]");
@@ -1014,11 +1065,11 @@ $(document).ready(
        /* *******************************************************/
        $(document).on("click", '.chrome-minimize', function(){
         if($(this).parents(':eq(1)').hasClass('open-panel')){
-          $(this).parents(':eq(1)').removeClass('open-panel');
-          $(this).parents(':eq(1)').addClass('closed-panel');
+          var panel = $(this).parents(':eq(1)');
+          changePanelVisibility(panel, 'minimize');
         } else if($(this).parents(':eq(1)').hasClass('closed-panel')){
-          $(this).parents(':eq(1)').removeClass('closed-panel');
-          $(this).parents(':eq(1)').addClass('open-panel');
+          var panel = $(this).parents(':eq(1)');
+          changePanelVisibility(panel, 'maximize');
         }
        });
 
@@ -1113,20 +1164,7 @@ $(document).ready(
       /* *******************************************************/               
       $(document).on("click", '.chrome-close', function(){
         var panel = $(this).parents(':eq(1)');
-        var pID = panel.data('pid');
-        var currentURL = window.location.toString();
-        var args = currentURL.split('?');
-        var baseUrl = args[0];
-        var args = args[1].split('&');
-        for (var i = 1; i < args.length; i++) {
-          if (args[i].charAt(0) == pID) {
-            args.splice(i, 1);
-            break;
-          }
-        }
-        args = args.join("&");
-        window.history.replaceState( {} , "", baseUrl+"?"+args);
-        panel.remove();
+        changePanelVisibility(panel, 'close');
       });
 
       $(document).on("click", '.grid-wrap', function(){
