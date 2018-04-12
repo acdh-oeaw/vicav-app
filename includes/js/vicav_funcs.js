@@ -885,7 +885,7 @@ $(document).ready(
           }
        );
 
-       $("#sub-nav-biblLoc").mousedown (
+       $("#BiblGeoMarkers").mousedown (
           function(event) {
              hideAllTabs();
              clearMarkerLayers();
@@ -906,7 +906,7 @@ $(document).ready(
           }
        );
 
-       $("#sub-nav-biblReg").mousedown (
+       $("#BiblRegMarkers").mousedown (
           function(event) {
              hideAllTabs();
              
@@ -997,7 +997,7 @@ $(document).ready(
        /* **************************************** */
        /* ****  Show map with locators *********** */
        /* **************************************** */
-       $("#sub-nav-allDict").mousedown (
+       $("#GeoDictMarkers").mousedown (
           function(event) {
             hideAllTabs();
              
@@ -1008,7 +1008,7 @@ $(document).ready(
           }
        );
 
-       $("#sub-nav-allText").mousedown (
+       $("#GeoTextbookMarkers").mousedown (
           function(event) {
             hideAllTabs();
              
@@ -1019,7 +1019,7 @@ $(document).ready(
           }
        );
 
-       $("#liProfiles,#sub-nav-allProf").mousedown ( function(event) {
+       $("#liProfiles,#ProfileMarkers").mousedown ( function(event) {
             hideAllTabs();           
             clearMarkerLayers();
             insertProfileMarkers();
@@ -1028,7 +1028,7 @@ $(document).ready(
             $(this).addClass("active"); 
        });
 
-       $("#liFeatures,#sub-nav-allFeat").mousedown ( function(event) { 
+       $("#liFeatures,#FeatureMarkers").mousedown ( function(event) { 
              hideAllTabs(); 
              clearMarkerLayers(); 
              insertFeatureMarkers();
@@ -1037,7 +1037,7 @@ $(document).ready(
              $(this).addClass("active"); 
         } );
 
-       $("#liSamples,#sub-nav-allSamp").mousedown ( function(event) {
+       $("#liSamples,#SampleMarkers").mousedown ( function(event) {
             hideAllTabs();
             clearMarkerLayers();
             insertSampleMarkers();
@@ -1047,7 +1047,7 @@ $(document).ready(
           }
        );     
 
-       $("#liDicts,#sub-nav-allDict").mousedown ( function(event) {
+       $("#liDicts,#DictMarkers").mousedown ( function(event) {
             hideAllTabs();
             clearMarkerLayers();
             insertDictMarkers();
