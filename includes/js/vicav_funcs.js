@@ -109,6 +109,22 @@ function createNewPanel() {
 }
 */
 
+function changeURLMapParameter(newParameter) {
+  var currentURL = window.location.toString();
+  if (currentURL.includes('?')) {
+    var args = currentURL.split('?');
+    var baseUrl = args[0];
+    var args = args[1].split('&');
+    // Parse the map
+    var mapArg = args[0].split('=');
+    if (mapArg[0] == 'map') {
+      args[0] = 'map='+newParameter;
+    }
+    args = args.join("&");
+    window.history.replaceState( {} , "", baseUrl+"?"+args);
+  }
+}
+
 function changePanelVisibility(panel, type) {
 
   var pID = panel.data('pid');
@@ -799,7 +815,8 @@ $(document).ready(
            hideAllTabs();
            clearMarkerLayers();
            window["insert"+mapArg[1]]();
-           //TODO make the selected subnav item active
+           $(".sub-nav-map-items .active").removeClass("active");
+           $("#" + mapArg[1]).addClass("active");
          }
          // Parse the panels
          for (var i = 1; i < args.length; i++) {
@@ -892,6 +909,7 @@ $(document).ready(
              insertBiblGeoMarkers();
              $(".sub-nav-map-items .active").removeClass("active");
              $(this).addClass("active");
+             changeURLMapParameter(this.id);
           }
        );
 
@@ -916,6 +934,7 @@ $(document).ready(
             //$('.nav-collapse').collapse('hide');
              $(".sub-nav-map-items .active").removeClass("active");
              $(this).addClass("active");
+             changeURLMapParameter(this.id);
           }
        );
 
@@ -1005,6 +1024,7 @@ $(document).ready(
             insertGeoDictMarkers();
             $(".sub-nav-map-items .active").removeClass("active");
             $(this).addClass("active");
+            changeURLMapParameter(this.id);
           }
        );
 
@@ -1016,6 +1036,7 @@ $(document).ready(
             insertGeoTextbookMarkers();
             $(".sub-nav-map-items .active").removeClass("active");
             $(this).addClass("active");
+            changeURLMapParameter(this.id);
           }
        );
 
@@ -1025,7 +1046,8 @@ $(document).ready(
             insertProfileMarkers();
             
             $(".sub-nav-map-items .active").removeClass("active");
-            $(this).addClass("active"); 
+            $(this).addClass("active");
+            changeURLMapParameter(this.id);
        });
 
        $("#liFeatures,#FeatureMarkers").mousedown ( function(event) { 
@@ -1034,7 +1056,8 @@ $(document).ready(
              insertFeatureMarkers();
              
              $(".sub-nav-map-items .active").removeClass("active");
-             $(this).addClass("active"); 
+             $(this).addClass("active");
+             changeURLMapParameter(this.id);
         } );
 
        $("#liSamples,#SampleMarkers").mousedown ( function(event) {
@@ -1044,6 +1067,7 @@ $(document).ready(
             
             $(".sub-nav-map-items .active").removeClass("active");
             $(this).addClass("active");
+            changeURLMapParameter(this.id);
           }
        );     
 
@@ -1054,6 +1078,7 @@ $(document).ready(
             
             $(".sub-nav-map-items .active").removeClass("active");
             $(this).addClass("active");
+            changeURLMapParameter(this.id);
           }
        );     
 
