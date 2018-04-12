@@ -9,7 +9,7 @@
                                         
         <div>
             <table class="tbHeader">
-                <tr><td><h2><xsl:value-of select="//tei:name[@xml:lang='eng']"/></h2></td><td class="tdTeiLink"><span class="spTeiLink">{teiLink}</span></td></tr>
+                <tr><td><h2><xsl:value-of select="//tei:name[@xml:lang='eng']"/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
             </table>    
             
             <div class="dvImgProfile">

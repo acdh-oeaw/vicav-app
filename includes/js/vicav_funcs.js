@@ -376,7 +376,7 @@ function execBiblQuery(query_, loc_, keyword_, locType_, pID_, pVisiblity_, pURL
   query01 = query_;
   var subs = '';
   //console.log('execBiblQuery');
-  console.log(query_ + ' : ' + loc_ + ' : ' + keyword_ + ' : ' + locType_);        
+  console.log("execBiblQuery: " + query_ + ' : ' + loc_ + ' : ' + keyword_ + ' : ' + locType_);        
   //var sarray = query01.split('|');
   //for(var i = 0; i < sarray.length; i++) {
     
