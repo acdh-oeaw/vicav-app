@@ -174,7 +174,7 @@ function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, tei
   if ((result_.indexOf('<pre ') == -1)&&(teiLink_.length > 0)) {
     teiLink = "<span class='spTeiLink'><a href='javascript:" + teiLink_ + "'>TEI</a></span>";
   } else { teiLink = ''; }
-  console.log('teiLink: ' + teiLink);  
+  /*console.log('teiLink: ' + teiLink);*/  
   result_ = result_.replace(/{teiLink}/, teiLink);
 
   // Add view to URL
