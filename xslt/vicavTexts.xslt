@@ -69,19 +69,19 @@
   <xsl:template match="tei:ref">
     <xsl:choose>
       <xsl:when test="@type='dictQuery'">
-        <a href="#">      
+        <a>      
           <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@type='jsLink'">
-        <a href="#">      
+        <a>      
           <xsl:attribute name="onClick"><xsl:value-of select="@target"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@xml:id">
-          <a href="#">      
+          <a>      
           <xsl:attribute name="id"><xsl:value-of select="@xml:id"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>

@@ -217,7 +217,7 @@ function createNewQueryBiblioPanel() {
 }
 
 
-function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_) {
+function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_, pID_, pVisiblity_, pURL_) {
 
   ob = $("#loading-wrapper" + idSuffix_).length;
   if (ob > 0) {
@@ -268,7 +268,7 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_)
     
         //"</form>";
      
-        appendToPanel(searchContainer, dictName_, "", "grid-wrap dict-grid-wrap", '', '');
+        appendToPanel(searchContainer, 'DictQueryPanel', dict_, "grid-wrap dict-grid-wrap", '', '', '', pID_, pVisiblity_, pURL_);
    }
 }
 
@@ -313,7 +313,7 @@ function hideElement(id_) {
     $(id_).hide();
 }
          
-function execSampleQuery(coll_, id_, style_) {
+function execSampleQuery(coll_, id_, style_, pID_, pVisiblity_, pURL_) {
   id_ = id_.replace(/sampleText:/, '');
  
   /*console.log('style: ' + style_);*/ 
@@ -335,7 +335,7 @@ function execSampleQuery(coll_, id_, style_) {
         } else {
           /*console.log(result);*/ 
           teiLink = 'execSampleQuery("' + coll_ + '", "' + id_ + '", "tei_2_html__v004__gen.xsl")';
-          appendToPanel(result, "Sample Query: ", id_, "grid-wrap", '', teiLink);
+          appendToPanel(result, "SampleQuery", id_, "grid-wrap", '', teiLink, '',  pID_, pVisiblity_, pURL_);
             //createNewPanel();
             //$("#dvCaption_" + lastTextPanelID).html('SAMPLE TEXT');
             //$("#" + lastTextPanelID).html(result);
@@ -448,7 +448,7 @@ function execBiblQuery(query_, loc_, keyword_, locType_, pID_, pVisiblity_, pURL
   });             
 }
 
-function getFeature_(caption_, id_, style_) {         
+function getFeature_(caption_, id_, style_, pID_, pVisiblity_, pURL_) {         
   //qs = 'http://localhost:8984/vicav_001/profile?q=let $out := collection("vicav_lingfeatures")//tei:TEI[@xml:id="' + id_ + '"] return $out&s=features_01.xslt';
   qs = '/vicav_001/profile?q=let $out := collection("vicav_lingfeatures")//tei:TEI[@xml:id="' + id_ + '"] return $out&s=' + style_;
   
@@ -471,7 +471,7 @@ function getFeature_(caption_, id_, style_) {
             $("#" + lastTextPanelID).html(result);
 */
             teiLink = 'getFeature_("' + caption_ + '", "' + id_ + '", "tei_2_html__v004__gen.xsl")';
-            appendToPanel(result, "Ling. Feature: ", caption_, "grid-wrap", '', teiLink);
+            appendToPanel(result, "getFeature", id_, "grid-wrap", '', teiLink, '',  pID_, pVisiblity_, pURL_);
         }
      },
      error: function (error) {
@@ -480,7 +480,7 @@ function getFeature_(caption_, id_, style_) {
   });             
 }
 
-function getProfile__(caption_, id_, style_) {
+function getProfile__(caption_, id_, style_,  pID_, pVisiblity_, pURL_) {
   qs = '/vicav_001/profile?q=let $out := collection("vicav_profiles")//tei:TEI[@xml:id="' + id_ + '"] return $out&s=' + style_;
   /* qs = '/vicav_001/profile?q=let $out := collection("vicav_profiles")//tei:TEI[@xml:id="' + id_ + '"] return $out&s=tei_2_html__v004__gen.xsl'; */
   //console.log(qs);        
@@ -498,7 +498,7 @@ function getProfile__(caption_, id_, style_) {
             alert('Error: authentication did not work');                  
         } else {
           teiLink = 'getProfile__("' + caption_ + '", "' + id_ + '", "tei_2_html__v004__gen.xsl")';
-          appendToPanel(result, "Profile: ", id_, "grid-wrap", '', teiLink);
+          appendToPanel(result, "getProfile", id_, "grid-wrap", '', teiLink, '',  pID_, pVisiblity_, pURL_);
         }
      },
      error: function (error) {
@@ -818,9 +818,32 @@ $(document).ready(
                     var id_ = pArgs[1];
                     var pVisiblity_ = pArgs[2];
                     execTextQuery(id_, 'HEADING', 'vicavTexts.xslt', pID_, pVisiblity_, true);
+                  } else if (queryFunc == 'getProfile') {
+                    var id_ = pArgs[1];
+                    var pVisiblity_ = pArgs[2];
+                    getProfile__('', id_, 'profile_01.xslt', pID_, pVisiblity_, true);
+                  } else if (queryFunc == 'getFeature') {
+                    var id_ = pArgs[1];
+                    var pVisiblity_ = pArgs[2];
+                    getFeature_('', id_, 'features_01.xslt', pID_, pVisiblity_, true);
+                  } else if (queryFunc == 'SampleQuery') {
+                    var id_ = pArgs[1];
+                    var pVisiblity_ = pArgs[2];
+                    execSampleQuery('vicav_samples', id_, 'sampletext_01.xslt', pID_, pVisiblity_, true);
+                  } else if (queryFunc == 'DictQueryPanel') {
+                    var id_ = pArgs[1];
+                    var pVisiblity_ = pArgs[2];
+                    if (id_ == 'dc_tunico') {
+                      createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary Query', '_tunis', 'tunis_001.xslt', charTable_tunis, pID_, pVisiblity_, true);
+                    } else if (id_ == 'dc_apc_eng_03') {
+                      createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary Query', '_damascus', 'damascus_001.xslt', charTable_damasc, pID_, pVisiblity_, true);
+                    } else if (id_ == 'dc_arz_eng_007') {
+                      createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_001.xslt', charTable_cairo, pID_, pVisiblity_, true);
+                    } else if (id_ == 'dc_ar_en') {
+                      createNewDictQueryPanel('dc_ar_en', 'MSA Dictionary Query', '_MSA', 'fusha_001.xslt', charTable_msa, pID_, pVisiblity_, true);
+                    }
                   }
-                  
-              }, 100 * i, i);
+              }, 200 * i, i);
          }
        } else {
          window.history.replaceState( {} , "", currentURL+"?map=BiblGeoMarkers&1=[TextQuery,vicavMission,open]");
@@ -1205,7 +1228,9 @@ $(document).ready(
        });
 
        $('#sub-nav-close').on('click', function(){
-          $('.content-panel:not(.initial-closed-panel)').remove();
+          $('.content-panel:not(.initial-closed-panel)').each(function(i, obj) {
+              changePanelVisibility($(this), 'close');
+          });
        });
 
       $("body").tooltip({
