@@ -182,7 +182,10 @@ function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, tei
     var pID = $('.content-panel').last().data('pid') + 1;
     if (!pURL_) {
       var currentURL = window.location.toString();
-      window.history.replaceState( {} , "", currentURL+"&"+pID+"=["+windowType_+","+windowVar_+","+locType_+",open]");
+      var argList = pID+"=["+windowType_+","+windowVar_+",";
+      if (locType_) { argList = argList + locType_+","; }
+      argList = argList + "open]";
+      window.history.replaceState( {} , "", currentURL+"&"+argList);
     }
   } else {
     var pID = pID_;
@@ -361,7 +364,7 @@ function execTextQuery(id_, windowType_, style_, pID_, pVisiblity_, pURL_) {
             alert('Error: authentication did not work');                  
         } else {
           teiLink = 'execTextQuery("' + id_ + '", "' + windowType_ + '", "tei_2_html__v004__gen.xsl")';
-          appendToPanel(result, "TextQuery", '', "grid-wrap", '', teiLink, '', pID_, pVisiblity_, pURL_);
+          appendToPanel(result, "TextQuery", id_, "grid-wrap", '', teiLink, '', pID_, pVisiblity_, pURL_);
         }
      },
      error: function (error) { alert('Error: ' + error); }                           

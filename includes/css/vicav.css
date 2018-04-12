@@ -1076,3 +1076,7 @@ a:hover {
      /*border: 1px solid black;*/
      width: 100%;
  }
+ 
+.navbar li a {
+    cursor: pointer;
+}
