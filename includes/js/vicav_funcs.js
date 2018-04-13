@@ -216,7 +216,7 @@ function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, tei
   var resCont = 
   "<div class='" + contClass_ + "'>" +
   result_ + "</div>";
-  $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass(cssClass).attr("data-pid",pID).appendTo( ".panels-wrap" ).append(resCont).find(".chrome-title").html(windowType_ + windowVar_);
+  $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass(cssClass).attr("data-pid",pID).appendTo( ".panels-wrap" ).append(resCont).find(".chrome-title").html(windowType_ +": "+ windowVar_);
 
 }
 
