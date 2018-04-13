@@ -458,12 +458,15 @@ h4::after {
 .dvCharTable {
    border: 1px solid grey;
    margin-top: -15px;
-   background: rgb(255,255,251);
    left: 65px;
    padding: 2px;
    padding-bottom: 6px;
 }
-                         
+
+.dict-search-wrapper .tbInputFrame {
+    background: transparent;
+}
+
 .dvInpText {
    padding-left: 20px;
    padding-top: 5px; 
@@ -836,6 +839,7 @@ div.imgProfile {
     height: 40px;
     border-radius: 0.25rem;
     transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    cursor: pointer;
 }
 
 #liVicavDictQuery_Tunis:hover, #liVicavDictQuery_Damascus:hover, #liVicavDictQuery_Cairo:hover, #liVicavDictQuery_MSA:hover {
@@ -850,10 +854,11 @@ div.imgProfile {
     background-color: white;
     border-color: rgb(168, 93, 143);
     /* border: 2px solid rgb(168, 93, 143); */
+    cursor: pointer;
 }
 
 .dictQueryBtn:hover {
-    color: #fff;
+    color: #fff !important;
     background-color: rgb(168, 93, 143);
     border-color: rgb(168, 93, 143);   
 }
@@ -1063,13 +1068,31 @@ a:hover {
 .tdTeiLink {
 /*  border: 1px solid rgb(168, 93, 143);*/    
     text-align: right;
+    vertical-align: top;
+}
+
+.tdTeiLink a:hover {
+    text-decoration: none;
+    color: #fff;
 }
 
 .spTeiLink {
     font-size: 12px;
     border: 1px solid rgb(168, 93, 143);    
     border-radius: 5px;
-    padding: 5px;
+    padding: 5px 8px;
+    font-weight: 500;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.spTeiLink:hover {
+    color: #fff;
+    background-color: #a85c8e;
+    text-decoration: none;
 }
 
  .tbHeader {
