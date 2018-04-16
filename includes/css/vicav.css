@@ -374,7 +374,7 @@ h2.how-to-heading {
     transition: color 0.1s ease-in;
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1700px) {
   .sub-nav span {
     margin-right: 15px;
     font-size: 13px;
