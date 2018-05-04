@@ -1,23 +1,101 @@
+/* ************************************************************************* */
+/* ************** REST INTERFACE ******************************************* */
+/* ************************************************************************* */
+/*
+    text
+      params: id, xslt
+      
+    biblio
+      params: query, xslt
+     
+    sample
+      params: coll, id, xslt
+
+    profile
+      params: coll=vicav_lingfeatures|vicav_profile, id, xslt
+    
+    dict_index
+      params: dict, ind, str
+    
+    dict_api
+      params: query, dict, xslt
+
+*/
+ 
 var inpSel = 0;         
 var ramz = "";
 var usr = "";
 var containerCount = 0;
 var lastTextPanelID = '';
 var panelIDs = [];
-
+var vicav_rest = 'vicav';
+/* 
+   To create a new Version
+       1. Rename vicav_rest variable
+       2. Rename vicav_00x.xqm
+       3. Rename function names in vicav_00x.xqm
+       4. rename "/vicav_00x/index.html" in index.html 
+ */
 var charTable_tunis = '’,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž';
 var charTable_cairo = '’,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž';
 var charTable_damasc = '’,ʕ,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ǝ,ᵊ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž';
 var charTable_msa = 'ˀ,ˁ,ā,ḍ,ḏ,ē,ġ,ǧ,ḥ,ī,ḷ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ʔ';
 
-function createCharTable(idSuffix_, chars_) {
-   sarr = chars_.split(',');
-   s = '';
-   for (var i = 0, len = sarr.length; i < len; i++) {
-     s = s + "   <div id='ct" + idSuffix_ + "' class='dvLetter'>" + sarr[i] + "</div>";     
-   }
-   return "   <div class='dvCharTable' id='dvCharTable" + idSuffix_ + "'>" + s + "   </div>";
+
+/* ************************************************************************* */
+/* ** MAP Functions ******************************************************** */
+/* ************************************************************************* */
+
+function onBiblMapClick(e) {
+  /*query = e.latlng.lat.toFixed(2) + '.*' + e.latlng.lng.toFixed(2);*/
+  /*execBiblQuery(query, e.layer.options.alt, e.layer.options.biblType, e.layer.options.locType);*/
+  
+  execBiblQuery(e.layer.options.biblQuery);
+}            
+
+function onProfilesMapClick(e) {
+  /*Should look like: getProfile__('Baghdad', 'profile_baghdad_01', 'profile_01.xslt'); */
+  getProfile__(e.layer.options.alt, e.layer.options.id, 'profile_01.xslt');
 }
+   
+function onFeaturesMapClick(e) {
+  query = e.latlng.lat.toFixed(2) + '.*' + e.latlng.lng.toFixed(2);
+  getFeature_(e.layer.options.alt, e.layer.options.id, 'features_01.xslt');
+  
+}  
+
+function onSamplesMapClick(e) {
+  getSample_('vicav_samples', e.layer.options.id, 'sampletext_01.xslt');
+}  
+
+function onDictMapClick(e) {
+  //execSampleQuery('vicav_samples', e.layer.options.id, 'sampletext_01.xslt');
+  if (e.layer.options.id == 'dict_tunis') { execTextQuery('dictFrontPage_Tunis', 'TUNICO DICTIONARY', 'vicavTexts.xslt'); } 
+  if (e.layer.options.id == 'dict_damascus') { execTextQuery('dictFrontPage_Damascus', 'DAMASCUS DICTIONARY', 'vicavTexts.xslt'); } 
+  if (e.layer.options.id == 'dict_cairo') { execTextQuery('dictFrontPage_Cairo', 'CAIRO DICTIONARY', 'vicavTexts.xslt'); }   
+}  
+
+var mainMap = L.map('dvMainMap').setView([19.064, 24.544], 4);
+L.tileLayer('https://api.mapbox.com/styles/v1/acetin/cjb22mkrf16qf2spyl3u1vee3/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWNldGluIiwiYSI6ImNqYjIybG5xdTI4OWYyd285dmsydGFkZWQifQ.xG4sN5u8h-BoXaej6OjkXw', {
+  maxZoom: 20,
+  attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+  '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+  'Imagery © <a href="http://mapbox.com">Mapbox</a>'
+    }).addTo(mainMap);
+    
+//mainMap.scrollWheelZoom.disable();
+
+var fgBiblMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
+
+var fgProfileMarkers = L.featureGroup().addTo(mainMap).on("click", onProfilesMapClick);
+var fgSampleMarkers = L.featureGroup().addTo(mainMap).on("click", onSamplesMapClick);
+var fgFeatureMarkers = L.featureGroup().addTo(mainMap).on("click", onFeaturesMapClick);
+var fgGeoDictMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
+var fgDictMarkers = L.featureGroup().addTo(mainMap).on("click", onDictMapClick);
+
+/* ************************************************************************* */
+/* *** General String functions ******************************************** */
+/* ************************************************************************* */
 
 function xmlToString(xmlData) { 
   var xmlString;
@@ -36,7 +114,6 @@ function countChar(s_, c_) {
    ilen = s_.length;
    var res = 0;
    for (i=0; i!=ilen; i++) {
-      //console.log(s_.charAt(i));
       if (s_.charAt(i) == c_)
         res = res + 1;
    }
@@ -55,6 +132,21 @@ function trim(s_) {
   return res;
 }
 
+function insert(str, index, value) {
+   return str.substr(0, index) + value + str.substr(index);
+}
+
+/* ************************************************************************* */
+/* ************************************************************************* */
+/* ************************************************************************* */
+function createCharTable(idSuffix_, chars_) {
+   sarr = chars_.split(',');
+   s = '';
+   for (var i = 0, len = sarr.length; i < len; i++) {
+     s = s + "   <div id='ct" + idSuffix_ + "' class='dvLetter'>" + sarr[i] + "</div>";     
+   }
+   return "   <div class='dvCharTable' id='dvCharTable" + idSuffix_ + "'>" + s + "   </div>";
+}
 function createMatchString(s_) {
   res = "";
   s_ = trim(s_);
@@ -87,27 +179,9 @@ function panelsBack() {
 }
 
 function addID(id_) {
-    console.log(id_);
     panelIDs.push(id_);
     document.getElementById("dvOpenPanels").innerHTML = panelIDs.toString();
 }
-
-/*  
-function createNewPanel() {
-    sContainerID = 'dvDragContainer' + containerCount;
-    lastTextPanelID = 'dvTextPanel' + containerCount;
-    containerCount = containerCount + 1;
-    addID(sContainerID);
-    
-    $("#body").append('<div id="' + sContainerID + '" class="ui-widget-content">' + 
-    '<button class="btClosePanel" type="button" id="delButton0" onmousedown="delElement(\'#' + sContainerID + '\')">X</button>' + 
-    '<div id="dvCaption_' + lastTextPanelID + '" class="dvCaption">CAPTION</div>' +
-    '<p id="' + lastTextPanelID + '" class="dvCont">' + 
-    lastTextPanelID + '</p></div>' +
-    '');
-    $('#' + sContainerID).draggable({cancel : 'p', stack: ".ui-widget-content"});   
-}
-*/
 
 function changeURLMapParameter(newParameter) {
   var currentURL = window.location.toString();
@@ -188,9 +262,8 @@ function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, tei
   
   var teiLink = '';
   if ((result_.indexOf('<pre ') == -1)&&(teiLink_.length > 0)) {
-    teiLink = "<span class='spTeiLink'><a href='javascript:" + teiLink_ + "'>TEI</a></span>";
+    teiLink = "<a href='javascript:" + teiLink_ + "' class='aTEIButton'>TEI</a>";
   } else { teiLink = ''; }
-  /*console.log('teiLink: ' + teiLink);*/  
   result_ = result_.replace(/{teiLink}/, teiLink);
 
   // Add view to URL
@@ -213,10 +286,9 @@ function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, tei
     var cssClass = "open-panel";
   }
 
-  var resCont = 
-  "<div class='" + contClass_ + "'>" +
-  result_ + "</div>";
-  $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass(cssClass).attr("data-pid",pID).appendTo( ".panels-wrap" ).append(resCont).find(".chrome-title").html(windowType_ +": "+ windowVar_);
+  var resCont = "<div class='" + contClass_ + "'>" + result_ + "</div>";  
+  if (windowVar_.length == 0) { var htmlCont = windowType_; } else {var htmlCont = windowType_ +": "+ windowVar_;}   
+  $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass(cssClass).attr("data-pid",pID).appendTo( ".panels-wrap" ).append(resCont).find(".chrome-title").html(htmlCont);
 
 }
 
@@ -224,11 +296,17 @@ function setExplanation(s_) {
     document.getElementById("dvExplanations").innerHTML = s_;    
 }
 
+function createBiblExplanationPanel() {
+   execTextQuery('vicavExplanationBibliography', 'BIBLIOGRAPHY: Explanation', 'vicavTexts.xslt');    
+}
+
 function createNewQueryBiblioPanel() {
+   
     var searchContainer = "<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
                 "   <input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in bibliographies ...' aria-label='Search'>" + 
                 "   <button class='newBiblQueryBtn'>Query</button>" +
-                "'</form>";
+                "'</form><br/>" + 
+                "<p>For details as to how to formulate queries <a class='aVicText' href='javascript:createBiblExplanationPanel()'>click here</a>.</p>";
     appendToPanel(searchContainer, "QUERY BIBLIOGRAPHY", "", "grid-wrap", '', '');
 }
 
@@ -243,10 +321,10 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_,
     var js = 'javascript:execDictQuery_tei("' + idSuffix_ + '")';
     var searchContainer =    
         //"<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
-        "   <div class='loading-wrapper' id='loading-wrapper" + idSuffix_ + "'><img class='imgPleaseWait' id='imgPleaseWait" + idSuffix_ + "' src='balls_in_circle.gif' alt='Query'></div>"+
+        "   <div class='loading-wrapper' id='loading-wrapper" + idSuffix_ + "'><img class='imgPleaseWait' id='imgPleaseWait" + idSuffix_ + "' src='images/balls_in_circle.gif' alt='Query'></div>"+
         "   <div class='dict-search-wrapper'>"+
         "    <table class='tbHeader'>"+
-        "        <tr><td><h2>" + dictName_ + "</h2></td><td class='tdTeiLink'><a href='" + js + "'><span class='spTeiLink'>TEI</span></a></td></tr>"+
+        "        <tr><td><h2>" + dictName_ + "</h2></td><td class='tdTeiLink'><a href=\'" + js + "\' class='aTEIButton'>TEI</a></td></tr>"+                                                                              
         "    </table>"+    
         /*"   <div class='dict-heading' id='dv_" + dict_ + "'>" + dictName_ + "</div>"+*/
         "   <table class='tbInputFrame'>" + 
@@ -267,7 +345,7 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_,
         "                   <option value='etymSrc'>Words in etymologies</option>"+
         "               </select>"+
         "            </div>"+  
-        "        <div class='tdInputFrameRight my-2 my-sm-0'><button class='btn btn-outline-success dictQueryBtn' id='newDictQuerybtn" + idSuffix_ + "'>Search</button></div>"+
+        "        <div class='tdInputFrameRight my-2 my-sm-0'><span id='newDictQuerybtn" + idSuffix_ + "' class='spTeiLink'><a class='aVicText'>Search</a></span></div>"+
         "      </div>"+
         "    </table>"+
        
@@ -295,7 +373,7 @@ function autoDictQuery(idSuffix_, query_, field_) {
  
     ob = document.getElementById('inpDictQuery' + idSuffix_);
     if (ob==null) {
-      createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary', '_tunis', 'tunis_001.xslt', charTable_tunis);           
+      createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary', '_tunis', 'tunis_dict_001.xslt', charTable_tunis);           
     }
     
     ob = document.getElementById('inpDictQuery' + idSuffix_);
@@ -306,21 +384,6 @@ function autoDictQuery(idSuffix_, query_, field_) {
     } 
 }
 
-/* 
-function createBiblioPanel() {   
-    addID("dvLibrary");
-    $("#body").append('<div id="dvLibrary" class="ui-widget-content">' + 
-    '<button class="btClosePanel" type="button" id="delButton0" onmousedown="hideElement(\'#dvLibrary\')">Hide</button>' + 
-    '<div id="dvCaption" class="dvCaption"></div>' +
-    '<div id="dvQuery" class="dvQuery">Search <input type="text" id="txtBiblioQuery" value="" class="inpText"/> in LIBRARY</div>' +
-    '<p id="pLibrary" class="dvCont"> </p>' +
-    '' +
-    '</div>');
-    $('#dvLibrary').draggable({cancel : 'p, input', stack: ".ui-widget-content"});
-    $('#dvLibrary').hide();
-}
-*/
- 
 function delElement(id_) {
     $(id_).remove();
 }
@@ -329,43 +392,8 @@ function hideElement(id_) {
     $(id_).hide();
 }
          
-function execSampleQuery(coll_, id_, style_, pID_, pVisiblity_, pURL_) {
-  id_ = id_.replace(/sampleText:/, '');
- 
-  /*console.log('style: ' + style_);*/ 
-  qs = '/vicav_001/profile?q=let $out := collection("' + coll_ + '")//tei:TEI[@xml:id="' + id_ + '"] return $out&s=' + style_;
-  /* console.log(qs); */
-  /* console.log(coll_ + ' : ' + id_); */  
-   
-  $.ajax({
-     url: qs,
-     type: 'GET',
-     dataType: 'html',
-     cache: false,
-     crossDomain: true,
-     contentType: 'application/html; ',
-     success: function (result) {
-        //console.log(result);
-        if (result.includes('error type="user authentication"')) {
-            alert('Error: authentication did not work');                  
-        } else {
-          /*console.log(result);*/ 
-          teiLink = 'execSampleQuery("' + coll_ + '", "' + id_ + '", "tei_2_html__v004__gen.xsl")';
-          appendToPanel(result, "SampleQuery", id_, "grid-wrap", '', teiLink, '',  pID_, pVisiblity_, pURL_);
-            //createNewPanel();
-            //$("#dvCaption_" + lastTextPanelID).html('SAMPLE TEXT');
-            //$("#" + lastTextPanelID).html(result);
-        }
-     },
-     error: function (error) {
-        alert('Error: ' + error);
-     }                           
-  });
-}
-
-function execTextQuery(id_, windowType_, style_, pID_, pVisiblity_, pURL_) {
-    qs = '/vicav_001/text?q=let $out := collection("vicav_texts")//tei:div[@xml:id="' + id_ + '"] return $out&s=' + style_;
-    //console.log(qs);  
+function execTextQuery(id_, secLabel_, style_, pID_, pVisiblity_, pURL_) {
+    qs = '/' + vicav_rest + '/text?id=' + id_ + '&xslt=' + style_;
    
     $.ajax({
      url: qs,
@@ -375,87 +403,33 @@ function execTextQuery(id_, windowType_, style_, pID_, pVisiblity_, pURL_) {
      crossDomain: true,
      contentType: 'application/html; ',
      success: function (result) {
-        //console.log(result);
         if (result.includes('error type="user authentication"')) {
             alert('Error: authentication did not work');                  
         } else {
-          teiLink = 'execTextQuery("' + id_ + '", "' + windowType_ + '", "tei_2_html__v004__gen.xsl")';
-          appendToPanel(result, "TextQuery", id_, "grid-wrap", '', teiLink, '', pID_, pVisiblity_, pURL_);
+          teiLink = 'execTextQuery("' + id_ + '", "' + secLabel_ + '", "tei_2_html__v004__gen.xsl")';
+          appendToPanel(result, "Text", secLabel_, "grid-wrap", '', teiLink, '', pID_, pVisiblity_, pURL_);
         }
      },
      error: function (error) { alert('Error: ' + error); }                           
   });
 }
 
-function execBiblQuery(query_, loc_, keyword_, locType_, pID_, pVisiblity_, pURL_) {
-  /* query01 = query_.replace(/\./g, '\\\.'); */
-  query01 = query_;
-  var subs = '';
-  //console.log('execBiblQuery');
-  console.log("execBiblQuery: " + query_ + ' : ' + loc_ + ' : ' + keyword_ + ' : ' + locType_);        
-  //var sarray = query01.split('|');
-  //for(var i = 0; i < sarray.length; i++) {
-    
-  if (locType_ == 'region') {
-     subs = '[node()][dc:subject[text() contains text "reg:' + loc_ + '" using wildcards using diacritics sensitive]]';      
-  } else 
-  if (locType_ == 'point') {
-     subs = '[node()][dc:subject[text() contains text "geo:' + loc_ + '" using wildcards using diacritics sensitive]]';
-  } else 
-
-  if ((locType_ == undefined) && (keyword_ == undefined) && (loc_ == undefined)) {
-          
-     var sarray = query01.split('&');        
-     for(var i = 0; i < sarray.length; i++) {
-        subs = subs + '[.//node()[text() contains text "' + sarray[i] + '" using wildcards using diacritics sensitive]]';    
-     }
-     
-  } else {
-     //console.log('locType_ = undefined');
-     subs = '[dc:subject[text() contains text "' + query01 + '" using wildcards using diacritics sensitive]]'; 
-  }
-  
-  if ((keyword_ != '')&&(keyword_ != undefined)) {
-    subs = subs + '[dc:subject[text() contains text "' + keyword_ + '" using wildcards using diacritics sensitive]]';
-    customQuery = "biblQuery";
-  }  
- 
-  /* 
-  qs = '/vicav_001/biblio?q=let $art := collection("vicav_biblio")//' +
-          'node()[(name()="bib:Article") or (name()="bib:Book") or (name()="bib:BookSection")]' + subs + ' return $art&s=biblio_01.xslt';
-  */
-  
-  qs = '/vicav_001/biblio?q=' + 
-       'let $arts := collection("vicav_biblio")//node()[(name()="bib:Article") or (name()="bib:Book") or (name()="bib:BookSection")] ' +
-       subs + 
-       'for $art in $arts ' + 
-       'let $author := $art/bib:authors[1]/rdf:Seq[1]/rdf:li[1]/foaf:Person[1]/foaf:surname[1] ' + 
-       'order by $author return $art&s=biblio_01.xslt';
-  /*console.log(qs);*/
-  
-  if (loc_ == undefined) {
-    loc_ = query_;
-  }
-            
-  $.ajax({
+function execBiblQuery(query_, locType_, pID_, pVisiblity_, pURL_) {
+   restQuery_ = query_.replace(/&/, ',');
+   qs = '/' + vicav_rest + '/biblio?query=' + restQuery_ + '&xslt=biblio_01.xslt'
+   
+   $.ajax({
      url: qs,
      type: 'GET',
      dataType: 'html',
      cache: false,
      crossDomain: true,
      contentType: 'application/html; ',
-     success: function (result) {
-        //console.log(result);
-          
+     success: function (result) {         
         if (result.includes('error type="user authentication"')) {
             alert('Error: authentication did not work');                  
         } else {            
-            //createNewPanel();
-          //console.log(result);
-          appendToPanel(result, "BiblQuery", loc_, "grid-wrap", query_, '', locType_, pID_, pVisiblity_, pURL_);
-            //$("#pLibrary").html(result);
-            //$("#dvCaption").html('<b>Query: </b>' + query_);
-            //$('#dvLibrary').show();
+          appendToPanel(result, "Bibl. Query", '', "grid-wrap", query_, '', '', pID_, pVisiblity_, pURL_);
         }
      },
      error: function (error) {
@@ -464,11 +438,11 @@ function execBiblQuery(query_, loc_, keyword_, locType_, pID_, pVisiblity_, pURL
   });             
 }
 
-function getFeature_(caption_, id_, style_, pID_, pVisiblity_, pURL_) {         
-  //qs = 'http://localhost:8984/vicav_001/profile?q=let $out := collection("vicav_lingfeatures")//tei:TEI[@xml:id="' + id_ + '"] return $out&s=features_01.xslt';
-  qs = '/vicav_001/profile?q=let $out := collection("vicav_lingfeatures")//tei:TEI[@xml:id="' + id_ + '"] return $out&s=' + style_;
-  
-  //console.log('getFeature_: ' + qs);        
+ 
+function getSample_(coll_, id_, style_, pID_, pVisiblity_, pURL_) {
+  id_ = id_.replace(/sampleText:/, '');
+  qs = '/' + vicav_rest + '/sample?coll=' + coll_ + '&id=' + id_ + '&xslt=' + style_;
+   
   $.ajax({
      url: qs,
      type: 'GET',
@@ -477,15 +451,34 @@ function getFeature_(caption_, id_, style_, pID_, pVisiblity_, pURL_) {
      crossDomain: true,
      contentType: 'application/html; ',
      success: function (result) {
-        //console.log(result);
         if (result.includes('error type="user authentication"')) {
             alert('Error: authentication did not work');                  
         } else {
-/*
-            createNewPanel();
-            $("#dvCaption_" + lastTextPanelID).html('Ling. Feature: ' + caption_);
-            $("#" + lastTextPanelID).html(result);
-*/
+          /*console.log(result);*/ 
+          teiLink = 'getSample_("' + coll_ + '", "' + id_ + '", "tei_2_html__v004__gen.xsl")';
+          appendToPanel(result, "Sample", id_, "grid-wrap", '', teiLink, '',  pID_, pVisiblity_, pURL_);
+        }
+     },
+     error: function (error) {
+        alert('Error: ' + error);
+     }                           
+  });
+}
+
+function getFeature_(caption_, id_, style_, pID_, pVisiblity_, pURL_) {         
+  qs = '/' + vicav_rest + '/profile?coll=vicav_lingfeatures&id=' + id_ + '&xslt=' + style_;
+  
+  $.ajax({
+     url: qs,
+     type: 'GET',
+     dataType: 'html',
+     cache: false,
+     crossDomain: true,
+     contentType: 'application/html; ',
+     success: function (result) {
+        if (result.includes('error type="user authentication"')) {
+            alert('Error: authentication did not work');                  
+        } else {
             teiLink = 'getFeature_("' + caption_ + '", "' + id_ + '", "tei_2_html__v004__gen.xsl")';
             appendToPanel(result, "getFeature", id_, "grid-wrap", '', teiLink, '',  pID_, pVisiblity_, pURL_);
         }
@@ -497,9 +490,7 @@ function getFeature_(caption_, id_, style_, pID_, pVisiblity_, pURL_) {
 }
 
 function getProfile__(caption_, id_, style_,  pID_, pVisiblity_, pURL_) {
-  qs = '/vicav_001/profile?q=let $out := collection("vicav_profiles")//tei:TEI[@xml:id="' + id_ + '"] return $out&s=' + style_;
-  /* qs = '/vicav_001/profile?q=let $out := collection("vicav_profiles")//tei:TEI[@xml:id="' + id_ + '"] return $out&s=tei_2_html__v004__gen.xsl'; */
-  //console.log(qs);        
+  qs = '/' + vicav_rest + '/profile?coll=vicav_profiles&id=' + id_ + '&xslt=' + style_;
             
   $.ajax({
      url: qs,
@@ -523,22 +514,6 @@ function getProfile__(caption_, id_, style_,  pID_, pVisiblity_, pURL_) {
   });             
 }
 
-function hideAllTabs() {
-  $("#dvIntroText").hide();
-
-  $("#txtBiblioQuery").hide();           
-  $("#dvEmptyMapCont").hide();
-  $("#dvBiblio").hide();
-  $("#dvProfiles").hide();
-  $("#dvProject").hide();
-  $("#dvHelp").hide();
-  //$("#dvImprint").hide();
-}
-
-function insert(str, index, value) {
-   return str.substr(0, index) + value + str.substr(index);
-}
-
 function clearMarkerLayers() {
     $("#dvOnMapText").hide();
     
@@ -555,89 +530,7 @@ function clearMarkerLayers() {
 /* **************************************************** */
 /* *** DICTIONARY FUNCTIONS *************************** */
 /* **************************************************** */
-function prepareDictQuery(sq_, dict_, xslt_, subdir_) {   
-   ok = -1;   
-   sq_ = trim(sq_);
-   sq_ = sq_.replace("((", "(");
-   sq_ = sq_.replace("))", ")");
-   sq_ = sq_.replace("[[", "[");
-   sq_ = sq_.replace("]]", "]");
-   iBrackets = countChar(sq_, ')');
-
-   var str_array = sq_.split('&');
-   var res = '/dict_api1/' + dict_ + '/' + xslt_ + '/' + subdir_ + '?q=declare namespace tei = \'http://www.tei-c.org/ns/1.0\';' + 'collection(\'' + dict_ + '\')//tei:entry';
-   
-   for(var i = 0; i < str_array.length; i++) {
-     s = str_array[i];
-     s = trim(s);
-     n = s.indexOf('=');  
-     
-     if (n > -1) {
-        field = s.substring(0, n);
-        field = field.replace(/\(/g, "");
-        field = field.replace(/\)/g, "");
-        
-        tail = s.substring(n + 1, s.length);                
-        tail = tail.replace(/\"/g, "");
-        tail = tail.replace(/\(/g, "");
-        tail = tail.replace(/\)/g, "");
-        tail = createMatchString(tail)
-        
-        if ((iBrackets == 1)&&(field == 'any')) {
-            res = '/dict_api1/' + dict_ + '/' + xslt_ + '/' + subdir_ + '?q=declare namespace tei = \'http://www.tei-c.org/ns/1.0\';' + 
-                           'collection(\'' + dict_ + '\')//tei:entry[tei:form/tei:orth[' + tail + ']] |' +
-                           'collection(\'' + dict_ + '\')//tei:entry[tei:sense/tei:cit[@type="translation"][@xml:lang="de"]/tei:quote[' + tail + ']] |' +
-                           'collection(\'' + dict_ + '\')//tei:entry[tei:sense/tei:cit[@type="translation"][@xml:lang="en"]/tei:quote[' + tail + ']] |' +
-                           'collection(\'' + dict_ + '\')//tei:entry[tei:sense/tei:cit[@type="translation"][@xml:lang="fr"]/tei:quote[' + tail + ']] |' +
-                           'collection(\'' + dict_ + '\')//tei:entry[tei:etym/tei:mentioned[' + tail + ']] |' +
-                           'collection(\'' + dict_ + '\')//tei:entry[tei:etym/tei:lang[' + tail + ']] |' +
-                           'collection(\'' + dict_ + '\')//tei:entry[tei:gramGrp/tei:gram[@type="root"][' + tail + ']]';
-            ok = 0;
-        } else {            
-            switch (field) {
-                case 'lem': res = res + '[tei:form[@type="lemma"]/tei:orth[' + tail + ']]'; 
-                                             ok = 0; break;
-                case 'infl': res = res + '[tei:form[@type="inflected"]/tei:orth[' + tail + ']]'; 
-                           ok = 0; break;
-                case 'en': res = res  + '[tei:sense/tei:cit[@type="translation"][@xml:lang="en"]/tei:quote[' + tail + ']]';
-                           ok = 0; break;
-                case 'de': res = res  + '[tei:sense/tei:cit[@type="translation"][@xml:lang="de"]/tei:quote[' + tail + ']]';
-                           ok = 0; break;
-                case 'fr': res = res  + '[tei:sense/tei:cit[@type="translation"][@xml:lang="fr"]/tei:quote[' + tail + ']]';
-                           ok = 0; break;
-
-                case 'etymLang': res = res  + '[tei:etym/tei:lang[' + tail + ']]';
-                                 ok = 0; break;                           
-                case 'etymSrc': res = res  + '[tei:etym/tei:mentioned[' + tail + ']]';
-                                ok = 0; break;                           
-                case 'root': res = res + '[tei:gramGrp/tei:gram[@type="root"][' + tail + ']]';
-                             ok = 0; break;
-                case 'subc': res = res + '[tei:gramGrp/tei:gram[@type="subc"][' + tail + ']]';
-                             ok = 0; break;
-                case 'pos': res = res + '[tei:gramGrp/tei:gram[@type="pos"][' + tail + ']]';
-                             ok = 0; break;
-             }
-        }
-     }     
-   }
-   
-   if (ok == 0) {
-      return res  + '';    
-   } else {
-      return ''; 
-   }
-}
-
-function initDictUser() {
-   //ramz = $("#pw1").val();
-   //ramz = $.sha256(ramz).toUpperCase();
-   //usr = $("#usr1").val();
-   ramz = $.sha256('KRT3poskd9kkks').toUpperCase();
-   usr = 'webuser';         
-}
- 
 function execDictQuery_ajax(query_, idSuffix_) {
-    /*console.log('query_: ' + query_);*/
     if (query_.length > 0) {
         
         $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
@@ -646,8 +539,6 @@ function execDictQuery_ajax(query_, idSuffix_) {
         xslt = $("#inpDictQuery" + idSuffix_).attr('xslt');
         teiQuery = query_.replace(xslt, "tei_2_html__v004__gen.xsl"); 
         $("#inpDictQuery" + idSuffix_).attr('teiQuery', teiQuery);
-        /*console.log('teiQuery: ' + teiQuery);*/
-        initDictUser();
         
         $.ajax({
            url: query_,
@@ -661,9 +552,6 @@ function execDictQuery_ajax(query_, idSuffix_) {
               if (result.includes('error type="user authentication"')) {
                   alert('Error: authentication did not work');                  
               } else {
-                  //appendToPanel(result, 'TYPE', '', "grid-wrap", '', '');  
-                  //console.log('suffix_: ' + suffix_);
-                  //console.log('res: ' + result);
                   $("#dvWordSelector" + idSuffix_).hide();
                   $("#slWordSelector" + idSuffix_).hide();
                   $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
@@ -679,15 +567,11 @@ function execDictQuery_ajax(query_, idSuffix_) {
 }
 
 function fillWordSelector(q_, dictInd_, idSuffix_) {
-    console.log('fillWordSelector: ' + dictInd_);
-    console.log('q_: ' + q_);
-    console.log('idSuffix_: ' + idSuffix_);
-    
     $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
 
     if (q_.length == 0) { q_ = '*'; }
     sInd = $("#slFieldSelect" + idSuffix_).val();
-    sUrl1 = '/dict_index/' + dictInd_ + '/' + sInd + '/' + q_;
+    sUrl1 = '/' + vicav_rest + '/dict_index/?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + q_;
     $.ajax({
     url: sUrl1,
             type: 'GET',
@@ -718,11 +602,10 @@ function getSufixID(id_) {
 }
 
 
-function execDictQuery(idSuffix_) {    
+function execDictQuery(idSuffix_) {
     XSLTName = $("#inpDictQuery" + idSuffix_).attr('xslt'); 
     pathName = $("#inpDictQuery" + idSuffix_).attr('path');
     collName = $("#inpDictQuery" + idSuffix_).attr('dict');
-    /*console.log('XSLT: ' + XSLTName);*/
 
     //$("#dvCharTable" + idSuffix_).hide();
     $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
@@ -731,21 +614,14 @@ function execDictQuery(idSuffix_) {
     var sq = $("#inpDictQuery" + idSuffix_).val();
     var field = $("#slFieldSelect" + idSuffix_).val();
     if (sq.length > 0) {
-        console.log('suf: ' + idSuffix_);
-        //console.log('sq: ' + sq);
-        //console.log('field: ' + field);
-           
         if (sq.indexOf("=") == -1) {
-         sq = "(" + field + "=" + sq + ")";
+           sq = field + '="' + sq + '"';
         }
-        //sQuery = prepareDictQuery(sq, 'dc_tunico', 'tunis_001.xslt', 'tunico');
-        //sQuery = prepareDictQuery(sq, 'dc_apc_eng_03', 'damascus_001.xslt', 'tunico');
-        sQuery = prepareDictQuery(sq, collName, XSLTName, pathName);
+        sq = sq.replace(/&/g, ',');
+        sQuery = '/' + vicav_rest +  '/dict_api?query=' + sq + '&dict=' + collName + '&xslt=' + XSLTName;
                  
-        console.log("SQuery: " + sQuery);
-        if (sQuery.length > 0) {                           
+        if (sQuery.length > 0) {        
            execDictQuery_ajax(sQuery, idSuffix_);    
-        //console.log('dvStats: ' + $("#dvStats").text());
         } else {
            alert('Could not create query.');
         }                   
@@ -757,13 +633,10 @@ function execDictQuery(idSuffix_) {
 function execDictQuery_tei(idSuffix_) {
     var teiQuery = $('#inpDictQuery' + idSuffix_).attr('teiQuery');
     execDictQuery_ajax(teiQuery, idSuffix_);
-    /*alert("teiQuery: " + idSuffix_ + ": " + teiQuery);*/
 }
 
 function dealWithDictQueryKeyInput(event_, idSuffix_) {
-   //console.log('suf: ' + idSuffix_);
    collName = $("#inpDictQuery" + idSuffix_).attr('dict');
-   //inpSel = document.getElementById('inpDictQuery' + idSuffix_).selectionStart;
              
    if ( event_.which == 13 ) {
       execDictQuery(idSuffix_);
@@ -795,14 +668,21 @@ function dealWithDictQueryKeyInput(event_, idSuffix_) {
     }
 }
 
+function insertBiblGeoMarkers() {
+   insertGeoRegMarkers('', 'geo_reg');    
+}
+
+function adjustNav(id_, activateID_) {
+  $(".sub-nav-map-items .active").removeClass("active");
+  if (activateID_.indexOf('sub') !== -1) { $(activateID_).addClass("active"); }
+  changeURLMapParameter(id_);    
+}
+
 $(document).ready(
     
    function() {      
-       hideAllTabs();
-       $("#dvMainMapCont").show();
-       /* createBiblioPanel(); */
-       
-       insertBiblGeoMarkers();
+       $("#dvMainMapCont").show();      
+       insertGeoRegMarkers('', 'geo');
 
        // Parse the given url parameters for views
        var currentURL = window.location.toString();
@@ -812,9 +692,8 @@ $(document).ready(
          // Parse the map
          var mapArg = args[0].split('=');
          if (mapArg[0] == 'map') {
-           hideAllTabs();
            clearMarkerLayers();
-           window["insert"+mapArg[1]]();
+           //window["insert" + mapArg[1]]();           
            $(".sub-nav-map-items .active").removeClass("active");
            $("#" + mapArg[1]).addClass("active");
          }
@@ -846,29 +725,30 @@ $(document).ready(
                   } else if (queryFunc == 'SampleQuery') {
                     var id_ = pArgs[1];
                     var pVisiblity_ = pArgs[2];
-                    execSampleQuery('vicav_samples', id_, 'sampletext_01.xslt', pID_, pVisiblity_, true);
+                    getSample_('vicav_samples', id_, 'sampletext_01.xslt', pID_, pVisiblity_, true);
                   } else if (queryFunc == 'DictQueryPanel') {
                     var id_ = pArgs[1];
                     var pVisiblity_ = pArgs[2];
                     if (id_ == 'dc_tunico') {
-                      createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary Query', '_tunis', 'tunis_001.xslt', charTable_tunis, pID_, pVisiblity_, true);
+                      createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, pID_, pVisiblity_, true);
                     } else if (id_ == 'dc_apc_eng_03') {
-                      createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary Query', '_damascus', 'damascus_001.xslt', charTable_damasc, pID_, pVisiblity_, true);
+                      createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc, pID_, pVisiblity_, true);
                     } else if (id_ == 'dc_arz_eng_007') {
-                      createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_001.xslt', charTable_cairo, pID_, pVisiblity_, true);
+                      createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, pID_, pVisiblity_, true);
                     } else if (id_ == 'dc_ar_en') {
-                      createNewDictQueryPanel('dc_ar_en', 'MSA Dictionary Query', '_MSA', 'fusha_001.xslt', charTable_msa, pID_, pVisiblity_, true);
+                      createNewDictQueryPanel('dc_ar_en', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa, pID_, pVisiblity_, true);
                     }
                   }
               }, 200 * i, i);
          }
        } else {
          window.history.replaceState( {} , "", currentURL+"?map=BiblGeoMarkers&1=[TextQuery,vicavMission,open]");
-         execTextQuery('vicavMission', 'MISSION & OUTLINE', 'vicavTexts.xslt', 1, 'open', true);
+         execTextQuery('vicavMission', 'MISSION', 'vicavTexts.xslt', 1, 'open', true);
        }
 
-
-
+       /* *************************** */
+       /* ****  Paratexts     ******* */
+       /* *************************** */       
        $("#liVicavMission").mousedown ( function(event) { execTextQuery('vicavMission', 'MISSION', 'vicavTexts.xslt'); } );              
        $("#liVicavContributors").mousedown ( function(event) { execTextQuery('vicavContributors', 'CONTRIBUTORS', 'vicavTexts.xslt'); } );              
        $("#liVicavLinguistics").mousedown ( function(event) { execTextQuery('vicavLinguistics', 'LINGUISTICS', 'vicavTexts.xslt'); } );              
@@ -876,9 +756,21 @@ $(document).ready(
        $("#liVicavTypesOfText").mousedown ( function(event) { execTextQuery('vicavTypesOfText', 'TYPES OF TEXT/DATA', 'vicavTexts.xslt'); } );
        $("#liVicavDictionaryEncoding").mousedown ( function(event) { execTextQuery('vicavDictionaryEncoding', 'DICTIONARY ENCODING', 'vicavTexts.xslt'); } );       
        $("#liVicavVLE").mousedown ( function(event) { execTextQuery('vicavVLE', 'DICTIONARY ENCODING', 'vicavTexts.xslt'); } );       
-       $("#liVicavArabicTools").mousedown ( function(event) { execTextQuery('vicavArabicTools', 'ARABIC TOOLS', 'vicavTexts.xslt'); } );              
+       $("#liVicavArabicTools").mousedown ( function(event) { execTextQuery('vicavArabicTools', 'ARABIC TOOLS', 'vicavTexts.xslt'); } );
+       $("#liVicavOverview_corpora_spoken").mousedown ( function(event) { execTextQuery('vicavOverview_corpora_spoken', 'ARABIC TOOLS (Corpora - Spoken Varieties)', 'vicavTexts.xslt'); } );
+       $("#liVicavOverview_corpora_msa").mousedown ( function(event) { execTextQuery('vicavOverview_corpora_msa', 'ARABIC TOOLS (Corpora - MSA)', 'vicavTexts.xslt'); } );
+       $("#liVicavOverview_special_corpora").mousedown ( function(event) { execTextQuery('vicavOverview_special_corpora', 'ARABIC TOOLS (Special Corpora)', 'vicavTexts.xslt'); } );
+       $("#liVicavOverview_corpora_historical_varieties").mousedown ( function(event) { execTextQuery('vicavOverview_corpora_historical_varieties', 'ARABIC TOOLS (Corpora - Historical Varieties)', 'vicavTexts.xslt'); } );
+       $("#liVicavOverview_dictionaries").mousedown ( function(event) { execTextQuery('vicavOverview_dictionaries', 'ARABIC TOOLS (Dictionaries)', 'vicavTexts.xslt'); } );
+       $("#liVicavOverview_nlp").mousedown ( function(event) { execTextQuery('vicavOverview_nlp', 'ARABIC TOOLS (Language Processing)', 'vicavTexts.xslt'); } );
+       $("#liVicavOverview_otherStuff").mousedown ( function(event) { execTextQuery('vicavOverview_otherStuff', 'Other Websites &amp; Projects', 'vicavTexts.xslt'); } );
        
-       $("#liBibliographyExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationBibliography', 'BIBLIOGRAPHY: Explanation', 'vicavTexts.xslt'); } );          
+       
+       /* *************************** */
+       /* ****  Explanations  ******* */
+       /* *************************** */       
+       $("#liProfilesExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationProfiles', 'BIBLIOGRAPHY: Explanation', 'vicavTexts.xslt'); } );          
+       $("#liBibliographyExplanation").mousedown ( function(event) { createBiblExplanationPanel(); });          
        $("#liFeaturesExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationFeatures', 'LING. FEATURES: Explanation', 'vicavTexts.xslt'); } );
        $("#liSamplesExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationSampleTexts', 'SAMPLE TEXTS: Explanation', 'vicavTexts.xslt'); } );
        $("#liCorpusTextsExplanation").mousedown ( function(event) { execTextQuery('vicavExplanationCorpusTexts', 'TEXTS: Explanation', 'vicavTexts.xslt'); } );
@@ -893,50 +785,6 @@ $(document).ready(
        $("#liVicavContributeDictionary").mousedown ( function(event) { execTextQuery('vicavContributeDictionary', 'DICTIONARY/GLOSSARY: Contributing', 'vicavTexts.xslt'); } );
        
              
-       $("#liBibliographyLocations").mousedown (
-          function(event) {
-             hideAllTabs();
-             
-             clearMarkerLayers();
-             insertBiblGeoMarkers();
-          }
-       );
-
-       $("#BiblGeoMarkers").mousedown (
-          function(event) {
-             hideAllTabs();
-             clearMarkerLayers();
-             insertBiblGeoMarkers();
-             $(".sub-nav-map-items .active").removeClass("active");
-             $(this).addClass("active");
-             changeURLMapParameter(this.id);
-          }
-       );
-
-       $("#liBibliographyRegions").mousedown (
-          function(event) {
-             hideAllTabs();
-             
-             clearMarkerLayers();
-             insertBiblRegMarkers();
-            //$('.navbar-toggle').click();
-            //$('.nav-collapse').collapse('hide');
-          }
-       );
-
-       $("#BiblRegMarkers").mousedown (
-          function(event) {
-             hideAllTabs();
-             
-             clearMarkerLayers();
-             insertBiblRegMarkers();
-            //$('.navbar-toggle').click();
-            //$('.nav-collapse').collapse('hide');
-             $(".sub-nav-map-items .active").removeClass("active");
-             $(this).addClass("active");
-             changeURLMapParameter(this.id);
-          }
-       );
 
        /* This is needed to collapse the menu after click in small screens */
        $('.navbar-nav li a').on('click', function(){
@@ -944,33 +792,6 @@ $(document).ready(
             $('.navbar-collapse').collapse('hide');
           }
        });
-
-       $("#liGeoDicts").mousedown (
-          function(event) {
-            hideAllTabs();
-             
-            clearMarkerLayers();
-            insertGeoDictMarkers();
-          }
-       );
-
-       $("#liGeoDicts1").mousedown (
-          function(event) {
-            hideAllTabs();
-             
-            clearMarkerLayers();
-            insertGeoDictMarkers();
-          }
-       );
-       
-       $("#liGeoTextbooks").mousedown (
-          function(event) {
-            hideAllTabs();
-             
-            clearMarkerLayers();
-            insertGeoTextbookMarkers();
-          }
-       );
 
        $("#liBiblNewQuery").mousedown ( function(event) { createNewQueryBiblioPanel(); } );
 
@@ -985,11 +806,11 @@ $(document).ready(
        /* ******************************** */
        /* ****  DICTIONARY QUERIES ******* */
        /* ******************************** */
-       $(document).on("click", '#liVicavDictQuery_Tunis', function(){ createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary Query', '_tunis', 'tunis_001.xslt', charTable_tunis); });
+       $(document).on("click", '#liVicavDictQuery_Tunis', function(){ createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis); });
        /*$(document).on("click", '#liVicavDictQuery_Tunis', function(){ createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary Query', '_tunis', 'tei_2_html__v004__gen.xsl', charTable_tunis); });*/
-       $(document).on("click", '#liVicavDictQuery_Damascus', function(){ createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary Query', '_damascus', 'damascus_001.xslt', charTable_damasc); } );
-       $(document).on("click", '#liVicavDictQuery_Cairo', function(){ createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_001.xslt', charTable_cairo); } );
-       $(document).on("click", '#liVicavDictQuery_MSA', function(){ createNewDictQueryPanel('dc_ar_en', 'MSA Dictionary Query', '_MSA', 'fusha_001.xslt', charTable_msa); } );
+       $(document).on("click", '#liVicavDictQuery_Damascus', function(){ createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc); } );
+       $(document).on("click", '#liVicavDictQuery_Cairo', function(){ createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo); } );
+       $(document).on("click", '#liVicavDictQuery_MSA', function(){ createNewDictQueryPanel('dc_ar_en', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa); } );
        
        /* ******************************** */
        /* ****  DICTIONARY Auto Complete ******* */
@@ -1002,83 +823,81 @@ $(document).ready(
        /* ******************************** */
        /* ****  PROFILES ***************** */
        /* ******************************** */
-       $("#liProfileBaghdad").mousedown ( function(event) { getProfile__('Baghdad', 'profile_baghdad_01', 'profile_01.xslt'); } );      
+       $("#liProfileAbudhabi").mousedown ( function(event) { getProfile__('Abu Dhabi', 'profile_abu_dhabi_01', 'profile_01.xslt'); } );      
+       $("#liProfileAhwaz").mousedown ( function(event) { getProfile__('Ahwaz', 'profile_ahwaz_01', 'profile_01.xslt'); } );      
+       $("#liProfileBaghdad").mousedown ( function(event) { getProfile__('Baghdad', 'profile_baghdad_01', 'profile_01.xslt'); } );
+       $("#liProfileBenghazi").mousedown ( function(event) { getProfile__('Benghazi', 'profile_benghazi_01', 'profile_01.xslt'); } );       
        $("#liProfileCairo").mousedown ( function(event) { getProfile__('Cairo', 'profile_cairo_01', 'profile_01.xslt'); } );
        $("#liProfileDamascus").mousedown ( function(event) { getProfile__('Damascus', 'profile_damascus_01', 'profile_01.xslt'); } );      
        $("#liProfileDouz").mousedown ( function(event) { getProfile__('Douz', 'profile_douz_01', 'profile_01.xslt'); });
        $("#liProfileKhabura").mousedown ( function(event) { getProfile__('al-Khabura', 'profile_khabura_01', 'profile_01.xslt'); });      
        $("#liProfileRabat").mousedown ( function(event) { getProfile__('Rabat (Salé)', 'profile_sale_01', 'profile_01.xslt'); } );
        $("#liProfileSousse").mousedown ( function(event) { getProfile__('Sousse', 'profile_sousse_001', 'profile_01.xslt'); } );
+       $("#liProfileSoukhne").mousedown ( function(event) { getProfile__('Soukhne', 'profile_soukhne_01', 'profile_01.xslt'); } );
+       $("#liProfileTaizz").mousedown ( function(event) { getProfile__('Taizz', 'profile_taizz_01', 'profile_01.xslt'); } );
+       $("#liProfileTiberias").mousedown ( function(event) { getProfile__('Tiberias', 'profile_tiberias_01', 'profile_01.xslt'); } );       
+       $("#liProfileTozeur").mousedown ( function(event) { getProfile__('Tozeur', 'profile_tozeur_01', 'profile_01.xslt'); } );       
        $("#liProfileTunis").mousedown ( function(event) { getProfile__('Tunis', 'profile_tunis_01', 'profile_01.xslt'); } );
        $("#liProfileUrfa").mousedown ( function(event) { getProfile__('Şanlıurfa', 'profile_urfa_01', 'profile_01.xslt'); });
-
        
        /* **************************************** */
        /* ****  Show map with locators *********** */
        /* **************************************** */
-       $("#GeoDictMarkers").mousedown (
+       $("#navBiblGeoMarkers,#subNavBiblGeoMarkers").mousedown (
           function(event) {
-            hideAllTabs();
-             
-            clearMarkerLayers();
-            insertGeoDictMarkers();
-            $(".sub-nav-map-items .active").removeClass("active");
-            $(this).addClass("active");
-            changeURLMapParameter(this.id);
+             clearMarkerLayers();
+             insertGeoRegMarkers('', 'geo');
+             adjustNav(this.id, "#subNavBiblGeoMarkers");
           }
        );
 
-       $("#GeoTextbookMarkers").mousedown (
+       $("#navBiblRegMarkers,#subNavBiblRegMarkers").mousedown (
           function(event) {
-            hideAllTabs();
-             
+             clearMarkerLayers();
+             insertGeoRegMarkers('', 'reg');
+             adjustNav(this.id, "#subNavBiblRegMarkers");
+          }
+       );       
+ 
+       $("#navDictGeoRegMarkers,#subNavDictGeoRegMarkers,#navDictGeoRegMarkers1").mousedown (
+          function(event) {
+            clearMarkerLayers();            
+            insertGeoRegMarkers('vt:dictionary', 'geo_reg');
+            adjustNav(this.id, "#subNavDictGeoRegMarkers");
+          }
+       );
+       
+       $("#navTextbookGeoRegMarkers,#subNavTextbookGeoRegMarkers").mousedown (
+          function(event) {
             clearMarkerLayers();
-            insertGeoTextbookMarkers();
-            $(".sub-nav-map-items .active").removeClass("active");
-            $(this).addClass("active");
-            changeURLMapParameter(this.id);
+            insertGeoRegMarkers('vt:textbook', 'geo_reg');
+            adjustNav(this.id, "#subNavTextbookGeoRegMarkers");
           }
        );
 
-       $("#liProfiles,#ProfileMarkers").mousedown ( function(event) {
-            hideAllTabs();           
+       $("#navProfilesGeoRegMarkers,#subNavProfilesGeoRegMarkers").mousedown ( function(event) {
             clearMarkerLayers();
             insertProfileMarkers();
-            
-            $(".sub-nav-map-items .active").removeClass("active");
-            $(this).addClass("active");
-            changeURLMapParameter(this.id);
+            adjustNav(this.id, "#subNavProfilesGeoRegMarkers");
        });
 
-       $("#liFeatures,#FeatureMarkers").mousedown ( function(event) { 
-             hideAllTabs(); 
+       $("#navFeaturesGeoRegMarkers,#subNavFeaturesGeoRegMarkers").mousedown ( function(event) { 
              clearMarkerLayers(); 
              insertFeatureMarkers();
-             
-             $(".sub-nav-map-items .active").removeClass("active");
-             $(this).addClass("active");
-             changeURLMapParameter(this.id);
+             adjustNav(this.id, "#subNavFeaturesGeoRegMarkers");
         } );
 
-       $("#liSamples,#SampleMarkers").mousedown ( function(event) {
-            hideAllTabs();
+       $("#navSamplesGeoRegMarkers,#subNavSamplesGeoRegMarkers").mousedown ( function(event) {
             clearMarkerLayers();
             insertSampleMarkers();
-            
-            $(".sub-nav-map-items .active").removeClass("active");
-            $(this).addClass("active");
-            changeURLMapParameter(this.id);
+            adjustNav(this.id, "#subNavSamplesGeoRegMarkers");
           }
        );     
 
-       $("#liDicts,#DictMarkers").mousedown ( function(event) {
-            hideAllTabs();
+       $("#navVicavDictMarkers,#subNavVicavDictMarkers").mousedown ( function(event) {
             clearMarkerLayers();
-            insertDictMarkers();
-            
-            $(".sub-nav-map-items .active").removeClass("active");
-            $(this).addClass("active");
-            changeURLMapParameter(this.id);
+            insertVicavDictMarkers();
+            adjustNav(this.id, "#subNavVicavDictMarkers");
           }
        );     
 
@@ -1095,33 +914,33 @@ $(document).ready(
        /* ********************** */
        /* ****  SAMPLES ******** */
        /* ********************** */
-       $("#liSampleCairo").mousedown ( function(event) { execSampleQuery('vicav_samples', 'cairo_sample_01', 'sampletext_01.xslt'); });       
-       $("#liSampleBaghdad").mousedown ( function(event) { execSampleQuery('vicav_samples', 'baghdad_sample_01', 'sampletext_01.xslt'); });              
-       $("#liSampleDamascus").mousedown ( function(event) { execSampleQuery('vicav_samples', 'damascus_sample_01', 'sampletext_01.xslt');  });             
-       $("#liSampleUrfa").mousedown ( function(event) { execSampleQuery('vicav_samples', 'urfa_sample_01', 'sampletext_01.xslt');  });             
-       $("#liSampleTunis").mousedown ( function(event) { execSampleQuery('vicav_samples', 'tunis_sample_01', 'sampletext_01.xslt');  });             
-       $("#liSampleDouz").mousedown ( function(event) { execSampleQuery('vicav_samples', 'douz_sample_01', 'sampletext_01.xslt');  });             
-       $("#liSampleMSA").mousedown ( function(event) { execSampleQuery('vicav_samples', 'msa_sample_01', 'sampletext_01.xslt');  });             
+       $("#liSampleCairo").mousedown ( function(event) { getSample_('vicav_samples', 'cairo_sample_01', 'sampletext_01.xslt'); });       
+       $("#liSampleBaghdad").mousedown ( function(event) { getSample_('vicav_samples', 'baghdad_sample_01', 'sampletext_01.xslt'); });              
+       $("#liSampleDamascus").mousedown ( function(event) { getSample_('vicav_samples', 'damascus_sample_01', 'sampletext_01.xslt');  });             
+       $("#liSampleUrfa").mousedown ( function(event) { getSample_('vicav_samples', 'urfa_sample_01', 'sampletext_01.xslt');  });             
+       $("#liSampleTunis").mousedown ( function(event) { getSample_('vicav_samples', 'tunis_sample_01', 'sampletext_01.xslt');  });             
+       $("#liSampleDouz").mousedown ( function(event) { getSample_('vicav_samples', 'douz_sample_01', 'sampletext_01.xslt');  });             
+       $("#liSampleMSA").mousedown ( function(event) { getSample_('vicav_samples', 'msa_sample_01', 'sampletext_01.xslt');  });             
        
        
        /* ******************************** */
-       /* ****  CORPUS ******* */
+       /* ****  CORPUS ******************* */
        /* ******************************** */
-       $(document).on("click", '#liTextCukurova_001', function(){ execSampleQuery('vicav_corpus', 'cukurova_001', 'sampletext_01.xslt'); });
-       $(document).on("click", '#liTextJakal_001', function(){ execSampleQuery('vicav_corpus', 'killing_jackal', 'sampletext_01.xslt'); });     
+       $(document).on("click", '#liTextCukurova_001', function(){ getSample_('vicav_corpus', 'cukurova_001', 'sampletext_01.xslt'); });
+       $(document).on("click", '#liTextJakal_001', function(){ getSample_('vicav_corpus', 'killing_jackal', 'sampletext_01.xslt'); });     
        
 
        /* *******************************************************/
        /* ***********PANEL BEHAVIOR *****************************/
        /* *******************************************************/
        $(document).on("click", '.chrome-minimize', function(){
-        if($(this).parents(':eq(1)').hasClass('open-panel')){
-          var panel = $(this).parents(':eq(1)');
-          changePanelVisibility(panel, 'minimize');
-        } else if($(this).parents(':eq(1)').hasClass('closed-panel')){
-          var panel = $(this).parents(':eq(1)');
-          changePanelVisibility(panel, 'maximize');
-        }
+          if($(this).parents(':eq(1)').hasClass('open-panel')){
+            var panel = $(this).parents(':eq(1)');
+            changePanelVisibility(panel, 'minimize');
+          } else if($(this).parents(':eq(1)').hasClass('closed-panel')){
+             var panel = $(this).parents(':eq(1)');
+             changePanelVisibility(panel, 'maximize');
+          }
        });
 
        /* *******************************************************/
@@ -1136,7 +955,6 @@ $(document).ready(
        $(document).on("keyup", '[id^=slWordSelect]',
           function(event) {
              suf = getSufixID($(this).attr('id'));
-             //console.log('suf: ' + suf);
 
              inpID = '#inpDictQuery_' + suf;
              $(inpID).val($("#slWordSelector_" + suf + " option:selected").text());
@@ -1176,69 +994,60 @@ $(document).ready(
        /* *******************************************************/
                
        $(document).on("mousedown", '[id^=ct]',
-       //$("[id^=ct]").mousedown (
           function(event) {
              suf = getSufixID($(this).attr('id'));
              inpID = 'inpDictQuery_' + suf;
-             //console.log(inpID);
              var s1 = $('#' + inpID).val();
              var s2 = $(this).text();
-             //console.log(s2);             
              var s = insert(s1, inpSel, s2);
              $('#' + inpID).val(s);
              inpSel += 1;
              document.getElementById(inpID).selectionStart = inpSel + 1;
              var sq = $("#" + inpID).val();
-             //console.log('s3: ' + s3);             
              collName = $("#" + inpID).attr('dict');
              fillWordSelector(sq, collName + '__ind', '_' + suf);
           }
         );
                
         $(document).on("mouseover", '[id^=ct]',
-        //$("[id^=ct]").mouseover (
            function(event) {
-             //console.log('mouseover');
              $(this).css( 'cursor', 'pointer' );
            }
         );
            
-        //$("[id^=ct]").mouseout (
         $(document).on("mouseout", '[id^=ct]',
             function(event) {
-               //console.log('mouseout');
                $(this).css( 'cursor', 'auto' );
             }
         );
                
 
-      /* *******************************************************/               
-      $(document).on("click", '.chrome-close', function(){
-        var panel = $(this).parents(':eq(1)');
-        changePanelVisibility(panel, 'close');
-      });
+       /* *******************************************************/               
+       $(document).on("click", '.chrome-close', function(){
+         var panel = $(this).parents(':eq(1)');
+         changePanelVisibility(panel, 'close');
+       });
 
-      $(document).on("click", '.grid-wrap', function(){
-        $(this).find('.dvWordSelector').hide();
-      });
+       $(document).on("click", '.grid-wrap', function(){
+         $(this).find('.dvWordSelector').hide();
+       });
 
 
-      /* *******************************************************/               
-      /* ****Query Bibliography Button Action  *****************/               
-      /* *******************************************************/               
-      $(document).on("click", '.newBiblQueryBtn', function(){
-        keyword = $(this).prev().val()
-        execBiblQuery(keyword);
-      });
+       /* *******************************************************/               
+       /* ****Query Bibliography Button Action  *****************/               
+       /* *******************************************************/               
+       $(document).on("click", '.newBiblQueryBtn', function(){
+         query = $(this).prev().val()
+         execBiblQuery(query);
+       });
       
-      /* *******************************************************/               
-      /* ****Query Dictionary Button Action  *******************/               
-      /* *******************************************************/               
-      $(document).on("click", '[id^=newDictQuerybtn]', function(){
-         //console.log('');
-         suf = getSufixID($(this).attr('id'));
-         execDictQuery('_' + suf);         
-      });
+       /* *******************************************************/               
+       /* ****Query Dictionary Button Action  *******************/               
+       /* *******************************************************/               
+       $(document).on("click", '[id^=newDictQuerybtn]', function(){
+          suf = getSufixID($(this).attr('id'));
+          execDictQuery('_' + suf);         
+       });
 
        $('#sub-nav-expand').on('click', function(){
           if(!$( this ).hasClass('panels-expanded')){
@@ -1258,13 +1067,13 @@ $(document).ready(
           });
        });
 
-      $("body").tooltip({
-          selector: '[data-toggle="tooltip"]',
-          trigger: 'hover focus'
-      });
+       $("body").tooltip({
+           selector: '[data-toggle="tooltip"]',
+           trigger: 'hover focus'
+       });
 
-    }
-  );
+     }
+ );
   
   
 function refEvent(url_) {
@@ -1289,27 +1098,10 @@ function refEvent(url_) {
 /* ***************************/
 /* Query Bibliography Button */
 /* ***************************/
-
 // When clicked on search icon show the overlay
 $('.search-button').on( 'click', function() {
-  //$('.search-container').fadeIn(300);
-  //$( ".header_search" ).focus();
-  createNewQueryBiblioPanel();
+    createNewQueryBiblioPanel();
 }); 
-
-/*
-// When pressed on ESC icon hide the overlay
-$('body').keydown(function(e) {
-    if (e.keyCode == 27) {
-        $('.search-container').fadeOut(300);
-    }
-});
-
-// When clicked on search cancel icon hide the overlay
-$('.search-cancel-icon').on( 'click', function() {
-  $('.search-container').fadeOut(300);
-}); 
-*/
 
 
 //Copy cite content
@@ -1317,9 +1109,8 @@ $("#sub-nav-share").on('click', function(){
     var URLtoCopy = window.location.toString();
     var result = copyToClipboard(URLtoCopy);
     if (result) {
-	    //alert('copied');
-	    $('#sub-nav-share-confirmation').fadeIn(100);
-	    setTimeout(function() { $('#sub-nav-share-confirmation').fadeOut(200); }, 2000);
+       $('#sub-nav-share-confirmation').fadeIn(100);
+       setTimeout(function() { $('#sub-nav-share-confirmation').fadeOut(200); }, 2000);
     }
 });
 

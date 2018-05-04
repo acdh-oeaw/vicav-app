@@ -10,22 +10,22 @@
     <title>VICAV - Vienna Corpus of Arabic Varieties</title>
 
     <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="includes/vendor/leaflet.css"></link>
+    <link rel="stylesheet" href="css/leaflet.css"></link>
     <!-- Fontawesome icons -->
-    <link href="includes/icons/css/font-awesome.min.css" rel="stylesheet"></link>
+    <link href="css/font-awesome.min.css" rel="stylesheet"></link>
     <!-- Material icons font -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"></link>
     <!-- Fundament core CSS -->
-    <link href="includes/vendor/fundament.css?v=00001" rel="stylesheet"></link>
+    <link href="css/fundament.css?v=00001" rel="stylesheet"></link>
     <!-- VICAV App CSS -->
-    <link href="includes/css/vicav.css?v=00002" rel="stylesheet"></link>
+    <link href="css/vicav.css?v=00002" rel="stylesheet"></link>
   </head>
   
-  <body>
-      <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+  <body>   
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand mr-0 mr-md-2" aria-label="Vicav" href="/vicav_001/index.html">
-          <img src="includes/images/vicav_logo_01.svg"/>
+        <a class="navbar-brand mr-0 mr-md-2" aria-label="Vicav" href="/vicav/index.html">
+          <img src="images/vicav_logo_01.svg"/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -37,6 +37,7 @@
               <a class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Project</a>
               <div class="dropdown-menu" aria-labelledby="dropdown00">
                 <a class="dropdown-item" id="liVicavMission">Mission</a>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="liVicavTypesOfText">Types of Text/Data</a>
                 <a class="dropdown-item" id="liVicavContributors">Contributors</a>
                 <a class="dropdown-item" id="liVicavLinguistics">Linguistics</a>
@@ -48,13 +49,13 @@
               <div class="dropdown-menu" aria-labelledby="dropdown01">
                 <a class="dropdown-item" id="liBibliographyExplanation">Explanation</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liBibliographyLocations">All Locations</a>
-                <a class="dropdown-item" id="liBibliographyRegions">All Regions</a>
+                <a class="dropdown-item" id="navBiblGeoMarkers">All Bibl. Locations</a>
+                <a class="dropdown-item" id="navBiblRegMarkers">All Bibl. Regions</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liGeoDicts">All Dictionaries (Locations + Regions)</a>
-                <a class="dropdown-item" id="liGeoTextbooks">All Textbooks (Locations + Regions)</a>
+                <a class="dropdown-item" id="navDictGeoRegMarkers">All Dictionaries (Locations + Regions)</a>
+                <a class="dropdown-item" id="navTextbookGeoRegMarkers">All Textbooks (Locations + Regions)</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liBiblNewQuery">Query</a>
+                <a class="dropdown-item" id="liBiblNewQuery">Query Bibliography</a>
                 <div class="dropdown-divider"></div>                
                 <a class="dropdown-item" id="liVicavContributeBibliography">Contribute to the Bibliography</a>
               </div>
@@ -64,16 +65,23 @@
               <div class="dropdown-menu" aria-labelledby="dropdown02">
                 <a class="dropdown-item" id="liProfilesExplanation">Explanation</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liProfiles">Show All Locations</a>
+                <a class="dropdown-item" id="navProfilesGeoRegMarkers">Show All Locations</a>
                 <div class="dropdown-divider"></div>
+                <a class="dropdown-item" id="liProfileAbudhabi">Abu Dhabi</a>
+                <a class="dropdown-item" id="liProfileAhwaz">Ahwaz</a>
                 <a class="dropdown-item" id="liProfileBaghdad">Baghdad</a>
+                <a class="dropdown-item" id="liProfileBenghazi">Benghazi</a>
                 <a class="dropdown-item" id="liProfileCairo">Cairo</a>
                 <a class="dropdown-item" id="liProfileDamascus">Damascus</a>
                 <a class="dropdown-item" id="liProfileDouz">Douz</a>
                 <a class="dropdown-item" id="liProfileKhabura">al-Khabura</a>
                 <a class="dropdown-item" id="liProfileRabat">Rabat (Salé)</a>
+                <a class="dropdown-item" id="liProfileSoukhne">Soukhne</a>
                 <a class="dropdown-item" id="liProfileSousse">Sousse</a>
                 <a class="dropdown-item" id="liProfileUrfa">Şanlıurfa</a>
+                <a class="dropdown-item" id="liProfileTaizz">Taizz</a>
+                <a class="dropdown-item" id="liProfileTiberias">Tiberias</a>
+                <a class="dropdown-item" id="liProfileTozeur">Tozeur</a>
                 <a class="dropdown-item" id="liProfileTunis">Tunis</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="liVicavContributeProfile">Contribute a Profile</a>
@@ -84,7 +92,7 @@
               <div class="dropdown-menu" aria-labelledby="dropdown03">
                 <a class="dropdown-item" id="liFeaturesExplanation">Explanation</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liFeatures">Show All Locations</a>
+                <a class="dropdown-item" id="navFeaturesGeoRegMarkers">Show All Locations</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="liFeatureBaghdad">Baghdad</a>
                 <a class="dropdown-item" id="liFeatureCairo">Cairo</a>
@@ -101,7 +109,7 @@
               <div class="dropdown-menu" aria-labelledby="dropdown04">
                 <a class="dropdown-item" id="liSamplesExplanation">Explanation</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liSamples">Show All Locations</a>
+                <a class="dropdown-item" id="navSamplesGeoRegMarkers">Show All Locations</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="liSampleBaghdad">Baghdad</a>
                 <a class="dropdown-item" id="liSampleCairo">Cairo</a>
@@ -125,9 +133,9 @@
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" id="dropdown05" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dictionaries</a>
               <div class="dropdown-menu" aria-labelledby="dropdown05">
-                <a class="dropdown-item" id="liGeoDicts1">Bibliography (Dictionaries)</a>
+                <a class="dropdown-item" id="navDictGeoRegMarkers1">Bibliography (Dictionaries)</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liDicts">Show All Locations</a>
+                <a class="dropdown-item" id="navVicavDictMarkers">Show All VICAV Dictionaries</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" id="liVicavDict_Tunis">TUNICO Dictionary</a>
                 <a class="dropdown-item" id="liVicavDict_Damascus">Damascus Dictionary</a>
@@ -143,7 +151,13 @@
                 <a class="dropdown-item" id="liVicavDictionaryEncoding">Dictionary Encoding</a>
                 <a class="dropdown-item" id="liVicavVLE">Dictionary Editor (VLE)</a>
                 <a class="dropdown-item" id="liVicavArabicTools">Tools</a>
-                <a class="dropdown-item" id="liVicavArabicTools">&#160;&#160;&#160;Corpora (Spoken Varieties)</a>
+                <a class="dropdown-item" id="liVicavOverview_corpora_spoken">&nbsp;&nbsp;&nbsp;Corpora (Spoken Varieties)</a>
+                <a class="dropdown-item" id="liVicavOverview_corpora_msa">&nbsp;&nbsp;&nbsp;Corpora (MSA)</a>
+                <a class="dropdown-item" id="liVicavOverview_special_corpora">&nbsp;&nbsp;&nbsp;Special Corpora</a>
+                <a class="dropdown-item id="liVicavOverview_corpora_historical_varieties">&nbsp;&nbsp;&nbsp;Corpora (Historical Varieties)</a>
+                <a class="dropdown-item" id="liVicavOverview_dictionaries">&nbsp;&nbsp;&nbsp;Dictionaries</a>
+                <a class="dropdown-item" id="liVicavOverview_nlp">&nbsp;&nbsp;&nbsp;Language Processing Tools</a>
+                <a class="dropdown-item" id="liVicavOverview_otherStuff">&nbsp;&nbsp;&nbsp;Other Websites &amp; Projects</a>                                
               </div>
             </li>
             <li class="navbar-icons">
@@ -153,6 +167,10 @@
               <a class="search-button">
                 <i class="fa fa-search" aria-hidden="true" title="Search Bibliography"></i>
               </a>
+              <!-- <a class="iTest">
+                <i aria-hidden="true" title="Test">Test</i>
+              </a>
+               -->
             </li>
           </ul>
         </div>
@@ -162,14 +180,14 @@
     <div class="sub-nav">
       <div class="container-fluid">
         <div class="sub-nav-map-items">
-          <span id="BiblGeoMarkers" class="active"><i class="fa fa-map" aria-hidden="true"></i> Bibl. Locations</span>
-          <span id="BiblRegMarkers"><i class="fa fa-map" aria-hidden="true"></i> Bibl. Regions</span>
-          <span id="GeoDictMarkers"><i class="fa fa-map" aria-hidden="true"></i> Bibl. (Dictionaries)</span>
-          <span id="GeoTextbookMarkers"><i class="fa fa-map" aria-hidden="true"></i> Bibl. (Textbooks)</span>
-          <span id="ProfileMarkers"><i class="fa fa-map" aria-hidden="true"></i> Profiles</span>
-          <span id="FeatureMarkers"><i class="fa fa-map" aria-hidden="true"></i> Features</span>
-          <span id="SampleMarkers"><i class="fa fa-map" aria-hidden="true"></i> Samples</span>
-          <span id="DictMarkers"><i class="fa fa-map" aria-hidden="true"></i> Dictionaries</span>
+          <span id="subNavBiblGeoMarkers" class="active"><i class="fa fa-map" aria-hidden="true"></i> Bibl. Locations</span>
+          <span id="subNavBiblRegMarkers"><i class="fa fa-map" aria-hidden="true"></i> Bibl. Regions</span>
+          <span id="subNavDictGeoRegMarkers"><i class="fa fa-map" aria-hidden="true"></i> Bibl. (Dictionaries)</span>
+          <span id="subNavTextbookGeoRegMarkers"><i class="fa fa-map" aria-hidden="true"></i> Bibl. (Textbooks)</span>
+          <span id="subNavProfilesGeoRegMarkers"><i class="fa fa-map" aria-hidden="true"></i> Profiles</span>
+          <span id="subNavFeaturesGeoRegMarkers"><i class="fa fa-map" aria-hidden="true"></i> Features</span>
+          <span id="subNavSamplesGeoRegMarkers"><i class="fa fa-map" aria-hidden="true"></i> Samples</span>
+          <span id="subNavVicavDictMarkers"><i class="fa fa-map" aria-hidden="true"></i> VICAV Dictionaries</span>
         </div>
         <div class="sub-nav-actions">
           <span id="sub-nav-expand"><i class="fa fa-expand" aria-hidden="true"></i> Expand Panels Over Map</span>
@@ -228,49 +246,56 @@
     </div>
     <div class="panel-wrap">
       <div class="col-md-12 el-block">
-        <h2 class="how-to-heading">How to use the VICAV Web-App?</h2>
-        VICAV Web-App is a map based web application and following the six basic steps listed below you can easily start exploring our project, finding interesting resources for your research and even contribute to improve our data:
+        <h2 class="how-to-heading">What can I do with the VICAV platform?</h2>
       </div>
       <div class="col-xl-4 col-md-4 el-block info-block">
         <div class="info-block-wrap">
           <i class="fa fa-map-marker" aria-hidden="true"></i>
-          <span>Find dictionaries and resources from the map using map functions.</span>
+          <a class="aExplBar" href="javascript:execTextQuery('vicavExplBar_dualApproach', 'DUAL APPROACH', 'vicavTexts.xslt')">
+            <span>Dive into the world of Arabic dialects either through the map or through the menu</span>
+          </a>
         </div>
       </div>
       <div class="col-xl-4 col-md-4 el-block info-block">
         <div class="info-block-wrap">
           <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
-          <span>Explore different aspects of our project using the top navigation menu.</span>
-        </div>
-      </div>
-      <div class="col-xl-4 col-md-4 el-block info-block">
-        <div class="info-block-wrap">
-          <i class="fa fa-columns" aria-hidden="true"></i>
-          <span>Use panels to navigate through sources and make comparisons.</span>
+          <a class="aExplBar" href="javascript:execTextQuery('vicavTypesOfText', 'TYPES OF TEXT', 'vicavTexts.xslt')">
+            <span>Bibliographies, linguistic profiles, sample texts, dictionaries, ...</span>
+          </a>
         </div>
       </div>
       <div class="col-xl-4 col-md-4 el-block info-block">
         <div class="info-block-wrap">
           <i class="fa fa-list-ol" aria-hidden="true"></i>
-          <span>Custom search queries on panels enable you to refine your results.</span>
+          <a class="aExplBar" href="javascript:execTextQuery('vicavExplBar_DesignPrinciples', 'DESIGN PRINCIPLES', 'vicavTexts.xslt')">
+            <span>Compare ling. phenomena in collapsible panels</span></a>
+        </div>
+      </div>
+      <div class="col-xl-4 col-md-4 el-block info-block">
+        <div class="info-block-wrap">
+          <i class="fa fa-columns" aria-hidden="true"></i>
+          <a class="aExplBar" href="javascript:execTextQuery('vicavExplBar_textTechnology', 'DH &amp; Text Technology', 'vicavTexts.xslt')">
+            <span>Digital Humanities and Text Technology</span>
+          </a>
         </div>
       </div>
       <div class="col-xl-4 col-md-4 el-block info-block">
         <div class="info-block-wrap">
           <i class="fa fa-clipboard" aria-hidden="true"></i>
-          <span>Propose your contributions to help grow our research.</span>
+          <a class="aExplBar" href="javascript:execTextQuery('vicavExplBar_Contributions', 'CONTRIBUTING', 'vicavTexts.xslt')">
+            <span>You can be part of VICAV by contributing resources. We always need help!</span></a>
         </div>
       </div>
       <div class="col-xl-4 col-md-4 el-block info-block">
         <div class="info-block-wrap">
           <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-          <span>Your contributions will be reviewed and published, crediting your name.</span>
+          <a class="aExplBar" href="javascript:execTextQuery('vicavExplBar_openParadigms', 'OPEN SOURCE &amp; OPEN ACCESS', 'vicavTexts.xslt')">
+            <span>Open Source &amp; Open Access</span></a>
         </div>
       </div>
     </div>
   </div>
-
-  
+     
   <footer class="main-footer">
     <div class="container-fluid">
       <div class="footer-wrapper">
@@ -279,7 +304,7 @@
         </div>
         <div class="el-block col-md-1 first">
           <a href="https://www.oeaw.ac.at/acdh/acdh-home/" target="_blank" rel="noopener" aria-label="ACDH">
-            <img src="includes/images/acdh_logo120h.png" alt="ACDH" title="Austrian Center for Digital Humanities"/>
+            <img src="images/acdh_logo120h.png" alt="ACDH" title="Austrian Center for Digital Humanities"/>
           </a>
         </div>
         <div class="el-block col-md-4">
@@ -307,16 +332,16 @@
   
   <!-- Bootstrap core JavaScript ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="includes/vendor/jquery.js"></script>
-  <script src="includes/vendor/jquery.sha256.min.js"></script>            
-  <script src="includes/vendor/jquery-ui.js"></script>
-  <script src="includes/vendor/popper.min.js"></script>
-  <script src="includes/vendor/fundament.min.js"></script>
-  <script src="includes/vendor/leaflet.js"></script>
-  <script src="includes/js/vicav_funcs.js?v=00002"></script>
-  <script src="includes/js/geo_data.js"></script>
-  <!--<script src="includes/js/tunico5_dict_funcs.js"></script>-->
-  <script src="includes/js/vicav.js"></script>
+  <script src="js/jquery.js"></script>
+  <script src="js/jquery.sha256.min.js"></script>            
+  <script src="js/jquery-ui.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/fundament.min.js"></script>
+  <script src="js/leaflet.js"></script>
+  <script src="js/vicav_funcs.js?v=00008"></script>
+  <script src="js/geo_data.js"></script>
+  <!--<script src="includes/js/tunico5_dict_funcs.js"></script>
+  <script src="js/vicav.js"></script>-->
 
   </body>
 </html>

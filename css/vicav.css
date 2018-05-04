@@ -974,8 +974,6 @@ nav {
 .newBiblQueryBtn:hover {
     color: white;   
     background: rgb(168, 93, 143);
-/* dark purple: rgb(168, 93, 143)  */
-/* light purple: rgb(222, 222, 222)*/
 }
 
 /* *************************************************** */
@@ -1050,7 +1048,7 @@ nav {
     vertical-align: top;    
 }
 
-.btn-outline-success {
+/*.btn-outline-success {
     color: rgb(168, 93, 143) !important;
     border-color: rgb(168, 93, 143) !important;  
     background-color: transparent;    
@@ -1060,11 +1058,57 @@ nav {
     box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
 }
 
-a {
-    color: rgb(168, 93, 143);
+*/
+
+.info-block-wrap > .aVicText {
+    color: #335175 !important;
+}
+
+.aExplBar {
+    color: rgb(51, 82, 118) !important;
     text-decoration: none;
     background-color: transparent;
-    /* -webkit-text-decoration-skip: objects; */
+    cursor: pointer;    
+}
+
+.aExplBar:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.aVicText {
+    color: rgb(168, 93, 143) !important;
+    text-decoration: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.aVicText:hover {
+    /* color: white !important; */
+    background-color: rgb(168, 93, 143);
+    cursor: pointer;
+    color: white !important;
+}
+
+.aTEIButton {
+    border: 1px solid rgb(168, 93, 143);    
+    border-radius: 5px;
+    padding-right: 8px;
+    padding-left: 8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    color: rgb(168, 93, 143) !important;
+    text-decoration: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.aTEIButton:hover {
+    /* color: white !important; */
+    text-decoration: none;
+    background-color: rgb(168, 93, 143);
+    cursor: pointer;
+    color: white !important;
 }
 
 a:hover {
@@ -1072,17 +1116,19 @@ a:hover {
     text-decoration: underline;
 }
 
-.tdTeiLink {
-/*  border: 1px solid rgb(168, 93, 143);*/    
+/*.tdTeiLink {
+    color: green;
+    background-color: white;
     text-align: right;
     vertical-align: top;
 }
+*/
 
-.tdTeiLink a:hover {
+/*.tdTeiLink a:hover {
     text-decoration: none;
     color: #fff;
 }
-
+*/
 .spTeiLink {
     font-size: 12px;
     border: 1px solid rgb(168, 93, 143);    
@@ -1097,12 +1143,12 @@ a:hover {
 }
 
 .spTeiLink:hover {
-    color: #fff;
     background-color: #a85c8e;
     text-decoration: none;
+    color: white;
 }
-
- .tbHeader {
+ 
+.tbHeader {
      /*border: 1px solid black;*/
      width: 100%;
  }
@@ -1128,3 +1174,8 @@ a:hover {
     box-shadow: 0px 0px 2px #ccc;
     color: #fff !important;
 }
+
+.pBiblExpl {
+   display: block;   
+}
+

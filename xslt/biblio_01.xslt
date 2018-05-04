@@ -1,22 +1,25 @@
 <xsl:stylesheet 
    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-   xmlns="http://www.w3.org/1999/xhtml" 
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:z="http://www.zotero.org/namespaces/export#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prism="http://prismstandard.org/namespaces/1.2/basic/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:bib="http://purl.org/net/biblio#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:vcard="http://nwalsh.com/rdf/vCard#" 
+    
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+   xmlns:z="http://www.zotero.org/namespaces/export#" 
+   xmlns:dcterms="http://purl.org/dc/terms/" 
+   xmlns:prism="http://prismstandard.org/namespaces/1.2/basic/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:bib="http://purl.org/net/biblio#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:vcard="http://nwalsh.com/rdf/vCard#" 
    version="2.0">
    
-    <xsl:output method="xhtml"/>
+    <xsl:output method="xml"/>
     <xsl:template match="/">
         
         <div>
            <div class="dvStats">
-              Query:&#160;&#160;<span class="spQueryText">{query}</span>
+              Query:  <span class="spQueryText">{query}</span>
            </div>
            <div class="dvStats">
               <xsl:variable name="num" select="//@num"/>
               <xsl:choose>
                  <xsl:when test="$num=0">0 records. Try to add .* to your query.</xsl:when>
-                 <xsl:when test="$num=1">1 record&#160;</xsl:when>
-                 <xsl:otherwise><xsl:value-of select="$num"/>&#160;records&#160;</xsl:otherwise>
+                 <xsl:when test="$num=1">1 record </xsl:when>
+                 <xsl:otherwise><xsl:value-of select="$num"/> records </xsl:otherwise>
               </xsl:choose>
            </div>
             
@@ -82,8 +85,6 @@
                      </xsl:choose>
                      <xsl:value-of select="dc:title"/>.&#160;
                      
-                     <!-- VICAV ID -->
-                     <!-- <xsl:value-of select="substring-after(.//dcterms:abstract, '(biblid:')"/>&#160; -->
 
                      <xsl:if test="dcterms:isPartOf/bib:Journal">
                         In:&#160;<i><xsl:value-of select="dcterms:isPartOf/bib:Journal/dc:title"/>
@@ -112,6 +113,9 @@
                      
                      <!-- DATE -->
                      <xsl:if test="string-length(dc:date)&gt;0"><xsl:text> </xsl:text>&#160;<xsl:value-of select="dc:date"/>.&#160;</xsl:if>                 
+
+                     <!-- VICAV ID -->
+                     &#160;&#160;&#160;<i style="font-size:small">(biblid:<xsl:value-of select="substring-after(.//dc:description, '(biblid:')"/></i>
                   </div>
                   
                </div>

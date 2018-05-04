@@ -13,30 +13,45 @@
             </table>    
             
             <div class="dvImgProfile">
-                <img>
-                    <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:ref[1]/@target"/></xsl:attribute>
-                </img>
-                <div class="imgCaption"><xsl:value-of select="//tei:head/tei:ref[1]"/></div>
+                <xsl:choose>
+                    <xsl:when test="//tei:head/tei:figure">
+                        <img>
+                            <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure/tei:graphic/@url"/></xsl:attribute>
+                        </img>
+                        <div class="imgCaption">
+                            <xsl:apply-templates select="//tei:head/tei:figure/tei:head"/>
+                        </div>                   
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <img>
+                            <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:ref[1]/@target"/></xsl:attribute>
+                        </img>
+                        <div class="imgCaption">
+                            <xsl:apply-templates select="//tei:head/tei:ref/tei:p[1]"/>
+                        </div>                   
+                    </xsl:otherwise>
+                </xsl:choose>
             </div>
             
             <table class="tbProfile">
                 <tr>
                     <td class="tdHead">Name</td>
-                    <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@xml:lang='ara-x-DMG']"/></td>                    
+                    <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@xml:lang='ara-x-DMG' or @xml:lang='ara-Latn' ]"/></td>                    
                 </tr>
                 <tr>
                     <td class="tdHead">Name (Arabic)</td>
                     <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@xml:lang='ara']"/></td>
                 </tr>
-                <xsl:if test="//tei:name[@type='latLoc']">
+                
+                <xsl:if test="//tei:name[@type='latLoc' or @xml:lang='ara-x-local']">
                     <tr>
                         <td class="tdHead">Local name</td>
-                        <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@type='latLoc']"/></td>
+                        <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@type='latLoc' or @xml:lang='ara-x-local']"/></td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td class="tdHead">Loc. name (Ar.)</td>
                         <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@type='araLoc']"/></td>
-                    </tr>
+                    </tr> -->
                 </xsl:if>
                 <tr>
                     <td class="tdHead">Geo location</td>
@@ -99,8 +114,16 @@
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template match="tei:hi">
+        <xsl:choose>
+            <xsl:when test="@rend='italic'"><i><xsl:apply-templates/></i></xsl:when>
+            <xsl:otherwise><b><xsl:apply-templates/></b></xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    
+    <xsl:template match="tei:teiHead[@type='imgCaption']"><xsl:apply-templates/></xsl:template>
     <xsl:template match="tei:teiHeader"></xsl:template>
-
+    
     <xsl:template match="tei:p">
         <div class="pNorm">
             <xsl:apply-templates/>
@@ -108,7 +131,7 @@
     </xsl:template>
         
     <xsl:template match="tei:ptr">
-        <a class="visibleLink">
+        <a class="aVicText">
             <xsl:attribute name="href">#</xsl:attribute>
             <xsl:attribute name="onClick">refEvent("<xsl:value-of select="@target"/>")</xsl:attribute>
             -->
@@ -118,14 +141,14 @@
     <xsl:template match="tei:ref">
         <xsl:choose>
             <xsl:when test="@type='jsLink'">
-                <a class="visibleLink">
+                <a class="aVicText">
                     <xsl:attribute name="href">#</xsl:attribute>
                     <xsl:attribute name="onClick"><xsl:value-of select="@target"/></xsl:attribute>
                     <xsl:apply-templates/>
                 </a>
             </xsl:when>
             <xsl:otherwise>
-                <a class="visibleLink">
+                <a class="aVicText">
                     <xsl:attribute name="href">#</xsl:attribute>
                     <xsl:attribute name="onClick">refEvent("<xsl:value-of select="@target"/>")</xsl:attribute>
                     <xsl:apply-templates/>

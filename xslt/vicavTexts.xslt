@@ -29,11 +29,17 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="tei:graphic">
+    <img>
+      <xsl:attribute name="src"><xsl:value-of select="@url"/></xsl:attribute>
+    </img>
+  </xsl:template>
+  
   <xsl:template match="tei:head">
     <xsl:choose>
       <xsl:when test="count(ancestor::tei:div) = 1">
         <table class="tbHeader">
-          <tr><td><h2><xsl:apply-templates/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
+          <tr><td><h2><xsl:apply-templates/></h2></td><td>{teiLink}</td></tr>
         </table>            
       </xsl:when>
       <xsl:when test="count(ancestor::tei:div) = 2">
@@ -62,32 +68,37 @@
   </xsl:template>
 
   <xsl:template match="tei:p">
-    <p>
-      <xsl:apply-templates/></p>        
+    <p><xsl:apply-templates/></p>        
   </xsl:template>
 
   <xsl:template match="tei:ref">
     <xsl:choose>
+      <xsl:when test="contains(@target, 'reg:') or contains(@target, 'biblid:')">
+        <a class="aVicText">          
+          <xsl:attribute name="onclick">refEvent("<xsl:value-of select="@target"/>")</xsl:attribute>
+          <xsl:apply-templates/>
+        </a>        
+      </xsl:when>
       <xsl:when test="@type='dictQuery'">
-        <a>      
+        <a class="aVicText">      
           <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>
       </xsl:when>
-      <xsl:when test="@type='jsLink'">
-        <a>      
-          <xsl:attribute name="onClick"><xsl:value-of select="@target"/></xsl:attribute>
+      <xsl:when test="@type='jsLink' or contains(@target, 'javascript:')">
+        <a class="aVicText">      
+          <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@xml:id">
-          <a>      
+        <a class="aVicText">      
           <xsl:attribute name="id"><xsl:value-of select="@xml:id"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>
       </xsl:when>        
       <xsl:otherwise>
-        <a target="_blank">      
+        <a target="_blank" class="aVicText">      
           <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>

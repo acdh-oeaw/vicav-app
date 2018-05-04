@@ -11,7 +11,7 @@
             <!-- <xsl:comment>Generated: <xsl:value-of select="current-dateTime()"/></xsl:comment> -->
             
             <head>
-                <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
                 <style type="text/css">
                     .spRed { color: red; }                    
                     .spEquals {color: black; }
