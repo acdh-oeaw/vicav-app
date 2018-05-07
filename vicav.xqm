@@ -34,7 +34,7 @@ declare function vicav:is-node-in-sequence
 };
  
 declare 
-    %rest:path("biblio")
+    %rest:path("vicav/biblio")
     %rest:query-param("query", "{$query}")
     %rest:query-param("xslt", "{$xsltfn}")
    
@@ -70,7 +70,7 @@ function vicav:query_biblio($query as xs:string*, $xsltfn as xs:string) {
 };
 
 declare 
-    %rest:path("profile")
+    %rest:path("vicav/profile")
     %rest:query-param("coll", "{$coll}")
     %rest:query-param("id", "{$id}")
     %rest:query-param("xslt", "{$xsltfn}")
@@ -90,7 +90,7 @@ function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:
 };
 
 declare 
-    %rest:path("sample")
+    %rest:path("vicav/sample")
     %rest:query-param("coll", "{$coll}")
     %rest:query-param("id", "{$id}")
     %rest:query-param("xslt", "{$xsltfn}")
@@ -110,7 +110,7 @@ function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:
 };
 
 declare 
-    %rest:path("text")
+    %rest:path("vicav/text")
     %rest:query-param("id", "{$id}")
     %rest:query-param("xslt", "{$xsltfn}")
    
@@ -128,7 +128,7 @@ function vicav:get_text($id as xs:string*, $xsltfn as xs:string) {
 };
 
 declare 
-    %rest:path("dict_index")
+    %rest:path("vicav/dict_index")
     %rest:query-param("dict", "{$dict}")    
     %rest:query-param("ind", "{$ind}")    
     %rest:query-param("str", "{$str}")    
@@ -169,7 +169,7 @@ declare function vicav:createMatchString($in as xs:string) {
 };
 
 declare 
-    %rest:path("dict_api")
+    %rest:path("vicav/dict_api")
     %rest:query-param("query", "{$query}")    
     %rest:query-param("dict", "{$dict}")    
     %rest:query-param("xslt", "{$xsltfn}")    
@@ -236,7 +236,7 @@ function vicav:dict_query($dict as xs:string, $query as xs:string*, $xsltfn as x
  : @return rest response and binary file
  :)
 declare
-  %rest:path("{$file=.+}")
+  %rest:path("vicav/{$file=.+}")
   %rest:GET
 
 function vicav:deliver_file($file as xs:string) as item()+ {
@@ -247,7 +247,7 @@ function vicav:deliver_file($file as xs:string) as item()+ {
 };
 
 declare
-  %rest:path("bibl_markers")
+  %rest:path("vicav/bibl_markers")
   %rest:query-param("query", "{$query}")    
   %rest:query-param("scope", "{$scope}")    
   %rest:GET
