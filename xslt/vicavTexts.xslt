@@ -73,7 +73,13 @@
 
   <xsl:template match="tei:ref">
     <xsl:choose>
-      <xsl:when test="contains(@target, 'reg:') or contains(@target, 'biblid:')">
+        <xsl:when test="@type='flachCards'">
+            <a class="aVicText">          
+                <xsl:attribute name="onclick">flashcard:</xsl:attribute>
+                <xsl:apply-templates/>
+            </a>                    
+        </xsl:when>
+        <xsl:when test="contains(@target, 'reg:') or contains(@target, 'biblid:')">
         <a class="aVicText">          
           <xsl:attribute name="onclick">refEvent("<xsl:value-of select="@target"/>")</xsl:attribute>
           <xsl:apply-templates/>

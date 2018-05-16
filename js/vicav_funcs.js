@@ -756,6 +756,13 @@ $(document).ready(
        $("#liVicavTypesOfText").mousedown ( function(event) { execTextQuery('vicavTypesOfText', 'TYPES OF TEXT/DATA', 'vicavTexts.xslt'); } );
        $("#liVicavDictionaryEncoding").mousedown ( function(event) { execTextQuery('vicavDictionaryEncoding', 'DICTIONARY ENCODING', 'vicavTexts.xslt'); } );       
        $("#liVicavVLE").mousedown ( function(event) { execTextQuery('vicavVLE', 'DICTIONARY ENCODING', 'vicavTexts.xslt'); } );       
+       $("#liVicavLearning").mousedown ( function(event) { execTextQuery('vicavLearning', 'LEARNING MATERIALS', 'vicavTexts.xslt'); } );
+       $("#liVicavLearningSmartphone").mousedown ( function(event) { execTextQuery('vicavLearningSmartphone', 'SMARTPHONE VOCABULARIES', 'vicavTexts.xslt'); } );
+       $("#liVicavLearningPrograms").mousedown ( function(event) { execTextQuery('vicavLearningPrograms', 'PROGRAMS', 'vicavTexts.xslt'); } );
+       $("#liVicavLearningData").mousedown ( function(event) { execTextQuery('vicavLearningData', 'VOCABULARIES (DATA)', 'vicavTexts.xslt'); } );
+       $("#liVicavKeyboards").mousedown ( function(event) { execTextQuery('vicavKeyboards', 'KEYBOARD LAYOUTS', 'vicavTexts.xslt'); } );
+       
+       
        $("#liVicavArabicTools").mousedown ( function(event) { execTextQuery('vicavArabicTools', 'ARABIC TOOLS', 'vicavTexts.xslt'); } );
        $("#liVicavOverview_corpora_spoken").mousedown ( function(event) { execTextQuery('vicavOverview_corpora_spoken', 'ARABIC TOOLS (Corpora - Spoken Varieties)', 'vicavTexts.xslt'); } );
        $("#liVicavOverview_corpora_msa").mousedown ( function(event) { execTextQuery('vicavOverview_corpora_msa', 'ARABIC TOOLS (Corpora - MSA)', 'vicavTexts.xslt'); } );
@@ -1075,7 +1082,14 @@ $(document).ready(
      }
  );
   
-  
+
+function getFlashCards(unit_, dict_, format_) {
+    uri = 'https://cs.acdh.oeaw.ac.at/modules/fcs-aggregator/switch.php?version=1.2&operation=searchRetrieve&query=unit=' +
+       unit_ + '&x-context=' + dict_ + '&startRecord=1&maximumRecords=1000&x-format=' + format_ + '&x-dataview=kwic,title';
+       
+    window.location.href = uri;
+}
+
 function refEvent(url_) {
    if (url_.indexOf("biblid") > -1) {
       execBiblQuery(url_);
