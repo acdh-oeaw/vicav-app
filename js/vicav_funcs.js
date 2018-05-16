@@ -246,8 +246,10 @@ function changePanelVisibility(panel, type) {
 }
 
 
-function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, teiLink_, locType_, pID_, pVisiblity_, pURL_) {
+function appendToPanel(result_, windowType_, secLabel_, contClass_, query_, teiLink_, locType_, pID_, pVisiblity_, pURL_) {
+       //appendToPanel(result, "Text", secLabel_, "grid-wrap", '', teiLink, '', pID_, pVisiblity_, pURL_);
   var openPans = 0;
+  
   result_ = result_.replace(/{query}/, query_);
   $('.content-panel').each(function(){
     var panelID = $(this).data('pid');
@@ -271,7 +273,7 @@ function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, tei
     var pID = $('.content-panel').last().data('pid') + 1;
     if (!pURL_) {
       var currentURL = window.location.toString();
-      var argList = pID+"=["+windowType_+","+windowVar_+",";
+      var argList = pID + "=[" + windowType_ + "," + secLabel_ + ",";
       if (locType_) { argList = argList + locType_+","; }
       argList = argList + "open]";
       window.history.replaceState( {} , "", currentURL+"&"+argList);
@@ -287,7 +289,7 @@ function appendToPanel(result_, windowType_, windowVar_, contClass_, query_, tei
   }
 
   var resCont = "<div class='" + contClass_ + "'>" + result_ + "</div>";  
-  if (windowVar_.length == 0) { var htmlCont = windowType_; } else {var htmlCont = windowType_ +": "+ windowVar_;}   
+  if (secLabel_.length == 0) { var htmlCont = windowType_; } else {var htmlCont = windowType_ +": "+ secLabel_;}   
   $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass(cssClass).attr("data-pid",pID).appendTo( ".panels-wrap" ).append(resCont).find(".chrome-title").html(htmlCont);
 
 }
