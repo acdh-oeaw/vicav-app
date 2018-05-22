@@ -46,9 +46,9 @@
                     
                         <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
                             <xsl:attribute name="title">
-                                <xsl:if test="string-length(tei:fs/tei:f[@name='pos'])&gt;0">&lt;span"&gt;POS:&#160;<xsl:value-of select="tei:fs/tei:f[@name='pos']"/>&lt;/span&gt;&lt;br/&gt;</xsl:if>
-                                <xsl:if test="string-length(tei:fs/tei:f[@name='lemma'])&gt;0">&lt;span&gt;Lemma:&#160;<xsl:value-of select="tei:fs/tei:f[@name='lemma']"/>&lt;/span&gt;&lt;br/&gt;</xsl:if>                            
-                                <xsl:if test="string-length(tei:fs/tei:f[@name='translation'])&gt;0">&lt;span&gt;English:&#160;<xsl:value-of select="tei:fs/tei:f[@name='translation']"/>&lt;/span&gt;</xsl:if>                                                        
+                                <xsl:if test="string-length(tei:fs/tei:f[@name='pos'])&gt;0">&lt;span class="spPos"&gt;POS:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='pos']"/>&lt;br/&gt;</xsl:if>
+                                <xsl:if test="string-length(tei:fs/tei:f[@name='lemma'])&gt;0">&lt;span class="spLemma"&gt;Lemma:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='lemma']"/>&lt;br/&gt;</xsl:if>                            
+                                <xsl:if test="string-length(tei:fs/tei:f[@name='translation'])&gt;0">&lt;span class="spTrans"&gt;English:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='translation']"/></xsl:if>                                                        
                             </xsl:attribute>
                             <xsl:if test="name()='w'"><xsl:value-of select="tei:fs/tei:f[@name='wordform']"/></xsl:if>
                         </span>

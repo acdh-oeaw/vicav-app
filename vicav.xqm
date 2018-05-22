@@ -94,8 +94,8 @@ declare
     %rest:query-param("coll", "{$coll}")
     %rest:query-param("id", "{$id}")
     %rest:query-param("xslt", "{$xsltfn}")
-   
-    %rest:GET 
+    
+    %rest:GET         
     
 function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:string) {
     
@@ -246,6 +246,7 @@ function vicav:deliver_file($file as xs:string) as item()+ {
   )
 };
 
+(:
 declare
   %rest:path("vicav/bibl_markers")
   %rest:query-param("query", "{$query}")    
@@ -325,3 +326,116 @@ let $out :=
   (: return file:write("c:\dicttemp\geo_bibl_001.txt", $out) :)
   return <rs type="{count($out)}">{$out}</rs>
 };        
+:)
+
+declare
+  %rest:path("vicav/bibl_markers")
+  %rest:query-param("query", "{$query}")    
+  %rest:query-param("scope", "{$scope}")    
+  %rest:GET
+  %output:method("xml")
+  
+function vicav:get_bibl_markers($query as xs:string, $scope as xs:string) {
+
+let $queries := tokenize($query, ',')
+let $qs := 
+  for $query in $queries
+    return
+     if (contains($query, 'geo:')) then '[dc:subject[text() contains text "' || $query ||'" using wildcards using diacritics sensitive]]' else
+     if (contains($query, 'reg:')) then '[dc:subject[text() contains text "' || $query ||'" using wildcards using diacritics sensitive]]' else
+     if (contains($query, 'vt:')) then '[dc:subject[text() contains text "' || $query ||'" using wildcards using diacritics sensitive]]' else 
+     '[node()[text() contains text "' || $query ||'" using wildcards using diacritics sensitive]]'
+
+let $ns := "declare namespace bib = 'http://purl.org/net/biblio#'; "||
+           "declare namespace rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'; "||
+           "declare namespace foaf= 'http://xmlns.com/foaf/0.1/'; "||  
+           "declare namespace dc = 'http://purl.org/dc/elements/1.1/';"
+let $q := 'let $arts := collection("vicav_biblio")//node()[(name()="bib:Article") or (name()="bib:Book") or (name()="bib:BookSection") or (name()="bib:Thesis")]' ||       
+          string-join($qs) ||
+          'for $art in $arts ' ||
+          'let $author := $art/bib:authors[1]/rdf:Seq[1]/rdf:li[1]/foaf:Person[1]/foaf:surname[1] ' ||
+          'order by $author return $art'
+let $query := $ns||$q
+let $tempresults := xquery:eval($query)   
+(: return count($tempresults) :)
+                  
+let $out := 
+  for $subj at $icnt in $tempresults
+  return 
+    let $geos := 
+    switch($scope)
+      case 'geo_reg' return $subj/dc:subject[contains(., 'reg:') or contains(., 'geo:')]
+      case 'geo' return $subj/dc:subject[contains(., 'geo:')]
+      case 'reg' return $subj/dc:subject[contains(., 'reg:')]
+      default return ()
+    
+    for $geo in $geos
+    return
+      let $abstract := $subj/dcterms:abstract[contains(., '(biblid:')][1]
+      let $after := fn:substring-after($abstract,'(biblid:')
+      let $id := fn:substring-before($after, ')')
+    
+      return 
+        if (string-length($geo) > 0) 
+          then (            
+            let $type := fn:substring-before($geo,':')
+            let $altItem := replace($geo, 'geo:|reg:', '')           
+            let $locname := fn:substring-before($altItem,'[')
+            let $locname :=  fn:normalize-space($locname)
+            let $locname := fn:replace($locname, '''', '&#180;')
+            let $sa := fn:substring-after($altItem,'[')
+            let $geodata := fn:substring-before($sa,']')                    
+          
+            return 
+              if (string-length($locname) = 0) then (
+                <item><type>{$type}</type><geo></geo><loc>{$altItem}</loc><id>{$id}</id></item>
+              ) else (
+                <item><type>{$type}</type><geo>{$geodata}</geo><loc>{$locname}</loc><id>{$id}</id></item>
+              )
+          
+          )  else ()
+         
+let $out1 := <r>{$out}</r> 
+let $out := 
+  for $item at $icnt in $out1/item 
+    let $loc := $item/loc/string(),$geo := $item/geo
+              
+    for $id in $item/id
+      group by $loc
+            
+      let $s := for $i in $item/id
+         return $i/text()||","         
+    
+      return 
+        if (string-length($geo[1]/text()) > 0) then (
+          (: if the <geo> element is empty, no output should be generated:)
+        
+          if ($item/type = 'geo') then (
+            <r type='geo'><loc>{$geo[1]/text()}</loc><alt>{$loc}</alt><freq>{count($id)}</freq></r>            
+          ) else (            
+            <r type='reg'><loc>{$geo[1]/text()}</loc><alt>{$loc}</alt><freq>{count($id)}</freq></r>
+          ) 
+        ) else ()
+
+  (: return file:write("c:\dicttemp\geo_bibl_001.txt", $out) :)
+  return <rs type="{count($out)}">{$out}</rs>
+                 
+};        
+
+declare
+  %rest:path("vicav/profile_markers")
+  %rest:GET
+  %output:method("xml")
+  
+function vicav:get_profile_markers() {
+    let $entries := collection('vicav_profiles')//tei:TEI
+    let $out := 
+        for $item in $entries
+            return <r type='geo'>{$item/@xml:id}
+                       <loc>{$item/tei:text/tei:body/tei:div/tei:div/tei:p/tei:geo/text()}</loc>
+                       <alt>{$item//tei:text[1]/tei:body[1]/tei:div[1]/tei:head[1]/tei:name[1]/text()}</alt>
+                       <freq>1</freq>
+                   </r>
+  
+    return <rs>{$out}</rs>
+};

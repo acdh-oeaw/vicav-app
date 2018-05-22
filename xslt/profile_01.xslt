@@ -138,6 +138,27 @@
         </a>
     </xsl:template>
     
+    <xsl:template match="tei:ref[starts-with(@target,'http')]">
+        <a target="_blank" class="aVicText">      
+            <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
+            <xsl:apply-templates/>
+        </a>
+    </xsl:template>
+
+    <xsl:template match="tei:ref[
+        starts-with(@target,'profile:') or
+        starts-with(@target,'feature:') or
+        starts-with(@target,'corpus:') or
+        starts-with(@target,'bibl:') or
+        starts-with(@target,'flashcards:') or
+        starts-with(@target,'text:') or
+        starts-with(@target,'sample:')]">
+        <a class="aVicText">
+            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@target"/>")</xsl:attribute>
+            <xsl:apply-templates/>          
+        </a>
+    </xsl:template>
+<!-- 
     <xsl:template match="tei:ref">
         <xsl:choose>
             <xsl:when test="@type='jsLink'">
@@ -156,5 +177,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+    
+ -->    
 </xsl:stylesheet>
 

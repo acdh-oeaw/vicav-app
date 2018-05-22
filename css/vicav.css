@@ -956,7 +956,7 @@ nav {
     color: rgb(222, 222, 222);
 }
 
-.newBiblQueryBtn {
+.biblQueryBtn,.crossDictQueryBtn {
     width: 300px;
     height: 40px;
     color: rgb(168, 93, 143);   
@@ -971,7 +971,7 @@ nav {
     border-radius: 0.25rem;
 }
 
-.newBiblQueryBtn:hover {
+.biblQueryBtn:hover,.crossDictQueryBtn:hover {
     color: white;   
     background: rgb(168, 93, 143);
 }
@@ -1047,18 +1047,6 @@ nav {
     color: rgb(168, 93, 143);   
     vertical-align: top;    
 }
-
-/*.btn-outline-success {
-    color: rgb(168, 93, 143) !important;
-    border-color: rgb(168, 93, 143) !important;  
-    background-color: transparent;    
-}
-
-.btn-outline-success:focus, .btn-outline-success.focus {
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
-}
-
-*/
 
 .info-block-wrap > .aVicText {
     color: #335175 !important;
@@ -1179,3 +1167,67 @@ a:hover {
    display: block;   
 }
 
+.selQueryType {
+    display:block;
+    margin-top: 5px;
+    margin-left: 3px;
+    /* border: 1px solid black; */
+}
+
+.checkboxLabel {  
+    margin-right: 20px;
+    padding-left: 6px;
+}
+
+.imgIllustration {
+    height: 100px;
+    margin: 5px;
+    float: right; 
+}
+
+.headDamascus {
+    font-style: italic !important;
+    font-weight: bold !important;
+    color: rgb(168, 93, 143) !important;
+    text-align: center !important;    
+}
+
+.dvAudio {
+    border-bottom: 1px dotted grey;
+    vertical-align: top;
+}
+
+.audio {       
+    color: green;
+    position: absolute;
+    left: -500px;
+}
+
+[data-snippetid=dictFrontPage_Damascus] > .grid-wrap {
+    background-image: url('../images/800px_Minaret_of_Qayt_Bey_Umayyad_Mosque_wiki.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat;
+    color: rgb(93, 41, 75);
+}
+
+[data-snippetid=dictFrontPage_Cairo] > .grid-wrap {
+    background-color: rgb(226, 243, 170);
+    color: rgb(63, 71, 42);
+}
+
+[data-snippetid=dictFrontPage_Tunis] > .grid-wrap {
+    background-color: rgb(252, 244, 216);
+}
+
+.dropdown-item:active {
+    background: rgb(168, 93, 143);
+    color: white !important;
+    
+}
+
+.spPos { color: red; }
+.spLemma { color: green; }
+.spTrans { color: blue; }
+.tooltip {
+    border: 3px rgb(222, 222, 222);
+}

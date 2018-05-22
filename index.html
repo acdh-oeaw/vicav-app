@@ -24,7 +24,7 @@
   <body>   
     <nav class="navbar navbar-expand-md navbar-dark fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand mr-0 mr-md-2" aria-label="Vicav" href="vicav/index.html">
+        <a class="navbar-brand mr-0 mr-md-2" aria-label="Vicav" href="index.html">
           <img src="images/vicav_logo_01.svg"/>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,7 +127,7 @@
               <div class="dropdown-menu" aria-labelledby="dropdown04">
                 <a class="dropdown-item" id="liCorpusTextsExplanation">Explanation and Overview</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liNotYet">Contribute a Corpus Text</a>
+                <a class="dropdown-item" id="liVicavContributeCorpus">Contribute a Corpus Text</a>
               </div>
             </li>
             <li class="nav-item dropdown">
@@ -135,9 +135,11 @@
               <div class="dropdown-menu" aria-labelledby="dropdown05">
                 <a class="dropdown-item" id="navDictGeoRegMarkers1">Bibliography (Dictionaries)</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="navVicavDictMarkers">Show All VICAV Dictionaries</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" id="liVicavDict_Tunis">TUNICO Dictionary</a>
+                  <a class="dropdown-item" id="navVicavDictMarkers">Show All VICAV Dictionaries</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" id="liVicavCrossDictQuery">Query VICAV Dictionaries</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" id="liVicavDict_Tunis">TUNICO Dictionary</a>
                 <a class="dropdown-item" id="liVicavDict_Damascus">Damascus Dictionary</a>
                 <a class="dropdown-item" id="liVicavDict_Cairo">Cairo Dictionary</a>
                 <a class="dropdown-item" id="liVicavDict_MSA">MSA Dictionary</a>
@@ -151,17 +153,18 @@
                 <a class="dropdown-item" id="liVicavDictionaryEncoding">Dictionary Encoding</a>
                 <a class="dropdown-item" id="liVicavVLE">Dictionary Editor (VLE)</a>
                 <a class="dropdown-item" id="liVicavArabicTools">Arabic Research Tools</a>
-                  <a class="dropdown-item" id="liVicavOverview_corpora_spoken">&nbsp;&nbsp;&nbsp;Corpora (Spoken Varieties)</a>
-                  <a class="dropdown-item" id="liVicavOverview_corpora_msa">&nbsp;&nbsp;&nbsp;Corpora (MSA)</a>
-                  <a class="dropdown-item" id="liVicavOverview_special_corpora">&nbsp;&nbsp;&nbsp;Special Corpora</a>
-                  <a class="dropdown-item id="liVicavOverview_corpora_historical_varieties">&nbsp;&nbsp;&nbsp;Corpora (Historical Varieties)</a>
-                  <a class="dropdown-item" id="liVicavOverview_dictionaries">&nbsp;&nbsp;&nbsp;Dictionaries</a>
-                  <a class="dropdown-item" id="liVicavOverview_nlp">&nbsp;&nbsp;&nbsp;Language Processing Tools</a>
-                  <a class="dropdown-item" id="liVicavOverview_otherStuff">&nbsp;&nbsp;&nbsp;Other Websites &amp; Projects</a>                                
+                  <a class="dropdown-item" id="liVicavOverview_corpora_spoken">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Corpora (Spoken Varieties)</a>
+                  <a class="dropdown-item" id="liVicavOverview_corpora_msa">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Corpora (MSA)</a>
+                  <a class="dropdown-item" id="liVicavOverview_special_corpora">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Special Corpora</a>
+                  <a class="dropdown-item id="liVicavOverview_corpora_historical_varieties">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Corpora (Historical Varieties)</a>
+                  <a class="dropdown-item" id="liVicavOverview_dictionaries">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dictionaries</a>
+                  <a class="dropdown-item" id="liVicavOverview_nlp">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Language Processing Tools</a>
+                  <a class="dropdown-item" id="liVicavOverview_otherStuff">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other Websites &amp; Projects</a>                                
                 <a class="dropdown-item" id="liVicavLearning">Learning Materials</a>
-                  <a class="dropdown-item" id="liVicavLearningSmartphone">&nbsp;&nbsp;&nbsp;Vocabularies on Smartphones</a>
-                <a class="dropdown-item" id="liVicavLearningPrograms">&nbsp;&nbsp;&nbsp;Available Programs</a>
-                <a class="dropdown-item" id="liVicavLearningData">&nbsp;&nbsp;&nbsp;Available Data</a>
+                  <a class="dropdown-item" id="liVicavLearningTextbookDamascus">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Materials for Textbook of Syrian Arabic</a>
+                  <a class="dropdown-item" id="liVicavLearningSmartphone">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vocabularies on Smartphones</a>
+                  <a class="dropdown-item" id="liVicavLearningPrograms">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Available Programs</a>
+                  <a class="dropdown-item" id="liVicavLearningData">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Available Data</a>
                   <a class="dropdown-item" id="liVicavKeyboards">Keyboard Layouts</a>
               </div>
             </li>
@@ -209,7 +212,7 @@
     <div class="container-fluid main-map-container">
       <div class="col-md-12 grid-col main-map-col">
         <!-- Explanation of map contents -->
-        <div id="dvExplanations" class="dvExplanations"></div>
+        <div id="dvExplanations" class="dvExplanations">KKKK</div>
         
         <!-- EMPTY MAP -->
         <div id="dvMainMapCont" class="dvMainMapCont">
@@ -256,7 +259,7 @@
       <div class="col-xl-4 col-md-4 el-block info-block">
         <div class="info-block-wrap">
           <i class="fa fa-map-marker" aria-hidden="true"></i>
-          <a class="aExplBar" href="javascript:execTextQuery('vicavExplBar_dualApproach', 'DUAL APPROACH', 'vicavTexts.xslt')">
+            <a class="aExplBar" href="javascript:getText('DUAL APPROACH', 'vicavExplBar_dualApproach', 'vicavTexts.xslt')">
             <span>Dive into the world of Arabic dialects either through the map or through the menu</span>
           </a>
         </div>
@@ -264,38 +267,38 @@
       <div class="col-xl-4 col-md-4 el-block info-block">
         <div class="info-block-wrap">
           <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
-          <a class="aExplBar" href="javascript:execTextQuery('vicavTypesOfText', 'TYPES OF TEXT', 'vicavTexts.xslt')">
-            <span>Bibliographies, linguistic profiles, sample texts, dictionaries, ...</span>
+            <a class="aExplBar" href="javascript:getText('TYPES OF TEXT', 'vicavTypesOfText', 'vicavTexts.xslt')">
+            <span>Study with bibliographies, linguistic profiles, sample texts, dictionaries, ...</span>
           </a>
         </div>
       </div>
       <div class="col-xl-4 col-md-4 el-block info-block">
         <div class="info-block-wrap">
           <i class="fa fa-list-ol" aria-hidden="true"></i>
-          <a class="aExplBar" href="javascript:execTextQuery('vicavExplBar_DesignPrinciples', 'DESIGN PRINCIPLES', 'vicavTexts.xslt')">
+            <a class="aExplBar" href="javascript:getText('DESIGN PRINCIPLES', 'vicavExplBar_DesignPrinciples', 'vicavTexts.xslt')">
             <span>Compare ling. phenomena in collapsible panels</span></a>
         </div>
       </div>
       <div class="col-xl-4 col-md-4 el-block info-block">
         <div class="info-block-wrap">
           <i class="fa fa-columns" aria-hidden="true"></i>
-          <a class="aExplBar" href="javascript:execTextQuery('vicavExplBar_textTechnology', 'DH &amp; Text Technology', 'vicavTexts.xslt')">
-            <span>Digital Humanities and Text Technology</span>
+            <a class="aExplBar" href="javascript:getText('DH &amp; Text Technology', 'vicavExplBar_textTechnology', 'vicavTexts.xslt')">
+            <span>Learn about digital humanities, text technology and digital standards</span>
           </a>
         </div>
       </div>
       <div class="col-xl-4 col-md-4 el-block info-block">
         <div class="info-block-wrap">
           <i class="fa fa-clipboard" aria-hidden="true"></i>
-          <a class="aExplBar" href="javascript:execTextQuery('vicavExplBar_Contributions', 'CONTRIBUTING', 'vicavTexts.xslt')">
-            <span>You can be part of VICAV by contributing resources. We always need help!</span></a>
+            <a class="aExplBar" href="javascript:getText('CONTRIBUTING', 'vicavExplBar_Contributions', 'vicavTexts.xslt')">
+            <span>Take part in a cooperative project by contributing resources. We always need help!</span></a>
         </div>
       </div>
       <div class="col-xl-4 col-md-4 el-block info-block">
         <div class="info-block-wrap">
           <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-          <a class="aExplBar" href="javascript:execTextQuery('vicavExplBar_openParadigms', 'OPEN SOURCE &amp; OPEN ACCESS', 'vicavTexts.xslt')">
-            <span>Open Source &amp; Open Access</span></a>
+            <a class="aExplBar" href="javascript:getText('OPEN SOURCE &amp; OPEN ACCESS', 'vicavExplBar_openParadigms', 'vicavTexts.xslt')">
+            <span>Support Open Source &amp; Open Access</span></a>
         </div>
       </div>
     </div>
@@ -345,8 +348,6 @@
   <script src="js/leaflet.js"></script>
   <script src="js/vicav_funcs.js?v=00008"></script>
   <script src="js/geo_data.js"></script>
-  <!--<script src="includes/js/tunico5_dict_funcs.js"></script>
-  <script src="js/vicav.js"></script>-->
 
   </body>
 </html>
