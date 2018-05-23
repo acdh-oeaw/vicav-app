@@ -7,11 +7,11 @@
 /* *********************************/
 
 body {
-    padding-top: 114px;
+    padding-top: 104px;
 }
 
 .navbar {
-  background-color: rgb(51, 82, 118);
+  background-color: #252771;
   color: #fff;
 }
 
@@ -358,11 +358,11 @@ h2.how-to-heading {
 .sub-nav {
     background-color: rgb(168, 93, 143);
     color: #fff;
-    padding: 3px 20px;
+    padding: 5px 20px;
     box-shadow: 1px 1px 1px #cacaca;
     margin-bottom: 1px;
     position: fixed;
-    top: 84px;
+    top: 70px;
     right: 0;
     left: 0;
     z-index: 1000;
@@ -383,7 +383,7 @@ h2.how-to-heading {
 }
 
 .sub-nav span:hover {
-    color: #335276;
+    color: #252771;
 }
 
 .not-implented {
@@ -727,7 +727,7 @@ h4::after {
 }
 
 .sub-nav span.active {
-  color: #335276;
+  color: #252771;
 }
 
 .dict-search-wrapper {
@@ -923,12 +923,19 @@ option.opWordList_root {
     background: rgb(222, 222, 222);
 }
 
-.navbar {
-    border-bottom: 4px solid white !important;
-}
-
 nav {
     border-left: 1px solid rgb(152, 204, 253) !important;
+}
+
+.navbar {
+    border-bottom: 0px !important;
+    border-left: 0px !important;
+    min-height: 70px !important;
+}
+
+body .navbar ul.navbar-nav {
+    border-left: 1px solid #a85d8f;
+    padding: 15px 20px;
 }
 
 .dict-grid-wrap {
@@ -1054,7 +1061,7 @@ nav {
 }
 
 .aExplBar {
-    color: rgb(51, 82, 118) !important;
+    color: #252771 !important;
     text-decoration: none;
     background-color: transparent;
     cursor: pointer;    
@@ -1101,7 +1108,7 @@ nav {
 }
 
 a:hover {
-    color: rgb(51, 82, 118);
+    color: #252771;
     text-decoration: underline;
 }
 
@@ -1230,3 +1237,32 @@ a:hover {
 .spLemma { color: green; }
 .spTrans { color: blue; }
 .tooltip { border: 3px rgb(222, 222, 222); }
+
+.main-footer {
+    background-color: #262770;
+    color: #fff;
+}
+
+.main-footer a {
+    color: #a85c8e;
+}
+
+footer h3::after {
+    display: none;
+}
+
+.footer-sep {
+    border-bottom: 1px solid #ffffff;
+}
+
+.footer-imprint-bar {
+    background-color: #a85c8e;
+}
+
+.footer-imprint-bar a {
+    color: #27276f;
+}
+
+img.footer-acdh-logo {
+    width: 100px;
+}

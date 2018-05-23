@@ -101,7 +101,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/acetin/cjb22mkrf16qf2spyl3u1vee3/t
   'Imagery © <a href="http://mapbox.com">Mapbox</a>'
     }).addTo(mainMap);
     
-//mainMap.scrollWheelZoom.disable();
+mainMap.scrollWheelZoom.disable();
 
 var fgBiblMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
 var fgProfileMarkers = L.featureGroup().addTo(mainMap).on("click", onProfilesMapClick);
