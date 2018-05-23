@@ -325,6 +325,7 @@ input.header_search:focus {
     border-radius: 6px;
     display: flex;
     margin-top: 20px;
+    height: 120px; 
 }
 
 @media (min-width: 1450px) {
@@ -1228,6 +1229,4 @@ a:hover {
 .spPos { color: red; }
 .spLemma { color: green; }
 .spTrans { color: blue; }
-.tooltip {
-    border: 3px rgb(222, 222, 222);
-}
+.tooltip { border: 3px rgb(222, 222, 222); }

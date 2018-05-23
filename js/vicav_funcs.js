@@ -32,8 +32,11 @@
         2=[biblQuery,reg:Egypt,open]
         3=[dictQuery,any=ktb,dc_tunico,open]
         
-        n=[scope, ( id | query), label, status]       
-        n=[scope, ( id | query), label, status]       
+        4=[biblQueryLauncher,open]
+        5=[createNewCrossDictQueryPanel,open]
+        
+        n=[type, ( id | query), label, status]       
+        n=[type, ( id | query), label, status]       
                                                                              */
 /* ************************************************************************* */
 
@@ -216,7 +219,8 @@ function changeURLMapParameter(newParameter) {
       args[0] = 'map='+newParameter;
     }
     args = args.join("&");
-    window.history.replaceState( {} , "", baseUrl + "?" + args);
+    //console.log('replaceState changeURLMapParameter');
+    //window.history.replaceState( {} , "", baseUrl + "?" + args);
   }
 }
 
@@ -252,6 +256,7 @@ function changePanelVisibility(panel, type) {
       }
     }
     args = args.join("&");
+    //console.log('replaceState (changePanelVisibility 2)');
     window.history.replaceState( {} , "", baseUrl+"?"+args);
   } else if (type == 'close') {
     for (var i = 1; i < args.length; i++) {
@@ -261,6 +266,8 @@ function changePanelVisibility(panel, type) {
       }
     }
     args = args.join("&");
+    //console.log('replaceState (changePanelVisibility 2)');
+    //console.log('baseUrl + args: ' + baseUrl+"?"+args);
     window.history.replaceState( {} , "", baseUrl+"?"+args);
     panel.remove();
   }
@@ -327,15 +334,22 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
         	   qry = query_.replace(",", "_");
              var argList = pID + "=[" + panelType_ + "," + qry + ",";
              break;
+
           case 'biblQueryLauncher':
              var argList = pID + "=[" + panelType_ + ",";
              break;
+             
+          case 'crossDictQueryLauncher':
+             var argList = pID + "=[" + panelType_ + ",";
+             break;
+             
           default:
              var argList = pID + "=[" + panelType_ + "," + snippetID_ + "," + secLabel_ + ",";
       }
       
       if (locType_) { argList = argList + locType_ + ","; }
       argList = argList + "open]";
+      //console.log('replaceState (appendPanel): ' + currentURL + "&" + argList);
       window.history.replaceState( {} , "", currentURL + "&" + argList);
     }
   } else {
@@ -365,8 +379,7 @@ function createBiblExplanationPanel() {
    getText('BIBLIOGRAPHY: Explanation', 'vicavExplanationBibliography', 'vicavTexts.xslt');    
 }
 
-function createNewQueryBiblioPanel() {
-   
+function createNewQueryBiblioPanel(pID_, pVisiblity_, pURL_) {
     var searchContainer = 
                 "<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
                 "    <input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in bibliographies ...' aria-label='Search'>" + 
@@ -376,25 +389,28 @@ function createNewQueryBiblioPanel() {
                 "   <input type='checkbox' id='cbAsText' class='checkbox' value='As text' checked='checked'><label class='checkboxLabel' for='cbAsText'>Display as text</label>" +
                 "   <input type='checkbox' id='cbAsMap' value='On map'><label class='checkboxLabel' for='cbAsMap'>Display on map</label>" +
                 "</div>" +
-                "<p>For details as to how to formulate meaningful queries <a class='aVicText' href='javascript:createBiblExplanationPanel()'>click here</a>.</p>";
-    appendPanel(searchContainer, "biblQueryLauncher", "", "grid-wrap", '', '');
+                "<p>For details as to how to formulate meaningful queries in the bibliography <a class='aVicText' href='javascript:createBiblExplanationPanel()'>click here</a>.</p>";
+                appendPanel(searchContainer, "biblQueryLauncher", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
+    
 }
 
-function createNewCrossDictQueryPanel() {
+function createNewCrossDictQueryPanel(pID_, pVisiblity_, pURL_) {
+    var jsText = "getText(&#39;TUNICO DICTIONARY&#39;, &#39;dictFrontPage_Tunis&#39;, &#39;vicavTexts.xslt&#39;)";   
    
     var searchContainer = 
-                "<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
-                "    <input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in dictionaries ...' aria-label='Search'>" + 
-                "    <button class='crossDictQueryBtn'>Query</button><br/>" +
-                "</form>" + 
-                "<div class='selQueryType'>" +
-                "   <input type='checkbox' id='cbCairo' class='checkbox' value='Cairo'><label class='checkboxLabel' for='cbCairo'>Cairo</label>" +
-                "   <input type='checkbox' id='cbDamascus' class='checkbox' value='Damascus'><label class='checkboxLabel' for='cbDamascus'>Damascus</label>" +
-                "   <input type='checkbox' id='cbTunis' class='checkbox' value='Tunis' checked='checked'><label class='checkboxLabel' for='cbTunis'>Tunis</label>" +
-                "   <input type='checkbox' id='cbMSA' class='checkbox' value='MSA'><label class='checkboxLabel' for='cbMSA'>MSA</label>" +
-                "</div>" +
-                "<p>For details as to how to formulate meaningful queries <a class='aVicText' href='javascript:createBiblExplanationPanel()'>click here</a>.</p>";
-    appendPanel(searchContainer, "crossDictQueryLauncher", "", "grid-wrap", '', '');
+        "<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>"+
+        "    <input class='form-control mr-sm-2' type='text' style='flex: 1;' placeholder='Search in dictionaries ...' aria-label='Search'>" + 
+        "    <button class='crossDictQueryBtn'>Query</button><br/>" +
+        "</form>" + 
+        "<div class='selQueryType'>" +
+        "   <input type='checkbox' id='cbCairo' class='checkbox' value='Cairo'><label class='checkboxLabel' for='cbCairo'>Cairo</label>" +
+        "   <input type='checkbox' id='cbDamascus' class='checkbox' value='Damascus'><label class='checkboxLabel' for='cbDamascus'>Damascus</label>" +
+        "   <input type='checkbox' id='cbTunis' class='checkbox' value='Tunis' checked='checked'><label class='checkboxLabel' for='cbTunis'>Tunis</label>" +
+        "   <input type='checkbox' id='cbMSA' class='checkbox' value='MSA'><label class='checkboxLabel' for='cbMSA'>MSA</label>" +
+        "</div>" +
+        "<p>For details as to how to formulate meaningful dictionary " + 
+        "consult the <a class='aVicText' href='javascript:" + jsText + "'>examples of the TUNICO dictionary</a>.</p>";
+        appendPanel(searchContainer, "crossDictQueryLauncher", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
 }
 
 function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_, pID_, pVisiblity_, pURL_) {
@@ -799,12 +815,12 @@ function updateUrl(idSuffix_, query_, collname_) {
         //console.log('parts[0]: "' + parts[0] + '"');
         //console.log('pid: "' + pid + '"');
         if (parts[0] == pid) {
-            //console.log('ident');
+           //console.log('ident');
            //console.log('old: ' + args[i]);             
            //console.log('   new: ' + pid + '=[dictQuery,' + query_ + ',' + collname_ + ',open]');
            args_[i] = pid + '=[dictQuery,' + query_ + ',' + collname_ + ',open]'; 
         } else {
-            //console.log('not ident');
+           //console.log('not ident');
         }
     }
     
@@ -812,6 +828,7 @@ function updateUrl(idSuffix_, query_, collname_) {
     for (var i = 1; i < args_.length; i++) {
       sout = sout + "&" + args_[i];            
     }
+    //console.log('replaceState (updateUrl)');
     window.history.replaceState( {} , "", args[0] + '?' + sout);
 }
 
@@ -920,6 +937,7 @@ $(document).ready(
        var currentURL = window.location.toString();
        if (currentURL.includes('?')) {
          var args = currentURL.split('?');
+         
          var args = args[1].split('&');
          // Parse the map
          var mapArg = args[0].split('=');
@@ -934,44 +952,56 @@ $(document).ready(
          for (var i = 1; i < args.length; i++) {
            setTimeout(function(y) {
               var pArgs = args[y].split('=');
+              
               var pID_ = pArgs[0];
               pArgs = pArgs[1].replace(/((\[\s*)|(\s*\]))/g,"");
               pArgs = pArgs.split(',');
               var queryFunc = pArgs[0];
+              
               if (queryFunc == 'biblQueryLauncher') {
-                 createNewQueryBiblioPanel();                 
-              } else if (queryFunc == 'biblQuery') {
+                 var pVisiblity = pArgs[1];
+                 createNewQueryBiblioPanel(pID_, pVisiblity, true);                 
+              } else 
+              
+              if (queryFunc == 'biblQuery') {
                 var query = pArgs[1];
                 var pVisiblity = pArgs[2];
                 execBiblQuery(query, pID_, pVisiblity, true);                    
               } else 
+              
               if (queryFunc == 'textQuery') {
                 var snippetID = pArgs[1];
                 var secLabel = pArgs[2];
                 var pVisiblity = pArgs[3];                    
                 getText(secLabel, snippetID, 'vicavTexts.xslt', pID_, pVisiblity, true);                    
               } else 
+              
               if (queryFunc == 'profileQuery') {                  
                 var snippetID = pArgs[1];
                 var caption = pArgs[2];
                 var pVisiblity = pArgs[3];
                 getProfile(caption, snippetID, 'profile_01.xslt', pID_, pVisiblity, true);
               } else 
+              
               if (queryFunc == 'featureQuery') {
                 var snippetID = pArgs[1];
                 var caption = pArgs[2];
                 var pVisiblity = pArgs[3];
                 getFeature(caption, snippetID, 'features_01.xslt', pID_, pVisiblity, true);
               } else 
+              
               if (queryFunc == 'sampleQuery') {
                 var snippetID = pArgs[1];
                 var caption = pArgs[2];
                 var pVisiblity = pArgs[3];
                 getSample(caption, snippetID, 'sampletext_01.xslt', pID_, pVisiblity, true);
               } else 
+              
               if (queryFunc == 'crossDictQueryLauncher') {
-                  createNewCrossDictQueryPanel();
+                 var pVisiblity = pArgs[1];
+                 createNewCrossDictQueryPanel(pID_, pVisiblity, true);
               } else
+              
               if (queryFunc == 'dictQuery') {
                 var query = pArgs[1];
                 query = query.replace("-eq-", "=");
