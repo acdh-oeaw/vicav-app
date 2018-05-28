@@ -28,15 +28,16 @@
 /* 
    localhost:8984/vicav/index.html?
         map=BiblGeoMarkers&
+        map=[geoMarkers,vt:bedouin dialect,geo_reg]
         1=[textQuery,dictFrontPage_Damascus,DAMASCUS DICTIONARY,open]
         2=[biblQuery,reg:Egypt,open]
         3=[dictQuery,any=ktb,dc_tunico,open]
         
-        4=[biblQueryLauncher,open]
+        5=[biblQueryLauncher,open]
         5=[createNewCrossDictQueryPanel,open]
         
         n=[type, ( id | query), label, status]       
-        n=[type, ( id | query), label, status]       
+        n=[type, ( id | query), status]       
                                                                              */
 /* ************************************************************************* */
 
@@ -216,7 +217,7 @@ function changeURLMapParameter(newParameter) {
     // Parse the map
     var mapArg = args[0].split('=');
     if (mapArg[0] == 'map') {
-      args[0] = 'map='+newParameter;
+      args[0] = 'map=' + newParameter;
     }
     args = args.join("&");
     //console.log('replaceState changeURLMapParameter');
@@ -251,13 +252,13 @@ function changePanelVisibility(panel, type) {
         pArgs.pop();
         pArgs.push(visState);
         pArgs = "[" + pArgs.join(",") + "]";
-        args[i] = pID+"="+pArgs;
+        args[i] = pID + "=" + pArgs;
         break;
       }
     }
     args = args.join("&");
     //console.log('replaceState (changePanelVisibility 2)');
-    window.history.replaceState( {} , "", baseUrl+"?"+args);
+    window.history.replaceState( {} , "", baseUrl + "?" + args);
   } else if (type == 'close') {
     for (var i = 1; i < args.length; i++) {
       if (args[i].charAt(0) == pID) {
@@ -268,7 +269,7 @@ function changePanelVisibility(panel, type) {
     args = args.join("&");
     //console.log('replaceState (changePanelVisibility 2)');
     //console.log('baseUrl + args: ' + baseUrl+"?"+args);
-    window.history.replaceState( {} , "", baseUrl+"?"+args);
+    window.history.replaceState( {} , "", baseUrl + "?" + args);
     panel.remove();
   }
 }
@@ -300,7 +301,7 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
     /*  
     var firstOpenPan = $(".open-panel").first();
     changePanelVisibility(firstOpenPan, 'minimize')
-     */ 
+    */ 
   } 
   
   /* ******************************************************/ 
@@ -799,7 +800,28 @@ function getSuffixID(id_) {
     return sids[1];
 }
 
-function updateUrl(idSuffix_, query_, collname_) {
+function updateUrl_biblMarker(query_, scope_) {
+    //console.log('query: ' + query_ + ' scope_: ' + scope_);
+    currentURL = window.location.toString();
+    if (currentURL.includes('?')) {
+        var args_01 = currentURL.split('?');
+        var args_02 = args_01[1].split('&');
+        var sOut = '';
+        for (var i = 0; i < args_02.length; i++) {
+            if (i == 0) {
+                sOut = 'map=[biblMarkers,' + query_ + ',' + scope_ + ']';
+            } else { 
+                sOut = sOut + '&' + args_02[i];
+            }
+        }
+        var newUrl = args_01[0] + '?' + sOut;
+        console.log('updateUrl_biblMarker::newUrl: ' + newUrl);
+        //console.log(currentURL);
+        window.history.replaceState( {} , "", newUrl);
+    }
+}
+
+function updateUrl_dictQuery(idSuffix_, query_, collname_) {
     pid = $("#inpDictQuery" + idSuffix_).closest("*[data-pid]").attr("data-pid");
     query_ = query_.replace("=", "-eq-");
     
@@ -812,7 +834,7 @@ function updateUrl(idSuffix_, query_, collname_) {
     for (var i = 1; i < args_.length; i++) {
         //console.log(i + ' ' + args_[i]);
         parts = args_[i].split('=');
-        //console.log('parts[0]: "' + parts[0] + '"');
+        console.log('parts[0]: "' + parts[0] + '"');
         //console.log('pid: "' + pid + '"');
         if (parts[0] == pid) {
            //console.log('ident');
@@ -828,7 +850,7 @@ function updateUrl(idSuffix_, query_, collname_) {
     for (var i = 1; i < args_.length; i++) {
       sout = sout + "&" + args_[i];            
     }
-    //console.log('replaceState (updateUrl)');
+    //console.log('replaceState (updateUrl_dictQuery)');
     window.history.replaceState( {} , "", args[0] + '?' + sout);
 }
 
@@ -851,7 +873,7 @@ function execDictQuery(idSuffix_) {
         
         if (sQuery.length > 0) {        
            execDictQuery_ajax(sQuery, idSuffix_);
-           updateUrl(idSuffix_, sq, collName);
+           updateUrl_dictQuery(idSuffix_, sq, collName);
         } else {
            alert('Could not create query.');
         }                   
@@ -931,10 +953,11 @@ function openDict_MSA() {
 $(document).ready(    
    function() {      
        $("#dvMainMapCont").show();      
-       insertGeoRegMarkers('', 'geo');
+       //insertGeoRegMarkers('', 'geo');
 
        // Parse the given url parameters for views
        var currentURL = window.location.toString();
+       
        if (currentURL.includes('?')) {
          var args = currentURL.split('?');
          
@@ -942,10 +965,38 @@ $(document).ready(
          // Parse the map
          var mapArg = args[0].split('=');
          if (mapArg[0] == 'map') {
-           clearMarkerLayers();
+           
            //window["insert" + mapArg[1]]();           
            $(".sub-nav-map-items .active").removeClass("active");
-           $("#" + mapArg[1]).addClass("active");
+           
+           pArgs = mapArg[1].replace(/((\[\s*)|(\s*\]))/g,"");
+           pArgs = pArgs.split(',');
+           console.log('pArgs[0]: ' + pArgs[0]);
+           console.log('pArgs[1]: ' + pArgs[1]);
+           switch (pArgs[1]) {
+               case '_vicavDicts_':
+                  insertVicavDictMarkers();
+                  break;
+                  
+               case '_features_':
+                  insertFeatureMarkers();
+                  break;
+                  
+               case '_profiles_':
+                  insertProfileMarkers();
+                  break;
+                  
+               case '_samples_':
+                  insertSampleMarkers();
+                  break;
+                  
+               default:
+                  //console.log('pArgs[2]: ' + pArgs[2]);
+                  
+                  insertGeoRegMarkers(pArgs[1], pArgs[2]);
+               
+           }
+           //$("#" + mapArg[1]).addClass("active");
          }
          
          // Parse the panels
@@ -1018,8 +1069,10 @@ $(document).ready(
           }, 200 * i, i);
          }
        } else {
-         window.history.replaceState( {} , "", currentURL+"?map=BiblGeoMarkers&1=[textQuery,vicavMission,MISSION,open]");
-         getText('MISSION', 'vicavMission', 'vicavTexts.xslt', 1, 'open', true);
+         console.log('aaa');
+         insertGeoRegMarkers('', 'geo');
+         window.history.replaceState( {} , "", currentURL + "?map=[biblMarkers,,geo]&1=[textQuery,vicavMission,MISSION,open]");
+         getText('MISSION', 'vicavMission', 'vicavTexts.xslt', 1, 'open', true);         
        }
 
        /* *************************** */

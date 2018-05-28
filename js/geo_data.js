@@ -17,6 +17,8 @@ function insertVicavDictMarkers() {
     fgDictMarkers.addLayer(L.marker([30.05, 31.23], {alt:'Cairo', id:'dict_cairo'}).bindTooltip('Cairo'));
     fgDictMarkers.addLayer(L.marker([33.51, 36.29], {alt:'Damascus', id:'dict_damascus'}).bindTooltip('Damascus'));
     fgDictMarkers.addLayer(L.marker([36.8, 10.18], {alt:'Tunis', id:'dict_tunis'}).bindTooltip('Tunis'));
+    
+    updateUrl_biblMarker('_vicavDicts_', '');
 }
 
 function insertFeatureMarkers() {
@@ -34,7 +36,9 @@ function insertFeatureMarkers() {
     fgFeatureMarkers.addLayer(L.marker([36.8, 10.18], {alt:'Tunis', id:'ling_features_tunis'}).bindTooltip('Tunis'));
     fgFeatureMarkers.addLayer(L.marker([37.15, 38.79], {alt:'Şanlıurfa', id:'ling_features_urfa'}).bindTooltip('Şanlıurfa'));
     fgFeatureMarkers.addLayer(L.marker([33.45, 9.01], {alt:'Douz', id:'ling_features_douz'}).bindTooltip('Douz'));
-    fgFeatureMarkers.addLayer(L.marker([33.33, 44.38], {alt:'Baghdad', id:'ling_features_baghdad'}).bindTooltip('Baghdad'));    
+    fgFeatureMarkers.addLayer(L.marker([33.33, 44.38], {alt:'Baghdad', id:'ling_features_baghdad'}).bindTooltip('Baghdad'));
+
+    updateUrl_biblMarker('_features_', '');
 }
 
 function insertSampleMarkers() {
@@ -47,6 +51,8 @@ function insertSampleMarkers() {
     fgSampleMarkers.addLayer(L.marker([37.15, 38.79], {alt:'Şanlıurfa', id:'urfa_sample_01'}).bindTooltip('Şanlıurfa'));
     fgSampleMarkers.addLayer(L.marker([36.8, 10.18], {alt:'Tunis', id:'tunis_sample_01'}).bindTooltip('Tunis'));
     fgSampleMarkers.addLayer(L.marker([33.45, 9.01], {alt:'Douz', id:'douz_sample_01'}).bindTooltip('Douz'));
+    
+    updateUrl_biblMarker('_samples_', '');
 
 }
 
@@ -59,7 +65,7 @@ function insertProfileMarkers() {
     m2 = L.marker([34.02, -6.83], {alt:'Salé', id: 'sale_01'});
     fg5.addLayer(m2);
      */
-    console.log('getProfileMarkers');
+    //console.log('getProfileMarkers');
     $.ajax({
     url: 'profile_markers',
             type: 'GET',
@@ -89,6 +95,8 @@ function insertProfileMarkers() {
                   alert('Error: ' + error);
                }                           
     });
+    
+    updateUrl_biblMarker('_profiles_', '');
 
     /* ******************************** */
     /* Create with geo_profiles_txt__002.xq */
@@ -169,9 +177,9 @@ function insertGeoRegMarkers(query_, scope_) {
     //example: insertGeoRegMarkers('', 'geo_reg');
     //example (rest): sUrl = 'bibl_markers?query=none&scope=geo';
     //for experimenting in BaseX Client: vicav_bibl_markers
-    
-     
-    //if (query_ == '') { query_ = 'none'; } 
+         
+    //if (query_ == '') { query_ = 'none'; }
+    $(".sub-nav-map-items .active").removeClass("active");  
     sUrl = 'bibl_markers?query=' + query_ + '&scope=' + scope_;
     /*sQuerySecPart = ',vt:textbook';*/
     var sQuerySecPart = '';
@@ -180,6 +188,7 @@ function insertGeoRegMarkers(query_, scope_) {
     }
     
     //console.log('sUrl: ' + sUrl);
+    clearMarkerLayers();
     $.ajax({
     url: sUrl,
             type: 'GET',
@@ -188,9 +197,9 @@ function insertGeoRegMarkers(query_, scope_) {
                success: function(result) { 
                   s = '';
                   cnt = 0;
+                  
                   $(result).find('r').each(function(index){
                      cnt = cnt + 1;
-                     //console.log(sUrl);
                      loc = $(this).find('loc').text();
                      sAlt = $(this).find('alt').text();
                      sFreq = $(this).find('freq').text();
@@ -216,6 +225,9 @@ function insertGeoRegMarkers(query_, scope_) {
                   alert('Error: ' + error);
                }                           
     });
+    
+    //console.log('query_(2): ' + query_);
+    updateUrl_biblMarker(query_, scope_);
 }
 
 /* function insertGeoTextbookMarkers() {
