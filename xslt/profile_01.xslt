@@ -13,8 +13,19 @@
             </table>    
             
             <div class="dvImgProfile">
+                <xsl:if test="//tei:head/tei:figure/tei:graphic">
+                    <img>
+                        <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure/tei:graphic/@url"/></xsl:attribute>
+                    </img>
+                    <xsl:if test="//tei:head/tei:figure/tei:head">
+                        <div class="imgCaption">
+                            <xsl:apply-templates select="//tei:head/tei:figure/tei:head"/>
+                        </div>                                           
+                    </xsl:if>                    
+                </xsl:if>                
+                <!-- 
                 <xsl:choose>
-                    <xsl:when test="//tei:head/tei:figure">
+                    <xsl:when test="//tei:head/tei:figure/tei:graphic">
                         <img>
                             <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure/tei:graphic/@url"/></xsl:attribute>
                         </img>
@@ -31,6 +42,7 @@
                         </div>                   
                     </xsl:otherwise>
                 </xsl:choose>
+                 -->
             </div>
             
             <table class="tbProfile">
