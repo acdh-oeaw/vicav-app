@@ -79,6 +79,12 @@ function api:sound-file($file as xs:string) as item()+ {
 };
 
 declare
+  %rest:path("vicav/fonts/{$file=.+}")
+function api:fonts-file($file as xs:string) as item()+ {
+  api:file('fonts/'||$file)
+};
+
+declare
   %rest:path("vicav/favicons/{$file=.+}")
 function api:favicons-file($file as xs:string) as item()+ {
   api:file('favicons/'||$file)
