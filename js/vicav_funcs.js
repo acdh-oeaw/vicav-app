@@ -47,7 +47,6 @@ var usr = "";
 var containerCount = 0;
 var lastTextPanelID = '';
 var panelIDs = [];
-var vicav_rest = 'vicav';
 var globalPreservePanel = -1;
 
 /* 
@@ -515,7 +514,7 @@ function hideElement(id_) {
 function getText(secLabel_, snippetID_, style_, pID_, pVisibility_, pURL_) {
     //console.log('getText: ' + secLabel_ + " : " + snippetID_ + " : " + style_ + " : " + pID_ + " : " + pVisibility_ + " : " + pURL_);
 
-    qs = '/' + vicav_rest + '/text?id=' + snippetID_ + '&xslt=' + style_;
+    qs = './text?id=' + snippetID_ + '&xslt=' + style_;
     //console.log(qs);
    
     $.ajax({
@@ -596,7 +595,7 @@ function getDBSnippet(s_, obj_) {
 
 function execBiblQuery(query_, pID_, pVisiblity_, pURL_) {
    restQuery_ = query_.replace(/&/, ',');
-   qs = '/' + vicav_rest + '/biblio?query=' + restQuery_ + '&xslt=biblio_01.xslt'
+   qs = './biblio?query=' + restQuery_ + '&xslt=biblio_01.xslt'
    
    $.ajax({
      url: qs,
@@ -621,7 +620,7 @@ function execBiblQuery(query_, pID_, pVisiblity_, pURL_) {
  
 function getSample(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
   id_ = snippetID_.replace(/sampleText:/, '');
-  qs = '/' + vicav_rest + '/sample?coll=vicav_samples&id=' + snippetID_ + '&xslt=' + style_;
+  qs = './sample?coll=vicav_samples&id=' + snippetID_ + '&xslt=' + style_;
   //console.log(qs);
   
   $.ajax({
@@ -643,7 +642,7 @@ function getSample(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
 
 function getCorpusText(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
   id_ = snippetID_.replace(/sampleText:/, '');
-  qs = '/' + vicav_rest + '/sample?coll=vicav_corpus&id=' + snippetID_ + '&xslt=' + style_;
+  qs = './sample?coll=vicav_corpus&id=' + snippetID_ + '&xslt=' + style_;
   //console.log(qs);
   
   $.ajax({
@@ -664,7 +663,7 @@ function getCorpusText(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
 }
 
 function getFeature(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {         
-  qs = '/' + vicav_rest + '/profile?coll=vicav_lingfeatures&id=' + snippetID_ + '&xslt=' + style_;
+  qs = './profile?coll=vicav_lingfeatures&id=' + snippetID_ + '&xslt=' + style_;
   
   $.ajax({
      url: qs,
@@ -687,7 +686,7 @@ function getFeature(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
 }
 
 function getProfile(caption_, snippetID_, style_,  pID_, pVisiblity_, pURL_) {
-  qs = '/' + vicav_rest + '/profile?coll=vicav_profiles&id=' + snippetID_ + '&xslt=' + style_;
+  qs = './profile?coll=vicav_profiles&id=' + snippetID_ + '&xslt=' + style_;
   caption_ = caption_.replace("%20", " ");
   //console.log('getProfile: ' + caption_ + " : " + snippetID_ + " : " + style_ + " : " + pID_ + " : " + pVisiblity_ + " : " + pURL_);
   
@@ -771,7 +770,7 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
 
     if (q_.length == 0) { q_ = '*'; }
     sInd = $("#slFieldSelect" + idSuffix_).val();
-    sUrl1 = '/' + vicav_rest + '/dict_index/?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + q_;
+    sUrl1 = './dict_index/?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + q_;
     $.ajax({
     url: sUrl1,
             type: 'GET',
@@ -869,7 +868,7 @@ function execDictQuery(idSuffix_) {
            sq = field + '="' + sq + '"';
         }
         sq = sq.replace(/&/g, ',');
-        sQuery = '/' + vicav_rest +  '/dict_api?query=' + sq + '&dict=' + collName + '&xslt=' + XSLTName;
+        sQuery = './dict_api?query=' + sq + '&dict=' + collName + '&xslt=' + XSLTName;
         
         if (sQuery.length > 0) {        
            execDictQuery_ajax(sQuery, idSuffix_);
@@ -956,7 +955,8 @@ $(document).ready(
        //insertGeoRegMarkers('', 'geo');
 
        // Parse the given url parameters for views
-       var currentURL = window.location.toString();
+       var currentURL = decodeURI(window.location.toString());
+       //console.log(currentURL);
        
        if (currentURL.includes('?')) {
          var args = currentURL.split('?');
@@ -965,6 +965,7 @@ $(document).ready(
          // Parse the map
          var mapArg = args[0].split('=');
          if (mapArg[0] == 'map') {
+           //console.log('mapArg: ' + mapArg);
            
            //window["insert" + mapArg[1]]();           
            $(".sub-nav-map-items .active").removeClass("active");
@@ -1061,7 +1062,7 @@ $(document).ready(
                 
                 if (dict == 'dc_tunico') {                    
                     createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, pID_, pVisiblity, true);
-                    query = '/' + vicav_rest +  '/dict_api?query=' + query + '&dict=dc_tunico&xslt=tunis_dict_001.xslt';
+                    query = './dict_api?query=' + query + '&dict=dc_tunico&xslt=tunis_dict_001.xslt';
                     execDictQuery_ajax(query, '_tunis');
                 }
                 
