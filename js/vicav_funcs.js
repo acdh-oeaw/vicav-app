@@ -26,7 +26,7 @@
 /* ************** URL SYNTAX *********************************************** */
 /* ************************************************************************* */
 /* 
-   localhost:8984/vicav/index.html?
+   localhost:8984/vicav/index.html
         map=BiblGeoMarkers&
         map=[geoMarkers,vt:bedouin dialect,geo_reg]
         1=[textQuery,dictFrontPage_Damascus,DAMASCUS DICTIONARY,open]
@@ -209,8 +209,8 @@ function makeAudioVisible(obj_) {
 
 function changeURLMapParameter(newParameter) {
   var currentURL = window.location.toString();
-  if (currentURL.includes('?')) {
-    var args = currentURL.split('?');
+  if (currentURL.includes('#')) {
+    var args = currentURL.split('#');
     var baseUrl = args[0];
     var args = args[1].split('&');
     // Parse the map
@@ -220,14 +220,14 @@ function changeURLMapParameter(newParameter) {
     }
     args = args.join("&");
     //console.log('replaceState changeURLMapParameter');
-    //window.history.replaceState( {} , "", baseUrl + "?" + args);
+    //window.history.replaceState( {} , "", baseUrl + "#" + args);
   }
 }
 
 function changePanelVisibility(panel, type) {
   var pID = panel.data('pid');
   var currentURL = window.location.toString();
-  var args = currentURL.split('?');
+  var args = currentURL.split('#');
   var baseUrl = args[0];
   var args = args[1].split('&');
 
@@ -257,7 +257,7 @@ function changePanelVisibility(panel, type) {
     }
     args = args.join("&");
     //console.log('replaceState (changePanelVisibility 2)');
-    window.history.replaceState( {} , "", baseUrl + "?" + args);
+    window.history.replaceState( {} , "", baseUrl + "#" + args);
   } else if (type == 'close') {
     for (var i = 1; i < args.length; i++) {
       if (args[i].charAt(0) == pID) {
@@ -267,8 +267,8 @@ function changePanelVisibility(panel, type) {
     }
     args = args.join("&");
     //console.log('replaceState (changePanelVisibility 2)');
-    //console.log('baseUrl + args: ' + baseUrl+"?"+args);
-    window.history.replaceState( {} , "", baseUrl + "?" + args);
+    //console.log('baseUrl + args: ' + baseUrl+"#"+args);
+    window.history.replaceState( {} , "", baseUrl + "#" + args);
     panel.remove();
   }
 }
@@ -770,7 +770,7 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
 
     if (q_.length == 0) { q_ = '*'; }
     sInd = $("#slFieldSelect" + idSuffix_).val();
-    sUrl1 = './dict_index/?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + q_;
+    sUrl1 = './dict_index?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + q_;
     $.ajax({
     url: sUrl1,
             type: 'GET',
@@ -802,8 +802,8 @@ function getSuffixID(id_) {
 function updateUrl_biblMarker(query_, scope_) {
     //console.log('query: ' + query_ + ' scope_: ' + scope_);
     currentURL = window.location.toString();
-    if (currentURL.includes('?')) {
-        var args_01 = currentURL.split('?');
+    if (currentURL.includes('#')) {
+        var args_01 = currentURL.split('#');
         var args_02 = args_01[1].split('&');
         var sOut = '';
         for (var i = 0; i < args_02.length; i++) {
@@ -813,7 +813,7 @@ function updateUrl_biblMarker(query_, scope_) {
                 sOut = sOut + '&' + args_02[i];
             }
         }
-        var newUrl = args_01[0] + '?' + sOut;
+        var newUrl = args_01[0] + '#' + sOut;
         console.log('updateUrl_biblMarker::newUrl: ' + newUrl);
         //console.log(currentURL);
         window.history.replaceState( {} , "", newUrl);
@@ -825,7 +825,7 @@ function updateUrl_dictQuery(idSuffix_, query_, collname_) {
     query_ = query_.replace("=", "-eq-");
     
     currentURL = window.location.toString();
-    var args = currentURL.split('?');
+    var args = currentURL.split('#');
     //console.log('query_: ' + query_);
     //console.log(args[1]);
     var args_ = args[1].split('&');
@@ -850,7 +850,7 @@ function updateUrl_dictQuery(idSuffix_, query_, collname_) {
       sout = sout + "&" + args_[i];            
     }
     //console.log('replaceState (updateUrl_dictQuery)');
-    window.history.replaceState( {} , "", args[0] + '?' + sout);
+    window.history.replaceState( {} , "", args[0] + '#' + sout);
 }
 
 function execDictQuery(idSuffix_) {
@@ -958,8 +958,8 @@ $(document).ready(
        var currentURL = decodeURI(window.location.toString());
        //console.log(currentURL);
        
-       if (currentURL.includes('?')) {
-         var args = currentURL.split('?');
+       if (currentURL.includes('#')) {
+         var args = currentURL.split('#');
          
          var args = args[1].split('&');
          // Parse the map
@@ -1072,7 +1072,7 @@ $(document).ready(
        } else {
          console.log('aaa');
          insertGeoRegMarkers('', 'geo');
-         window.history.replaceState( {} , "", currentURL + "?map=[biblMarkers,,geo]&1=[textQuery,vicavMission,MISSION,open]");
+         window.history.replaceState( {} , "", currentURL + "#map=[biblMarkers,,geo]&1=[textQuery,vicavMission,MISSION,open]");
          getText('MISSION', 'vicavMission', 'vicavTexts.xslt', 1, 'open', true);         
        }
 
