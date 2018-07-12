@@ -1074,7 +1074,7 @@ body .navbar ul.navbar-nav {
 
 .aVicText {
     color: rgb(168, 93, 143) !important;
-    text-decoration: none;
+    text-decoration: none !important;
     background-color: transparent;
     cursor: pointer;
 }
