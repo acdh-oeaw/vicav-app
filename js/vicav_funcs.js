@@ -1070,7 +1070,7 @@ $(document).ready(
           }, 200 * i, i);
          }
        } else {
-         console.log('aaa');
+         //console.log('aaa');
          insertGeoRegMarkers('', 'geo');
          window.history.replaceState( {} , "", currentURL + "#map=[biblMarkers,,geo]&1=[textQuery,vicavMission,MISSION,open]");
          getText('MISSION', 'vicavMission', 'vicavTexts.xslt', 1, 'open', true);         

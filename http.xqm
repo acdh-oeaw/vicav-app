@@ -31,7 +31,7 @@ declare
 function api:file($file as xs:string) as item()+ {
   let $path := api:base-dir()|| $file
   return if (file:exists($path)) then
-    if (matches($file, '\.(htm|html|m4a|js|map|css|png|gif|jpg|jpeg|woff|woff2|svg)$', 'i')) then
+    if (matches($file, '\.(htm|html|m4a|js|docx|map|css|png|gif|jpg|jpeg|woff|woff2|svg)$', 'i')) then
     (
       web:response-header(map { 'media-type': web:content-type($path) }, 
                           map { 'X-UA-Compatible': 'IE=11' }),
@@ -58,6 +58,12 @@ declare
   %rest:path("vicav/js/{$file=.+}")
 function api:bower_components-file($file as xs:string) as item()+ {
   api:file('js/'||$file)
+};
+
+declare
+  %rest:path("vicav/downloads/{$file=.+}")
+function api:docs-file($file as xs:string) as item()+ {
+  api:file('downloads/'||$file)
 };
 
 declare
