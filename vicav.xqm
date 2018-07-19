@@ -48,7 +48,7 @@ function vicav:query_biblio($query as xs:string*, $xsltfn as xs:string) {
      if (contains($query, 'geo:')) then '[dc:subject[text() contains text "' || $query ||'" using wildcards using diacritics sensitive]]' else
      if (contains($query, 'reg:')) then '[dc:subject[text() contains text "' || $query ||'" using wildcards using diacritics sensitive]]' else
      if (contains($query, 'vt:')) then '[dc:subject[text() contains text "' || $query ||'" using wildcards using diacritics sensitive]]' else 
-     '[node()[text() contains text "' || $query ||'" using wildcards using diacritics sensitive]]'
+     '[node()[text() contains text "' || $query ||'" using wildcards]]'
   
   let $ns := "declare namespace bib = 'http://purl.org/net/biblio#'; "||
              "declare namespace rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'; "||
