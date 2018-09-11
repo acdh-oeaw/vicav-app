@@ -1266,3 +1266,19 @@ footer h3::after {
 img.footer-acdh-logo {
     width: 100px;
 }
+
+@media (max-width: 768px) {
+  .content-panel {
+      max-width: 100%;
+  }
+
+  .panels-wrap {
+      flex-direction: column;
+  }
+
+  .sub-nav-map-items, .sub-nav-actions {
+      display: grid;
+      width: 100%;
+  }
+
+}
