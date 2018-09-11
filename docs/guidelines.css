@@ -1,0 +1,209 @@
+body {
+   background: white;  
+}
+
+h1  {
+  margin-left: 10px;
+  border:1px solid rgb(0, 0, 198);
+  background: rgb(229,229,229);
+  padding-left:5px;
+  padding-bottom:2px;
+  color:rgb(0, 0, 206);
+  width: 800px;
+}
+
+h2 {
+  color: rgb(76, 76, 249);
+  border: 1px solid blue;
+  background: rgb(229,229,229);
+  margin-right: 20px;
+  margin-left: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  width: 800px;
+}
+
+h3 {
+  color: rgb(76, 76, 249);
+  border: 1px solid blue;
+  background: rgb(229,229,229);
+  margin-right: 20px;
+  margin-left: 10px;
+  padding-left:5px;
+  padding-right:5px;
+  width: 800px;
+}
+
+h4 {
+  color: rgb(76, 76, 249);
+  border-bottom: 1px solid blue;
+  border-left: 1px solid blue;
+  padding-left:5px;
+  margin-right: 20px;
+  margin-left: 20px;
+  width: 800px;
+}
+
+.aH1Contents {
+    text-decoration:none;
+    border:1px dotted black;
+    width: 400px;
+    margin-left:20px;
+    display:block;
+    font-weight:bold;
+    padding-left:5px;
+    background: rgb(229,229,229);
+}
+
+.aH2Contents {
+    text-decoration:none;
+    border:1px dotted black;
+    margin-top: 5px;
+    width:400px;
+    margin-left:20px;
+    display:block;
+    font-weight:bold;
+    padding-left:5px;
+    background: rgb(229,229,229);
+}
+
+.aH3Contents {
+    text-decoration:none;
+    border:1px dotted black;
+    width:380px;
+    margin-left:40px;
+    display:block;
+    padding-left:5px;
+    background: rgb(229,229,229);
+}
+
+.aH4Contents {
+    text-decoration:none;
+    border:1px dotted black;
+    width: 360px;
+    margin-left:60px;
+    display:block;
+    padding-left:5px;
+    background: rgb(229,229,229);
+}
+
+
+.dvRight {
+   overflow-y: scroll; 
+   position: absolute;
+   left: 510px;
+   width: 900px;
+   top: 0px;
+   height: 100%;
+   background: white;
+   border: 1px solid black;
+}
+
+.dvLeft {
+   overflow-y: scroll; 
+   position: absolute;
+   left: 10px;
+   width: 490px;
+   top: 0px;
+   height: 100%;
+   background: white;
+   border: 1px solid black;
+}
+
+.preBox {
+    margin-bottom: -.1em;
+    border: 1px solid black;
+    padding-left:5px;
+    background: rgb(251, 251, 251);
+    margin-left: 20px;
+    width: 780px;
+}
+
+.spAuthor {
+   display: block;    
+}
+
+.spFilename {
+  color: blue;
+  font-weight: bold;
+}
+
+.spStep {
+    color: blue;
+    border: 1px dotted blue;
+    background: rgb(236, 236, 236);
+    font-weight: bold;
+    padding-left: 15px;
+    padding-right: 5px;
+    margin-right: 5px;
+}
+
+
+.guidelines .tei-type-license {
+    font-size: 8px;
+    text-decoration: none;
+}
+
+
+.guidelines p  {
+    margin-left:20px;
+}
+
+.guidelines .tocEntry {
+    margin: 0;
+}
+
+.guidelines table {
+    margin-left:20px;
+    border-collapse:collapse;
+    width: 700px;
+}
+
+.guidelines td {
+    border:1px solid black;
+    background:rgb(245, 245, 245);
+    vertical-align: top;
+    padding-left:3px;
+    padding-right:3px;
+}
+.guidelines td.tdLabel {
+    background:rgb(218, 218, 218);
+}
+
+.guidelines .aGoTocontents {
+    font-size:8pt;
+}
+
+
+.guidelines .dictSource  {
+    border-top: 1px solid rgb(176,176,176);
+    border-left: 1px solid black;
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    padding-right: 5px;
+    background: rgb(210,210,210);
+    margin-left: 340px;
+    width: 380px;
+    text-align: right;
+    font-style: italic;
+
+}
+
+.guidelines .spAttrName {
+    color:rgb(0, 102, 0);
+    font-weight:bold;
+}
+
+.guidelines .spEquals {
+    color:blue
+}
+
+.guidelines .spQuotes {
+    color:rgb(79, 0, 39);
+}
+.guidelines .spValue {
+    color:rgb(0, 0, 160);
+}
+.guidelines .spRed {
+    color:red;
+}

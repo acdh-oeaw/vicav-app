@@ -1,0 +1,1728 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <!--This is a generated page, do not edit!-->
+   <!--Generated: 2017-09-24T10:01:32.944+02:00-->
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+      <link rel="stylesheet" type="text/css" href="guidelines.css"></link>
+      <link rel="stylesheet" type="text/css" href="docu.css"></link>
+   </head>
+   <body>
+      <div class="content guidelines">
+         <div class="dvLeft" id="contents">
+            <h2 class="aH1Contents">Contents</h2>
+            <p class="tocEntry"></p>
+            <p class="tocEntry"><a class="aH2Contents" href="#intro">1 Introduction</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#technicalities">1.1 Technicalities</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#vle">1.2 Viennese Lexicographic Editor (VLE)</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#projects">1.3 Projects</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#vicav">1.3.1 VICAV (Vienna Corpus of Arabic Varieties )</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#tunico">1.3.2 TUNICO (Linguistic dynamics in the Greater Tunis Area )</a></p>
+            <p class="tocEntry"><a class="aH2Contents" href="#quick_start">2 Quick-Start</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#quick_start_setup">2.1 Installing the Environment</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#qs_create_database">2.2 Import Data into BaseX</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#qs_open_a_dictionary">2.3 Open a Dictionary</a></p>
+            <p class="tocEntry"><a class="aH2Contents" href="#setup_basics">3 Set-up and Basics</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#downloading_vle">3.1 Downloading</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#set_up_dict_user">3.2 Preparing BaseX for VLE</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#profiles">3.3 Profiles</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#profiles_generalities">3.3.1 Generalities</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#creating_new_profile">3.3.2 Creating a New Profile</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#saving_profile_list">3.3.3 Saving the List of Profiles</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#basic_components">3.4 Basic Components</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#quick_access_panel">3.4.1 Quick Access Panel (QAP)</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#editors">3.4.2 Editors</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#entry_viewer">3.4.3 Entry Viewer</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#help_form">3.4.4 Help</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#loc_basex_button">3.4.5 Loc. BaseX</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#control_form">3.4.6 Control Form</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#book_viewer">3.4.7 Books</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#text_reader">3.4.8 Text</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#quick_query">3.4.9 Quick Query</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#editor_forms">3.4.10 EDITOR Forms</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#setting_up_basex">3.5 Setting-up BaseX</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#download_basex">3.5.1 Download BaseX</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#installing_basex">3.5.2 Install BaseX</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#basex_publication_platform">3.5.3 BaseX as Publication Platform</a></p>
+            <p class="tocEntry"><a class="aH2Contents" href="#basic_workflow">4 Basic Workflow Steps</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#starting_vle">4.1 Starting VLE</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#creating_new_dict">4.2 Creating a New Dictionary</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#preparing_the_data">4.2.1 Preparing the Data</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#creating_a_profile">4.2.2 Creating a Profile</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#setting_up_basex_collections">4.2.3 Setting-up BaseX Collections</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#starting_basex_server">4.2.4 Starting the Local BaseX Server</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#importing_data">4.2.5 Importing Data</a></p>
+            <p class="tocEntry"></p>
+            <p class="tocEntry"></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#creating_an_account">4.2.6 Creating an Account</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#deleting_an_account">4.2.7 Deleting an Account</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#working_with_remote_dictionaries">4.3 Working with Remote Dictionaries</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#working_with_editors">4.4 Working with Editors</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#navigating_between_editors">4.4.1 Navigating Between Editors</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#dealing_with_profiles">4.4.2 Dealing with Profiles</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#querying_the_database">4.5 Querying the Database</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#wildcards">4.5.1 Wildcards</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#query_control">4.5.2 Query Control</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#query_templates">4.5.3 Query Templates</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#editing_templates">4.5.4 Editing Templates</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#fulltext_search">4.5.5 Fulltext Search</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#result_sets">4.5.6 Result Sets</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#word_lists">4.5.7 Word Lists</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#new_entries">4.6 New Entries</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#inserting_entry_template">4.6.1 Inserting a Template</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#creating_ID">4.6.2 Creating an ID</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#defining_templates">4.6.3 Editing Entry Templates</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#editing_the_data">4.7 Editing the Data</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#saving">4.7.1 Saving</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#inserting_elements">4.7.2 Inserting Elements</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#producing_text">4.7.3 Producing Text</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#entries_and_examples">4.7.4 Examples</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#caveats">4.7.5 Caveats and Restrictions</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#versioning">4.7.6 Versioning</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#visualising">4.7.7 Visualising Entries</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#validation">4.7.8 Validation</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#global_transformations">4.7.9 Global transformations</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#saving_data">4.8 Saving Data</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#saving_data_in_basex">4.8.1 Saving Data in BaseX</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#exporting_dictionaries">4.8.2 Exporting Data with VLE</a></p>
+            <p class="tocEntry"><a class="aH2Contents" href="#advanced_issues">5 Advanced Issues</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#conf_editor">5.1 Configuring the Editor</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#config_general">5.1.1 General</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#config_formatting">5.1.2 XML Formatting</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#config_view">5.1.3 View</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#config_keys">5.1.4 Key Assignments</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#key_translations">5.1.5 Key Translations</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#query_templates1">5.1.6 Query Templates</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#entry_templates">5.1.7 Entry Templates</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#template_strings">5.1.8 Template Strings</a></p>
+            <p class="tocEntry"></p>
+            <p class="tocEntry"></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#data_management">5.2 Data Management</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#importing_data1">5.2.1 Importing Data</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#statistics">5.2.2 Statistics</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#dropping_collections">5.2.3 Dropping Collections</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#metadata1">5.3 Metadata</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#the_teiheader">5.3.1 The teiHeader</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#entry_metadata">5.3.2 Statistical Information</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#entry_metadata1">5.3.3 Production Metadata in the Entries</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#metadata_versioning">5.3.4 Versioning</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#functions">5.4 Functions</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_browseEntry">5.4.1 browseEntry</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_checkWellformedness">5.4.2 checkWellformedness</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_createElementIDs">5.4.3 createElementIDs()</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_createID">5.4.4 createID</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_formatEntry">5.4.5 formatEntry</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_getxpath">5.4.6 getXPath</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_gotoquery">5.4.7 goToQuery</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_gototexteditor">5.4.8 goToTextEditor</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_increaseID">5.4.9 increaseID</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_insertCBInNextEle">5.4.10 insertCBInNextEle(elements)</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_insertEndTag">5.4.11 insertEndTag</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_insertMediaElement">5.4.12 insertMediaElement</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_insertSoundDurationInLine">5.4.13 insertSoundDurationInLine</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_insertTemplateString">5.4.14 insertTemplateString</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_insertTransDictData">5.4.15 insertTransDictData</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_loadTranslationKeys">5.4.16 loadTranslationKeys</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_nextEntry">5.4.17 nextEntry</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_playSound">5.4.18 playSound</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_prevEntry">5.4.19 prevEntry</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_recordSound">5.4.20 recordSound</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_replaceStringInEntry">5.4.21 replaceStringInEntry(x,y)</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_saveEntry">5.4.22 saveEntry</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_selectElement">5.4.23 selectElement</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_showTextTemplates">5.4.24 showTextTemplates</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_stopRecording">5.4.25 stopRecording</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#function_transDictLookUp">5.4.26 transDictLookUp</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#stylesheets">5.5 Stylesheets</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#single_entry_style">5.5.1 Single Entry Style</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#result_list_styles">5.5.2 Result List Styles</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#transform_style">5.5.3 Transform Style</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#web_dictionary">5.6 Web Dictionary</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#preliminary_steps">5.6.1 Preliminary Steps</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#application_creator">5.6.2 Application Builder</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#appl_creator_default">5.6.3 Set Initial Values</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#appl_creator_create_template">5.6.4 Create Files</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#create_indices">5.6.5 Create Indices</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#creating_the_application">5.6.6 Creating the Application</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#start_the_server">5.6.7 Start the Server</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#access_interface">5.6.8 Access Interface in the Browser</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#reimporting_data">5.6.9 Reimporting Data</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#tokenEditor">5.7 tokenEditor</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#preparing_tokenEditor">5.7.1 Preparing tokenEditor</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#accessing_a_corpus">5.7.2 Accessing a Corpus</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#improving_data">5.7.3 Improving your Data</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#recording_sound">5.7.4 Recording Sound</a></p>
+            <p class="tocEntry"></p>
+            <p class="tocEntry"></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#book_reader">5.7.5 Book Viewer</a></p>
+            <p class="tocEntry"></p>
+            <p class="tocEntry"></p>
+            <p class="tocEntry"></p>
+            <p class="tocEntry"></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#example_extractor">5.7.6 Extracting Examples</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#rebuilding_tunico_dict">5.8 Rebuilding the TUNICO Dictionary</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#tunico_setting_up_environment">5.8.1 Get the Software and Install it.</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#tunico_getting_the_data">5.8.2 Get the Data and ...</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#">5.8.3 ... import it</a></p>
+            <p class="tocEntry"><a class="aH4Contents" href="#tunico_creating_web_dictionary">5.8.4 Create the Web Dictionary</a></p>
+            <p class="tocEntry"><a class="aH2Contents" href="#troubleshooting">6 Troubleshooting</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#results_not_prop_displayed">6.1 Results are not properly displayed</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#results_implausible">6.2 Results are implausible</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#error_pos_8146">6.3 Error (pos 8146)</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#is_basex_running">6.4 Is the BaseX server running?</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#create_db_http_500">6.5 Create Database: HTTP/1.1 500 Internal Server Error</a></p><br></br><br></br></div>
+         <div class="dvRight">
+            <div class="tei-teiHeader"></div>
+            <div class="tei-text">
+               <div class="tei-body">
+                  <h1>VLE-Docu</h1>
+                  <p><span class="spAuthor">Charly Moerth</span>Vienna, 28.5.2017
+                  </p>
+                  <h2 id="intro">1 Introduction </h2>
+                  <h3 id="technicalities">1.1 Technicalities</h3>
+                  <p class="tei-p">This documentation is work in progress. Any <a target="_blank" href="mailto:Karlheinz.Moerth@oeaw.ac.at">comments</a> are highly welcome.
+                  </p>
+                  <p class="tei-p">The documentation is written in TEI (P5). You can view the TEI source by clicking
+                     on <a href="vle_docu__v001.xml">this link</a>. To see the 
+                     XSL stylesheet which was used to create the output click <a href="tei_2_html__v001.xsl">here</a>.
+                  </p>
+                  <p class="tei-p">We have been working on a documentation of the encoding of some of our dictionaries
+                     in tandem to this document. 
+                     Our Encoding Guidelines can be found <a href="vicav_dict_encoding__v003.html">here</a>.
+                  </p>
+                  <p class="tei-p">By default, the documentation is loaded from the dictGate server. The respective URL
+                     can be changed in the configuration.
+                  </p>
+                  <p class="tei-p"><img src="imgs/help_config__v001.jpg"></img></p>
+                  <p class="tei-p">The checkbox <b>Load Local Version</b> allows to use a stabilised local version. VLE expects this to be in {WDE}\docu.
+                  </p>
+                  <h3 id="vle">1.2 Viennese Lexicographic Editor (VLE)</h3>
+                  <p class="tei-p">VLE is a piece of software that first came into existence as a by-product of an entirely
+                     different 
+                     development activity: the creation of an interactive online learning system for university
+                     students. 
+                     Thus, it was first used in a collaborative glossary editing project carried out as
+                     part of university 
+                     language courses at the University of Vienna. As the tool proved to be flexible and
+                     adaptable enough, 
+                     it was also put to work in other projects. The interface is built around an XML editor.
+                     The 
+                     communication between the dictionary client and the server has been implemented as
+                     a RESTful web service.
+                  </p>
+                  <p class="tei-p">VLE provides a number of special functionalities typically needed in compiling lexicographic
+                     data. 
+                     From the very beginning of its development, it was designed to process standard-based
+                     lexicographic 
+                     and terminological data such as LMF, TBX, RDF or TEI. VLE can automate many editing
+                     procedures. Most 
+                     of these functions can be applied both to single and/or multiple entries. The program
+                     can check the 
+                     structural integrity (well-formedness) of input on the fly and can validate the data
+                     against XMLSchemas.
+                  </p>
+                  <p class="tei-p">One of the particular features of VLE is a special module optimising access to external
+                     language resources 
+                     such as corpora, other dictionaries, word lists etc. Through this module, VLE eases
+                     the integration of 
+                     corpus examples into dictionaries. The principal idea in preparing this module was
+                     optimizing access to 
+                     digital corpora in order to allow lexicographers to glean relevant sample sentences
+                     and to integrate them 
+                     into dictionary entries in a reasonably comfortable manner. The focus in this work
+                     was direct access to 
+                     the data. The corpus interface of the dictionary writing application was supposed
+                     to enable lexicographers 
+                     to launch corpus queries and to offer functionalities for inserting them into existing
+                     dictionary entries 
+                     without using the clipboard to copy-and-paste.
+                  </p>
+                  <h3 id="projects">1.3 Projects</h3>
+                  <p class="tei-p">VLE was developed as part of two projects: the VICAV and TUNICO projects.</p>
+                  <h4 id="vicav">1.3.1 VICAV (Vienna Corpus of Arabic Varieties )</h4>
+                  <p class="tei-p">The Vienna Corpus of Arabic Varieties was set up with two main purposes in mind: firstly,
+                     to serve as a virtual research platform 
+                     targeting the particular needs of Arabic dialectology. The main concern is textual
+                     and lexicographic data. Secondly, the platform 
+                     is also used as a test bed for newly developed text technological methodologies and
+                     tools.
+                  </p>
+                  <p class="tei-p"><a target="_blank" href="http://www.oeaw.ac.at/acdh/vicav">Read more</a></p>
+                  <p class="tei-p"><a target="_blank" href="https://vicav.acdh.oeaw.ac.at/">VICAV Online</a></p>
+                  <h4 id="tunico">1.3.2 TUNICO (Linguistic dynamics in the Greater Tunis Area )</h4>
+                  <p class="tei-p">The TUNICO project ran from August 2013 until July 2016. It was funded by the Austrian
+                     Science Fund (FWF; P-25706) and conducted as a 
+                     joint endeavour of the University of Vienna and the Austrian Academy of Sciences.
+                     The project was aimed at getting a clearer picture 
+                     of the current linguistic situation of Tunis. Methodologically, it was situated at
+                     the crossroads of variational linguistics and language 
+                     technology, combining dialectological approaches with up-to-date text technological
+                     methodologies. The data and tools developed and tested 
+                     in the project were meant to be beneficial for a wide range of research questions
+                     both in the field of Arabic linguistics but also beyond.
+                  </p>
+                  <p class="tei-p"><a target="_blank" href="http://www.oeaw.ac.at/acdh/de/tunico">Read more</a></p>
+                  <p class="tei-p"><a target="_blank" href="https://tunico.acdh.oeaw.ac.at">TUNICO Online</a></p>
+                  <h2 id="quick_start">2 Quick-Start </h2>
+                  <p class="tei-p">This is a very short guide that is supposed to help you to quickly get a working environment.
+                     The sample data that can be used is in the 
+                     <i><b>docu/examples</b></i> directory.
+                  </p>
+                  <h3 id="quick_start_setup">2.1 Installing the Environment</h3>
+                  <p class="tei-p"><span class="spStep">Step 1</span>Download and install <a href="#setting_up_basex">BaseX</a>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span>Download and install <a href="#downloading_vle">VLE</a>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span>Initialise the environment. Go to the BaseX tab and insert the path to the script
+                     that starts BaseX' database HTTP services. 
+                     You have to click the <b>Start Local Server</b> button at least once. If the function does not find the <i><b>rest.xqm</b></i> in 
+                     the <i><b>Basex\webapp</b></i> folder, it copies it there. 
+                     
+                  </p>
+                  <p class="tei-p"><img src="imgs/basexhhtp_003.jpg"></img></p>
+                  <h3 id="qs_create_database">2.2 Import Data into BaseX</h3>
+                  <p class="tei-p"><span class="spStep">Step 4</span>Find the sample dictionary <i><b>dc_eng_de.xml</b></i> in the <i><b>WDE/Docu/examples</b></i> folder.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 5</span>Start <a href="#starting_vle">VLE</a></p>
+                  <p class="tei-p"><span class="spStep">Step 6</span>Create a <a href="#creating_an_account">user + password</a> for the dictionary.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 7</span>Create the <a href="#importing_data">dictionary</a>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 8</span>Start the indices in BaseX. VLE's default query templates assume that the database
+                     has a full-text index. In the 
+                     BaseX GUI you simply open the database, open the database properties (CTRL + D), select
+                     the <b>Full-Text</b> tab and 
+                     push the <b>Create</b> button.
+                  </p>
+                  <p class="tei-p"><img src="imgs/database_properties__v001.jpg"></img></p>
+                  <h3 id="qs_open_a_dictionary">2.3 Open a Dictionary</h3>
+                  <p class="tei-p"><span class="spStep">Step 9</span>Make sure that the <a href="#starting_basex_server">BaseX server</a> is running.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 10</span>Go to the login tab of the Main Control.
+                  </p>
+                  <p class="tei-p"><img src="imgs/login_tab__002.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 11</span>Enter the credentials you created for the dictionary (Step 7 above).
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 12</span>Click on <b>English - German (Local, test)</b>.
+                  </p>
+                  <h2 id="setup_basics">3 Set-up and Basics </h2>
+                  <h3 id="downloading_vle">3.1 Downloading</h3>
+                  <p class="tei-p">The latest version of VLE is available on the web site of <a target="_blank" href="https://clarin.oeaw.ac.at/ccv/vle">CLARIN Centre Vienna</a>. Simply start the installation program and follow the 
+                     instructions. Make sure not to install the application in a Windows programs directory.
+                     We usually install into a directory like C:/progs/WDE.
+                  </p>
+                  <h3 id="set_up_dict_user">3.2 Preparing BaseX for VLE</h3>
+                  <p class="tei-p">Before you can use BaseX to store dictionaries, you have to create a special collection
+                     for managing the users.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Start VLE
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Select tab <b>BaseX</b></p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Select tab <b>DB Admin</b></p>
+                  <p class="tei-p"><span class="spStep">Step 4</span> The default user is <b>admin</b>, default password is also <b>admin</b>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 5</span> Push the <span class="spControl">Create New User Table</span> button. Make sure to do this only once. Recreating this BaseX  
+                     collection will erase all existing user data.
+                  </p>
+                  <p class="tei-p"><img src="imgs/create_new_user_table.jpg"></img></p>
+                  <h3 id="profiles">3.3 Profiles</h3>
+                  <p class="tei-p"><i>Profiles</i> are the configuration files associated with dictionary projects. They are XML documents
+                     
+                     which can be edited with text editors or with VLE.
+                  </p>
+                  <h4 id="profiles_generalities">3.3.1 Generalities</h4>
+                  <p class="tei-p">Profiles are stored in two places: (a) on the local machine in the <i>profiles</i> folder of VLE's installation folder and 
+                     (b) in the server. The second option is used two share profiles among several users
+                     who need to work with the same configuration.
+                  </p>
+                  <h4 id="creating_new_profile">3.3.2 Creating a New Profile</h4>
+                  <p class="tei-p">The first thing in creating a new dictionary is creating a new profile. To do this,
+                     perform the following steps:
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span>Go to tab <b>Local Profiles</b></p>
+                  <p class="tei-p"><span class="spStep">Step 2</span>Select tab <b>New Profiles</b></p>
+                  <p class="tei-p"><span class="spStep">Step 3</span>Enter the required values. Profiles are stored in XML documents.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 4</span>Push the <b>Create</b> button.
+                  </p>
+                  <p class="tei-p"><img src="imgs/control_form_create_profile__000.jpg"></img></p>
+                  <p class="tei-p">The above settings create the profile of a German French dictionary. The new profile
+                     is then displayed in the profile editor.
+                  </p>
+                  <p class="tei-p"><img src="imgs/control_form_profile_editor__000.jpg"></img></p>
+                  <p class="tei-p">The editor helps you to work on profiles. Having modified anything in the editor,
+                     you have to save these changes manually <span class="spShortcut">(CTRL + S)</span>.
+                  </p>
+                  <p class="tei-p">Having created a new profile, a placeholder is inserted on top of the list of profiles.
+                     This list is stored in document profiles.xml in the directory WDE/profiles.
+                  </p>
+                  <p class="tei-p"><img src="imgs/control_form_profiles_editor__000.jpg"></img></p>
+                  <p class="tei-p">You should change the default label <i>New profile label</i> to something meaningful.
+                  </p>
+                  <p class="tei-p"><img src="imgs/control_form_profiles_editor__001.jpg"></img></p>
+                  <h4 id="saving_profile_list">3.3.3 Saving the List of Profiles</h4>
+                  <p class="tei-p">Having edited the list of profiles, press <b>CTRL + S</b> to save your changes.  You are automatically taken to the <b>Login Tab</b> which 
+                     now displays the updated data.
+                  </p>
+                  <p class="tei-p"><img src="imgs/control_form_login_tab.jpg"></img></p>
+                  <p class="tei-p">By clicking on a link of the list of dictionaries in the <b>Login Tab</b> you load a local profile. Once the profile is loaded, 
+                     VLE attempts to open an editor.
+                  </p>
+                  <h3 id="basic_components">3.4 Basic Components</h3>
+                  <p class="tei-p">The Dictionary Editor is made up of a number of windows. When starting the program,
+                     two components appear on the screen: the Quick Access Panel and the CONTROL Form.
+                     
+                  </p>
+                  <h4 id="quick_access_panel">3.4.1 Quick Access Panel (QAP)</h4>
+                  <p class="tei-p">VLE has a modular structure which is organised in a number of windows. Each window
+                     offers particular functionalities. The Quick Access Panel is a tool that allows 
+                     users to quickly bring particular components to the front.
+                  </p>
+                  <p class="tei-p"><img src="imgs/quick_access_panel__000.jpg"></img></p>
+                  <p class="tei-p">The default position of the Quick Access Panel is the top left corner of the screen.
+                     If this space is needed by other applications, 
+                     the panel can be moved with the green bar to any other position on the screen. When
+                     you restart the program, the position will be remembered.
+                  </p>
+                  <h4 id="editors">3.4.2 Editors</h4>
+                  <p class="tei-p">Having opened dictionaries, you see a button for each <a href="#editor_forms">editor</a> in the first row of controls of the Quick Access Panel. Clicking on one of the 
+                     buttons brings the respective editor into the foreground.
+                  </p>
+                  <p class="tei-p"><img src="imgs/quick_access_panel_editors__000.gif"></img></p>
+                  <p class="tei-p">The current version allows to open six editors concurrently.</p>
+                  <h4 id="entry_viewer">3.4.3 Entry Viewer</h4>
+                  <p class="tei-p">The Entry Viewer is a tool to visualise data, either to display representations of
+                     single entries 
+                     or whole result sets.
+                  </p>
+                  <h4 id="help_form">3.4.4 Help</h4>
+                  <p class="tei-p">The Quick Access Panel also gives access to the documentation of the program which
+                     is made up of a number of TEI conformant text documents which can be accessed in the
+                     Help Window. 
+                     For more details have a look at the introductary chapter <a href="#technicalities">Technicalities</a>.
+                  </p>
+                  <h4 id="loc_basex_button">3.4.5 Loc. BaseX</h4>
+                  <p class="tei-p">This button starts the BaseX server on your computer, on the same machine your VLE
+                     is being run on.
+                  </p>
+                  <p class="tei-p"><img src="imgs/quick_access_panel_editors__001.gif"></img></p>
+                  <p class="tei-p">To make this work, VLE needs the path to the script that starts BaseX' database HTTP
+                     services.
+                  </p>
+                  <p class="tei-p"><img src="imgs/basexhhtp_001.jpg"></img></p>
+                  <p class="tei-p">Usually, the BaseX installation routine puts an icon on the desktop from which you
+                     can get the right path.
+                  </p>
+                  <h4 id="control_form">3.4.6 Control Form</h4>
+                  <p class="tei-p">The <b>Control Form</b> is used to open dictionaries and to manage the dictionary databases.
+                  </p>
+                  <p class="tei-p"><img src="imgs/control_form_login_tab.jpg"></img></p>
+                  <h4 id="book_viewer">3.4.7 Books</h4>
+                  <p class="tei-p">The <a href="#book_reader">Book Viewer</a> component is a simple image viewer with an attached navigation control. 
+                  </p>
+                  <h4 id="text_reader">3.4.8 Text</h4>
+                  <p class="tei-p">The <a href="#example_extractor">Text</a> component allows to open simple text files. Its main purpose is to extract example
+                     sentences from 
+                     texts, to preprocess them and then to import them into the dictionary.
+                  </p>
+                  <h4 id="quick_query">3.4.9 Quick Query</h4>
+                  <p class="tei-p">The Quick Query form is a simple control that allows to work with <a href="#word_lists">word lists</a> and 
+                     lookup dictionaries.
+                  </p>
+                  <h4 id="editor_forms">3.4.10 EDITOR Forms</h4>
+                  <p class="tei-p">The EDITOR forms are the heart of the dictionary editing system. They contain the
+                     dictionary writing functionality and provide access to the lexical data. The editor
+                     
+                     looks like this.
+                  </p>
+                  <p class="tei-p"><img src="imgs/editor__000.jpg"></img></p>
+                  <h3 id="setting_up_basex">3.5 Setting-up BaseX</h3>
+                  <p class="tei-p">There are not many freely available XML databases. We have chosen BaseX as it is very
+                     easy to installing and handle. 
+                     BaseX is an XML Database engine and XPath/XQuery 3.1 Processor which includes full
+                     support 
+                     for the W3C Update and Full Text extensions of the XQuery specification. It comes
+                     with a user-friendly graphical user interface which helps 
+                     you to explore your XML documents. BaseX has been open source since 2005.
+                  </p>
+                  <h4 id="download_basex">3.5.1 Download BaseX</h4>
+                  <p class="tei-p">You can download BaseX from this website: <a target="_blank" href="http://basex.org/products/download/all-downloads/">http://basex.org/products/download/all-downloads/</a>.
+                  </p>
+                  <h4 id="installing_basex">3.5.2 Install BaseX</h4>
+                  <p class="tei-p">Installing BaseX is pretty straightforward. You simply run the Windows Installer and
+                     follow the instructions. To run BaseX you need a recent Java version.
+                  </p>
+                  <h4 id="basex_publication_platform">3.5.3 BaseX as Publication Platform</h4>
+                  <p class="tei-p">To use BaseX as a web server and VLE to create web applications, create a directory
+                     BaseX\webapp\wde\static and copy the 
+                     files from WDE\templates\basex into this directory as displayed the image below.
+                  </p>
+                  <p class="tei-p"><img src="imgs/basex_rest_dirs_002.jpg"></img></p>
+                  <p class="tei-p">Alternatively, you can also use VLE to set up this structure <a href="#quick_start_setup">(Installing the Environment, Step 3)</a>.
+                  </p>
+                  <h2 id="basic_workflow">4 Basic Workflow Steps </h2>
+                  <h3 id="starting_vle">4.1 Starting VLE</h3>
+                  <p class="tei-p">The easiest way to start VLE is to click on the desktop icon.</p>
+                  <p class="tei-p"><img src="imgs/desktop_click__v001.jpg"></img></p>
+                  <h3 id="creating_new_dict">4.2 Creating a New Dictionary</h3>
+                  <p class="tei-p">There are three major steps involved in setting up a new dictionary: (1) preparing
+                     the data, (b) creating the database and (c) finally importing the data.
+                  </p>
+                  <h4 id="preparing_the_data">4.2.1 Preparing the Data</h4>
+                  <p class="tei-p">Make sure that your import TEI document complies with the basic requirements expected
+                     by the system.
+                  </p>
+                  <ul>
+                     
+                     <li>The document must contain divisions for <i>entries</i>. If there are examples, they should also be stored in a separate <i>division</i>.
+                     </li>                                        
+                     
+                     <li>The document must contain language labels on <i>form[type="lemma"]</i> and <i>div[type="examples"]/cit/quote</i> elements.
+                     </li>                                        
+                     
+                     <li>The document must have a header with <i>xml:id="dictHeader"</i>.
+                     </li>                                        
+                     
+                     <li>The document must have <i>xml:id</i>s.
+                     </li>                                        
+                     
+                  </ul>
+                  <h4 id="creating_a_profile">4.2.2 Creating a Profile</h4>
+                  <p class="tei-p">To set up a new dictionary you have to first create a profile. This is explained <a href="#creating_new_profile">here</a>.
+                  </p>
+                  <h4 id="setting_up_basex_collections">4.2.3 Setting-up BaseX Collections</h4>
+                  <p class="tei-p">If you start a new dictionary project, we strongly recommend to make use of BaseX
+                     as data server. Your BaseX instance can 
+                     run on your local machine or on a remote server. VLE provides functionalities to set
+                     up the basic structures on the BaseX server.
+                  </p>
+                  <p class="tei-p">VLE assumes the existence of five collections for every dictionary:</p>
+                  <table>
+                     
+                     <tr>
+                        
+                        <td>Suffix</td>
+                        <td>Contents</td>
+                        <td></td>
+                     </tr>
+                     
+                     
+                     <tr>
+                        
+                        <td></td>
+                        
+                        <td>Dictionary</td>
+                        
+                        <td>This data is expected to be TEI conformant. The dictionary proper has no suffix.</td>
+                     </tr>
+                     
+                     
+                     <tr>
+                        
+                        <td>_hist</td>
+                        
+                        <td>Older versions of entries</td>
+                        
+                        <td>Whenever you save an entry, the previous version is stored together with a timestamp
+                           in this database.
+                        </td>
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>_lcks</td>
+                        
+                        <td>Locking information</td>
+                        
+                        <td>This database is used to keep track of who is just editing a record.</td>
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>_ind</td>
+                        
+                        <td>Customised indices</td>
+                        
+                        <td>This database is not needed for working on the dictionary. It is part of the publication
+                           framework and 
+                           used to create field-specific preview options.
+                        </td>
+                     </tr>
+                     
+                     
+                     
+                     <tr>
+                        
+                        <td>_profile</td>
+                        
+                        <td>Profile</td>
+                        
+                        <td>The information about the particular set-up of the editor is stored in a profile.
+                           Usually
+                           the profile is stored in the VLE directory. If you work in a group, it will be advisable
+                           to share the profile 
+                           in which case you can store it in this database.
+                        </td>
+                        
+                     </tr>
+                     
+                  </table>
+                  <h4 id="starting_basex_server">4.2.4 Starting the Local BaseX Server</h4>
+                  <p class="tei-p">Before accessing the BaseX database via VLE you have to start the local BaseX server.
+                     This can be done by clicking on the desktop icon <b>basexhttp</b>.
+                  </p>
+                  <p class="tei-p"><img src="imgs/desktop_click__v002.jpg"></img></p>
+                  <p class="tei-p">Alternatively, you can also 
+                     click the Windows start button and enter basexhttp.
+                  </p>
+                  <p class="tei-p"><img src="imgs/starting_basex__v001.jpg"></img></p>
+                  <h4 id="importing_data">4.2.5 Importing Data</h4>
+                  <p class="tei-p">There are several ways of getting the data into BaseX. When setting up a new dictionary,
+                     we recommend to make use of the 
+                     respective VLE import functions which automatically creates the databases needed.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Go to tab <span class="spControl">BaseX</span></p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Select tab <span class="spControl">DB Admin</span>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Fill in your admin password for the database. Having installed BaseX, the password
+                     of the default admin user is <i>admin</i>.
+                  </p>
+                  <p class="tei-p"><img src="imgs/basex_dbadmin__v001.jpg"></img></p>
+                  <p class="tei-p">The password can be be made visible by pushing <span class="spShortcut">F5</span>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 4</span> Select the <b>Create Dictionary</b> tab.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 5</span> Fill in a name for the new dictionary, add the path to the import file and the profile
+                     file. You can double-click in the controls to select the files.
+                  </p>
+                  <p class="tei-p"><img src="imgs/basex_create_dictionary__v001.jpg"></img></p>
+                  <p class="tei-p">With larger data sets the import may take a while. The progress is being displayed
+                     in the <span class="spControl">LOG form</span>.
+                  </p>
+                  <p class="tei-p"><img src="imgs/data_import_progress_001.jpg"></img></p>
+                  <p class="tei-p">When you have more than one dictionary or different language resources in your BaseX
+                     database, you should make sure that the collections 
+                     have meaningful names. We have tried to start the names of dictionaries with the prefix
+                     <i>dc_</i> and use ISO 
+                     language labels separated by underscores.
+                  </p>
+                  <p class="tei-p">Having set-up the collections for your dictionary, you can also make use of BaseX
+                     data import possibilities.
+                  </p>
+                  <h4 id="creating_an_account">4.2.6 Creating an Account</h4>
+                  <p class="tei-p">The dictionary system contains a very simple user management utility. To access dictionary
+                     data a personalised account is required. The user data are stored in a BaseX database.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Got to tab <b>BaseX</b>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Select tab <b>Users</b>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Enter a <i>username</i>, a <i>password</i> and a <i>dictionary name</i>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 4</span> Press then <i>Create user</i> button.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 5</span> Make sure that the user was added to the database by pushing the <b>Show Users</b> button.
+                  </p>
+                  <p class="tei-p"><img src="imgs/basex_users__v001.jpg"></img></p>
+                  <h4 id="deleting_an_account">4.2.7 Deleting an Account</h4>
+                  <p class="tei-p">VLE does not allow to delete accounts. However, it is very easy to do this in the
+                     BaseX GUI.
+                  </p>
+                  <p class="tei-p"><img src="imgs/delete_dict_user.jpg"></img></p>
+                  <h3 id="working_with_remote_dictionaries">4.3 Working with Remote Dictionaries</h3>
+                  <p class="tei-p">If you want to connect to an existing dictionary on a remote machine, you simple have
+                     to get the profile from the remote server.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Got to tab <b>BaseX</b>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Select the tab <b>Dictionaries</b>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Push the <b>List Collections</b> button.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 4</span> Rightclick on the dictionary you need and select <b>Get Profile</b>.
+                  </p>
+                  <p class="tei-p">To retrieve the list of collections on the server, you will need admin credentials
+                     for the server. If you only have credentials 
+                     for a particular collection, carry out step 4 in the empty listbox, enter the name
+                     of the collection you want to work with and push the 
+                     <b>ENTER</b> button.
+                  </p>
+                  <h3 id="working_with_editors">4.4 Working with Editors</h3>
+                  <p class="tei-p">To open a new editor you simply click on a profile in the CONTROL form. You can open
+                     up to six editors in one VLE instance. You can also 
+                     open several editors when working on one dictionary. This will be particularly useful
+                     when comparing entries or working with <a href="#entries_and_examples">examples</a> 
+                     to be inserted in a number of entries.
+                  </p>
+                  <p class="tei-p">Mind that editors only deal with their data. If you change data in a profile, this
+                     will only be used in the other editors after restarting the whole application. The
+                     only work-around is 
+                     to copy the profile on the server from the editor where you applied the changes and
+                     getting it from there.
+                  </p>
+                  <h4 id="navigating_between_editors">4.4.1 Navigating Between Editors</h4>
+                  <p class="tei-p">There are two options to move from one editor to another. You can simply click on
+                     the buttons in the Quick Access Panel.
+                  </p>
+                  <p class="tei-p"><img src="imgs/quick_access_panel_editors__000.gif"></img></p>
+                  <p class="tei-p">The second option is to make use of the functions <i>goToEditor1</i>, <i>goToEditor2</i> etc. In our dictionary projects, these functions have been 
+                     associated with the keyboard shortcuts <span class="spShortcut">Ctrl + 1</span>, <span class="spShortcut">Ctrl + 2</span> etc.
+                  </p>
+                  <h4 id="dealing_with_profiles">4.4.2 Dealing with Profiles</h4>
+                  <p class="tei-p">As we have seen in the passages <a href="#profiles">above</a> profiles can be edited in the <span class="spControl">CONTROL form</span>. Each editor is also furnished with a tab that contains the currently activated profile.
+                     Opening a dictionary 
+                     means opening an editor with a particular profile. Many items of a profile are accessible
+                     in the configuration. However, you also have direct access to all the data of the
+                     profile 
+                     in the profile tab.
+                  </p>
+                  <p class="tei-p"><img src="imgs/editor_profile__001.jpg"></img></p>
+                  <p class="tei-p">Make sure to manually save this data whenever you made changes. There are two ways
+                     to do this: either by pushing <span class="spShortcut">CTRL + S</span> in the profile editor or 
+                     by activating the context menu (right-click) and selecting Save Profile. This will
+                     save the profile in the profiles directory.
+                  </p>
+                  <p class="tei-p">If you want to share a profile with others, you best store it on the server. Right-click
+                     in the profile editor and select <span class="spControl">Copy Profile To Server</span>.
+                  </p>
+                  <h3 id="querying_the_database">4.5 Querying the Database</h3>
+                  <p class="tei-p">When working on an existing dictionary you first have to find the records you want
+                     to work on. Keep in mind that you are working with a database. 
+                     To create a list of entries to work on, you have to query the database for the entries
+                     you want to have. The smaller the list, the better. Unless you are working 
+                     with a very small dictionary, you do not want to retrieve all entries. Creating large
+                     datasets may slow your system down.
+                  </p>
+                  <p class="tei-p">Enter a query string in the query control of the current dictionary editor and push
+                     the <b>Enter</b> button.
+                  </p>
+                  <p class="tei-p"><img src="imgs/editor_query_001.jpg"></img></p>
+                  <h4 id="wildcards">4.5.1 Wildcards</h4>
+                  <p class="tei-p">You can use the asterisk (*) to manually truncate words to query for substrings. String-initial
+                     will usually take considerably more time, combined queries even more so.
+                  </p>
+                  <p class="tei-p"><img src="imgs/editor_query_002.jpg"></img></p>
+                  <p class="tei-p">In a BaseX based environment, you usually use .* (dot + asterisk) while in the MySQL
+                     setup a simple * is expected.
+                  </p>
+                  <p class="tei-p">To avoid repeated typing of queries, the last queries are saved in the <b>Last Queries tab</b>. To repeat a query, simply click on an item.
+                  </p>
+                  <p class="tei-p"><img src="imgs/last_queries_001.jpg"></img></p>
+                  <h4 id="query_control">4.5.2 Query Control</h4>
+                  <p class="tei-p">There are two query controls, a white one and a yellow one. The yellow one allows
+                     you to work with the same keyboard layout used in the main XML editor. You can switch
+                     between 
+                     the two by pushing the <span class="spControl">Toggle Button</span>.
+                  </p>
+                  <p class="tei-p"><img src="imgs/edit_control_switch__v001.jpg"></img></p>
+                  <p class="tei-p">The yellow input control is usually used when diacritics and/or special characters
+                     are needed.
+                  </p>
+                  <p class="tei-p"><img src="imgs/edit_control_switch__v002.jpg"></img></p>
+                  <p class="tei-p"><span class="spControl">Don't Empty Listbox</span> prevents the results listbox from being emptied when a new query is started.
+                  </p>
+                  <h4 id="query_templates">4.5.3 Query Templates</h4>
+                  <p class="tei-p">When working with BaseX as a data server, all your queries need to be formulated in
+                     a language called xQuery. VLE sends this query to the database and displays the result
+                     set. 
+                     It is helpful to know how to modify the queries. However, you can simply reuse predefined
+                     queries.
+                  </p>
+                  <p class="tei-p">Each dictionary is associated with a set of query templates which are used by VLE
+                     to form the queries. The set of queries used with 
+                     a particular dictionary are stored in the configuration of your dictionary. You can
+                     access them in the configuration tab of the dictionary editors.
+                  </p>
+                  <p class="tei-p"><img src="imgs/query_templates__v001.jpg"></img></p>
+                  <p class="tei-p">Each query template is identified by a label.</p>
+                  <p class="tei-p"><img src="imgs/query_templates__v002.jpg"></img></p>
+                  <p class="tei-p">When running a query, you choose a template, VLE replaces the variables in the query
+                     and sends it to the database.
+                  </p>
+                  <p class="tei-p"><img src="imgs/select_query_template__v001.jpg"></img></p>
+                  <p class="tei-p">You trigger a query by entering a query term ...</p>
+                  <p class="tei-p"><img src="imgs/query_templates__v003.jpg"></img></p>
+                  <p class="tei-p">... and pressing the <b>ENTER</b> button. The results are displayed in the listbox on the left side of the editor.
+                  </p>
+                  <p class="tei-p"><img src="imgs/query_templates__v004.jpg"></img></p>
+                  <h4 id="editing_templates">4.5.4 Editing Templates</h4>
+                  <p class="tei-p">Each template has two variables which are used by VLE: {dict} identifies the BaseX
+                     collection, and {subQuery} which contains the query string proper.
+                  </p>
+                  <p class="tei-p"><img src="imgs/query_templates__v005.jpg"></img></p>
+                  <h4 id="fulltext_search">4.5.5 Fulltext Search</h4>
+                  <p class="tei-p">BaseX offers  support for the W3C XQuery Full Text 1.0 Recommendation.</p>
+                  <h4 id="result_sets">4.5.6 Result Sets</h4>
+                  <p class="tei-p">Usually, VLE only retrieves a string to be displayed in the listbox (mostly the lemma
+                     together with a POS label) and the ID of the retrieved items. 
+                     The display strings are used to navigate the result set. You simply double-click on
+                     a particular item to retrieve it from the database to either see it 
+                     or to work on it.
+                  </p>
+                  <h4 id="word_lists">4.5.7 Word Lists</h4>
+                  <p class="tei-p">To reconcile word lists with data in dictionaries, you can make use of the <span class="spControl"><a href="#quick_query">Quick Query</a></span> component. 
+                     There you can load verticalised word lists which you can look-up one by one in the
+                     dictionary without having to copy
+                     the word into the query control of the dictionary editor.
+                  </p>
+                  <h3 id="new_entries">4.6 New Entries</h3>
+                  <p class="tei-p">When creating new entries, you usually proceed from predefined  templates. There is
+                     no need to build each entry from scratch. 
+                     For many languages it makes sense to have a template for nouns, verbs, adjectives,
+                     multi-word units and examples.
+                  </p>
+                  <h4 id="inserting_entry_template">4.6.1 Inserting a Template</h4>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Click in the editor.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Press <b>CTRL + N</b>. N stands for <b>New</b>..
+                  </p>
+                  <p class="tei-p"><img src="imgs/new_entry__v001.jpg"></img></p>
+                  <p class="tei-p">CTRL + N takes you to the Entry Templates tab. When creating an entry for the first
+                     time, it can happen that entry types are not displayed in the listbox on the left
+                     side of the Entry Templates tab.
+                  </p>
+                  <p class="tei-p"><img src="imgs/new_entry__v002.jpg"></img></p>
+                  <p class="tei-p">To remedy this, proceed as described below.</p>
+                  <p class="tei-p"><span class="spStep">Step:</span> Press F2 and then press Enter or push the <b>Redo Names with xPath</b> button.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step:</span> Make sure to save your profile after you have done this.
+                  </p>
+                  <p class="tei-p"><img src="imgs/new_entry__v003.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Select a template from the listbox by double-clicking.
+                  </p>
+                  <p class="tei-p"><img src="imgs/new_entry__v004.jpg"></img></p>
+                  <p class="tei-p">This takes the selected template, inserts it in the editor and shows the editor tab.</p>
+                  <p class="tei-p"><img src="imgs/new_entry__v005.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 4</span> The red panel on top indicates that this data has not been saved yet. Before anything
+                     else enter a lemma string.
+                  </p>
+                  <p class="tei-p"><img src="imgs/new_entry__v006.jpg"></img></p>
+                  <h4 id="creating_ID">4.6.2 Creating an ID</h4>
+                  <p class="tei-p"><span class="spStep">Step 5</span> Then, the most important thing is to create a unique identifier (ID) for the entry.
+                     This 
+                     should always stay the same and not contain any special characters. To insert an ID
+                     press CTRL + I.
+                  </p>
+                  <p class="tei-p"><img src="imgs/new_entry__v007.jpg"></img></p>
+                  <p class="tei-p">The function creating the ID creates only produces lower case output. Many special
+                     characters are normalised. The function 
+                     tries to remove diacritics. The result should look like this:
+                  </p>
+                  <p class="tei-p"><img src="imgs/new_entry__v008.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 6</span> Now you do the rest of the entry. In the case of this very simple example this is
+                     just adding a tranlsation.
+                  </p>
+                  <p class="tei-p"><img src="imgs/new_entry__v009.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 7</span> In the end you save your work with CTRL + S. The entry appears in the listbox and
+                     the red bar on top disappears.
+                  </p>
+                  <p class="tei-p"><img src="imgs/new_entry__v010.jpg"></img></p>
+                  <h4 id="defining_templates">4.6.3 Editing Entry Templates</h4>
+                  <p class="tei-p">Before you really start to work on a new dictionary you will have to think about the
+                     structure of your dictionary entries. In accordance with your 
+                     particular needs, you will have to modify the existing templates. 
+                  </p>
+                  <p class="tei-p">The templates are stored in the configuration of the dictionary editors. Typically,
+                     there are templates for particular word classes, multi-word-units or examples. 
+                  </p>
+                  <p class="tei-p">Having changed anything in the entry templates, you have to save the profile (CTRL
+                     + S).
+                  </p>
+                  <h3 id="editing_the_data">4.7 Editing the Data</h3>
+                  <p class="tei-p">Except for only a few buttons that are associated with the most common functions,
+                     the XML editors are mainly controlled through short cuts. Most of these can be 
+                     freely configured. The most common key assignments used in our projects are shown
+                     below. For a description of the functions associated with the keys look at the chapter
+                     <a href="#functions">Functions</a>.
+                  </p>
+                  <table>
+                     
+                     <tr>
+                        
+                        <td>Shortcut</td>
+                        
+                        <td>VLE Function</td>
+                        
+                        <td>Explanation</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>F1</td>
+                        
+                        <td>prevEntry</td>
+                        
+                        <td>Go to the previous entry</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>F2</td>
+                        
+                        <td>nextEntry</td>
+                        
+                        <td>Go to the next entry</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>F3</td>
+                        
+                        <td>formatEntry</td>
+                        
+                        <td>This function reformats the entry being worked on.</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>F4</td>
+                        
+                        <td>saveEntry + nextEntry</td>
+                        
+                        <td>Functions can also be combined. F4 saves the entry and loads the next one.</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>F6</td>
+                        
+                        <td>showTextTemplates</td>
+                        
+                        <td>This function shows text templates.</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>F8</td>
+                        
+                        <td>insertTemplateString</td>
+                        
+                        <td>This function inserts the last template string in the dictionary entry.</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>CTRL + I</td>
+                        
+                        <td>createID</td>
+                        
+                        <td>This function creates a new value for the xml:id attribute of the entry.</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>CTRL + L</td>
+                        
+                        <td>loadTranslationKeys</td>
+                        
+                        <td>(Un)load translation keys</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>CTRL + S</td>
+                        
+                        <td>saveEntry</td>
+                        
+                        <td>Save the entry</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>CTRL + F3</td>
+                        
+                        <td>browseEntry</td>
+                        
+                        <td>This function performs an XSLT transformation and displays the output as HTML.</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>CTRL + F5</td>
+                        
+                        <td>insertEndTag</td>
+                        
+                        <td>This function inserts the end tag of a start tag that was just entered.</td>
+                        
+                     </tr>
+                     
+                  </table>
+                  <h4 id="saving">4.7.1 Saving</h4>
+                  <p class="tei-p">VLE does not automatically save your work. Whenever you changed something you have
+                     to save the data explicitly.
+                  </p>
+                  <h4 id="inserting_elements">4.7.2 Inserting Elements</h4>
+                  <p class="tei-p">You can create elements by simply typing them into the editor. Mind that there is
+                     special function <a href="#function_insertEndTag">insertEndTag</a> which insert the end tag of an element.
+                  </p>
+                  <p class="tei-p">The usual way to insert a new element is by copying templates. These are defined in
+                     the Config tab.
+                  </p>
+                  <p class="tei-p"><img src="imgs/template_strings__001.jpg"></img></p>
+                  <p class="tei-p">Every template has to be on a separate line. When they are inserted in the entry they
+                     are automatically formatted. In the standard setup <b>F6</b> gets 
+                     you from the entry editor to the <b>Template String editor</b>.
+                  </p>
+                  <p class="tei-p"><img src="imgs/template_strings__002.gif"></img></p>
+                  <p class="tei-p"><b>F5</b> inserts the template of the line in which the caret is and moves back into the editor.
+                  </p>
+                  <p class="tei-p"><img src="imgs/template_strings__003.gif"></img></p>
+                  <p class="tei-p">Next you should execute the function <a href="#function_formatEntry">formatEntry</a> which formats 
+                     the entry with the new data. In the initial setup, this function is associated with
+                     <b>F3</b>. In the following illustration,  
+                     you can see that the single line of the inserted string is put on several indented
+                     lines.
+                  </p>
+                  <p class="tei-p"><img src="imgs/template_strings__004.jpg"></img></p>
+                  <h4 id="producing_text">4.7.3 Producing Text</h4>
+                  <p class="tei-p">A useful feature of VLE is its automatic character replacement functionality. 
+                     Particular keys can be assigned any Unicode characters. These assignments are defined
+                     in the <a href="#key_translations">Key Translations 
+                        tab</a> of the configuaration. To load and unload the key assignments the <a href="#function_loadTranslationKeys">loadTranslationKeys function</a> 
+                     which in the default setup is associated with <b>CTRL + L</b>.
+                  </p>
+                  <h4 id="entries_and_examples">4.7.4 Examples</h4>
+                  <p class="tei-p">Usage examples can be dealt with as entries in their own right. For the encoding details,
+                     have a look at <a target="_blank" href="https://jtei.revues.org/522#tocto2n9">Budin/Majewski/Moerth 2012</a>. 
+                     The advantage of not having them in the sense section of entries is that examples
+                     can be reused in multiple entries.
+                  </p>
+                  <p class="tei-p">To create an example and add it to an entry follow these steps:</p>
+                  <h4 id="caveats">4.7.5 Caveats and Restrictions</h4>
+                  <p class="tei-p">VLE does not support right-to-left editing. Arabic and Hebrew text will not be displayed
+                     in the proper way in the editor. Actually, this has not posed a major obstacle so
+                     far. 
+                     In projects containing Arabic script, input has been done in transcription which subsequently
+                     was transformed automatically into Arabic script.
+                  </p>
+                  <p class="tei-p">VLE does currently not have a built-in undo function.</p>
+                  <h4 id="versioning">4.7.6 Versioning</h4>
+                  <p class="tei-p">Together with each save command, VLE produces a copy of the 
+                     record you loaded. This version is stored together with a timestamp in the database.
+                     It can be accessed as long as 
+                     you do not change the ID of the record. See chapter <a href="#metadata_versioning">Metadata: Versioning</a>.
+                  </p>
+                  <h4 id="visualising">4.7.7 Visualising Entries</h4>
+                  <p class="tei-p">You can get different visualisations of your data by applying XSLT stylesheets. Working
+                     on a dictionary, HTML representations of the data can be displayed 
+                     in two locations. Either they can be shown in the dictionary editor next to the XML
+                     data. The green area on the left side is 
+                     a browser representation of the data on the left side.
+                  </p>
+                  <p class="tei-p"><img src="imgs/entry_display__001.jpg"></img></p>
+                  <p class="tei-p">The second option is to show the data in a detached form which allows you to move
+                     it to any convenient location on the screen.
+                  </p>
+                  <p class="tei-p"><img src="imgs/entry_display__002.gif"></img></p>
+                  <p class="tei-p">Which option to choose, you can configure in the configuration tab of the tool.</p>
+                  <p class="tei-p"><img src="imgs/entry_display_config_001.jpg"></img></p>
+                  <h4 id="validation">4.7.8 Validation</h4>
+                  <p class="tei-p">Currently, only data stored in BaseX databases can be validated. As per default, <i>tei_all.xsd</i> is used.
+                  </p>
+                  <h4 id="global_transformations">4.7.9 Global transformations</h4>
+                  <p class="tei-p">The easiest way to apply global transformations to a dictionary is by making use of
+                     oXygen and to connect to the database via webDAV.
+                  </p>
+                  <h3 id="saving_data">4.8 Saving Data</h3>
+                  <p class="tei-p">Reduplicate your dictionary data as often as possible and store it in a safe place.
+                     There are several ways to achieve this. The best way to keep your data safe is distributing
+                     as many copies as possible! 
+                  </p>
+                  <h4 id="saving_data_in_basex">4.8.1 Saving Data in BaseX</h4>
+                  <p class="tei-p">You can get direct access to your dictionary data making use of the graphical user
+                     interface of BaseX.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Open the graphical user interface of BaseX
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Open the Manage Databases dialog (CTRL + M)
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Double-click on the collection you want to save: It is displayed in the results panel
+                     of BaseX.
+                  </p>
+                  <p class="tei-p"><img src="imgs/basex_results_panel.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 4</span> From there you can save the whole collection into a single XML document.
+                  </p>
+                  <p class="tei-p"><img src="imgs/basex_results_panel__001.jpg"></img></p>
+                  <p class="tei-p">Make use of meaningful document names like e.g. the name of the collection plus suffix
+                     indicating the data when it was saved.
+                  </p>
+                  <p class="tei-p">Keep in mind that a dictionary is made up of <a href="#importing_data">several collections</a>. To fully restore a 
+                     dictionary you will need the history and the profile as well.
+                  </p>
+                  <h4 id="exporting_dictionaries">4.8.2 Exporting Data with VLE</h4>
+                  <p class="tei-p">All the data of a dictionary which is stored in the BaseX server can be exported into
+                     a single self-contained XML document.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Open the export tab of the VLE dictionary editor
+                  </p>
+                  <p class="tei-p"><img src="imgs/wde_export_data.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Enter a file name. Per default the dictionaries are stored in the dicttemp folder
+                     which is
+                     created when you first start VLE. The path can of course be changed.
+                  </p>
+                  <p class="tei-p"><img src="imgs/wde_export_data__002.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Press the <b>Save all Records to Single Document</b> button.
+                  </p>
+                  <p class="tei-p">This feature can come in handy when you want to apply changes to a great number of
+                     entries. You can simply export the data 
+                     in the described manner and then reimport them.
+                  </p>
+                  <h2 id="advanced_issues">5 Advanced Issues </h2>
+                  <h3 id="conf_editor">5.1 Configuring the Editor</h3>
+                  <p class="tei-p">The functionalities of many features can be changed in the configuration of the editor.
+                     Having changed anything in the configuration or a profile, you have to save the profile
+                     of 
+                     the dictionary project otherwise the changes will not be remembered in the next session.
+                  </p>
+                  <p class="tei-p">The following paragraphs deal with the most important parts of the configuration.</p>
+                  <h4 id="config_general">5.1.1 General</h4>
+                  <p class="tei-p">This tab contains a number of string values which are used by the editor.</p>
+                  <p class="tei-p"><img src="imgs/config_general_001.jpg"></img></p>
+                  <p class="tei-p"><b>Resp</b>onsibility <b>String</b> is used as a template in creating production metadata. Cf. Chapter <a href="#entry_metadata">Metadata</a>.
+                  </p>
+                  <h4 id="config_formatting">5.1.2 XML Formatting</h4>
+                  <p class="tei-p">VLE performs simple XML formatting which is controlled through this tab. When the
+                     first checkbox is checked, no empty lines are inserted between particular elements.
+                  </p>
+                  <p class="tei-p"><img src="imgs/config_xml_formatting.jpg"></img></p>
+                  <h4 id="config_view">5.1.3 View</h4>
+                  <p class="tei-p">In this tab you configure the appearance of VLE. You can make visible several tabs
+                     which are not there in the standard setup.
+                  </p>
+                  <h4 id="config_keys">5.1.4 Key Assignments</h4>
+                  <p class="tei-p">In this part of the configuration, you can associate key combinations with particular
+                     <a href="#functions">functions</a> of the dictionary editor.
+                  </p>
+                  <p class="tei-p"><img src="imgs/config_keys_001.jpg"></img></p>
+                  <p class="tei-p">It is also possible to write simple macros by assigning several functions to one key.
+                     The functions are separated by a comma and must be on the same line. E.g. <b>F4=saveEntry,nextEntry</b>.
+                  </p>
+                  <h4 id="key_translations">5.1.5 Key Translations</h4>
+                  <p class="tei-p">VLE's XML editor component allows the automatic replacement of particular keys with
+                     others. You can for instance make the editor translate every <b>A</b> with <b>ā</b> 
+                     when you are typing in an element with a particular xml:lang attribute.
+                  </p>
+                  <p class="tei-p"><img src="imgs/translate_keys_001.jpg"></img></p>
+                  <h4 id="query_templates1">5.1.6 Query Templates</h4>
+                  <p class="tei-p">These templates are used when querying the database. See chapter <a href="#editing_templates">Querying the Database</a>.
+                  </p>
+                  <p class="tei-p"><img src="imgs/config_query_templates_v001.jpg"></img></p>
+                  <h4 id="entry_templates">5.1.7 Entry Templates</h4>
+                  <p class="tei-p">These templates are used when creating new entries. See chapter <a href="#inserting_entry_template">New Enries</a>. 
+                  </p>
+                  <p class="tei-p"><img src="imgs/entry_templates_001.jpg"></img></p>
+                  <h4 id="template_strings">5.1.8 Template Strings</h4>
+                  <p class="tei-p">Template strings spare the dictionary editor the effort of typing tags when compiling
+                     dictionary entries. 
+                     Basic information as to what these templates are used for can be found in the chapter
+                     <a href="#inserting_elements">Working with the Data</a>.
+                  </p>
+                  <p class="tei-p">Template labels are short strings (usually two or three characters) which allow you
+                     to insert the string in the same line without switching to the Template String tab.
+                     
+                     When VLE detects these strings which have to start and end with a hash, it locates
+                     the respective template and replaces the label by it.
+                  </p>
+                  <p class="tei-p"><img src="imgs/template_strings__labels_001.jpg"></img></p>
+                  <p class="tei-p">When editing the template strings, you can add a number in curly brackets at the end
+                     of the line which indicates where the cursor is supposed 
+                     to be placed after inserting the string. Move the cursor to the position where you
+                     want it to be after inserting the string and push <b>F3</b>.
+                  </p>
+                  <p class="tei-p">Compare the two following images:</p>
+                  <p class="tei-p"><img src="imgs/template_strings__inspos_001.jpg"></img></p>
+                  <p class="tei-p"><img src="imgs/template_strings__inspos_002.jpg"></img></p>
+                  <h3 id="data_management">5.2 Data Management</h3>
+                  <p class="tei-p">This chapter only deals with managing data in the BaseX environment. The solutions
+                     with relational databases are regarded as deprecated.
+                  </p>
+                  <h4 id="importing_data1">5.2.1 Importing Data</h4>
+                  <p class="tei-p">There are several ways to get your data into the BaseX database.</p>
+                  <p class="tei-p"><a href="#importing_data">Read more</a></p>
+                  <h4 id="statistics">5.2.2 Statistics</h4>
+                  <p class="tei-p"><span class="spStep">Step 1</span>Go to tab <b>BaseX</b> in <b>CONTROL form</b>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span>Go to tab <b>Dictionaries</b>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> The <b>List Collections</b> button retrieves a complete list of all collections on the server.
+                  </p>
+                  <p class="tei-p"><img src="imgs/basex_dictionaries_list__v001.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 4</span>Select the collection on which you need information and right-click in the context
+                     menu 
+                     on <i>Get Statistics</i>. The result of the query will be displayed in a TEI conformant encoding.
+                  </p>
+                  <p class="tei-p"><img src="imgs/basex_dictionaries_stats__v001.jpg"></img></p>
+                  <p class="tei-p">This data can be used in the header of your dictionary.</p>
+                  <h4 id="dropping_collections">5.2.3 Dropping Collections</h4>
+                  <p class="tei-p">If you want to drop a whole dictionary, proceed as described above. Select the collection
+                     on which you need information and right-click in the context menu 
+                     on <i>Drop Collection</i>. You will be asked twice if you really want to do this. This step is irreversible!
+                  </p>
+                  <p class="tei-p">This function only works for dictionaries. It will try to also delete the collections
+                     with the <a href="#importing_data">prefixes</a>.
+                  </p>
+                  <h3 id="metadata1">5.3 Metadata</h3>
+                  <p class="tei-p">Production metadata is mainly collected in two places: (a) the teiHeader of the dictionary
+                     and (b) the lexical units (entries, examples) stored 
+                     in the database. 
+                  </p>
+                  <h4 id="the_teiheader">5.3.1 The teiHeader</h4>
+                  <p class="tei-p">The teiHeader holds the main metadata about the dictionary. To learn more about teiHeaders,
+                     have a look at <a target="_blank" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/HD.html">Chapter 2 </a> 
+                     of the TEI Guidelines. To access the teiHeader of a particular dictionary in the editor,
+                     select the query template with the label header and query 
+                     with the asterisk (.*).
+                  </p>
+                  <p class="tei-p"><img src="imgs/loading_header_v011.jpg"></img></p>
+                  <h4 id="entry_metadata">5.3.2 Statistical Information</h4>
+                  <p class="tei-p">In addition to the usual metadata, VLE helps to generate and store statistical information
+                     about your dictionary. 
+                     To retrieve statistical information about your dictionary follow these steps:
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Go to tab <b>Config</b> in <b>CONTROL form</b>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Click on tab <b>BaseX</b> and then on tab <b>Dictionaries</b>.
+                  </p>
+                  <p class="tei-p"><img src="imgs/wde_statistics__001.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Click on <b>List Collections</b> to see all the available BaseX collections.
+                  </p>
+                  <p class="tei-p"><img src="imgs/wde_statistics__002.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 4</span> Right-click and select <i>Get Statistics</i> in the context menu.
+                  </p>
+                  <p class="tei-p"><img src="imgs/wde_statistics__003.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 5</span> Insert this data on a regular basis in the teiHeader of the dictionary.
+                  </p>
+                  <h4 id="entry_metadata1">5.3.3 Production Metadata in the Entries</h4>
+                  <p class="tei-p">VLE uses a TEI conformant tag-set to record production metadata in the entries and
+                     examples stored in the dictionary. The system 
+                     is based on feature structures as defined in <a target="_blank" href="http://www.tei-c.org/release/doc/tei-p5-doc/en/html/FS.html">Chapter 18 (Feature Structures)</a> of the TEI Guidelines. 
+                     A description of this simple system can be found in <a target="_blank" href="https://jtei.revues.org/522#tocto2n9">Budin/Majewski/Moerth 2012</a>.
+                  </p>
+                  <h4 id="metadata_versioning">5.3.4 Versioning</h4>
+                  <p class="tei-p">VLE supports versioning on the level of entries. Whenever an <i>entry</i> or a <i>cit/quote are stored</i>, a copy of the 
+                     previous version is stored with a timestamp in the database. These records can be
+                     found in the 
+                     collection with the _hist suffix.
+                  </p>
+                  <p class="tei-p">In VLE you can access previous versions of entries by switching to the <b>Versions tab</b>. Open an entry in the editor 
+                     an select the versions tab.
+                  </p>
+                  <p class="tei-p"><img src="imgs/versions_tab_001.jpg"></img></p>
+                  <p class="tei-p">VLE shows you the previous versions. The list box displays the ID and the time stamp.
+                     You can access any of these by double-clicking on them.
+                  </p>
+                  <p class="tei-p"><img src="imgs/versions_tab_002.jpg"></img></p>
+                  <p class="tei-p">It is also possible to access earlier versions through filtering the dates or IDs.
+                     The following image shows you how to see all entries 
+                     saved into the history list on 10 March 2017.
+                  </p>
+                  <p class="tei-p"><img src="imgs/versions_tab_003.jpg"></img></p>
+                  <h3 id="functions">5.4 Functions</h3>
+                  <p class="tei-p">Many functions of the editor are controlled through <b>keyboard shortcuts</b>. The key assignments are defined in the configuration which is associated with a
+                     
+                     particular dictionary. Go to tabsheet <b>"Config"</b> and then to tabsheet <b>"Keys"</b>. For the details, have a look at Chapter  
+                     <a href="#config_keys">Key assignments</a>.
+                  </p>
+                  <p class="tei-p">Some function expect arguments which are put in brackets, several arguments are separated
+                     by commas.
+                  </p>
+                  <p class="tei-p">The selected functions below are listed in alphabetical order.</p>
+                  <h4 id="function_browseEntry">5.4.1 browseEntry</h4>
+                  <p class="tei-p">This function displays the currently opened entry making use of the Single Entry Stylesheet
+                     
+                  </p>
+                  <h4 id="function_checkWellformedness">5.4.2 checkWellformedness</h4>
+                  <p class="tei-p">This function checks the structural integrity of the XML data in the editor.</p>
+                  <h4 id="function_createElementIDs">5.4.3 createElementIDs()</h4>
+                  <p class="tei-p">This function is used for <a href="#recording_sound">recording sound files</a>. It expects an xPath expression as parameter to select the elements 
+                     which should be assigned IDs.
+                  </p>
+                  <h4 id="function_createID">5.4.4 createID</h4>
+                  <p class="tei-p">This function creates an ID for an entry. The function makes use of the value of "ID
+                     xPath" 
+                     in the tabsheet <b>"General"</b> in the configuration.
+                  </p>
+                  <h4 id="function_formatEntry">5.4.5 formatEntry</h4>
+                  <p class="tei-p">This function attempts to reformat your entry according to your configuration. It
+                     is usually associated with <b>F3</b>.
+                  </p>
+                  <h4 id="function_getxpath">5.4.6 getXPath</h4>
+                  <p class="tei-p">This function determines the xPath at the current position and copies it to the clipboard.
+                     This function 
+                     is typically used when working on XSL stylesheets. Mind that the function is very
+                     simple, it ignores namespaces 
+                     and does not return attributes.
+                  </p>
+                  <h4 id="function_gotoquery">5.4.7 goToQuery</h4>
+                  <p class="tei-p">This function transfers the input focus to the query control.</p>
+                  <h4 id="function_gototexteditor">5.4.8 goToTextEditor</h4>
+                  <p class="tei-p">This function transfers the input focus to the <a href="#example_extractor">example extractor</a> component.
+                  </p>
+                  <h4 id="function_increaseID">5.4.9 increaseID</h4>
+                  <p class="tei-p">This function increases the numeric value of the current ID by one.</p>
+                  <h4 id="function_insertCBInNextEle">5.4.10 insertCBInNextEle(elements)</h4>
+                  <p class="tei-p">This function inserts text from the clipbox in the previous or next element. Several
+                     elements are separated by the pipe: <b>insertCBInNextEle(quote|orth)</b>.
+                  </p>
+                  <h4 id="function_insertEndTag">5.4.11 insertEndTag</h4>
+                  <p class="tei-p">This function inserts the end tag of the last tag in which the cursor was. Mind that
+                     the function is not able to resolve any inconsistencies you might 
+                     create.
+                  </p>
+                  <h4 id="function_insertMediaElement">5.4.12 insertMediaElement</h4>
+                  <p class="tei-p">This function is used for <a href="#recording_sound">recording sound files</a>.
+                  </p>
+                  <h4 id="function_insertSoundDurationInLine">5.4.13 insertSoundDurationInLine</h4>
+                  <p class="tei-p">This function is used for <a href="#recording_sound">recording sound files</a>.
+                  </p>
+                  <h4 id="function_insertTemplateString">5.4.14 insertTemplateString</h4>
+                  <p class="tei-p">This function inserts    a template string into a dictionary entry.</p>
+                  <h4 id="function_insertTransDictData">5.4.15 insertTransDictData</h4>
+                  <p class="tei-p">This function replaces the selected string with the data from the translation dictionary.
+                     It is
+                     possible to insert several items or only a single line from the lookup dictionary.
+                     
+                     Formating of the string to be inserted can be controlled through templates which should
+                     be
+                     defined in the edit control under the listbox with the results in the lookup dictionary
+                     
+                     tabsheet. To see seversal options, click in the control edit and press F2.
+                  </p>
+                  <h4 id="function_loadTranslationKeys">5.4.16 loadTranslationKeys</h4>
+                  <p class="tei-p">This function loads and unloads the <a href="#key_translations">translation keys</a>. This feature is used when 
+                     characters which are not part of the standard keyboard layout are needed.
+                  </p>
+                  <h4 id="function_nextEntry">5.4.17 nextEntry</h4>
+                  <p class="tei-p">This function opens the next entry in the listbox displaying the results (on the left
+                     side of the editor). It is usually associated with <b>F2</b>.
+                  </p>
+                  <h4 id="function_playSound">5.4.18 playSound</h4>
+                  <p class="tei-p">This function is used for <a href="#recording_sound">recording sound files</a>.
+                  </p>
+                  <h4 id="function_prevEntry">5.4.19 prevEntry</h4>
+                  <p class="tei-p">This function opens the previous entry in the listbox displaying the results. It is
+                     usually associated with <b>F1</b>.
+                  </p>
+                  <h4 id="function_recordSound">5.4.20 recordSound</h4>
+                  <p class="tei-p">This function is used for <a href="#recording_sound">recording sound files</a>.
+                  </p>
+                  <h4 id="function_replaceStringInEntry">5.4.21 replaceStringInEntry(x,y)</h4>
+                  <p class="tei-p">This function replaces the string x by the string y in the text contained in the editor.</p>
+                  <h4 id="function_saveEntry">5.4.22 saveEntry</h4>
+                  <p class="tei-p">This function saves the currently opened entry. As per default, it is associated with
+                     the keyboard shortcut <b>CTRL + S</b>.
+                  </p>
+                  <h4 id="function_selectElement">5.4.23 selectElement</h4>
+                  <p class="tei-p">This function selects the element in which the caret is currently placed.</p>
+                  <h4 id="function_showTextTemplates">5.4.24 showTextTemplates</h4>
+                  <p class="tei-p">This function transfers the focus to the Template String editor. In the default configuration
+                     it is associated with <b>F6</b>.
+                  </p>
+                  <h4 id="function_stopRecording">5.4.25 stopRecording</h4>
+                  <p class="tei-p">This function is used for <a href="#recording_sound">recording sound files</a>.
+                  </p>
+                  <h4 id="function_transDictLookUp">5.4.26 transDictLookUp</h4>
+                  <p class="tei-p">This function looks up the selected string in the translation dictionary. </p>
+                  <h3 id="stylesheets">5.5 Stylesheets</h3>
+                  <p class="tei-p">By making use of XSLT stylesheets, XML can be transformed into other text formats.
+                     VLE makes use of XSLT stylesheets to 
+                     create various visualisations of dictionary entries. VLE's dictionary editor component
+                     provides two editors for XSL stylesheets: one for 
+                     <i>Single Entry Styles</i> and one for a special type of result sets, the <i>Result List Styles</i>.
+                  </p>
+                  <p class="tei-p"><img src="imgs/style_types_001.jpg"></img></p>
+                  <h4 id="single_entry_style">5.5.1 Single Entry Style</h4>
+                  <p class="tei-p">This editor is used to edit the XSL stylesheets used to visualise the 
+                     individual entries (cf. Basic Workflow steps: <a href="#visualising">Visualising your entries</a>).
+                  </p>
+                  <h4 id="result_list_styles">5.5.2 Result List Styles</h4>
+                  <p class="tei-p">The second editor is used to visualise result sets <a href="#visualising">Visualising your entries</a>).
+                  </p>
+                  <p class="tei-p"><img src="imgs/visualise_compl_results.gif"></img></p>
+                  <h4 id="transform_style">5.5.3 Transform Style</h4>
+                  <p class="tei-p">XSL stylesheets can be used to transform dictionary entries. To do that you first
+                     have to make the <b>Transform</b> tab visible.
+                  </p>
+                  <p class="tei-p"><img src="imgs/config_show_transform_tab_v001.jpg"></img></p>
+                  <h3 id="web_dictionary">5.6 Web Dictionary</h3>
+                  <p class="tei-p">The latest versions of VLE build heavily on the BaseX XML database. The TEI conformant
+                     dictionaries 
+                     created with VLE can easily be published through the REST interface 
+                     of the BaseX database. You can publish the data being edited by VLE and stored in
+                     Basex directly on the Internet.
+                  </p>
+                  <h4 id="preliminary_steps">5.6.1 Preliminary Steps</h4>
+                  <p class="tei-p">To start publishing a digital dictionary, you need a working BaseX environment. Follow
+                     <a href="#setting_up_basex">this link </a> to get information how to set-up BaseX.
+                  </p>
+                  <p class="tei-p">To learn how to create a dictionary, follow <a href="#creating_new_dict">this link</a>.
+                  </p>
+                  <p class="tei-p">To learn how to set-up the required directory structure follow <a href="#basex_publication_platform">this link</a>.
+                  </p>
+                  <p class="tei-p">There are several options to populate your dictionary with data. To learn how to import
+                     existing data follow <a href="#importing_data">this link</a>.
+                  </p>
+                  <h4 id="application_creator">5.6.2 Application Builder</h4>
+                  <p class="tei-p">VLE can support you in setting up the web interface. As a first step, the application
+                     builder has to be made visible. Per default, it is not shown. 
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Make sure that the BaseX\bin path is set correctly.
+                  </p>
+                  <p class="tei-p"><img src="imgs/basexhhtp_001.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Start the <a href="#starting_basex_server">local BaseX server</a>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Go to tab <b>Config</b> in <b>CONTROL form</b>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 4</span> Check the <b>Show App Builder</b> tickbox. This makes an additional tab visible.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 5</span> Go to tab <b>App Builder</b></p>
+                  <p class="tei-p"><img src="imgs/control_config__v001.jpg"></img></p>
+                  <h4 id="appl_creator_default">5.6.3 Set Initial Values</h4>
+                  <p class="tei-p">You start creating the web interface by furnishing the <span class="spControl">Application Builder</span> with a number of basic data.
+                  </p>
+                  <p class="tei-p"><img src="imgs/app_builder_basic_values.jpg"></img></p>
+                  <p class="tei-p">Next, the fields to be made searchable in the interface have to be defined. Click
+                     into <span class="spControl">Fields</span> and push F2.
+                  </p>
+                  <p class="tei-p"><img src="imgs/app_builder_basic_values_fields.jpg"></img></p>
+                  <p class="tei-p">If your dictionary does not have domain labels, word class data or etymologies you
+                     simply can remove the respective lines.
+                  </p>
+                  <p class="tei-p">The target language options are created from the ISOlanguage labels on the left side.
+                     The <b>Target Lang. Name</b> can 
+                     contain several languages separated by commas. Make sure that the corresponding field
+                     for 
+                     ISO lang labels contains the same number of values.
+                  </p>
+                  <h4 id="appl_creator_create_template">5.6.4 Create Files</h4>
+                  <p class="tei-p">By pushing the <span class="spControl">Create Files</span> button four documents are created:
+                  </p>
+                  <ul>
+                     
+                     <li>The HTML source</li>
+                     
+                     <li>A Javascript file</li>
+                     
+                     <li>A CSS file</li>
+                     
+                     <li>An XSLT file which is used by the RESTful interface to format the output of the BaseX
+                        database.
+                     </li>
+                     
+                  </ul>
+                  <p class="tei-p">When pushing the buttons, four templates are loaded and adapted to the particular
+                     settings.
+                  </p>
+                  <p class="tei-p"><img src="imgs/app_builder_create_html.jpg"></img></p>
+                  <p class="tei-p">The fields are used to create a select/option structure in the HTML document.</p>
+                  <p class="tei-p"><img src="imgs/app_builder_basic_values_html_fields.jpg"></img></p>
+                  <h4 id="create_indices">5.6.5 Create Indices</h4>
+                  <p class="tei-p">Before creating the web application, indices have to be created in the BaseX database
+                     which can be used by the interface. In the BaseX database 
+                     these are stored in a separate database with the suffix <i>_ind</i>. 
+                     (Cf. Chapter <a href="#setting_up_basex_collections">Creating a New Dictionary: Setting-up BaseX Collections</a>)
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Activate the <span class="spControl">Create Index Query</span> tab.
+                  </p>
+                  <p class="tei-p"><img src="imgs/create_index_query__v001.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Push the <span class="spControl">Load Template</span> button.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Push the <span class="spControl">Create</span> button.
+                  </p>
+                  <p class="tei-p"><img src="imgs/app_builder_creating_index_script.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 4</span>Run the query in BaseX. To do this, start the browser-based database administration
+                     interface of BaseX, 
+                     go to <i>Queries</i>, copy the whole text that starts with "declare namespace" into the query control,
+                     choose query is 'updating' and execute the query.
+                  </p>
+                  <p class="tei-p">Alternatively, you can also start the BaseX graphical user interface, open an editor
+                     and run the script there.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 4 (alt.)</span> Run basexgui.
+                  </p>
+                  <p class="tei-p"><img src="imgs/app_builder_creating_index_basex_a.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 5 (alt.)</span> Insert the XQuery which you created in Step 3 into the editor of the GUI and push
+                     the green arrow.
+                  </p>
+                  <p class="tei-p"><img src="imgs/app_builder_creating_index_basex_b.jpg"></img></p>
+                  <h4 id="creating_the_application">5.6.6 Creating the Application</h4>
+                  <p class="tei-p">No everything should be ready to save the application. The <span class="spControl">Application Builder</span> module creates the files in the directory <i>BaseX\webapp\wde\static</i> and copies
+                     some necessary other files to that directory. On Windows machines 
+                     this is located in <i>C:\Program Files (x86)</i>. Each application is stored in a separate directory.
+                     In a system with several dictionaries, the file tree might like this:
+                     
+                  </p>
+                  <p class="tei-p"><img src="imgs/web_app_paths__v001.jpg"></img></p>
+                  <p class="tei-p">To create the new WEB application simply push the <span class="spControl">Create Website</span> button. If your WEB server is running you will see something like this:
+                  </p>
+                  <p class="tei-p"><img src="imgs/app_builder_create_appl_01.jpg"></img></p>
+                  <h4 id="start_the_server">5.6.7 Start the Server</h4>
+                  <p class="tei-p">On a local machine, you can start the server software through the <i>basexhttp</i> script. There should be 
+                     an icon on the desktop. <a href="#starting_basex_server">Click it and Bob is your uncle ;-)</a></p>
+                  <p class="tei-p">You can also use the built in <a href="#loc_basex_button"><span class="spControl">Loc. BaseX</span> button</a> on the <span class="spControl">Quick Access Panel</span>.
+                  </p>
+                  <h4 id="access_interface">5.6.8 Access Interface in the Browser</h4>
+                  <p class="tei-p">On a local machine, you access the dictionary via <b>http://localhost:8984/dict_api/{dictdir}/{dictname}.html</b>.
+                  </p>
+                  <h4 id="reimporting_data">5.6.9 Reimporting Data</h4>
+                  <p class="tei-p">When using a separate publication server it will be necessary to transfer data from
+                     the production server to the publication server. 
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span>Export the dictionary into an XML document. Usually, you will have to only export
+                     a subset of released records. 
+                     There is an xQuery example <i><b>export_released_tei_dict__v001.xq</b></i> in the <i><b>WDE/Docu/examples</b></i> folder.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span>Delete the old data. There are again several ways to do this, WebDAV is one possibility.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span>Transfer the new data into the database.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 4</span>Update the index collection.
+                  </p>
+                  <h3 id="tokenEditor">5.7 tokenEditor</h3>
+                  <p class="tei-p">The <i>tokenEditor</i> is a module that was designed to perform post-editing of token elements. It has mostly
+                     been 
+                     used to to edit TEI documents with <i>w</i> tags, however it can work on any XML elements.
+                  </p>
+                  <p class="tei-p">A simple introduction (token_editor__v003.pptx) can be found in VLE's docu directory.</p>
+                  <h4 id="preparing_tokenEditor">5.7.1 Preparing tokenEditor</h4>
+                  <p class="tei-p">Start the tokenEditor by clicking on the respective button in the  <b>Quick Access Panel</b>.
+                  </p>
+                  <p class="tei-p"><img src="imgs/quick_access_panel_tokeneditor.gif"></img></p>
+                  <p class="tei-p">Three forms should pop up, next to each other.</p>
+                  <p class="tei-p"><img src="imgs/tokeneditor__002.gif"></img></p>
+                  <p class="tei-p">The next step would be to have a look at the configuration. The most common scenario
+                     is TEI encoded documents with token elements.
+                  </p>
+                  <h4 id="accessing_a_corpus">5.7.2 Accessing a Corpus</h4>
+                  <p class="tei-p">The tool allows you to work accross a number of files. However, there is a limit which
+                     is determined by the memory of your computer. To work 
+                     accross several files, these have to be kept concurrently in the memory of your machine.
+                  </p>
+                  <p class="tei-p">Opening extra-large files and also closing them will usually take some time.</p>
+                  <h4 id="improving_data">5.7.3 Improving your Data</h4>
+                  <p class="tei-p"></p>
+                  <h4 id="recording_sound">5.7.4 Recording Sound</h4>
+                  <p class="tei-p">This feature was developed and used for the Damascene Dictionary.</p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> First you have to make the Recording Panel visible.
+                  </p>
+                  <p class="tei-p"><img src="imgs/config_show_rec_panel.jpg"></img></p>
+                  <p class="tei-p">The editor should then look like this:</p>
+                  <p class="tei-p"><img src="imgs/recording_panel_001.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Make sure that recording parameters are set properly. They are to be found 
+                     on the <b>Varia</b> tab of the configuration.
+                  </p>
+                  <p class="tei-p"><img src="imgs/recording_parameters_001.jpg"></img></p>
+                  <p class="tei-p">If the controls are empty, push <b>F2</b> to get default values.
+                  </p>
+                  <p class="tei-p"><img src="imgs/recording_parameters_002.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Configure function keys. There are several functions used to do the recording which
+                     have to be assigned values.
+                  </p>
+                  <p class="tei-p"><img src="imgs/recording_keys_001.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 4</span> Open an entry by double-clicking on an item in the results listbox.
+                  </p>
+                  <p class="tei-p"><img src="imgs/recording_select_entry_000.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 5</span>  Assign IDs to all forms. Every form element has to have an @xml:id. Move the focus
+                     into 
+                     the XML Editor and push F12 which should trigger the function createElementIDs(//form).
+                  </p>
+                  <p class="tei-p"><img src="imgs/recording_select_entry_001.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 6</span> Insert Media Tags. Move the cursor into each form element and push F7 (=InsertMediaElement).
+                  </p>
+                  <p class="tei-p"><img src="imgs/recording_select_entry_002.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 7</span> Record by pushing the <b>Record</b> button.
+                  </p>
+                  <p class="tei-p"><img src="imgs/recording_recording_001.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 8</span> Control the recording by pushing the <b>Play</b> button.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 9</span> Insert the duration value. Move the cursor into the line with {dur} and push <b>Ctrl + D</b>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 10</span> Save the record.
+                  </p>
+                  <h4 id="book_reader">5.7.5 Book Viewer</h4>
+                  <p class="tei-p">The Book Viewer component is capable to display 
+                     JPG and BMP files. To navigate a collection of such images you need to prepare a text
+                     file which contains the metadata about the images.
+                  </p>
+                  <p class="tei-p">To experiment with this component, we recommend to go to website of the <a target="_blank" href="http://archive.org">Internet Archive</a>. From there you can download large amounts of digitised books 
+                     in form of images. The data there were created as part of many different programs
+                     and are quite heterogeneous: some image collections come
+                     in form of TIFFs, others as BMPs or JPGs.
+                  </p>
+                  <p class="tei-p">To create the above mentioned metadata file, we provide an application which is called
+                     <i>image_annotator</i>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Start the application. You find image_annot.exe in the WDE directory.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span>Find the folder with the images.
+                  </p>
+                  <p class="tei-p"><img src="imgs/image_annotator__files.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Create an empty template by pressing the <b>Create Document</b> button.
+                  </p>
+                  <p class="tei-p"><img src="imgs/image_annotator__files__001.jpg"></img></p>
+                  <p class="tei-p">Having pushed this button, a form opens which contains a template with which the next
+                     steps can be performed.
+                  </p>
+                  <p class="tei-p"><img src="imgs/image_annotator__empty_file__001.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 4</span> Add page numbers. With the controls xPath and Value you can assign page numbers and
+                     page descriptions. With xPath you define the element to which a particular value is
+                     to be assigned.
+                  </p>
+                  <p class="tei-p"><img src="imgs/image_annotator__empty_file__002.jpg"></img></p>
+                  <p class="tei-p">To add page numbers, xPath has to be <b>//pb/@n</b>, value is set to <b>1</b>. 
+                     The value is assigned from the position of the caret onwards. Check the radiobutton
+                     <b>Inc by one</b>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 6</span> Set page descriptors. It is helpful to have concise indicators of the contents of
+                     a page. Typically, such information is 
+                     provided by strings such as <i>Preface</i>, <i>Introduction</i> or <i>Contents</i>. The main body of the dictionary 
+                     needs indicators that display the position inside the dictionary, normally letters
+                     of the alphabet. The xPath for the descriptions is <b>//fw</b>. 
+                     Having finished the work the data looks like this:  
+                     
+                  </p>
+                  <p class="tei-p"><img src="imgs/image_annotator__files__002.jpg"></img></p>
+                  <p class="tei-p">Examples of this can be found in the examples folder of VLE's documentation:
+                     
+                     <ul>
+                        
+                        <li><a href="#examples/madan_desc.xml">madan_desc.xml</a></li>
+                        
+                     </ul>
+                  </p>
+                  <p id="edit_the_header" class="tei-p"><span class="spStep">Step 7</span> Edit the Header. The document is a TEI document. It could be used to start a transcription
+                     of the text contained in the images. 
+                     One important part of the teiHeader is the <i>sourceDesc/ab/@type="quoteTitle"</i>. It is supposed to be a short title that can be used 
+                     in bibliographic references. These strings serve as templates for references to be
+                     inserted in dictionary entries. 
+                  </p>
+                  <p class="tei-p"><img src="imgs/image_annotator__quotetitle__001.jpg"></img></p>
+                  <p class="tei-p"><span class="spStep">Step 8</span> Save the File. Change the filename in the control on the bottom of the Metafile form.
+                  </p>
+                  <p class="tei-p">You can navigate both in the files form and in the metadata form. Double-clicking
+                     in the files form will also display the image.
+                  </p>
+                  <p class="tei-p"><img src="imgs/image_annotator__overview_001.gif"></img></p>
+                  <p class="tei-p">In order to read a book, i.e. to browse through the images, open the Book Viewer component
+                     in VLE.
+                  </p>
+                  <p class="tei-p"><img src="imgs/quick_access_panel__004.gif"></img></p>
+                  <p class="tei-p">The Book Viewer needs the path to the metadata file and the path to the images.</p>
+                  <p class="tei-p"><img src="imgs/book_viewer__v001.jpg"></img></p>
+                  <p class="tei-p">By pushing the  <b>Load</b> button, the metadata file is loaded and the first page of the book displayed.
+                  </p>
+                  <p class="tei-p"><img src="imgs/book_viewer__v002.jpg"></img></p>
+                  <p class="tei-p">There exists a predefined function which inserts references of particular pages into
+                     dictionary entries. By double-clicking on the top panel of a book's page 
+                     a reference to the respective page is inserted in the target editor.
+                  </p>
+                  <p class="tei-p"><img src="imgs/link_img_to_entry__v001.jpg"></img></p>
+                  <p class="tei-p">The template for the string to be inserted is defined in the TEI header. For the details
+                     see <a href="#edit_the_header">Step 7 above</a>.
+                  </p>
+                  <p class="tei-p">The above described metadata files can also be manipulated in VLE. To streamline certain
+                     steps, the <b>Book Viewer</b> component has a <b>Macro button</b> 
+                     which allows users to execute particular functions.
+                  </p>
+                  <p class="tei-p"><img src="imgs/book_viewer_functions.jpg"></img></p>
+                  <p class="tei-p">The <b>fetchIDfromTargetEditor</b> function retrieves the xml:id of the record in the target editor and inserts it into
+                     the definition of the currently open page.                     
+                     <b>nextPage</b> displays the next page, <b>prevPage</b> displays the previous page.
+                  </p>
+                  <h4 id="example_extractor">5.7.6 Extracting Examples</h4>
+                  <p class="tei-p">Many dictionaries contain sample sentences. The <b>Text</b> component helps to extract sample sentences and to import them 
+                     into the dictionary. It is opened through the <b>Text</b> button on the <a href="#quick_access_panel">Quick Access Panel</a>.
+                  </p>
+                  <h3 id="rebuilding_tunico_dict">5.8 Rebuilding the TUNICO Dictionary</h3>
+                  <p class="tei-p">This is a simple guide which takes you through one particular example. It is supposed
+                     to demonstrate how you can set up your own WEB dictionary by
+                     taking you step-by-step through the whole process. Most of the details are mentioned
+                     somewhere before in these guidelines.
+                  </p>
+                  <h4 id="tunico_setting_up_environment">5.8.1 Get the Software and Install it.</h4>
+                  <p class="tei-p">You need two basic components: the BaseX XML-Database and the <span class="spControl">Viennese Lexicographic Editor</span>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> First you have to <a href="#setting_up_basex">download BaseX and install it</a>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Next <a href="#downloading_vle">download the lexicographic editor VLE and install it</a>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Prepare BaseX for <a href="#set_up_dict_user">use with VLE</a>.
+                  </p>
+                  <h4 id="tunico_getting_the_data">5.8.2 Get the Data and ...</h4>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Go to the TUNICO website: <a target="_blank" href="https://tunico.acdh.oeaw.ac.at/about_dictionary.html">https://tunico.acdh.oeaw.ac.at/about_dictionary.html</a>. 
+                     In the section <b>Data</b>, there is a link which allows you to download the XML/TEI data.
+                  </p>
+                  <h4>5.8.3 ... import it</h4>
+                  <p class="tei-p"><span class="spStep">Step 4</span> Start the <a href="#starting_basex_server">Local BaseX Server</a>. 
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 5</span> Copy the downloaded data to the database by <a href="#importing_data">following these instructions</a>. 
+                     The image below shows settings with which you can do the import.
+                  </p>
+                  <p class="tei-p"><img src="imgs/tunico_upload.jpg"></img></p>
+                  <p class="tei-p"><b>Import File</b> is the one you downloaded. <b>Profile File</b> can be found be in VLE's templates folder.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 6</span> Create a user <a href="#creating_an_account">account by specifying a user and a password</a>.
+                  </p>
+                  <h4 id="tunico_creating_web_dictionary">5.8.4 Create the Web Dictionary</h4>
+                  <p class="tei-p">At this point, everything should be ready to set up the WEB dictionary.</p>
+                  <p class="tei-p"><span class="spStep">Step 7</span> Follow the steps in the <a href="#application_creator">Application Builder</a>.
+                  </p>
+                  <h2 id="troubleshooting">6 Troubleshooting </h2>
+                  <p class="tei-p">This is a list of problems that cropped up recently.</p>
+                  <h3 id="results_not_prop_displayed">6.1 Results are not properly displayed</h3>
+                  <p class="tei-p">If not properly configured, the results of a query can display unwanted elements or
+                     elements not properly formatted.
+                  </p>
+                  <p class="tei-p"><img src="imgs/editor_error_002.jpg"></img></p>
+                  <p class="tei-p">A similar scenario are results with only IDs.</p>
+                  <p class="tei-p"><img src="imgs/editor_error_003.jpg"></img></p>
+                  <p class="tei-p">This can be solved following these steps:</p>
+                  <p class="tei-p"><span class="spStep">Step 1</span>Go to tab <i>Config</i> in your editor.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span>Select tab <i>General</i>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span>Set a proper <i>Main Lang. Label</i>. This must be the same as in your entries. For the above 
+                     example the label has to be <b>de</b> which stands for <i>Deutsch 'German'</i>.
+                  </p>
+                  <h3 id="results_implausible">6.2 Results are implausible</h3>
+                  <p class="tei-p">If results contain items that should not be there, this may have got to do with the
+                     indexing options of the BaseX database.
+                  </p>
+                  <h3 id="error_pos_8146">6.3 Error (pos 8146)</h3>
+                  <p class="tei-p">If you get an error like the one above try the following:</p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Go to tab <i>Config</i> in your editor. There are several configuration tabs in the program. Mind to stay
+                     in the editor!
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Select tab <i>Transfer</i>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span>Try to change the values here. Set <i>Request Content Type</i> to <i>application/xml</i> and 
+                     <i>Request Transfer Encoding</i> to <i>UTF8</i></p>
+                  <p class="tei-p"><img src="imgs/config_transfer_v001.jpg"></img></p>
+                  <h3 id="is_basex_running">6.4 Is the BaseX server running?</h3>
+                  <p class="tei-p">This message can have to meenings: either the server is really not reachable or the
+                     configuration has an incorrect value for request transfer encoding.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 1</span> Go to tab <i>Single Profile</i>.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 2</span> Open the appropriate profile.
+                  </p>
+                  <p class="tei-p"><span class="spStep">Step 3</span> Find the line <b>&lt;requestTransferEncoding&gt;UTF8&lt;/requestTransferEncoding&gt;</b>. Remove <b>UTF8</b> and 
+                     save the profile (CTRL +S).
+                  </p>
+                  <h3 id="create_db_http_500">6.5 Create Database: HTTP/1.1 500 Internal Server Error</h3>
+                  <p class="tei-p">Modify the value of Request Transfer Encoding. Try to set it to utf8.</p>
+               </div>
+            </div><br></br><br></br></div>
+      </div>
+   </body>
+</html>

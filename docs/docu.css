@@ -1,0 +1,134 @@
+
+.bodySub {
+    background: rgb(255,255,195);
+}
+
+table {
+  background: rgb(249, 228, 181);
+  border-collapse: collapse;
+  width: 800px;
+  margin-left: 5px;
+}
+
+td {
+   border: 1px solid black;
+   vertical-align: top;
+   padding-left: 3px;
+   padding-right: 3px;
+}
+
+.tdLabel {
+    font-weight: bold;
+    color: green;    
+}
+
+.dv2 {
+    margin-top: 20px;
+
+}
+.dv3 {
+   margin-left: 20px;
+}
+
+.dv4 {
+   margin-left: 20px;
+}
+
+.spControl {
+    color: rgb(21, 91, 123);
+    font-weight: bold;
+}
+
+.spShortcut {
+   font-weight: bold; 
+   color: rgb(48, 123, 21);    
+}
+.tdHead {
+   background: rgb(168, 136, 62);
+   color: white;
+   font-weight: bold;
+}
+
+.tdHead_fixedWidth80 {
+   background: rgb(168, 136, 62);
+   color: white;
+   font-weight: bold;
+  width: 80px;    
+}
+
+.tdHead_fixedWidth200 {
+   background: rgb(168, 136, 62);
+   color: white;
+   font-weight: bold;
+  width: 200px;    
+}
+
+.dvQuestion {
+   color: red;
+   border: 0px solid black;
+   margin-bottom: 5pt;
+}
+
+.dvAnswer {
+   color: blue;
+   border: 1px solid black;
+   margin-bottom: 5pt;
+}
+
+.dvAction {
+   color: blue;
+   border: 1px solid black;
+   margin-bottom: 5pt;
+}
+
+.dvTop {
+    position: absolute;
+    top: 0px;
+}
+
+.dvTop2 {
+    position: absolute;
+    top: 60px;
+    margin-right: 3px;
+    padding-left: 3px;
+}
+
+.topLine {
+    position: absolute;
+    top: 55px;
+    color: blue;
+    width: 180px;
+}
+
+.leftFrameHeader1,.leftFrameHeader2 {
+  color: rgb(26,26,255);
+  border: 1px solid blue;
+  background: white;
+  margin-right: 20px;
+  padding-left:5px;
+  padding-right:5px;
+  width: 300px;
+}
+
+.leftFrameHeader3 {
+border: 1px solid blue;
+  background: white;
+  margin-right: 20px;
+  padding-left:5px;
+  padding-right:5px;
+  color: rgb(119,119,255);
+   width: 300px;    
+}
+
+.leftFrameHeader4 {
+  color: rgb(183,183,255);
+  border-bottom: 1px solid blue;
+  border-left: 1px solid blue;
+  padding-left:5px;
+  margin-right: 20px;
+   width: 800px;
+}
+
+p {
+    width: 800px;
+}
