@@ -1170,6 +1170,7 @@ $(document).ready(
        $("#liProfileDamascus").mousedown ( function(event) { getProfile('Damascus', 'profile_damascus_01', 'profile_01.xslt'); } );      
        $("#liProfileDouz").mousedown ( function(event) { getProfile('Douz', 'profile_douz_01', 'profile_01.xslt'); });
        $("#liProfileKhabura").mousedown ( function(event) { getProfile('al-Khabura', 'profile_khabura_01', 'profile_01.xslt'); });      
+       $("#liProfileQamishli").mousedown ( function(event) { getProfile('Qamishli', 'profile_qameshli_01', 'profile_01.xslt'); } );
        $("#liProfileRabat").mousedown ( function(event) { getProfile('Rabat (Salé)', 'profile_sale_01', 'profile_01.xslt'); } );
        $("#liProfileSousse").mousedown ( function(event) { getProfile('Sousse', 'profile_sousse_001', 'profile_01.xslt'); } );
        $("#liProfileSoukhne").mousedown ( function(event) { getProfile('Soukhne', 'profile_soukhne_01', 'profile_01.xslt'); } );
