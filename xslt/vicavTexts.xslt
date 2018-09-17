@@ -1,7 +1,12 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="1.0">
+  xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
 
   <xsl:output method="html"/>
+  <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
+  <xsl:param name="param-images-base-path">images</xsl:param>
+  <!-- we make sure that $images-base-path always has a trailing slash -->
+  <xsl:variable name="images-base-path"  select="if ($param-images-base-path = '') then '' else if (ends-with($param-images-base-path,'/')) then $param-images-base-path else concat($param-images-base-path,'/')"/>
+  
   <xsl:template match="/">
     <div><xsl:apply-templates/></div>
   </xsl:template>
@@ -30,12 +35,13 @@
   </xsl:template>
 
   <xsl:template match="tei:graphic">
-      <xsl:choose>
-          <xsl:when test="@rend='inParagraph'"><img class="imgIllustration"><xsl:attribute name="src"><xsl:value-of select="@url"/></xsl:attribute></img></xsl:when>
-          <xsl:otherwise><img><xsl:attribute name="src"><xsl:value-of select="@url"/></xsl:attribute></img></xsl:otherwise>
-      </xsl:choose>
+    <img src="{concat($images-base-path,@url)}">
+      <xsl:if test="@rend='inParagraph'">
+        <xsl:attribute name="class">imgIllustration</xsl:attribute>
+      </xsl:if>
+    </img>
   </xsl:template>
-  
+
   <xsl:template match="tei:head">
     <xsl:choose>
       <xsl:when test="count(ancestor::tei:div) = 1">
@@ -43,7 +49,7 @@
           <tr><td><h2>
               <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
               <xsl:apply-templates/></h2></td><td>{teiLink}</td></tr>
-        </table>            
+        </table>
       </xsl:when>
       <xsl:when test="count(ancestor::tei:div) = 2">
         <h3>
@@ -63,31 +69,31 @@
   <xsl:template match="tei:hi[@rend = 'italic']">
     <i><xsl:apply-templates/></i>
   </xsl:template>
-  
+
   <xsl:template match="tei:item">
     <li><xsl:apply-templates/></li>
   </xsl:template>
-  
+
   <xsl:template match="tei:lb"><br/></xsl:template>
-    
+
   <xsl:template match="tei:list">
     <ul><xsl:apply-templates/></ul>
   </xsl:template>
 
   <xsl:template match="tei:p">
-    <p><xsl:apply-templates/></p>        
+    <p><xsl:apply-templates/></p>
   </xsl:template>
 
     <xsl:template match="tei:ref[starts-with(@target,'http:') or starts-with(@target,'https:')]">
-      <a target="_blank" class="aVicText">      
+      <a target="_blank" class="aVicText">
           <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
           <xsl:apply-templates/>
-      </a>      
+      </a>
   </xsl:template>
-       
+
    <xsl:template match="tei:ptr[@type='sound']">
-   </xsl:template>              
-        
+   </xsl:template>
+
    <xsl:template match="tei:ref[
        starts-with(@target,'profile:') or
        starts-with(@target,'feature:') or
@@ -100,58 +106,58 @@
         starts-with(@target,'sample:')]">
         <a class="aVicText">
             <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@target"/>", this)</xsl:attribute>
-            <xsl:apply-templates/>          
+            <xsl:apply-templates/>
         </a>
     </xsl:template>
-    
+
     <xsl:template match="tei:ref[starts-with(@target,'func:')]">
        <a class="aVicText" href="{concat('javascript', substring-after(@target, 'func'))}">
-            <xsl:apply-templates/>          
-        </a>    
+            <xsl:apply-templates/>
+        </a>
     </xsl:template>
-    
-    
+
+
     <xsl:template match="tei:ref">
-        <a target="_blank" class="aVicText">      
+        <a target="_blank" class="aVicText">
             <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
             <xsl:apply-templates/>
         </a>
     </xsl:template>
-<!-- 
+<!--
   <xsl:template match="tei:ref">
     <xsl:choose>
         <xsl:when test="@type='flachCards'">
-            <a class="aVicText">          
+            <a class="aVicText">
                 <xsl:attribute name="onclick">flashcard:</xsl:attribute>
                 <xsl:apply-templates/>
-            </a>                    
+            </a>
         </xsl:when>
         <xsl:when test="contains(@target, '(reg:)or(geo:)') or contains(@target, 'biblid:')">
-        <a class="aVicText">          
+        <a class="aVicText">
           <xsl:attribute name="onclick">refEvent("<xsl:value-of select="@target"/>")</xsl:attribute>
           <xsl:apply-templates/>
-        </a>        
+        </a>
       </xsl:when>
       <xsl:when test="@type='dictQuery'">
-        <a class="aVicText">      
+        <a class="aVicText">
           <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@type='jsLink' or contains(@target, 'javascript:')">
-        <a class="aVicText">      
+        <a class="aVicText">
           <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>
       </xsl:when>
       <xsl:when test="@xml:id">
-        <a class="aVicText">      
+        <a class="aVicText">
           <xsl:attribute name="id"><xsl:value-of select="@xml:id"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>
-      </xsl:when>        
+      </xsl:when>
       <xsl:otherwise>
-        <a target="_blank" class="aVicText">      
+        <a target="_blank" class="aVicText">
           <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
           <xsl:apply-templates/>
         </a>
@@ -159,7 +165,7 @@
     </xsl:choose>
   </xsl:template>
  -->
-    
+
   <xsl:template match="tei:span">
       <span>
           <xsl:if test="@rend">
@@ -168,13 +174,13 @@
           <xsl:apply-templates/>
       </span>
   </xsl:template>
-    
+
   <xsl:template match="tei:row">
     <tr>
       <xsl:apply-templates/>
     </tr>
   </xsl:template>
-   
+
   <xsl:template match="tei:table[@type='soundTable']">
       <p>
           <xsl:for-each select="tei:row">
@@ -187,12 +193,12 @@
                       </source>
                       <a><xsl:attribute name="href">sound/<xsl:value-of select="tei:cell[5]/tei:ptr/@target"/></xsl:attribute>
                           </a>
-                  </audio>       
+                  </audio>
               </div>
           </xsl:for-each>
       </p><br/><br/>
   </xsl:template>
-      
+
   <xsl:template match="tei:table">
     <table>
       <xsl:choose>
