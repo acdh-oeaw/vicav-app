@@ -1,11 +1,25 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
+  xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="1.0">
 
-  <xsl:output method="html"/>
+    <xsl:output method="html" encoding="UTF-8"/>
   <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
   <xsl:param name="param-images-base-path">images</xsl:param>
   <!-- we make sure that $images-base-path always has a trailing slash -->
-  <xsl:variable name="images-base-path"  select="if ($param-images-base-path = '') then '' else if (ends-with($param-images-base-path,'/')) then $param-images-base-path else concat($param-images-base-path,'/')"/>
+    <xsl:variable name="images-base-path">
+        <xsl:choose>
+            <xsl:when test="$param-images-base-path = ''"/>
+            <xsl:otherwise>
+                <xsl:choose>
+                    <xsl:when test="substring(normalize-space($param-images-base-path),string-length(normalize-space($param-images-base-path)),1) = '/'">
+                        <xsl:value-of select="$param-images-base-path"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="concat($param-images-base-path,'/')"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
   
   <xsl:template match="/">
     <div><xsl:apply-templates/></div>
