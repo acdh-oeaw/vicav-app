@@ -448,6 +448,7 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_,
         "    <table class='tbHeader'>" +
         "        <tr><td><h2>" + dictName_ + "</h2></td><td class='tdTeiLink'><a href=\'" + js + "\' class='aTEIButton'>TEI</a></td></tr>" +
         "    </table>" +
+        createCharTable(idSuffix_, chartable_) +
         "   <table class='tbInputFrame'>" +
         "      <div class='form-inline mt-2 mt-md-0'>" +
         "        <div class='tdInputFrameMiddle' class='mr-sm-2' style='flex: 1;'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='tunico' dict='" + dict_ + "' teiQuery='' value='' placeholder='Search in dictionary ...' class='form-control inpDictQuery" + idSuffix_ + "'/></div>" +
@@ -469,9 +470,6 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_,
         "        <div class='tdInputFrameRight my-2 my-sm-0'><span id='dictQuerybtn" + idSuffix_ + "' class='spTeiLink'><a class='aVicText'>Search</a></span></div>" +
         "      </div>" +
         "    </table>" +
-        
-        createCharTable(idSuffix_, chartable_) +
-        
         "   <div id='dvWordSelector" + idSuffix_ + "' class='dvWordSelector'>" +
         "      <select class='form-control' size='10' id='slWordSelector" + idSuffix_ + "'>" +
         "         <option></option>" +
