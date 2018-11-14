@@ -449,7 +449,7 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_,
         "        <tr><td><h2>" + dictName_ + "</h2></td><td class='tdTeiLink'><a href=\'" + js + "\' class='aTEIButton'>TEI</a></td></tr>" +
         "    </table>" +
         createCharTable(idSuffix_, chartable_) +
-        "   <table class='tbInputFrame'>" +
+
         "      <div class='form-inline mt-2 mt-md-0'>" +
         "        <div class='tdInputFrameMiddle' class='mr-sm-2' style='flex: 1;'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='tunico' dict='" + dict_ + "' teiQuery='' value='' placeholder='Search in dictionary ...' class='form-control inpDictQuery" + idSuffix_ + "'/>"+
                 "   <div id='dvWordSelector" + idSuffix_ + "' class='dvWordSelector'>" +
@@ -474,7 +474,7 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_,
         "            </div>" +
         "        <div class='tdInputFrameRight my-2 my-sm-0'><span id='dictQuerybtn" + idSuffix_ + "' class='spTeiLink'><a class='aVicText'>Search</a></span></div>" +
         "      </div>" +
-        "    </table>" +
+
         "   </div>" +
         "   <div id='dvDictResults" + idSuffix_ + "' class='dvDictResults'></div>" +
         "";
@@ -836,7 +836,7 @@ function updateUrl_biblMarker(query_, scope_) {
             }
         }
         var newUrl = args_01[0] + '#' + sOut;
-        console.log('updateUrl_biblMarker::newUrl: ' + newUrl);
+        //console.log('updateUrl_biblMarker::newUrl: ' + newUrl);
         //console.log(currentURL);
         window.history.replaceState({
         },
@@ -857,7 +857,7 @@ function updateUrl_dictQuery(idSuffix_, query_, collname_) {
     for (var i = 1; i < args_.length; i++) {
         //console.log(i + ' ' + args_[i]);
         parts = args_[i].split('=');
-        console.log('parts[0]: "' + parts[0] + '"');
+        //console.log('parts[0]: "' + parts[0] + '"');
         //console.log('pid: "' + pid + '"');
         if (parts[0] == pid) {
             //console.log('ident');
@@ -998,8 +998,8 @@ function () {
             
             pArgs = mapArg[1].replace(/((\[\s*)|(\s*\]))/g, "");
             pArgs = pArgs.split(',');
-            console.log('pArgs[0]: ' + pArgs[0]);
-            console.log('pArgs[1]: ' + pArgs[1]);
+            //console.log('pArgs[0]: ' + pArgs[0]);
+            //console.log('pArgs[1]: ' + pArgs[1]);
             switch (pArgs[1]) {
                 case '_vicavDicts_':
                 insertVicavDictMarkers();
@@ -1524,7 +1524,6 @@ function () {
         var s1 = inputEl.val();
         var s2 = $(this).text();
         var cursorPosition = inputEl[0].selectionStart;
-        console.log(cursorPosition);
         inputEl.val(s1.substring(0, cursorPosition) + s2 + s1.substring(cursorPosition) );
         document.getElementById(inpID).selectionStart = cursorPosition + 1;
         var sq = $("#" + inpID).val();
