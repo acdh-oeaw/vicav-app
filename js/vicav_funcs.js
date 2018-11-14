@@ -1520,12 +1520,13 @@ function () {
     function (event) {
         suf = getSuffixID($(this).attr('id'));
         inpID = 'inpDictQuery_' + suf;
-        var s1 = $('#' + inpID).val();
+        var inputEl = $('#' + inpID);
+        var s1 = inputEl.val();
         var s2 = $(this).text();
-        var s = insert(s1, inpSel, s2);
-        $('#' + inpID).val(s);
-        inpSel += 1;
-        document.getElementById(inpID).selectionStart = inpSel + 1;
+        var cursorPosition = inputEl[0].selectionStart;
+        console.log(cursorPosition);
+        inputEl.val(s1.substring(0, cursorPosition) + s2 + s1.substring(cursorPosition) );
+        document.getElementById(inpID).selectionStart = cursorPosition + 1;
         var sq = $("#" + inpID).val();
         collName = $("#" + inpID).attr('dict');
         fillWordSelector(sq, collName + '__ind', '_' + suf);
