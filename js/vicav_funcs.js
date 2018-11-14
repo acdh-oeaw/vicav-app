@@ -451,7 +451,12 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_,
         createCharTable(idSuffix_, chartable_) +
         "   <table class='tbInputFrame'>" +
         "      <div class='form-inline mt-2 mt-md-0'>" +
-        "        <div class='tdInputFrameMiddle' class='mr-sm-2' style='flex: 1;'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='tunico' dict='" + dict_ + "' teiQuery='' value='' placeholder='Search in dictionary ...' class='form-control inpDictQuery" + idSuffix_ + "'/></div>" +
+        "        <div class='tdInputFrameMiddle' class='mr-sm-2' style='flex: 1;'><input type='text' id='inpDictQuery" + idSuffix_ + "' xslt='" + xslt_ + "' path='tunico' dict='" + dict_ + "' teiQuery='' value='' placeholder='Search in dictionary ...' class='form-control inpDictQuery" + idSuffix_ + "'/>"+
+                "   <div id='dvWordSelector" + idSuffix_ + "' class='dvWordSelector'>" +
+                "      <select class='form-control' size='10' id='slWordSelector" + idSuffix_ + "'>" +
+                "         <option></option>" +
+                "       </select>" +
+                "   </div></div>" +
         "            <div id='dvFieldSelect" + idSuffix_ + "' class='dvFieldSelect'>" +
         "               <select id='slFieldSelect" + idSuffix_ + "' class='slFieldSelect form-control'>" +
         "                   <option value='any'>Any field</option>" +
@@ -470,11 +475,6 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_,
         "        <div class='tdInputFrameRight my-2 my-sm-0'><span id='dictQuerybtn" + idSuffix_ + "' class='spTeiLink'><a class='aVicText'>Search</a></span></div>" +
         "      </div>" +
         "    </table>" +
-        "   <div id='dvWordSelector" + idSuffix_ + "' class='dvWordSelector'>" +
-        "      <select class='form-control' size='10' id='slWordSelector" + idSuffix_ + "'>" +
-        "         <option></option>" +
-        "       </select>" +
-        "   </div>" +
         "   </div>" +
         "   <div id='dvDictResults" + idSuffix_ + "' class='dvDictResults'></div>" +
         "";

@@ -449,6 +449,7 @@ h4::after {
   border: 0px solid white;
   border-top: 1px solid grey;
   border-bottom: 1px solid grey;
+  position: relative;
  }
  
 .tdFieldSelectorLeft {
@@ -813,8 +814,8 @@ div.imgProfile {
 
 .dvWordSelector {
     position: absolute;
-    top: 93px;
-    left: 20px;
+    top: 37px;
+    left: 0px;
     display: none;
 }
 
