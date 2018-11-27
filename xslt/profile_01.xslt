@@ -5,6 +5,8 @@
    version="2.0">
    
     <xsl:output method="html"/>
+    <!-- we make sure that $images-base-path always has a trailing slash -->
+    
     <xsl:template match="/">
                                         
         <div>
@@ -14,14 +16,15 @@
             
             <div class="dvImgProfile">
                 <xsl:if test="//tei:head/tei:figure/tei:graphic">
-                    <img>
+                     <img>
                         <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure/tei:graphic/@url"/></xsl:attribute>
                     </img>
                     <xsl:if test="//tei:head/tei:figure/tei:head">
                         <div class="imgCaption">
                             <xsl:apply-templates select="//tei:head/tei:figure/tei:head"/>
                         </div>                                           
-                    </xsl:if>                    
+                    </xsl:if> 
+                    
                 </xsl:if>                
                 <!-- 
                 <xsl:choose>
