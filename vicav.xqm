@@ -37,7 +37,6 @@ declare
     %rest:path("vicav/biblio")
     %rest:query-param("query", "{$query}")
     %rest:query-param("xslt", "{$xsltfn}")
-   
     %rest:GET 
     
 function vicav:query_biblio($query as xs:string*, $xsltfn as xs:string) {  

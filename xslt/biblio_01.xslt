@@ -115,8 +115,8 @@
                      <xsl:if test="string-length(dc:date)&gt;0"><xsl:text> </xsl:text>&#160;<xsl:value-of select="dc:date"/>.&#160;</xsl:if>                 
 
                      <!-- VICAV ID -->
-                     <xsl:if test=".//dc:description">
-                         &#160;&#160;&#160;<i style="font-size:small">(biblid:<xsl:value-of select="substring-after(.//dc:description, '(biblid:')"/></i>
+                     <xsl:if test="dc:description">
+                         &#160;&#160;&#160;<i style="font-size:small">(biblid:<xsl:value-of select="substring-after(dc:description, '(biblid:')"/></i>
                      </xsl:if> 
                   </div>
                   
