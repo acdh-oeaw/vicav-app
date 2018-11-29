@@ -84,8 +84,8 @@
                         <xsl:when test="name()='bib:Article'"><img class="imgBiblItem" src="images/article_001.jpg"/></xsl:when>
                      </xsl:choose>
                      <xsl:value-of select="dc:title"/>.&#160;
-                     
-
+                      
+                     <!-- is part of journal -->
                      <xsl:if test="dcterms:isPartOf/bib:Journal">
                         In:&#160;<i><xsl:value-of select="dcterms:isPartOf/bib:Journal/dc:title"/>
                            <xsl:if test="string-length(dcterms:isPartOf/bib:Journal/prism:volume)&gt;0">&#160;<xsl:value-of select="dcterms:isPartOf/bib:Journal/prism:volume"/></xsl:if>
@@ -94,7 +94,16 @@
                         </i>   
                      </xsl:if>
 
-                     <!-- ORT, Verlag -->
+                      <!-- is part of book -->
+                      <xsl:if test="dcterms:isPartOf/bib:Book">
+                          In:&#160;<i><xsl:value-of select="dcterms:isPartOf/bib:Book/dc:title"/>
+                              <xsl:if test="string-length(dcterms:isPartOf/bib:Book/prism:volume)&gt;0">&#160;<xsl:value-of select="dcterms:isPartOf/bib:Book/prism:volume"/></xsl:if>
+                              <xsl:if test="string-length(bib:pages)&gt;0">:&#160;<xsl:value-of select="bib:pages"/></xsl:if>
+                              .&#160;
+                          </i>   
+                      </xsl:if>
+                      
+                      <!-- ORT, Verlag -->
                      <xsl:choose>
                         <xsl:when test="dc:publisher[1]/foaf:Organization[1]/vcard:adr[1]/vcard:Address[1]/vcard:locality[1]">
                            <xsl:value-of select="dc:publisher[1]/foaf:Organization[1]/vcard:adr[1]/vcard:Address[1]/vcard:locality[1]"/>
@@ -115,8 +124,8 @@
                      <xsl:if test="string-length(dc:date)&gt;0"><xsl:text> </xsl:text>&#160;<xsl:value-of select="dc:date"/>.&#160;</xsl:if>                 
 
                      <!-- VICAV ID -->
-                     <xsl:if test="dc:description">
-                         &#160;&#160;&#160;<i style="font-size:small">(biblid:<xsl:value-of select="substring-after(dc:description, '(biblid:')"/></i>
+                     <xsl:if test=".//dc:description">
+                         &#160;&#160;&#160;<i style="font-size:small">(biblid:<xsl:value-of select="substring-after(.//dc:description, '(biblid:')"/></i>
                      </xsl:if> 
                   </div>
                   
