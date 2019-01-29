@@ -1529,6 +1529,7 @@ function () {
         var sq = $("#" + inpID).val();
         collName = $("#" + inpID).attr('dict');
         fillWordSelector(sq, collName + '__ind', '_' + suf);
+        setTimeout(() => { $("#inpDictQuery_tunis").focus(); }, 0);
     });
     
     $(document).on("mouseover", '[id^=ct]',
