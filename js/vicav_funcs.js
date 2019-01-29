@@ -749,10 +749,6 @@ function execDictQuery_ajax(query_, idSuffix_) {
         //console.log("query: " + query_);
         //console.log("idSuffix: " + idSuffix_);
         
-        
-        $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
-        $("#loading-wrapper" + idSuffix_).css('visibility', 'visible');
-        
         xslt = $("#inpDictQuery" + idSuffix_).attr('xslt');
         teiQuery = query_.replace(xslt, "tei_2_html__v004__gen.xsl");
         $("#inpDictQuery" + idSuffix_).attr('teiQuery', teiQuery);
@@ -1102,7 +1098,7 @@ function () {
         "", currentURL + "#map=[biblMarkers,,geo]&1=[textQuery,vicavMission,MISSION,open]");
         getText('MISSION', 'vicavMission', 'vicavTexts.xslt', 1, 'open', true);
     }
-    
+
     /* *************************** */
     /* ****  Paratexts     ******* */
     /* *************************** */
@@ -1624,7 +1620,8 @@ function () {
     /* *******************************************************/
     $(document).on("click", '[id^=dictQuerybtn]', function () {
         suf = getSuffixID($(this).attr('id'));
-        
+        $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
+        $("#loading-wrapper" + idSuffix_).css('visibility', 'visible');
         execDictQuery('_' + suf);
     });
     
@@ -1657,6 +1654,7 @@ function () {
         selector: '[data-toggle="tooltip"]',
         trigger: 'hover focus'
     });
+
 });
 
 
