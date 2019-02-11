@@ -1626,8 +1626,8 @@ function () {
     /* *******************************************************/
     $(document).on("click", '[id^=dictQuerybtn]', function () {
         suf = getSuffixID($(this).attr('id'));
-        $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
-        $("#loading-wrapper" + idSuffix_).css('visibility', 'visible');
+        $("#imgPleaseWait" + suf).css('visibility', 'visible');
+        $("#loading-wrapper" + suf).css('visibility', 'visible');
         execDictQuery('_' + suf);
     });
     
