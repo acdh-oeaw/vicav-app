@@ -570,23 +570,23 @@ function getDBSnippet(s_, obj_) {
     
     switch (sHead) {
         case 'bibl':
-        execBiblQuery(sTail);
-        break;
+           execBiblQuery(sTail);
+           break;
         
         case 'mapMarkers':
-        clearMarkerLayers();
-        insertGeoRegMarkers(sTail, 'geo_reg');
-        break;
+           clearMarkerLayers();
+           insertGeoRegMarkers(sTail, 'geo_reg');
+           break;
         
         case 'sound':
-        break;
+           break;
         
         case 'flashcards':
-        dict = s2[0];
-        lesson = s2[1];
-        type = s2[2];
-        getFlashCards(lesson, dict, type);
-        break;
+           dict = s2[0];
+           lesson = s2[1];
+           type = s2[2];
+           getFlashCards(lesson, dict, type);
+           break;
         
         case 'corpus':
         //console.log(snippetID + ' : ' + secLabel);
@@ -1099,6 +1099,12 @@ function () {
         getText('MISSION', 'vicavMission', 'vicavTexts.xslt', 1, 'open', true);
     }
 
+    $("button").mousedown (function (event) { 
+       console.log('Click');
+       alert('');
+    });
+    
+    
     /* *************************** */
     /* ****  Paratexts     ******* */
     /* *************************** */
