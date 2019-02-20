@@ -124,6 +124,21 @@
         </a>
     </xsl:template>
 
+    <xsl:template match="tei:rs[
+        starts-with(@ref,'profile:') or
+        starts-with(@ref,'feature:') or
+        starts-with(@ref,'sound:') or
+        starts-with(@ref,'mapMarkers:') or
+        starts-with(@ref,'corpus:') or
+        starts-with(@ref,'bibl:') or
+        starts-with(@ref,'flashcards:') or
+        starts-with(@ref,'text:') or
+        starts-with(@ref,'sample:')]">
+        <a class="aVicText">
+            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@ref"/>", this)</xsl:attribute>
+            <xsl:apply-templates/>
+        </a>
+    </xsl:template>
     <xsl:template match="tei:ref[starts-with(@target,'func:')]">
        <a class="aVicText" href="{concat('javascript', substring-after(@target, 'func'))}">
             <xsl:apply-templates/>
