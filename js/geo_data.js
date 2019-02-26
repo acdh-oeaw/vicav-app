@@ -216,17 +216,21 @@ function insertGeoRegMarkers(query_, scope_) {
     /* * Function to directly retrieve data from BaseX *** */
     /* *************************************************** */
     //example: insertGeoRegMarkers('', 'geo_reg');
-    //example (rest): sUrl = 'bibl_markers?query=none&scope=geo';
+    //example (rest): sUrl = 'bibl_markers_tei?query=none&scope=geo';
+	//http://localhost:8984/vicav/bibl_markers_tei?query=vt:textbook,reg:Egypt&scope=geo_reg
     //for experimenting in BaseX Client: vicav_bibl_markers
     
     //if (query_ == '') { query_ = 'none'; }
+	console.log('query_: ' + query_);
+	console.log('scope_: ' + scope_);
     $(".sub-nav-map-items .active").removeClass("active");
-    sUrl = 'bibl_markers?query=' + query_ + '&scope=' + scope_;
+    sUrl = 'bibl_markers_tei?query=' + query_ + '&scope=' + scope_;
     /*sQuerySecPart = ',vt:textbook';*/
     var sQuerySecPart = '';
     if (query_ != '') {
         sQuerySecPart = ',' + query_;
     }
+    if (query_ == '') { query_ = '.*'; }
     
     //console.log('sUrl: ' + sUrl);
     clearMarkerLayers();

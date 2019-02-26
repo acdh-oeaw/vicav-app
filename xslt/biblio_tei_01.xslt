@@ -43,10 +43,11 @@
                          -->
                          
                         <xsl:for-each select="node()/tei:author">
-                           <xsl:if test="position()&gt;1">;&#160;</xsl:if>
+                            <xsl:if test="position()&gt;1">;<span xml:space="preserve"><xsl:text> </xsl:text></span></xsl:if>
                            <xsl:choose>
                                <xsl:when test="string-length(tei:name)&gt;0"><xsl:value-of select="tei:name"/></xsl:when>
-                               <xsl:when test="string-length(tei:forename)&gt;0"><xsl:value-of select="tei:surname"/>,&#160;<xsl:value-of select="tei:forename"/></xsl:when>
+                               <xsl:when test="string-length(tei:forename)&gt;0"><xsl:value-of select="tei:surname"/>,
+                                   <span xml:space="preserve"><xsl:text> </xsl:text></span><xsl:value-of select="tei:forename"/></xsl:when>
                                <xsl:otherwise><xsl:value-of select="tei:surname"/></xsl:otherwise>
                            </xsl:choose>
                         </xsl:for-each>
@@ -55,11 +56,14 @@
                             <xsl:choose>
                                 <xsl:when test="node()/tei:editor">
                                     <xsl:for-each select="node()/tei:editor">
-                                        <xsl:if test="position()&gt;1">;&#160;</xsl:if>
+                                        <xsl:if test="position()&gt;1">;<span xml:space="preserve"><xsl:text> </xsl:text></span></xsl:if>
                                         <xsl:choose>
-                                            <xsl:when test="string-length(tei:name)&gt;0"><xsl:value-of select="tei:name"/>&#160;(ed.)</xsl:when>
-                                            <xsl:when test="string-length(tei:forename)&gt;0"><xsl:value-of select="tei:surname"/>,&#160;<xsl:value-of select="tei:forename"/>&#160;(ed.)</xsl:when>
-                                            <xsl:otherwise><xsl:value-of select="tei:surname"/>&#160;(ed.)</xsl:otherwise>
+                                            <xsl:when test="string-length(tei:name)&gt;0">
+                                                <xsl:value-of select="tei:name"/><span xml:space="preserve"><xsl:text> </xsl:text></span>(ed.)</xsl:when>
+                                            <xsl:when test="string-length(tei:forename)&gt;0">
+                                                <xsl:value-of select="tei:surname"/>,<span xml:space="preserve"><xsl:text> </xsl:text></span>
+                                                <xsl:value-of select="tei:forename"/><span xml:space="preserve"><xsl:text> </xsl:text></span>(ed.)</xsl:when>
+                                            <xsl:otherwise><xsl:value-of select="tei:surname"/><span xml:space="preserve"><xsl:text> </xsl:text></span>(ed.)</xsl:otherwise>
                                         </xsl:choose>
                                     </xsl:for-each>
                                 </xsl:when>
@@ -84,6 +88,7 @@
                          <xsl:when test="@type='book'"><img class="imgBiblItem" src="images/book_001.jpg"/></xsl:when>
                          <xsl:when test="@type='bookSection'"><img class="imgBiblItem" src="images/booksection_001.jpg"/></xsl:when>
                          <xsl:when test="@type='journalArticle'"><img class="imgBiblItem" src="images/article_001.jpg"/></xsl:when>
+                         <xsl:when test="@type='conferencePaper'"><img class="imgBiblItem" src="images/article_001.jpg"/></xsl:when>
                          <xsl:when test="@type='encyclopediaArticle'"><img class="imgBiblItem" src="images/article_001.jpg"/></xsl:when>
                      </xsl:choose>
 
@@ -94,72 +99,81 @@
                           
                       
                       <!-- journalArticle -->
-                      <xsl:if  test="@type='journalArticle' or @type='encyclopediaArticle' ">
-                          <xsl:value-of select="tei:analytic/tei:title"/>.&#160;In:&#160;
-                           <i>
+                      <xsl:if  test="@type='journalArticle' or @type='encyclopediaArticle' or @type='conferencePaper' ">
+                          <xsl:value-of select="tei:analytic/tei:title"/>.
+                          <span xml:space="preserve"><xsl:text> </xsl:text></span>In:<span xml:space="preserve"><xsl:text> </xsl:text></span>
+                          <i>
                               <xsl:value-of select="tei:monogr[1]/tei:title[1]"/>
-                              <xsl:if test="string-length(tei:monogr/tei:imprint/tei:biblScope[@unit='volume'])&gt;0">&#160;
-                                <xsl:value-of select="tei:monogr/tei:imprint/tei:biblScope[@unit='volume']"/>
+                              <xsl:if test="string-length(tei:monogr/tei:imprint/tei:biblScope[@unit='volume'])&gt;0">
+                                  <span xml:space="preserve"><xsl:text> </xsl:text></span>
+                                  <xsl:value-of select="tei:monogr/tei:imprint/tei:biblScope[@unit='volume']"/>
                               </xsl:if>
-                              <xsl:if test="string-length(tei:monogr/tei:imprint/tei:biblScope[@unit='page'])&gt;0">:&#160;
-                                <xsl:value-of select="tei:monogr/tei:imprint/tei:biblScope[@unit='page']"/>
+                              <xsl:if test="string-length(tei:monogr/tei:imprint/tei:biblScope[@unit='page'])&gt;0">: 
+                                  <span xml:space="preserve"><xsl:text> </xsl:text></span>
+                                  <xsl:value-of select="tei:monogr/tei:imprint/tei:biblScope[@unit='page']"/>
                               </xsl:if>
                                
                                
-                               <!-- editor(s) -->
-                               <xsl:if test="tei:monogr/tei:editor">&#160;(
-                                   <xsl:if test="count(tei:monogr/tei:editor)=1">ed.&#160;</xsl:if>
-                                   <xsl:if test="count(tei:monogr/tei:editor)&gt;1">eds.&#160;</xsl:if>
+                              <!-- editor(s) -->
+                              <xsl:if test="tei:monogr/tei:editor"><span xml:space="preserve"><xsl:text> </xsl:text></span>(
+                                   <xsl:if test="count(tei:monogr/tei:editor)=1">ed.<span xml:space="preserve"><xsl:text> </xsl:text></span></xsl:if>
+                                   <xsl:if test="count(tei:monogr/tei:editor)&gt;1">eds.<span xml:space="preserve"><xsl:text> </xsl:text></span></xsl:if>
                                    
                                    <xsl:for-each select="tei:monogr/tei:editor">
-                                       <xsl:if test="position()&gt;1">;&#160;</xsl:if>
-                                       <xsl:value-of select="tei:forename"/>&#160;<xsl:value-of select="tei:surname"/>
+                                       <xsl:if test="position()&gt;1">;<span xml:space="preserve"><xsl:text> </xsl:text></span></xsl:if>
+                                       <xsl:value-of select="tei:forename"/><span xml:space="preserve"><xsl:text> </xsl:text></span><xsl:value-of select="tei:surname"/>
                                    </xsl:for-each>)
-                              </xsl:if> 
-                           </i>   
+                             </xsl:if> 
+                          </i>   
                      </xsl:if>
                       
                       <!-- bookSection -->
                       <xsl:if  test="@type='bookSection'">
-                          <xsl:value-of select="tei:analytic/tei:title"/>.&#160;In:&#160;
+                          <xsl:value-of select="tei:analytic/tei:title"/>.<span xml:space="preserve"><xsl:text> </xsl:text></span>In:
+                          <span xml:space="preserve"><xsl:text> </xsl:text></span>
                           <i>
                               <xsl:value-of select="tei:monogr[1]/tei:title[1]"/>
-                              <xsl:if test="string-length(tei:monogr/tei:imprint/tei:biblScope[@unit='volume'])&gt;0">&#160;
-                                  <xsl:value-of select="tei:monogr/tei:imprint/tei:biblScope[@unit='volume']"/></xsl:if>
-                              <xsl:if test="string-length(tei:monogr/tei:imprint/tei:biblScope[@unit='page'])&gt;0">:&#160;
+                              <xsl:if test="string-length(tei:monogr/tei:imprint/tei:biblScope[@unit='volume'])&gt;0">
+                                  <span xml:space="preserve"><xsl:text> </xsl:text></span>
+                                  <xsl:value-of select="tei:monogr/tei:imprint/tei:biblScope[@unit='volume']"/>
+                              </xsl:if>
+                              
+                              <xsl:if test="string-length(tei:monogr/tei:imprint/tei:biblScope[@unit='page'])&gt;0">:
+                                  <span xml:space="preserve"><xsl:text> </xsl:text></span>
                                   <xsl:value-of select="tei:monogr/tei:imprint/tei:biblScope[@unit='page']"/></xsl:if>
+                              
                               <!-- editor(s) -->
-
-                              <xsl:if test="tei:monogr/tei:editor">&#160;(
-                                  <xsl:if test="count(tei:monogr/tei:editor)=1">ed.&#160;</xsl:if>
-                                  <xsl:if test="count(tei:monogr/tei:editor)&gt;1">eds.&#160;</xsl:if>
+                              <xsl:if test="tei:monogr/tei:editor">
+                                  <span xml:space="preserve"><xsl:text> </xsl:text></span>(
+                                  <xsl:if test="count(tei:monogr/tei:editor)=1">ed.<span xml:space="preserve"><xsl:text> </xsl:text></span></xsl:if>
+                                  <xsl:if test="count(tei:monogr/tei:editor)&gt;1">eds.<span xml:space="preserve"><xsl:text> </xsl:text></span></xsl:if>
                                   
                                   <xsl:for-each select="tei:monogr/tei:editor">
-                                      <xsl:if test="position()&gt;1">;&#160;</xsl:if>
-                                      <xsl:value-of select="tei:forename"/>&#160;<xsl:value-of select="tei:surname"/>
+                                      <xsl:if test="position()&gt;1">;<span xml:space="preserve"><xsl:text> </xsl:text></span></xsl:if>
+                                      <xsl:value-of select="tei:forename"/><span xml:space="preserve"><xsl:text> </xsl:text></span><xsl:value-of select="tei:surname"/>
                                   </xsl:for-each>)
                               </xsl:if> 
                           </i>   
                       </xsl:if>
                       
                       <!-- book -->
-                      <xsl:if  test="@type='book' or @type='thesis'">
+                      <xsl:if  test="@type='book'">
                           <xsl:value-of select="tei:monogr[1]/tei:title[1]"/>
                       </xsl:if>
                       
                       
                       <!-- ORT, Verlag -->
                       <xsl:if test="string-length(tei:monogr[1]/tei:imprint[1]/tei:pubPlace[1])&gt;0">
-                          .&#160;<xsl:value-of select="tei:monogr[1]/tei:imprint[1]/tei:pubPlace[1]"/>
+                          .<span xml:space="preserve"><xsl:text> </xsl:text></span><xsl:value-of select="tei:monogr[1]/tei:imprint[1]/tei:pubPlace[1]"/>
                       </xsl:if>
                          
                       <xsl:if test="string-length(tei:monogr[1]/tei:imprint[1]/tei:publisher[1])&gt;0">
-                          .&#160;<xsl:value-of select="tei:monogr[1]/tei:imprint[1]/tei:publisher[1]"/>
+                          .<span xml:space="preserve"><xsl:text> </xsl:text></span><xsl:value-of select="tei:monogr[1]/tei:imprint[1]/tei:publisher[1]"/>
                       </xsl:if>                           
                      
                      <!-- DATE -->
                      <xsl:if test="string-length(tei:monogr[1]/tei:imprint[1]/tei:date[1])&gt;0">
-                         .&#160;<xsl:value-of select="tei:monogr[1]/tei:imprint[1]/tei:date[1]"/>
+                         .<span xml:space="preserve"><xsl:text> </xsl:text></span><xsl:value-of select="tei:monogr[1]/tei:imprint[1]/tei:date[1]"/>
                      </xsl:if>
                       
                      <xsl:text>.</xsl:text>

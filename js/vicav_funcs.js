@@ -453,7 +453,6 @@ function createNewCrossDictQueryPanel(pID_, pVisiblity_, pURL_) {
 }
 
 function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_, pID_, pVisiblity_, pURL_) {
-
     ob = $("#loading-wrapper" + idSuffix_).length;
     if (ob > 0) {
         alert('Dict query panel already exists');
@@ -585,7 +584,7 @@ function getDBSnippet(s_, obj_) {
     //sTail = s_.substring(s_.indexOf(":") + 1);
     sHead = s_.substr(0, splitPoint);
     sTail = s_.substring(splitPoint + 1);
-    console.log('head + tail: ' + sHead + ' : ' + sTail);
+    //console.log('head + tail: ' + sHead + ' : ' + sTail);
     s2 = sTail.split('/');
     snippetID = s2[0];
     secLabel = s2[1];
@@ -1056,6 +1055,10 @@ function openDict_Tunis() {
     createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis);
 }
 
+function openDict_Baghdad() {
+    createNewDictQueryPanel('dc_acm_baghdad_eng_001', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_tunis);
+}
+
 function openDict_Cairo() {
     createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo);
 }
@@ -1107,7 +1110,7 @@ function () {
                 break;
 
                 default:
-                //console.log('pArgs[2]: ' + pArgs[2]);
+                //console.log('pArgs[1]: ' + pArgs[2]);
 
                 insertGeoRegMarkers(pArgs[1], pArgs[2]);
             }
@@ -1197,7 +1200,7 @@ function () {
         }
     } else {
         //console.log('aaa');
-        insertGeoRegMarkers('', 'geo');
+        insertGeoRegMarkers('.*', 'geo');
         window.history.replaceState({ }, "", currentURL + "#map=[biblMarkers,,geo]&1=[textQuery,vicavMission,MISSION,open]&2=[textQuery,vicavNews,NEWS,open]");
         getText('MISSION', 'vicavMission', 'vicavTexts.xslt', 1, 'open', true);
         getText('NEWS', 'vicavNews', 'vicavTexts.xslt', 2, 'open', true);
@@ -1359,18 +1362,11 @@ function () {
     /* ******************************** */
     /* ****  DICTIONARY QUERIES ******* */
     /* ******************************** */
-    $(document).on("click", '#liVicavDictQuery_Tunis', function () {
-        openDict_Tunis();
-    });
-    $(document).on("click", '#liVicavDictQuery_Damascus', function () {
-        openDict_Damascus();
-    });
-    $(document).on("click", '#liVicavDictQuery_Cairo', function () {
-        openDict_Cairo();
-    });
-    $(document).on("click", '#liVicavDictQuery_MSA', function () {
-        openDict_MSA();
-    });
+    $(document).on("click", '#liVicavDictQuery_Tunis', function () { openDict_Tunis(); });
+    $(document).on("click", '#liVicavDictQuery_Damascus', function () { openDict_Damascus(); });
+    $(document).on("click", '#liVicavDictQuery_Baghdad', function () { openDict_Baghdad(); });
+    $(document).on("click", '#liVicavDictQuery_Cairo', function () { openDict_Cairo(); });
+    $(document).on("click", '#liVicavDictQuery_MSA', function () { openDict_MSA(); });
 
     /* ********************************************* */
     /* ****  DICTIONARY Auto Complete Events ******* */
@@ -1380,6 +1376,9 @@ function () {
     });
     $(document).on("keyup", '.inpDictQuery_damascus', function (event) {
         dealWithDictQueryKeyInput(event, '_damascus');
+    });
+    $(document).on("keyup", '.inpDictQuery_baghdad', function (event) {
+        dealWithDictQueryKeyInput(event, '_baghdad');
     });
     $(document).on("keyup", '.inpDictQuery_cairo', function (event) {
         dealWithDictQueryKeyInput(event, '_cairo');
@@ -1452,14 +1451,14 @@ function () {
     $("#navBiblGeoMarkers,#subNavBiblGeoMarkers").mousedown (
     function (event) {
         clearMarkerLayers();
-        insertGeoRegMarkers('', 'geo');
+        insertGeoRegMarkers('.*', 'geo');
         adjustNav(this.id, "#subNavBiblGeoMarkers");
     });
 
     $("#navBiblRegMarkers,#subNavBiblRegMarkers").mousedown (
     function (event) {
         clearMarkerLayers();
-        insertGeoRegMarkers('', 'reg');
+        insertGeoRegMarkers('.*', 'reg');
         adjustNav(this.id, "#subNavBiblRegMarkers");
     });
 

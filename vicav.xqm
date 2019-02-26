@@ -84,8 +84,7 @@ function vicav:query_biblio($query as xs:string*, $xsltfn as xs:string) {
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
     let $num := count($results)
-    let $results := <results
-        num="{$num}">{$results}</results>
+    let $results := <results num="{$num}">{$results}</results>
     let $sHTML := xslt:transform-text($results, $style)
     return
         $sHTML
@@ -115,7 +114,6 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
                                          [text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
                 else
                     '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
-    
     
     
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
@@ -285,7 +283,6 @@ declare function vicav:createMatchString($in as xs:string) {
         'matches(., "' || $s || '")'
     else
         '.="' || $s || '"'
-    
     return
         $s1
 };
@@ -388,7 +385,6 @@ declare
 %output:method("xml")
 
 function vicav:get_bibl_markers($query as xs:string, $scope as xs:string) {
-    
     let $queries := tokenize($query, ',')
     let $qs :=
     for $query in $queries
@@ -503,6 +499,108 @@ return
     <rs
         type="{count($out)}">{$out}</rs>
 
+};
+
+declare
+%rest:path("vicav/bibl_markers_tei")
+%rest:query-param("query", "{$query}")
+%rest:query-param("scope", "{$scope}")
+%rest:GET
+%output:method("xml")
+
+function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
+    let $queries := tokenize($query, ',')
+    let $qs :=
+        for $query in $queries
+            return '[tei:note/tei:note[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
+  
+    let $q := 'let $arts := collection("vicav_biblio")//tei:biblStruct' || string-join($qs) || 
+              'for $art in $arts ' ||
+              'let $author := ' ||
+              '   if ($art/tei:analytic) ' ||
+              '      then ($art/tei:analytic[1]/tei:author[1]/tei:surname[1] | $art/tei:analytic[1]/tei:author[1]/tei:name[1] | ' ||
+              '            $art/tei:analytic[1]/tei:editor[1]/tei:surname[1] | $art/tei:analytic[1]/tei:editorr[1]/tei:name[1]) ' ||
+              '      else ($art/tei:monogr[1]/tei:author[1]/tei:surname[1] | $art/tei:monogr[1]/tei:author[1]/tei:name[1] | ' ||
+              '            $art/tei:monogr[1]/tei:editor[1]/tei:surname[1] | $art/tei:monogr[1]/tei:editor[1]/tei:name[1]) ' ||
+              'let $date := $art/tei:monogr[1]/tei:imprint[1]/tei:date[1] ' ||
+              'order by $author[1],$date[1] return $art'
+
+    let $ns := 'declare namespace tei = "http://www.tei-c.org/ns/1.0";'
+    let $query := $ns || $q
+    let $tempresults := xquery:eval($query)
+
+    let $out :=
+        for $subj at $icnt in $tempresults
+        return
+            let $geos :=
+                switch ($scope)
+                    case 'geo_reg'
+                        return $subj/tei:note/tei:note[contains(., 'reg:') or contains(., 'geo:')]
+                    case 'geo'
+                        return $subj/tei:note/tei:note[contains(., 'geo:')]
+                    case 'reg'
+                        return $subj/tei:note/tei:note[contains(., 'reg:')]
+            default return ()
+    
+    for $geo in $geos
+    return
+        let $id := $subj/@corresp
+        
+        return
+            if (string-length($geo) > 0)
+            then
+                (
+                let $type := fn:substring-before($geo, ':')
+                let $altItem := replace($geo, 'geo:|reg:', '')
+                let $locname := fn:substring-before($altItem, '[')
+                let $locname := fn:normalize-space($locname)
+                let $locname := fn:replace($locname, '''', '&#180;')
+                let $sa := fn:substring-after($altItem, '[')
+                let $geodata := fn:substring-before($sa, ']')
+                
+                return
+                    if (string-length($locname) = 0) then
+                        (
+                        <item><type>{$type}</type><geo></geo><loc>{$altItem}</loc><id>{$id}</id></item>
+                        )
+                    else
+                        (
+                        <item><type>{$type}</type><geo>{$geodata}</geo><loc>{$locname}</loc><id>{$id}</id></item>
+                        )
+                
+                )
+            else ()
+
+    let $out1 := <r>{$out}</r>
+    let $out :=
+    for $item at $icnt in $out1/item
+    let $loc := $item/loc/string(),
+    $geo := $item/geo
+
+    for $id in $item/id
+    group by $loc
+
+    let $s := for $i in $item/id
+    return $i/text() || ","
+
+    return
+    if (string-length($geo[1]/text()) > 0) then
+        (
+       
+        if ($item/type = 'geo') then
+            (
+            <r
+                type='geo'><loc>{$geo[1]/text()}</loc><alt>{$loc}</alt><freq>{count($id)}</freq></r>
+            )
+        else
+            (
+            <r
+                type='reg'><loc>{$geo[1]/text()}</loc><alt>{$loc}</alt><freq>{count($id)}</freq></r>
+            )
+        )
+    else  ()
+        
+    return <rs type="{count($out)}">{$out}</rs>
 };
 
 declare

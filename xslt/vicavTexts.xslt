@@ -37,7 +37,7 @@
       <xsl:apply-templates/>
     </td>
   </xsl:template>
-
+ 
   <xsl:template match="tei:div">
     <xsl:choose>
       <xsl:when test="count(ancestor::tei:div) = 1"><div>
@@ -118,11 +118,23 @@
     <ul><xsl:apply-templates/></ul>
   </xsl:template>
 
+  <xsl:template match="tei:div[@type='dvContributor']/tei:p">
+    <p>
+      <xsl:apply-templates select="tei:graphic"/>
+      <span>
+        <xsl:choose>
+          <xsl:when test="tei:graphic"><xsl:apply-templates select="tei:graphic/following-sibling::node()"/></xsl:when>
+          <xsl:otherwise><xsl:apply-templates></xsl:apply-templates></xsl:otherwise>
+        </xsl:choose>        
+      </span>
+    </p>
+  </xsl:template>
+
   <xsl:template match="tei:p">
     <p><xsl:apply-templates/></p>
   </xsl:template>
-
-    <xsl:template match="tei:ref[starts-with(@target,'http:') or starts-with(@target,'https:')]">
+  
+  <xsl:template match="tei:ref[starts-with(@target,'http:') or starts-with(@target,'https:')]">
       <a target="_blank" class="aVicText">
           <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
           <xsl:apply-templates/>

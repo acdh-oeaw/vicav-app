@@ -299,10 +299,9 @@ input.header_search:focus{
 
 
 .dvBiblBlock{
-    /* margin-top: -24px;
-    margin-bottom: 24px; */
     margin-left: 20px;
     display: block !important;
+    padding-bottom: 10px;
 }
 
 .how-to-panel{
@@ -1257,15 +1256,29 @@ a:hover{
 
 }
 
-.dvContributor {
-    min-height: 100px;    
+.dvContributor p{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-flow: row;
+    padding: 10px 5px;
 }
 
-.dvContributor p img {
+
+.dvContributor p span{
+    flex-basis: 460px;
+}
+
+
+.dvContributor p img{
     border-radius: 50%;
     width: 100px;
+    height: 100px;
     padding: 5px 5px 5px 5px;
-    float: left;
+}
+
+.tdContributor{
+    vertical-align: top;
 }
 
 .spPos{
