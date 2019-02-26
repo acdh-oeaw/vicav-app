@@ -40,10 +40,26 @@
 
   <xsl:template match="tei:div">
     <xsl:choose>
-      <xsl:when test="count(ancestor::tei:div) = 1"><div style="margin-left:20px"><xsl:apply-templates/></div></xsl:when>
-      <xsl:when test="count(ancestor::tei:div) = 2"><div style="margin-left:30px"><xsl:apply-templates/></div></xsl:when>
-      <xsl:when test="count(ancestor::tei:div) = 3"><div style="margin-left:40px"><xsl:apply-templates/></div></xsl:when>
-      <xsl:when test="count(ancestor::tei:div) = 4"><div style="margin-left:50px"><xsl:apply-templates/></div></xsl:when>
+      <xsl:when test="count(ancestor::tei:div) = 1"><div>
+        <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+        <xsl:attribute name="style">margin-left:20px</xsl:attribute>
+        <xsl:apply-templates/></div></xsl:when>
+      
+      <xsl:when test="count(ancestor::tei:div) = 2"><div>
+        <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+        <xsl:attribute name="style">margin-left:30px</xsl:attribute>
+        <xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute><xsl:apply-templates/></div></xsl:when>
+      
+      <xsl:when test="count(ancestor::tei:div) = 3"><div>
+        <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+        <xsl:attribute name="style">margin-left:40px</xsl:attribute>
+        <xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute><xsl:apply-templates/></div></xsl:when>
+      
+      <xsl:when test="count(ancestor::tei:div) = 4"><div>
+        <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+        <xsl:attribute name="style">margin-left:50px</xsl:attribute>
+        <xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute><xsl:apply-templates/></div></xsl:when>
+      
       <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -80,10 +96,18 @@
     </xsl:choose>
   </xsl:template>
 
+  <xsl:template match="tei:hi[@rendition = '#i']">
+    <i><xsl:apply-templates/></i>
+  </xsl:template>
+  
+  <xsl:template match="tei:hi[@rendition = '#b']">
+    <b><xsl:apply-templates/></b>
+  </xsl:template>
+  
   <xsl:template match="tei:hi[@rend = 'italic']">
     <i><xsl:apply-templates/></i>
   </xsl:template>
-
+  
   <xsl:template match="tei:item">
     <li><xsl:apply-templates/></li>
   </xsl:template>

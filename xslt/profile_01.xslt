@@ -49,25 +49,33 @@
             </div>
             
             <table class="tbProfile">
-                <tr>
-                    <td class="tdHead">Name</td>
-                    <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@xml:lang='ara-x-DMG' or @xml:lang='ara-Latn' ]"/></td>                    
-                </tr>
-                <tr>
-                    <td class="tdHead">Name (Arabic)</td>
-                    <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@xml:lang='ara']"/></td>
-                </tr>
+                <xsl:if test="//tei:name[@xml:lang='ara']">
+                    <tr>
+                        <td class="tdHead">MSA Name</td>
+                        <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@xml:lang='ara']"/></td>
+                    </tr>
+                </xsl:if>
+                <xsl:if test="//tei:name[@xml:lang='ara-x-DMG']">
+                    <tr>
+                        <td class="tdHead">MSA Name (trans.)</td>
+                        <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@xml:lang='ara-x-DMG']"/></td>                    
+                    </tr>
+                </xsl:if>
                 
-                <xsl:if test="//tei:name[@type='latLoc' or @xml:lang='ara-x-local']">
+                <xsl:if test="//tei:name[@type='araLoc']">
                     <tr>
                         <td class="tdHead">Local name</td>
-                        <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@type='latLoc' or @xml:lang='ara-x-local']"/></td>
-                    </tr>
-                    <!-- <tr>
-                        <td class="tdHead">Loc. name (Ar.)</td>
                         <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@type='araLoc']"/></td>
-                    </tr> -->
+                    </tr>
                 </xsl:if>
+                
+                <xsl:if test="//tei:name[@type='latLoc']">
+                    <tr>
+                        <td class="tdHead">Local name (trans.)</td>
+                        <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@type='latLoc']"/></td>
+                    </tr>
+                </xsl:if>
+                
                 <tr>
                     <td class="tdHead">Geo location</td>
                     <td class="tdProfileTableRight"><i><xsl:value-of select="//tei:div[@type='positioning']/tei:p/tei:geo"/></i></td>
@@ -131,6 +139,9 @@
 
     <xsl:template match="tei:hi">
         <xsl:choose>
+            <xsl:when test="@rendition='#u'"><span style="text-decoration: underline;"><xsl:apply-templates/></span></xsl:when>
+            <xsl:when test="@rendition='#b'"><b><xsl:apply-templates/></b></xsl:when>
+            <xsl:when test="@rendition='#i'"><i><xsl:apply-templates/></i></xsl:when>
             <xsl:when test="@rend='italic'"><i><xsl:apply-templates/></i></xsl:when>
             <xsl:otherwise><b><xsl:apply-templates/></b></xsl:otherwise>
         </xsl:choose>
@@ -160,9 +171,25 @@
         </a>
     </xsl:template>
 
+    <xsl:template match="tei:rs[
+        starts-with(@ref,'profile:') or
+        starts-with(@ref,'feature:') or
+        starts-with(@ref,'corpus:') or
+        starts-with(@ref,'bibl:') or
+        starts-with(@ref,'zotID:') or
+        starts-with(@ref,'flashcards:') or
+        starts-with(@ref,'text:') or
+        starts-with(@ref,'sample:')]">
+        <a class="aVicText">
+            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@ref"/>")</xsl:attribute>
+            <xsl:apply-templates/>          
+        </a>
+    </xsl:template>
+    
     <xsl:template match="tei:ref[
         starts-with(@target,'profile:') or
         starts-with(@target,'feature:') or
+        starts-with(@target,'zotID:') or
         starts-with(@target,'corpus:') or
         starts-with(@target,'bibl:') or
         starts-with(@target,'flashcards:') or

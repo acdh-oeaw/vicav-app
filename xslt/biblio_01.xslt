@@ -65,7 +65,8 @@
                            <xsl:for-each select="bib:authors/.//foaf:Person">
                               <xsl:if test="position()&gt;1">;&#160;</xsl:if>
                               <xsl:choose>
-                                 <xsl:when test="string-length(foaf:givenname)&gt;0"><xsl:value-of select="foaf:surname"/>,&#160;<xsl:value-of select="foaf:givenname"/></xsl:when>
+                                 <xsl:when test="string-length(foaf:givenname)&gt;0"><xsl:value-of select="foaf:surname"/>,
+                                    &#160;<xsl:value-of select="foaf:givenname"/></xsl:when>
                                  <xsl:otherwise><xsl:value-of select="foaf:surname"/></xsl:otherwise>
                               </xsl:choose>
                            </xsl:for-each>
@@ -88,7 +89,8 @@
                      <!-- is part of journal -->
                      <xsl:if test="dcterms:isPartOf/bib:Journal">
                         In:&#160;<i><xsl:value-of select="dcterms:isPartOf/bib:Journal/dc:title"/>
-                           <xsl:if test="string-length(dcterms:isPartOf/bib:Journal/prism:volume)&gt;0">&#160;<xsl:value-of select="dcterms:isPartOf/bib:Journal/prism:volume"/></xsl:if>
+                           <xsl:if test="string-length(dcterms:isPartOf/bib:Journal/prism:volume)&gt;0">&#160;
+                               <xsl:value-of select="dcterms:isPartOf/bib:Journal/prism:volume"/></xsl:if>
                            <xsl:if test="string-length(bib:pages)&gt;0">:&#160;<xsl:value-of select="bib:pages"/></xsl:if>
                            .&#160;
                         </i>   
@@ -97,7 +99,8 @@
                       <!-- is part of book -->
                       <xsl:if test="dcterms:isPartOf/bib:Book">
                           In:&#160;<i><xsl:value-of select="dcterms:isPartOf/bib:Book/dc:title"/>
-                              <xsl:if test="string-length(dcterms:isPartOf/bib:Book/prism:volume)&gt;0">&#160;<xsl:value-of select="dcterms:isPartOf/bib:Book/prism:volume"/></xsl:if>
+                              <xsl:if test="string-length(dcterms:isPartOf/bib:Book/prism:volume)&gt;0">&#160;
+                                  <xsl:value-of select="dcterms:isPartOf/bib:Book/prism:volume"/></xsl:if>
                               <xsl:if test="string-length(bib:pages)&gt;0">:&#160;<xsl:value-of select="bib:pages"/></xsl:if>
                               .&#160;
                           </i>   
@@ -124,8 +127,8 @@
                      <xsl:if test="string-length(dc:date)&gt;0"><xsl:text> </xsl:text>&#160;<xsl:value-of select="dc:date"/>.&#160;</xsl:if>                 
 
                      <!-- VICAV ID -->
-                     <xsl:if test=".//dc:description">
-                         &#160;&#160;&#160;<i style="font-size:small">(biblid:<xsl:value-of select="substring-after(.//dc:description, '(biblid:')"/></i>
+                     <xsl:if test="@corresp">
+                         &#160;&#160;&#160;<i style="font-size:small">(:<xsl:value-of select="@corresp"/>)</i>
                      </xsl:if> 
                   </div>
                   
