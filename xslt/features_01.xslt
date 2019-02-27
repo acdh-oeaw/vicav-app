@@ -5,15 +5,6 @@
    <xsl:preserve-space elements="*"/>
    <xsl:template match="/">
       <div>
-         <div>            
-            <table class="tbHeader">
-               <tr><td><h2><xsl:value-of select="//tei:table[1]/tei:row[1]/tei:cell[2]"/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
-            </table>            
-            
-            
-            <p>By&#160;&#160;<i><xsl:value-of select="//tei:table[1]/tei:row[2]/tei:cell[2]"/>&#160;(<xsl:value-of select="//tei:table[1]/tei:row[3]/tei:cell[2]"/>)</i></p>
-         </div>
-         
          <div>
             
             <!-- ********************************************* -->
@@ -42,8 +33,11 @@
             <!-- ********************************************* -->
    
                <div>
+                  <h2><xsl:value-of select="//tei:title"/></h2>
+                  <p xml:space="preserve">By <i><xsl:value-of select="//tei:author"/> (<xsl:value-of select="//tei:date"/>)</i></p>
+                   
                   <table class="tbFeatures">
-                     <xsl:for-each select="//tei:table[2]/tei:row">
+                     <xsl:for-each select="//tei:table/tei:row">
                         <xsl:choose>
                            <!-- ******************************************************* -->
                            <!-- HEADER LINE ******************************************* -->

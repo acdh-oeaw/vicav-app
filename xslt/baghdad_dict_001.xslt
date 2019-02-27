@@ -15,7 +15,9 @@
             <xsl:for-each select="//tei:entry">
                <xsl:sort select="./tei:form/tei:orth"/>
                <div class="dvRoundLemmaBox_ltr">
-                  <xsl:value-of select="tei:form[@type='lemma']/tei:orth[@xml:lang='ar-aeb-x-tunis-vicav'] | tei:form[@type='multiWordUnit']/tei:orth[@xml:lang='ar-aeb-x-tunis-vicav'] | tei:form[@type='abbrev']/tei:orth[@xml:lang='ar-aeb-x-tunis-vicav']"/>
+                   <xsl:value-of select="tei:form[@type='lemma']/tei:orth[@xml:lang='ar-acm-x-baghdad-vicav'] |
+                                         tei:form[@type='multiWordUnit']/tei:orth[@xml:lang='ar-acm-x-baghdad-vicav'] |
+                                         tei:form[@type='abbrev']/tei:orth[@xml:lang='ar-acm-x-baghdad-vicav']"/>
                   <xsl:if test="tei:gramGrp/tei:gram[@type='pos']">
                       <span class="spGramGrp">
                           <xsl:text>&#x2004;</xsl:text>
@@ -54,8 +56,8 @@
                            <td class="tdKWICMain">
                               <xsl:for-each select="./tei:form[@type='variant']">
                                  <xsl:if test="position()&gt;1">,&#xA0;</xsl:if>
-                                 <xsl:if test="tei:orth[@xml:lang='ar-aeb-x-tunis-vicav']">                                     
-                                    <xsl:value-of select="tei:orth[@xml:lang='ar-aeb-x-tunis-vicav']"/>                                         
+                                 <xsl:if test="tei:orth[@xml:lang='ar-acm-x-baghdad-vicav']">                                     
+                                    <xsl:value-of select="tei:orth[@xml:lang='ar-acm-x-baghdad-vicav']"/>                                         
                                     <xsl:if test="tei:usg"><span class="spGramGrp"><xsl:text>&#xA0;</xsl:text>(<xsl:value-of select="tei:usg"/>)</span></xsl:if>
                                           
                                  </xsl:if>
@@ -106,9 +108,9 @@
                         <td class="tdHead">Inflected</td>
                         <td class="tdKWICMain">
                            <xsl:for-each select="tei:form[@type='inflected']">
-                               <xsl:if test="string-length(tei:orth[@xml:lang='ar-aeb-x-tunis-vicav'])&gt;0">
+                               <xsl:if test="string-length(tei:orth[@xml:lang='ar-acm-x-baghdad-vicav'])&gt;0">
                                   <xsl:if test="position()&gt;1">,<xsl:text>&#x2006;</xsl:text></xsl:if>
-                                  <xsl:value-of select="tei:orth[@xml:lang='ar-aeb-x-tunis-vicav']"/>
+                                  <xsl:value-of select="tei:orth[@xml:lang='ar-acm-x-baghdad-vicav']"/>
 
                                <!-- ********************************************* -->
                                <!-- ***  ANA attributes   *********************** -->
@@ -211,7 +213,9 @@
                            <!-- ********************************************* -->
                            <xsl:if test="tei:gramGrp/tei:gram[@type='arguments']">
                               <div class="dvDef">
-                                 <xsl:value-of select="parent::tei:form[@type='lemma']/tei:orth[@xml:lang='ar-aeb-x-tunis-vicav'] | parent::tei:form[@type='multiWordUnit']/tei:orth[@xml:lang='ar-aeb-x-tunis-vicav'] | parent::tei:form[@type='abbrev']/tei:orth[@xml:lang='ar-aeb-x-tunis-vicav']"/>
+                                  <xsl:value-of select="parent::tei:form[@type='lemma']/tei:orth[@xml:lang='ar-acm-x-baghdad-vicav'] |
+                                                        parent::tei:form[@type='multiWordUnit']/tei:orth[@xml:lang='ar-acm-x-baghdad-vicav'] |
+                                                        parent::tei:form[@type='abbrev']/tei:orth[@xml:lang='ar-acm-x-baghdad-vicav']"/>
                                  <span class="dvArguments"><xsl:value-of select="tei:gramGrp/tei:gram[@type='arguments']"/></span>
                               </div>   
                            </xsl:if>
@@ -278,8 +282,8 @@
                            
                            <xsl:for-each select="tei:cit[@type='example']">
                               <div class="dvExamples">
-                                 <xsl:if test="tei:quote[@xml:lang='ar-aeb-x-tunis-vicav']">
-                                    <xsl:value-of select="tei:quote[@xml:lang='ar-aeb-x-tunis-vicav']"/>
+                                  <xsl:if test="tei:quote[@xml:lang='ar-acm-x-baghdad-vicav']">
+                                      <xsl:value-of select="tei:quote[@xml:lang='ar-acm-x-baghdad-vicav']"/>
                                  </xsl:if>
                                  <xsl:for-each select="tei:cit[@type='translation'][@xml:lang='en']">                                    
                                     <span class="spTransEn"><xsl:text> </xsl:text>
@@ -294,20 +298,20 @@
                               </div>
                            </xsl:for-each>
                            
-                           <xsl:for-each select="tei:cit[@type='multiWordUnit'][@xml:lang='ar-aeb-x-tunis-vicav']">
+                            <xsl:for-each select="tei:cit[@type='multiWordUnit'][@xml:lang='ar-acm-x-baghdad-vicav']">
                               <div class="dvMWUExamples">
                                  <table>
                                     <tr>
-                                       <xsl:if test="tei:quote[@xml:lang='ar-aeb-x-tunis-vicav']">
+                                        <xsl:if test="tei:quote[@xml:lang='ar-acm-x-baghdad-vicav']">
                                          <td class="tdNoBorder">
-                                            <xsl:value-of select="tei:quote[@xml:lang='ar-aeb-x-tunis-vicav']"/>
+                                             <xsl:value-of select="tei:quote[@xml:lang='ar-acm-x-baghdad-vicav']"/>
                                          </td>
                                       </xsl:if>
                                       <td class="tdNoBorder">
                                          <xsl:for-each select="tei:cit[@type='translation']">
                                             <div class="dvDef">
                                               <span class="spTrans">
-                                                 <xsl:value-of select="tei:quote[@xml:lang='ar-aeb-x-tunis-vicav']"/>
+                                                 <xsl:value-of select="tei:quote[@xml:lang='ar-acm-x-baghdad-vicav']"/>
                                                  <xsl:if test="tei:usg"><xsl:text>&#xA0;</xsl:text>
                                                    (<xsl:value-of select="tei:usg"/>)
                                                  </xsl:if>
@@ -324,9 +328,9 @@
                               <div class="dvMWUExamples">
                                  <table>
                                      <tr>
-                                        <xsl:if test="tei:form/tei:orth[@xml:lang='ar-aeb-x-tunis-vicav']">
+                                        <xsl:if test="tei:form/tei:orth[@xml:lang='ar-acm-x-baghdad-vicav']">
                                            <td class="tdNoBorder">
-                                              <xsl:value-of select="tei:form/tei:orth[@xml:lang='ar-aeb-x-tunis-vicav']"/>
+                                              <xsl:value-of select="tei:form/tei:orth[@xml:lang='ar-acm-x-baghdad-vicav']"/>
                                            </td>
                                         </xsl:if>
 
@@ -334,7 +338,7 @@
                                            <xsl:for-each select="tei:sense">
                                                 <div class="dvDef">
                                                    <span class="spTrans">
-                                                      <xsl:value-of select="tei:cit/tei:quote[@xml:lang='ar-aeb-x-tunis-vicav']"/>
+                                                      <xsl:value-of select="tei:cit/tei:quote[@xml:lang='ar-acm-x-baghdad-vicav']"/>
 
                                                       <xsl:if test="tei:usg"> 
                                                          (<xsl:value-of select="tei:usg"/>)
@@ -381,7 +385,7 @@
                           <xsl:sort select="."/>
                           <xsl:if test="position()&gt;1">,<xsl:text>&#x2006;</xsl:text></xsl:if>
                           <xsl:choose>
-                             <xsl:when test=".='stephan'">S.&#xA0;Procházka</xsl:when>
+                             <xsl:when test=".='StephanP'">S.&#xA0;Procházka</xsl:when>
                              <xsl:when test=".='inesd'">I.&#xA0;Dallaji</xsl:when>
                              <xsl:when test=".='inesg'">I.&#xA0;Gabsi</xsl:when>
                              <xsl:when test=".='gisela'">G.&#xA0;Kitzler</xsl:when>

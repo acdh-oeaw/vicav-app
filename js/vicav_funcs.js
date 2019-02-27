@@ -1,4 +1,3 @@
-/* ************************************************************************* */
 /* ************** REST INTERFACE ******************************************* */
 /* ************************************************************************* */
 /*
@@ -67,6 +66,37 @@ var charTable_cairo = '’,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō
 var charTable_baghdad = '’,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž';
 var charTable_damasc = '’,ʕ,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ǝ,ᵊ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž';
 var charTable_msa = 'ˀ,ˁ,ā,ḍ,ḏ,ē,ġ,ǧ,ḥ,ī,ḷ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ʔ';
+
+var baghdadFields =
+    "                   <option value='any'>Any field</option>" +
+    "                   <option value='lem'>Arabic lemma</option>" +
+    "                   <option value='infl'>Arabic (infl.)</option>" +
+    "                   <option value='en'>Trans. (English)</option>" +
+    "                   <option value='de'>Trans. (German)</option>" +
+    "                   <option value='es'>Trans. (Spanish)</option>" +
+    "                   <option value='pos'>POS</option>" +
+    "                   <option value='root'>Roots</option>";
+var defaultFields =
+	"                   <option value='any'>Any field</option>" +
+	"                   <option value='lem'>Arabic lemma</option>" +
+	"                   <option value='infl'>Arabic (infl.)</option>" +
+	"                   <option value='en'>Trans. (English)</option>" +
+	"                   <option value='de'>Trans. (German)</option>" +
+	"                   <option value='fr'>Trans. (French)</option>" +
+	"                   <option value='pos'>POS</option>" +
+	"                   <option value='root'>Roots</option>" +
+	"                   <option value='subc'>subc</option>" +
+	"                   <option value='etymLang'>Lang. in etymologies</option>" +
+	"                   <option value='etymSrc'>Words in etymologies</option>";
+var MSAFields =
+    "                   <option value='any'>Any field</option>" +
+    "                   <option value='lem'>Arabic lemma</option>" +
+    "                   <option value='infl'>Arabic (infl.)</option>" +
+    "                   <option value='en'>Trans. (English)</option>" +
+    "                   <option value='de'>Trans. (German)</option>" +
+    "                   <option value='pos'>POS</option>" +
+    "                   <option value='root'>Roots</option>";
+
 
 /* ************************************************************************* */
 /* ** MAP Functions ******************************************************** */
@@ -279,9 +309,7 @@ function changePanelVisibility(panel, type)   {
         }
         args = args.join("&");
         //console.log('replaceState (changePanelVisibility 2)');
-        window.history.replaceState({
-        },
-        "", baseUrl + "#" + args);
+        window.history.replaceState({ }, "", baseUrl + "#" + args);
     } else if (type == 'close') {
         for (var i = 1; i < args.length; i++) {
             if (args[i].charAt(0) == pID) {
@@ -452,12 +480,12 @@ function createNewCrossDictQueryPanel(pID_, pVisiblity_, pURL_) {
     appendPanel(searchContainer, "crossDictQueryLauncher", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
 }
 
-function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_, pID_, pVisiblity_, pURL_) {
+function createNewDictQueryPanel(dict_,                dictName_,                  idSuffix_,  xslt_,                   chartable_, selectFields_, pID_, pVisiblity_, pURL_) {
     ob = $("#loading-wrapper" + idSuffix_).length;
     if (ob > 0) {
         alert('Dict query panel already exists');
     } else {
-
+    	//console.log("selectFields_: " + selectFields_);
         var js = 'javascript:execDictQuery_tei("' + idSuffix_ + '")';
         var searchContainer =
         "   <div class='loading-wrapper' id='loading-wrapper" + idSuffix_ + "'><img class='imgPleaseWait' id='imgPleaseWait" + idSuffix_ + "' src='images/balls_in_circle.gif' alt='Query'></div>" +
@@ -476,17 +504,7 @@ function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_,
         "   </div></div>" +
         "            <div id='dvFieldSelect" + idSuffix_ + "' class='dvFieldSelect'>" +
         "               <select id='slFieldSelect" + idSuffix_ + "' class='slFieldSelect form-control'>" +
-        "                   <option value='any'>Any field</option>" +
-        "                   <option value='lem'>Arabic lemma</option>" +
-        "                   <option value='infl'>Arabic (infl.)</option>" +
-        "                   <option value='en'>Trans. (English)</option>" +
-        "                   <option value='de'>Trans. (German)</option>" +
-        "                   <option value='fr'>Trans. (French)</option>" +
-        "                   <option value='pos'>POS</option>" +
-        "                   <option value='root'>Roots</option>" +
-        "                   <option value='subc'>subc</option>" +
-        "                   <option value='etymLang'>Lang. in etymologies</option>" +
-        "                   <option value='etymSrc'>Words in etymologies</option>" +
+        "                  " + selectFields_ +
         "               </select>" +
         "            </div>" +
         "        <div class='tdInputFrameRight my-2 my-sm-0'><span id='dictQuerybtn" + idSuffix_ + "' class='spTeiLink'><a class='aVicText'>Search</a></span></div>" +
@@ -511,23 +529,22 @@ function autoDictQuery(suffixes_, query_, field_) {
         if (ob == null) {
             switch (suffixes[i]) {
                 case '_tunis':
-                	createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary', '_tunis', 'tunis_dict_001.xslt', charTable_tunis);
+                	createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
                 	break;
-
                 case '_cairo':
-                	createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo);
+                	createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
                 	break;
 
                 case '_damascus':
-                    createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc);
+                    createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc, defaultFields);
                     break;
 
                 case '_baghdad':
-                    createNewDictQueryPanel('dc_acm_baghdad_eng_001', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_damasc);
+                    createNewDictQueryPanel('dc_acm_baghdad_eng', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_damasc, baghdadFields);
                     break;
 
                 case '_MSA':
-                	createNewDictQueryPanel('dc_ar_en', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa);
+                	createNewDictQueryPanel('dc_ar_en_publ', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa, MSAFields);
                 	break;
             }
             dealWithFieldSelectVisibility(query_, suffixes_[i]);
@@ -591,50 +608,50 @@ function getDBSnippet(s_, obj_) {
 
     switch (sHead) {
         case 'bibl':
-        //console.log(sTail);
-        execBiblQuery_tei(sTail);
-        break;
+        	//console.log(sTail);
+        	execBiblQuery_tei(sTail);
+        	break;
 
         case 'mapMarkers':
-        clearMarkerLayers();
-        insertGeoRegMarkers(sTail, 'geo_reg');
-        break;
+        	clearMarkerLayers();
+        	insertGeoRegMarkers(sTail, 'geo_reg');
+        	break;
 
         case 'sound':
-        break;
+        	break;
 
         case 'flashcards':
-        dict = s2[0];
-        lesson = s2[1];
-        type = s2[2];
-        getFlashCards(lesson, dict, type);
-        break;
+        	dict = s2[0];
+        	lesson = s2[1];
+        	type = s2[2];
+        	getFlashCards(lesson, dict, type);
+        	break;
 
         case 'corpus':
-        //console.log(snippetID + ' : ' + secLabel);
-        getCorpusText(secLabel, snippetID, 'sampletext_01.xslt', '', '', '');
-        break;
+        	//console.log(snippetID + ' : ' + secLabel);
+        	getCorpusText(secLabel, snippetID, 'sampletext_01.xslt', '', '', '');
+        	break;
 
         case 'sample':
-        //console.log(snippetID + ' : ' + secLabel);
-        getSample(secLabel, snippetID, 'sampletext_01.xslt', '', '', '');
-        break;
+        	//console.log(snippetID + ' : ' + secLabel);
+        	getSample(secLabel, snippetID, 'sampletext_01.xslt', '', '', '');
+        	break;
 
         case 'feature':
-        getFeature(secLabel, snippetID, 'features_01.xslt', '', '', '');
-        break;
+        	getFeature(secLabel, snippetID, 'features_01.xslt', '', '', '');
+        	break;
 
         case 'profile':
-        getProfile(secLabel, snippetID, 'profile_01.xslt', '', '', '');
-        break;
+        	getProfile(secLabel, snippetID, 'profile_01.xslt', '', '', '');
+        	break;
 
         case 'text':
-        getText(secLabel, snippetID, 'vicavTexts.xslt', '', '', '');
-        break;
+        	getText(secLabel, snippetID, 'vicavTexts.xslt', '', '', '');
+        	break;
 
         case 'zotID':
-        execBiblQuery_zotID(sTail);
-        break;
+        	execBiblQuery_zotID(sTail);
+        	break;
     }
 }
 
@@ -880,9 +897,10 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
         q_ = '*';
     }
     sInd = $("#slFieldSelect" + idSuffix_).val();
-    sUrl1 = './dict_index?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + q_;
+    sIndexUrl = './dict_index?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + q_;
+    console.log(sIndexUrl);
     $.ajax({
-        url: sUrl1,
+        url: sIndexUrl,
         type: 'GET',
         dataType: 'html',
         contentType: 'application/html; charset=utf-8',
@@ -1048,23 +1066,23 @@ function adjustNav(id_, activateID_) {
 }
 
 function openDict_Damascus() {
-    createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc);
+    createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc, defaultFields);
 }
 
 function openDict_Tunis() {
-    createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis);
+    createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
 }
 
 function openDict_Baghdad() {
-    createNewDictQueryPanel('dc_acm_baghdad_eng_001', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_tunis);
+    createNewDictQueryPanel('dc_acm_baghdad_eng', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_tunis, baghdadFields);
 }
 
 function openDict_Cairo() {
-    createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo);
+    createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
 }
 
 function openDict_MSA() {
-    createNewDictQueryPanel('dc_ar_en', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa);
+    createNewDictQueryPanel('dc_ar_en_publ', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa, MSAFields);
 }
 
 $(document).ready(

@@ -123,8 +123,14 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
     'for $art in $arts ' ||
     'let $author := ' ||
     '  if ($art/tei:analytic) ' ||
-    '     then ($art/tei:analytic[1]/tei:author[1]/tei:surname[1] | $art/tei:analytic[1]/tei:author[1]/tei:name[1] | $art/tei:analytic[1]/tei:editor[1]/tei:surname[1] | $art/tei:analytic[1]/tei:editor[1]/tei:name[1]) ' ||
-    '     else ($art/tei:monogr[1]/tei:author[1]/tei:surname[1] | $art/tei:monogr[1]/tei:author[1]/tei:name[1] | $art/tei:monogr[1]/tei:editor[1]/tei:surname[1] | $art/tei:monogr[1]/tei:editor[1]/tei:name[1]) ' ||
+    '     then ($art/tei:analytic[1]/tei:author[1]/tei:surname[1] | 
+                $art/tei:analytic[1]/tei:author[1]/tei:name[1] | 
+                $art/tei:analytic[1]/tei:editor[1]/tei:surname[1] | 
+                $art/tei:analytic[1]/tei:editor[1]/tei:name[1]) ' ||
+    '     else ($art/tei:monogr[1]/tei:author[1]/tei:surname[1] | 
+                $art/tei:monogr[1]/tei:author[1]/tei:name[1] | 
+                $art/tei:monogr[1]/tei:editor[1]/tei:surname[1] | 
+                $art/tei:monogr[1]/tei:editor[1]/tei:name[1]) ' ||
     'let $date := $art/tei:monogr[1]/tei:imprint[1]/tei:date[1] ' ||
     'order by $author[1],$date[1] return $art'
     let $query := $ns || $q
@@ -323,6 +329,9 @@ function vicav:dict_query($dict as xs:string, $query as xs:string*, $xsltfn as x
             case 'fr'
                 return
                     '[tei:sense/tei:cit[@type="translation"][@xml:lang="fr"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'es'
+                return
+                    '[tei:sense/tei:cit[@type="translation"][@xml:lang="es"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
             case 'etymLang'
                 return
                     '[tei:etym/tei:lang[' || vicav:createMatchString($terms[2]) || ']]'
