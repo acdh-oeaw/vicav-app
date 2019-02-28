@@ -1658,6 +1658,7 @@ function () {
         var cursorPosition = inputEl[0].selectionStart;
         inputEl.val(s1.substring(0, cursorPosition) + s2 + s1.substring(cursorPosition));
         document.getElementById(inpID).selectionStart = cursorPosition + 1;
+        document.getElementById(inpID).selectionEnd = cursorPosition + 1;
         var sq = $("#" + inpID).val();
         collName = $("#" + inpID).attr('dict');
         fillWordSelector(sq, collName + '__ind', '_' + suf);
