@@ -66,6 +66,7 @@
 
   <xsl:template match="tei:graphic">
     <img src="{concat($images-base-path,@url)}">
+      <xsl:if test="@style"><xsl:attribute name="style"><xsl:value-of select="@style"/></xsl:attribute></xsl:if>
       <xsl:if test="@rend='inParagraph'">
         <xsl:attribute name="class">imgIllustration</xsl:attribute>
       </xsl:if>
@@ -175,13 +176,20 @@
             <xsl:apply-templates/>
         </a>
     </xsl:template>
+    
     <xsl:template match="tei:ref[starts-with(@target,'func:')]">
-       <a class="aVicText" href="{concat('javascript', substring-after(@target, 'func'))}">
+        <a class="aVicText" href="{concat('javascript', substring-after(@target, 'func'))}">
             <xsl:apply-templates/>
         </a>
     </xsl:template>
-
-
+    
+    <xsl:template match="tei:rs[starts-with(@ref,'func:')]">
+        <a class="aVicText" href="{concat('javascript', substring-after(@ref, 'func'))}">
+            <xsl:apply-templates/>
+        </a>
+    </xsl:template>
+    
+    
     <xsl:template match="tei:ref">
         <a target="_blank" class="aVicText">
             <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>

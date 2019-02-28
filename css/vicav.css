@@ -1344,3 +1344,17 @@ img.footer-acdh-logo{
     margin-top: 0px;
     margin-bottom: 5px;
 }
+
+.newsHeader {
+   color: white;
+   background: rgb(168,93,143); 
+}
+
+.newsItem {
+    border: 0.5px dotted rgb(168,93,143);
+    background: rgb(246, 237, 243);
+    margin-top: 2px;
+    padding-left: 2px;
+    padding-top: 2px;    
+}
+}

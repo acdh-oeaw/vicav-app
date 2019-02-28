@@ -61,9 +61,15 @@ To create a new Version
 3. Rename function names in vicav_00x.xqm
 4. rename "/vicav_00x/index.html" in index.html
  */
+/* The following tables can be created with VLE                */
+/*    1. Control Form --> Analysis                             */
+/*    2. Load a TEI Dictionary                                 */
+/*    3. Extract Path = //tei:orth  + [ENTER]                  */
+/*    4. Right-Click --> Extract all characters (with comma)   */
+
 var charTable_tunis = '’,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž';
 var charTable_cairo = '’,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž';
-var charTable_baghdad = '’,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž';
+var charTable_baghdad = 'ʔ,ā,ʕ,č,ḍ,ḓ,ḏ,ē,ǝ,ᵊ,ġ,ǧ,ḥ,ī,ḷ,ṃ,ō,š,ṣ,ṭ,ṯ,ū,ž,ẓ';
 var charTable_damasc = '’,ʕ,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ǝ,ᵊ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž';
 var charTable_msa = 'ˀ,ˁ,ā,ḍ,ḏ,ē,ġ,ǧ,ḥ,ī,ḷ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ʔ';
 
@@ -594,6 +600,12 @@ function getText(secLabel_, snippetID_, style_, pID_, pVisibility_, pURL_) {
 }
 
 function getDBSnippet(s_, obj_) {
+	/******************************************************************/
+	/*  This function is being triggered by calls such as those below */
+	/*      <rs ref="text:vicavExplanationProfiles/PROFILES">         */
+	/*      <rs ref="func:openDict_Baghdad()">                        */
+	/******************************************************************/
+	
     splitPoint = s_.indexOf(":");
     //s = s_.split(':');
 
