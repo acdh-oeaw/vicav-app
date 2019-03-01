@@ -12,7 +12,7 @@
             <!-- ********************************************* -->
             <!-- ***  ENTRY ********************************** -->
             <!-- ********************************************* -->
-            <xsl:for-each select="//tei:entry">
+            <xsl:for-each select="//tei:div[@type='entry']/tei:entry">
                <xsl:sort select="./tei:form/tei:orth"/>
                <div class="dvRoundLemmaBox_ltr">
                    <xsl:value-of select="tei:form[@type='lemma']/tei:orth[@xml:lang='ar-acm-x-baghdad-vicav'] |
@@ -123,12 +123,13 @@
                                         <xsl:when test="@ana='#n_pl'">[plural]</xsl:when>
                                         <xsl:when test="@ana='#n_dual'">[dual]</xsl:when>
                                         <xsl:when test="@ana='#adj_f'">[feminine]</xsl:when>
-                                        <xsl:when test="@ana='#n_f'">[feminine]</xsl:when>
+                                        <xsl:when test="@ana='#n_sg_f'">[feminine]</xsl:when>
                                         <xsl:when test="@ana='#n_unit'">[unit noun]</xsl:when>
                                         <xsl:when test="@ana='#n_unit_pl'">[unit noun plural]</xsl:when>
                                         <xsl:when test="@ana='#n_constructState'">[construct state]</xsl:when>
-                                        
-                                        
+                                         <xsl:when test="@ana='#dm_f_sg_prox'">[feminine]</xsl:when>                                                                           
+                                         <xsl:when test="@ana='#dm_pl_prox'">[plural]</xsl:when>                                                                           
+                                         
                                         <xsl:when test="@ana='#adj_pl'">[plural]</xsl:when>
                                         <xsl:when test="@ana='#p_f'">[feminine]</xsl:when>
                                         <xsl:when test="@ana='#passiveParticiple'">[pas. part.]</xsl:when>
@@ -240,7 +241,10 @@
                                  <span class="dvUsg">(<xsl:value-of select="tei:usg[@xml:lang='en']"/>)</span>   
                               </xsl:if>
                               
-                              <xsl:if test="count(tei:cit[@type='translation'][@xml:lang='de'])&gt;0">
+                               <xsl:if test="
+                                     count(tei:cit[@type='translation'][@xml:lang='de'])&gt;0 and
+                                     (tei:cit[@type='translation'][@xml:lang='de'])!='-'
+                                   ">
                                  <div class="dvLangSep">
                                     <xsl:for-each select="tei:cit[@type='translation'][@xml:lang='de']">
                                        <xsl:if test="string-length(.)&gt;1">                                       
@@ -259,8 +263,11 @@
                                  </div>  
                               </xsl:if>
                               
-                              <xsl:if test="count(tei:cit[@type='translation'][@xml:lang='fr'])&gt;0">
-                                 <div class="dvLangSep">
+                               <xsl:if test="
+                                   count(tei:cit[@type='translation'][@xml:lang='fr'])&gt;0 and
+                                   (tei:cit[@type='translation'][@xml:lang='fr'])!='-'
+                                   ">
+                                   <div class="dvLangSep">
                                     <xsl:for-each select="tei:cit[@type='translation'][@xml:lang='fr']">
                                        <xsl:if test="string-length(.)&gt;1">                                       
                                           <span class="spTransFr">
@@ -380,20 +387,15 @@
                <tr>
                  <td class="tdHead">Editors</td>
                   <td class="tdKWICMain">
-                    <span class="spEditors" alt="Editors">
-                       <xsl:for-each select="//ed">
+                    <span class="spEditors" alt="Editors" xml:space="preserve">
+                       <xsl:for-each select="parent::node()/tei:span[@type='editor']">
                           <xsl:sort select="."/>
-                          <xsl:if test="position()&gt;1">,<xsl:text>&#x2006;</xsl:text></xsl:if>
+                          <xsl:if test="position()&gt;1">,<xsl:text> </xsl:text></xsl:if>
                           <xsl:choose>
                              <xsl:when test=".='StephanP'">S.&#xA0;Procházka</xsl:when>
-                             <xsl:when test=".='inesd'">I.&#xA0;Dallaji</xsl:when>
-                             <xsl:when test=".='inesg'">I.&#xA0;Gabsi</xsl:when>
-                             <xsl:when test=".='gisela'">G.&#xA0;Kitzler</xsl:when>
-                             <xsl:when test=".='ines2'">I.&#xA0;Ben Brahim</xsl:when>
-                             <xsl:when test=".='omar1'">O.&#xA0;Siam</xsl:when>
-                             <xsl:when test=".='bettina'">B.&#xA0;Leitner</xsl:when>
+                             <xsl:when test=".='FadyY'">F.&#xA0;Yousuf</xsl:when>
+                             <xsl:when test=".='BettinaL'">B.&#xA0;Leitner</xsl:when>
                              <xsl:when test=".='charly'">K.&#xA0;Moerth</xsl:when>
-                             <xsl:when test=".='veronika'">V.&#xA0;Ritt-Benmimoun</xsl:when>
                              <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
                          </xsl:choose>
                        </xsl:for-each>

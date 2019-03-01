@@ -156,7 +156,7 @@ function vicav:query_biblio_id($query as xs:string*, $xsltfn as xs:string) {
     let $bibls :=
     for $id in $ids
     return
-        collection("vicav_biblio")//tei:biblStruct[@corresp = $id]
+        collection("vicav_biblio")//tei:biblStruct[@corresp = 'http://zotero.org/groups/2165756/items/' || $id]
     
     let $results :=
     for $bibl in $bibls
@@ -355,15 +355,27 @@ let $results := xquery:eval($nsTei || $qq)
 (: return <answer>{count($res)}||{$res}</answer> :)
 
 (: let $results := xquery:eval($query):)
+
+(:
 let $eds := distinct-values($results//tei:fs/tei:f[@name = 'who']/tei:symbol/@value)
 let $editors :=
 for $ed in $eds
 return
     <ed>{$ed}</ed>
+:)
 
-let $exptrs := $results//tei:ptr[@type = 'example']
+let $ress1 :=
+   for $entry in $results
+      let $eds := distinct-values($entry//tei:fs/tei:f[@name = 'who']/tei:symbol/@value)
+      let $editors :=
+      for $ed in $eds
+      return
+        <span xmlns="http://www.tei-c.org/ns/1.0" type="editor">{$ed}</span>
+        return <div xmlns="http://www.tei-c.org/ns/1.0" type="entry">{$entry}{$editors}</div>
+        
+let $exptrs := $ress1//tei:ptr[@type = 'example']
 let $entries :=
-for $r in $results
+for $r in $ress1
 return
     ($r/ancestor::tei:entry, $r/ancestor::tei:cit[@type = 'example'], $r)[1]
 
@@ -373,8 +385,7 @@ return
     vicav:expandExamplePointers($e, collection($dict))
 
 let $style := doc("xslt/" || $xsltfn)
-let $ress := <results
-    xmlns="http://www.tei-c.org/ns/1.0">{$res2}||<eds>{$editors}</eds></results>
+let $ress := <results  xmlns="http://www.tei-c.org/ns/1.0">{$res2}</results>
 let $sReturn := xslt:transform-text($ress, $style)
 
 return

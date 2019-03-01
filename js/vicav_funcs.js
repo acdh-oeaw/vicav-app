@@ -637,6 +637,7 @@ function getDBSnippet(s_) {
             secLabel = trim(sh[1]);
         }
         
+        //console.log('sHead: ' + sHead);
         switch (sHead) {
 	        case 'bibl':
 	        	//console.log(sTail);
@@ -685,6 +686,7 @@ function getDBSnippet(s_) {
 	        	break;
 	
 	        case 'zotID':
+	          console.log('sTail: ' + sTail);
 	        	execBiblQuery_zotID(sTail);
 	        	break;
 	}
