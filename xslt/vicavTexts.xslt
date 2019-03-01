@@ -39,29 +39,32 @@
   </xsl:template>
  
   <xsl:template match="tei:div">
-    <xsl:choose>
-      <xsl:when test="count(ancestor::tei:div) = 1"><div>
-        <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
-        <xsl:attribute name="style">margin-left:20px</xsl:attribute>
-        <xsl:apply-templates/></div></xsl:when>
+      <!-- Label of the panel is in n -->
+      <xsl:if test="@n"><xsl:attribute name="name"><xsl:value-of select="@n"/></xsl:attribute></xsl:if>
       
-      <xsl:when test="count(ancestor::tei:div) = 2"><div>
-        <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
-        <xsl:attribute name="style">margin-left:30px</xsl:attribute>
-        <xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute><xsl:apply-templates/></div></xsl:when>
-      
-      <xsl:when test="count(ancestor::tei:div) = 3"><div>
-        <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
-        <xsl:attribute name="style">margin-left:40px</xsl:attribute>
-        <xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute><xsl:apply-templates/></div></xsl:when>
-      
-      <xsl:when test="count(ancestor::tei:div) = 4"><div>
-        <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
-        <xsl:attribute name="style">margin-left:50px</xsl:attribute>
-        <xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute><xsl:apply-templates/></div></xsl:when>
-      
-      <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
-    </xsl:choose>
+      <xsl:choose>
+          <xsl:when test="count(ancestor::tei:div) = 1"><div>
+            <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+            <xsl:attribute name="style">margin-left:20px</xsl:attribute>
+            <xsl:apply-templates/></div></xsl:when>
+          
+          <xsl:when test="count(ancestor::tei:div) = 2"><div>
+            <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+            <xsl:attribute name="style">margin-left:30px</xsl:attribute>
+            <xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute><xsl:apply-templates/></div></xsl:when>
+          
+          <xsl:when test="count(ancestor::tei:div) = 3"><div>
+            <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+            <xsl:attribute name="style">margin-left:40px</xsl:attribute>
+            <xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute><xsl:apply-templates/></div></xsl:when>
+          
+          <xsl:when test="count(ancestor::tei:div) = 4"><div>
+            <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+            <xsl:attribute name="style">margin-left:50px</xsl:attribute>
+            <xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute><xsl:apply-templates/></div></xsl:when>
+          
+          <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
+      </xsl:choose>
   </xsl:template>
 
   <xsl:template match="tei:graphic">
@@ -156,7 +159,7 @@
         starts-with(@target,'text:') or
         starts-with(@target,'sample:')]">
         <a class="aVicText">
-            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@target"/>", this)</xsl:attribute>
+            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select='@target'/>", this)</xsl:attribute>
             <xsl:apply-templates/>
         </a>
     </xsl:template>
@@ -165,6 +168,7 @@
         starts-with(@ref,'profile:') or
         starts-with(@ref,'feature:') or
         starts-with(@ref,'sound:') or
+        starts-with(@ref,'func:') or
         starts-with(@ref,'mapMarkers:') or
         starts-with(@ref,'corpus:') or
         starts-with(@ref,'bibl:') or
@@ -183,12 +187,13 @@
         </a>
     </xsl:template>
     
+    <!-- 
     <xsl:template match="tei:rs[starts-with(@ref,'func:')]">
         <a class="aVicText" href="{concat('javascript', substring-after(@ref, 'func'))}">
             <xsl:apply-templates/>
         </a>
     </xsl:template>
-    
+     -->
     
     <xsl:template match="tei:ref">
         <a target="_blank" class="aVicText">
@@ -196,51 +201,9 @@
             <xsl:apply-templates/>
         </a>
     </xsl:template>
-<!--
-  <xsl:template match="tei:ref">
-    <xsl:choose>
-        <xsl:when test="@type='flachCards'">
-            <a class="aVicText">
-                <xsl:attribute name="onclick">flashcard:</xsl:attribute>
-                <xsl:apply-templates/>
-            </a>
-        </xsl:when>
-        <xsl:when test="contains(@target, '(reg:)or(geo:)') or contains(@target, 'biblid:')">
-        <a class="aVicText">
-          <xsl:attribute name="onclick">refEvent("<xsl:value-of select="@target"/>")</xsl:attribute>
-          <xsl:apply-templates/>
-        </a>
-      </xsl:when>
-      <xsl:when test="@type='dictQuery'">
-        <a class="aVicText">
-          <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
-          <xsl:apply-templates/>
-        </a>
-      </xsl:when>
-      <xsl:when test="@type='jsLink' or contains(@target, 'javascript:')">
-        <a class="aVicText">
-          <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
-          <xsl:apply-templates/>
-        </a>
-      </xsl:when>
-      <xsl:when test="@xml:id">
-        <a class="aVicText">
-          <xsl:attribute name="id"><xsl:value-of select="@xml:id"/></xsl:attribute>
-          <xsl:apply-templates/>
-        </a>
-      </xsl:when>
-      <xsl:otherwise>
-        <a target="_blank" class="aVicText">
-          <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
-          <xsl:apply-templates/>
-        </a>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
- -->
 
-  <xsl:template match="tei:span">
-      <span>
+    <xsl:template match="tei:span">
+       <span>
           <xsl:if test="@rend">
               <xsl:attribute name="style"><xsl:value-of select="@rend"/></xsl:attribute>
           </xsl:if>

@@ -1250,6 +1250,10 @@ a:hover{
     background-color: rgb(252, 244, 216);
 }
 
+[data-snippetid = dictFrontPage_Baghdad] > .grid-wrap{
+    background-color: rgb(184, 227, 183);
+}
+
 .dropdown-item:active{
     background: rgb(168, 93, 143);
     color: white !important;
@@ -1348,13 +1352,15 @@ img.footer-acdh-logo{
 .newsHeader {
    color: white;
    background: rgb(168,93,143); 
+   padding-left: 20px;
+   padding-bottom: 5px;
 }
 
 .newsItem {
     border: 0.5px dotted rgb(168,93,143);
     background: rgb(246, 237, 243);
     margin-top: 2px;
-    padding-left: 2px;
+    padding-left: 5px;
     padding-top: 2px;    
 }
 }

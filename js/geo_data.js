@@ -98,6 +98,7 @@ function insertProfileMarkers() {
     fg5.addLayer(m2);
      */
     //console.log('getProfileMarkers');
+    clearMarkerLayers();
     $.ajax({
         url: 'profile_markers',
         type: 'GET',

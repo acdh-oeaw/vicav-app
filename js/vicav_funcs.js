@@ -404,15 +404,15 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
                 break;
 
                 case 'biblQueryLauncher':
-                var argList = pID + "=[" + panelType_ + ",";
-                break;
+                    var argList = pID + "=[" + panelType_ + ",";
+                    break;
 
                 case 'crossDictQueryLauncher':
-                var argList = pID + "=[" + panelType_ + ",";
-                break;
+                    var argList = pID + "=[" + panelType_ + ",";
+                    break;
 
                 default:
-                var argList = pID + "=[" + panelType_ + "," + snippetID_ + "," + secLabel_ + ",";
+                    var argList = pID + "=[" + panelType_ + "," + snippetID_ + "," + secLabel_ + ",";
             }
 
             if (locType_) {
@@ -481,7 +481,7 @@ function createNewCrossDictQueryPanel(pID_, pVisiblity_, pURL_) {
     "   <input type='checkbox' id='cbBaghdad' class='checkbox' value='Baghdad' checked='checked'><label class='checkboxLabel' for='cbBaghdad'>Baghdad</label>" +
     "   <input type='checkbox' id='cbMSA' class='checkbox' value='MSA'><label class='checkboxLabel' for='cbMSA'>MSA</label>" +
     "</div>" +
-    "<p>For details as to how to formulate meaningful dictionary " +
+    "<p>For details as to how to formulate meaningful dictionary queries " +
     "consult the <a class='aVicText' href='javascript:" + jsText + "'>examples of the TUNICO dictionary</a>.</p>";
     appendPanel(searchContainer, "crossDictQueryLauncher", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
 }
@@ -529,8 +529,9 @@ function createNewDictQueryPanel(dict_,                dictName_,               
 /* *************************************************************************** */
 function autoDictQuery(suffixes_, query_, field_) {
     suffixes = suffixes_.split(',');
-    //console.log(suffixes.length);
+    console.log('suffixes.length: ' + suffixes.length);
     for (var i = 0; i < suffixes.length; i++) {
+        console.log('suffix: ' + suffixes[i]);
         ob = document.getElementById('inpDictQuery' + suffixes[i]);
         if (ob == null) {
             switch (suffixes[i]) {
@@ -574,7 +575,7 @@ function hideElement(id_) {
 }
 
 function getText(secLabel_, snippetID_, style_, pID_, pVisibility_, pURL_) {
-    //console.log('getText: ' + secLabel_ + " : " + snippetID_ + " : " + style_ + " : " + pID_ + " : " + pVisibility_ + " : " + pURL_);
+    console.log('getText: ' + secLabel_ + " : " + snippetID_ + " : " + style_ + " : " + pID_ + " : " + pVisibility_ + " : " + pURL_);
 
     qs = './text?id=' + snippetID_ + '&xslt=' + style_;
     //console.log(qs);
@@ -589,7 +590,23 @@ function getText(secLabel_, snippetID_, style_, pID_, pVisibility_, pURL_) {
         success: function (result) {
             if (result.includes('error type="user authentication"')) {
                 alert('Error: authentication did not work');
-            } else {
+            } else {            	
+            	var doc = new DOMParser().parseFromString(result, "text/html");
+            	if (doc) {
+            		var el = doc.getElementsByTagName("div")[0];
+                	if (el) {
+                		var shortTitle = el.getAttribute("name");	
+                		if (shortTitle) {
+                			secLabel_ = shortTitle;
+                		}
+                		
+                	} else {
+                		console.log('no el');	
+                	}
+            	} else {
+            		console.log('doc not ok');	
+            	}
+            	
                 appendPanel(result, "textQuery", secLabel_, "grid-wrap", "", "hasTeiLink", "", snippetID_, pID_, pVisibility_, pURL_);
             }
         },
@@ -599,71 +616,78 @@ function getText(secLabel_, snippetID_, style_, pID_, pVisibility_, pURL_) {
     });
 }
 
-function getDBSnippet(s_, obj_) {
-	/******************************************************************/
-	/*  This function is being triggered by calls such as those below */
-	/*      <rs ref="text:vicavExplanationProfiles/PROFILES">         */
-	/*      <rs ref="func:openDict_Baghdad()">                        */
-	/******************************************************************/
+function getDBSnippet(s_) {
+    /******************************************************************/
+    /*  This function is being triggered by calls such as those below */
+    /*      <rs ref="text:vicavExplanationProfiles">                  */
+    /*      <rs ref="func:openDict_Baghdad()">                        */
+    /******************************************************************/
+    var refStrings = s_.split(' ');
+    
+    for (var i = 0, len = refStrings.length; i < len; i++) {
+        console.log('refString: ' + refStrings[i]);
+        
+        splitPoint = refStrings[i].indexOf(":");
+        sHead = refStrings[i].substr(0, splitPoint);
+        sTail = refStrings[i].substring(splitPoint + 1);       
+        sh = sTail.split('/');
+        snippetID = trim(sh[0]);
+        var secLabel = '';
+        if (sh[1]) {
+            secLabel = trim(sh[1]);
+        }
+        
+        switch (sHead) {
+	        case 'bibl':
+	        	//console.log(sTail);
+	        	execBiblQuery_tei(sTail);
+	        	break;
 	
-    splitPoint = s_.indexOf(":");
-    //s = s_.split(':');
-
-    //sHead = s[1];
-    //sTail = s_.substring(s_.indexOf(":") + 1);
-    sHead = s_.substr(0, splitPoint);
-    sTail = s_.substring(splitPoint + 1);
-    //console.log('head + tail: ' + sHead + ' : ' + sTail);
-    s2 = sTail.split('/');
-    snippetID = s2[0];
-    secLabel = s2[1];
-
-    switch (sHead) {
-        case 'bibl':
-        	//console.log(sTail);
-        	execBiblQuery_tei(sTail);
-        	break;
-
-        case 'mapMarkers':
-        	clearMarkerLayers();
-        	insertGeoRegMarkers(sTail, 'geo_reg');
-        	break;
-
-        case 'sound':
-        	break;
-
-        case 'flashcards':
-        	dict = s2[0];
-        	lesson = s2[1];
-        	type = s2[2];
-        	getFlashCards(lesson, dict, type);
-        	break;
-
-        case 'corpus':
-        	//console.log(snippetID + ' : ' + secLabel);
-        	getCorpusText(secLabel, snippetID, 'sampletext_01.xslt', '', '', '');
-        	break;
-
-        case 'sample':
-        	//console.log(snippetID + ' : ' + secLabel);
-        	getSample(secLabel, snippetID, 'sampletext_01.xslt', '', '', '');
-        	break;
-
-        case 'feature':
-        	getFeature(secLabel, snippetID, 'features_01.xslt', '', '', '');
-        	break;
-
-        case 'profile':
-        	getProfile(secLabel, snippetID, 'profile_01.xslt', '', '', '');
-        	break;
-
-        case 'text':
-        	getText(secLabel, snippetID, 'vicavTexts.xslt', '', '', '');
-        	break;
-
-        case 'zotID':
-        	execBiblQuery_zotID(sTail);
-        	break;
+	        case 'func':
+	        	eval(trim(sTail));
+	        	break;
+	        	
+	        case 'mapMarkers':
+	        	clearMarkerLayers();
+	        	insertGeoRegMarkers(sTail, 'geo_reg');
+	        	break;
+	
+	        case 'sound':
+	        	break;
+	
+	        case 'flashcards':
+	        	dict = s2[0];
+	        	lesson = s2[1];
+	        	type = s2[2];
+	        	getFlashCards(lesson, dict, type);
+	        	break;
+	
+	        case 'corpus':
+	        	//console.log(snippetID + ' : ' + secLabel);
+	        	getCorpusText(secLabel, snippetID, 'sampletext_01.xslt', '', '', '');
+	        	break;
+	
+	        case 'sample':
+	        	//console.log(snippetID + ' : ' + secLabel);
+	        	getSample(secLabel, snippetID, 'sampletext_01.xslt', '', '', '');
+	        	break;
+	
+	        case 'feature':
+	        	getFeature(secLabel, snippetID, 'features_01.xslt', '', '', '');
+	        	break;
+	
+	        case 'profile':
+	        	getProfile(secLabel, snippetID, 'profile_01.xslt', '', '', '');
+	        	break;
+	
+	        case 'text':
+	        	getText(secLabel, snippetID, 'vicavTexts.xslt', '', '', '');
+	        	break;
+	
+	        case 'zotID':
+	        	execBiblQuery_zotID(sTail);
+	        	break;
+	}
     }
 }
 
@@ -1132,8 +1156,9 @@ function () {
                 break;
 
                 case '_profiles_':
-                insertProfileMarkers();
-                break;
+             	//clearMarkerLayers();	
+                    insertProfileMarkers();
+                    break;
 
                 case '_samples_':
                 insertSampleMarkers();
@@ -1506,8 +1531,8 @@ function () {
         adjustNav(this.id, "#subNavTextbookGeoRegMarkers");
     });
 
-    $("#navProfilesGeoRegMarkers,#subNavProfilesGeoRegMarkers").mousedown (function (event) {
-        clearMarkerLayers();
+    $("#navProfilesGeoRegMarkers,#subNavProfilesGeoRegMarkers").mousedown (function (event) {        
+        //clearMarkerLayers();	
         insertProfileMarkers();
         adjustNav(this.id, "#subNavProfilesGeoRegMarkers");
     });
@@ -1757,6 +1782,10 @@ function () {
 
             if (document.getElementById("cbCairo").checked == true) {
                 autoDictQuery('_cairo', query, sField);
+            }
+
+            if (document.getElementById("cbBaghdad").checked == true) {
+                autoDictQuery('_baghdad', query, sField);
             }
 
             if (document.getElementById("cbMSA").checked == true) {
