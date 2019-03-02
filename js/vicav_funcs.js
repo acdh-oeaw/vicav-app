@@ -686,7 +686,7 @@ function getDBSnippet(s_) {
 	        	break;
 	
 	        case 'zotID':
-	          console.log('sTail: ' + sTail);
+	          //console.log('sTail: ' + sTail);
 	        	execBiblQuery_zotID(sTail);
 	        	break;
 	}

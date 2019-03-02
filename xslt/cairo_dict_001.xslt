@@ -12,8 +12,8 @@
             <!-- ********************************************* -->
             <!-- ***  ENTRY ********************************** -->
             <!-- ********************************************* -->
-            <xsl:for-each select="//tei:entry">
-               <xsl:sort select="./tei:form/tei:orth"/>
+            <xsl:for-each select="//tei:div[@type='entry']/tei:entry">
+                <xsl:sort select="./tei:form/tei:orth"/>
                <div class="dvRoundLemmaBox_ltr">
                   <xsl:value-of select="tei:form[@type='lemma']/tei:orth[@xml:lang='ar-arz-x-cairo-vicav'] | tei:form[@type='multiWordUnit']/tei:orth[@xml:lang='ar-arz-x-cairo-vicav'] | tei:form[@type='abbrev']/tei:orth[@xml:lang='ar-arz-x-cairo-vicav']"/>
                   <xsl:if test="tei:gramGrp/tei:gram[@type='pos']">
@@ -373,30 +373,26 @@
                <!-- ********************************************* -->
                <!-- ** EDITORS ********************************** -->
                <!-- ********************************************* -->
+               <!-- 
                <tr>
                  <td class="tdHead">Editors</td>
                   <td class="tdKWICMain">
                     <span class="spEditors" alt="Editors">
-                       <xsl:for-each select="//ed">
-                          <xsl:sort select="."/>
+                        <xsl:for-each select="parent::node()/tei:span[@type='editor']">
+                            <xsl:sort select="."/>
                           <xsl:if test="position()&gt;1">,<xsl:text>&#x2006;</xsl:text></xsl:if>
                           <xsl:choose>
-                             <xsl:when test=".='stephan'">S.&#xA0;Procházka</xsl:when>
-                             <xsl:when test=".='inesd'">I.&#xA0;Dallaji</xsl:when>
-                             <xsl:when test=".='inesg'">I.&#xA0;Gabsi</xsl:when>
-                             <xsl:when test=".='gisela'">G.&#xA0;Kitzler</xsl:when>
-                             <xsl:when test=".='ines2'">I.&#xA0;Ben Brahim</xsl:when>
-                             <xsl:when test=".='omar1'">O.&#xA0;Siam</xsl:when>
-                             <xsl:when test=".='bettina'">B.&#xA0;Leitner</xsl:when>
+                              <xsl:when test=".='stephan'">S.&#xA0;Procházka</xsl:when>
+                             <xsl:when test=".='GiselaK'">G.&#xA0;Kitzler</xsl:when>
+                              <xsl:when test=".='StephanP'">S.&#xA0;Procházka</xsl:when>
                              <xsl:when test=".='charly'">K.&#xA0;Moerth</xsl:when>
-                             <xsl:when test=".='veronika'">V.&#xA0;Ritt-Benmimoun</xsl:when>
                              <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
                          </xsl:choose>
                        </xsl:for-each>
                     </span>
                  </td>
                </tr>
-                  
+                -->   
             </table>
             </xsl:for-each>
          </div>

@@ -12,10 +12,12 @@
             <!-- ********************************************* -->
             <!-- ***  ENTRY ********************************** -->
             <!-- ********************************************* -->
-            <xsl:for-each select="//tei:entry">
+            <xsl:for-each select="//tei:div[@type='entry']/tei:entry">
                <xsl:sort select="./tei:form/tei:orth"/>
                <div class="dvRoundLemmaBox_ltr">
-                  <xsl:value-of select="tei:form[@type='lemma']/tei:orth[@xml:lang='ar-x-DMG'] | tei:form[@type='multiWordUnit']/tei:orth[@xml:lang='ar-x-DMG'] | tei:form[@type='abbrev']/tei:orth[@xml:lang='ar-x-DMG']"/>
+                  <xsl:value-of select="tei:form[@type='lemma']/tei:orth[@xml:lang='ar-x-DMG'] | 
+                                tei:form[@type='multiWordUnit']/tei:orth[@xml:lang='ar-x-DMG'] | 
+                                tei:form[@type='abbrev']/tei:orth[@xml:lang='ar-x-DMG']"/>
                   <xsl:if test="tei:gramGrp/tei:gram[@type='pos']">
                       <span class="spGramGrp">
                           <xsl:text>&#x2004;</xsl:text>
@@ -377,7 +379,7 @@
                  <td class="tdHead">Editors</td>
                   <td class="tdKWICMain">
                     <span class="spEditors" alt="Editors">
-                       <xsl:for-each select="//ed">
+                        <xsl:for-each select="parent::node()/tei:span[@type='editor']">
                           <xsl:sort select="."/>
                           <xsl:if test="position()&gt;1">,<xsl:text>&#x2006;</xsl:text></xsl:if>
                           <xsl:choose>
