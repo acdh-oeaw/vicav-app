@@ -243,6 +243,7 @@ function insertGeoRegMarkers(query_, scope_) {
         success: function (result) {
             s = '';
             cnt = 0;
+            console.log(result);
             
             $(result).find('r').each(function (index) {
                 cnt = cnt + 1;
