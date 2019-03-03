@@ -15,8 +15,11 @@
             <xsl:for-each select="//tei:div[@type='entry']/tei:entry">
                 <xsl:sort select="./tei:form/tei:orth"/>
                <div class="dvRoundLemmaBox_ltr">
-                  <xsl:value-of select="tei:form[@type='lemma']/tei:orth[@xml:lang='ar-arz-x-cairo-vicav'] | tei:form[@type='multiWordUnit']/tei:orth[@xml:lang='ar-arz-x-cairo-vicav'] | tei:form[@type='abbrev']/tei:orth[@xml:lang='ar-arz-x-cairo-vicav']"/>
+                  <xsl:value-of select="tei:form[@type='lemma']/tei:orth[@xml:lang='ar-arz-x-cairo-vicav'] |
+                      tei:form[@type='multiWordUnit']/tei:orth[@xml:lang='ar-arz-x-cairo-vicav'] | 
+                      tei:form[@type='abbrev']/tei:orth[@xml:lang='ar-arz-x-cairo-vicav']"/>
                   <xsl:if test="tei:gramGrp/tei:gram[@type='pos']">
+                      
                       <span class="spGramGrp">
                           <xsl:text>&#x2004;</xsl:text>
                           (
