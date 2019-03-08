@@ -402,6 +402,7 @@
                </tr>
                   
             </table>
+            </xsl:for-each>
          </div>
       
     </xsl:template>
