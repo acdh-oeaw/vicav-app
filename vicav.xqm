@@ -226,6 +226,38 @@ function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:
 };
 
 declare
+%rest:path("vicav/features")
+%rest:query-param("ana", "{$ana}")
+%rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("expl", "{$expl}")
+
+%rest:GET
+
+function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn as xs:string) {
+    
+    let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
+    let $q := 'collection("vicav_lingfeatures")//tei:row[.//tei:w[contains(@ana,"#' || $ana || '")] || .//tei:phr[contains(@ana,"#' || $ana || '")] ]'
+    let $query := $ns || $q
+    let $results := xquery:eval($query)
+    
+    let $ress := 
+      for $item in $results
+        let $city := $item/../../../tei:head/tei:name[@type='city']
+        let $country := $item/../../../tei:head/tei:name[@type='ccountry']
+        return
+           <item city="{$city}">{$item}</item>
+    let $ress1 := <items xml:space="preserve">{$ress}</items>
+
+    let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
+    let $style := doc($stylePath)
+    let $sHTML := xslt:transform-text($ress1, $style, map {"highLightIdentifier":$ana,"explanation":$expl})
+    return
+        (:<div type="lingFeatures">{$sHTML}</div>:)
+        (:$ress1:)
+        $sHTML
+};
+
+declare
 %rest:path("vicav/text")
 %rest:query-param("id", "{$id}")
 %rest:query-param("xslt", "{$xsltfn}")
@@ -243,6 +275,8 @@ function vicav:get_text($id as xs:string*, $xsltfn as xs:string) {
     return
         $sHTML
 };
+
+
 
 declare
 %rest:path("vicav/dict_index")

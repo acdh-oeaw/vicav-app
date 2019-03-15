@@ -83,16 +83,16 @@
                      <tr>
                         <td class="tdHead">Etym.</td>
                         <td class="tdKWICMain">
-                           <span class="spEtym">
+                           <span class="spEtym" xml:space="preserve">
                               <xsl:for-each select="tei:etym">
-                                 <xsl:text>&lt;&#160;</xsl:text>
+                                 <xsl:text>&lt; </xsl:text>
                                  
                                  <xsl:if test="tei:mentioned">
                                     <xsl:value-of select="tei:mentioned"/>
                                  </xsl:if>
                                  
                                  <xsl:if test="tei:lang">
-                                    &#160;(<xsl:value-of select="tei:lang"/>)
+                                    <xsl:text> </xsl:text>(<xsl:value-of select="tei:lang"/>)
                                  </xsl:if>
                               </xsl:for-each>
                            </span>

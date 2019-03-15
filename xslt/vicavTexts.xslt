@@ -66,6 +66,8 @@
           <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
       </xsl:choose>
   </xsl:template>
+    
+  <xsl:template match="tei:div[@type='displayContainer']"><p id="displayContainer">-</p></xsl:template>   
 
   <xsl:template match="tei:graphic">
     <img src="{concat($images-base-path,@url)}">
@@ -176,7 +178,14 @@
         starts-with(@ref,'text:') or
         starts-with(@ref,'sample:')]">
         <a class="aVicText">
-            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@ref"/>", this)</xsl:attribute>
+            <xsl:choose>
+                <xsl:when test="contains(@ref,'showLingFeatures')">
+                    <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="translate(@ref, ' ', '&#x2005;')"/>", this)</xsl:attribute>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select='@ref'/>", this)</xsl:attribute>
+                </xsl:otherwise>
+            </xsl:choose>
             <xsl:apply-templates/>
         </a>
     </xsl:template>

@@ -1013,15 +1013,25 @@ body .navbar ul.navbar-nav{
     border: 1px solid rgb(89, 83, 60);
 }
 
-.tdFeaturesCom{
+.tdFeaturesCom {
     background: #e7e2ca;
 }
 
-.tdFeaturesHead{
+.tdFeaturesHead {
     font-size: large;
     border: 1px solid rgb(168, 93, 143);
     background: rgb(168, 93, 143);
     color: white;
+}
+
+.tdFeaturesHeadRight {
+    font-size: large;
+    border: 1px solid rgb(168, 93, 143);
+    background: rgb(168, 93, 143);
+    color: white;
+    text-align: right;
+    vertical-align: top;
+    padding-right: 5px;
 }
 
 .tdFeaturesLeft{
@@ -1033,7 +1043,12 @@ body .navbar ul.navbar-nav{
     padding-left: 3px;
 }
 
-.tdFeaturesRightSource{
+.iFeaturesTrans {
+    color: blue;
+    font-size: small;
+}
+
+.tdFeaturesRightSource {
     border: 1px solid rgb(168, 93, 143);
     vertical-align: top;
     width: 80%;
@@ -1041,13 +1056,14 @@ body .navbar ul.navbar-nav{
     color: #7f960a;
 }
 
-.tdFeaturesRightTarget{
+.tdFeaturesRightTarget {
     border: 1px solid rgb(168, 93, 143);
     vertical-align: top;
     width: 80%;
     padding-left: 3px;
     color: #a58103;
     font-style: italic;
+    background: rgb(246, 236, 225);
 }
 
 /* *************************************************** */

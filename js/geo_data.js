@@ -14,18 +14,10 @@
 function insertVicavDictMarkers() {
     setExplanation('Dictionaries');
     
-    fgDictMarkers.addLayer(L.marker([30.05, 31.23], {
-        alt: 'Cairo', id: 'dict_cairo'
-    }).bindTooltip('Cairo'));
-    fgDictMarkers.addLayer(L.marker([33.51, 36.29], {
-        alt: 'Damascus', id: 'dict_damascus'
-    }).bindTooltip('Damascus'));
-    fgDictMarkers.addLayer(L.marker([36.8, 10.18], {
-        alt: 'Tunis', id: 'dict_tunis'
-    }).bindTooltip('Tunis'));
-    fgDictMarkers.addLayer(L.marker([33.33, 44.38], {
-        alt: 'Baghdad', id: 'dict_baghdad'
-    }).bindTooltip('Baghdad'));
+    fgDictMarkers.addLayer(L.marker([30.05, 31.23], { alt: 'Cairo', id: 'dict_cairo'  }).bindTooltip('Cairo'));
+    fgDictMarkers.addLayer(L.marker([33.51, 36.29], { alt: 'Damascus', id: 'dict_damascus' }).bindTooltip('Damascus'));
+    fgDictMarkers.addLayer(L.marker([36.8, 10.18], {  alt: 'Tunis', id: 'dict_tunis' }).bindTooltip('Tunis'));
+    fgDictMarkers.addLayer(L.marker([33.33, 44.38], { alt: 'Baghdad', id: 'dict_baghdad' }).bindTooltip('Baghdad'));
     
     updateUrl_biblMarker('_vicavDicts_', '');
 }
@@ -34,30 +26,19 @@ function insertFeatureMarkers() {
     /* ******************************** */
     /* Create with loc_features__001.xq */
     /* ******************************** */
+    clearMarkerLayers();
     
     setExplanation('Features');
     /*
     fgFeatureMarkers.addLayer(L.marker([30.05, 31.23], {alt:'Cairo', id:'ling_features_cairo'}));
     fgFeatureMarkers.addLayer(L.marker([33.51, 36.29], {alt:'Damascus', id:'ling_features_damascus'}));
      */
-    fgFeatureMarkers.addLayer(L.marker([30.05, 31.23], {
-        alt: 'Cairo', id: 'ling_features_cairo'
-    }).bindTooltip('Cairo'));
-    fgFeatureMarkers.addLayer(L.marker([33.51, 36.29], {
-        alt: 'Damascus', id: 'ling_features_damascus'
-    }).bindTooltip('Damascus'));
-    fgFeatureMarkers.addLayer(L.marker([36.8, 10.18], {
-        alt: 'Tunis', id: 'ling_features_tunis'
-    }).bindTooltip('Tunis'));
-    fgFeatureMarkers.addLayer(L.marker([37.15, 38.79], {
-        alt: 'Şanlıurfa', id: 'ling_features_urfa'
-    }).bindTooltip('Şanlıurfa'));
-    fgFeatureMarkers.addLayer(L.marker([33.45, 9.01], {
-        alt: 'Douz', id: 'ling_features_douz'
-    }).bindTooltip('Douz'));
-    fgFeatureMarkers.addLayer(L.marker([33.33, 44.38], {
-        alt: 'Baghdad', id: 'ling_features_baghdad'
-    }).bindTooltip('Baghdad'));
+    fgFeatureMarkers.addLayer(L.marker([30.05, 31.23], {  alt: 'Cairo', id: 'ling_features_cairo' }).bindTooltip('Cairo'));
+    fgFeatureMarkers.addLayer(L.marker([33.51, 36.29], {  alt: 'Damascus', id: 'ling_features_damascus' }).bindTooltip('Damascus'));
+    fgFeatureMarkers.addLayer(L.marker([36.8, 10.18], {  alt: 'Tunis', id: 'ling_features_tunis' }).bindTooltip('Tunis'));
+    fgFeatureMarkers.addLayer(L.marker([37.15, 38.79], { alt: 'Şanlıurfa', id: 'ling_features_urfa'  }).bindTooltip('Şanlıurfa'));
+    fgFeatureMarkers.addLayer(L.marker([33.45, 9.01], { alt: 'Douz', id: 'ling_features_douz' }).bindTooltip('Douz'));
+    fgFeatureMarkers.addLayer(L.marker([33.33, 44.38], {alt: 'Baghdad', id: 'ling_features_baghdad'}).bindTooltip('Baghdad'));
     
     updateUrl_biblMarker('_features_', '');
 }
@@ -66,12 +47,8 @@ function insertSampleMarkers() {
     /* ******************************** */
     /* Create with geo_samples_txt__001.xq */
     /* ******************************** */
-    fgSampleMarkers.addLayer(L.marker([33.51, 36.29], {
-        alt: 'Damascus', id: 'damascus_sample_01'
-    }).bindTooltip('Damascus'));
-    fgSampleMarkers.addLayer(L.marker([30.05, 31.23], {
-        alt: 'Cairo', id: 'cairo_sample_01'
-    }).bindTooltip('Cairo'));
+    fgSampleMarkers.addLayer(L.marker([33.51, 36.29], { alt: 'Damascus', id: 'damascus_sample_01' }).bindTooltip('Damascus'));
+    fgSampleMarkers.addLayer(L.marker([30.05, 31.23], { alt: 'Cairo', id: 'cairo_sample_01' }).bindTooltip('Cairo'));
     fgSampleMarkers.addLayer(L.marker([33.33, 44.38], {
         alt: 'Baghdad', id: 'baghdad_sample_01'
     }).bindTooltip('Baghdad'));
@@ -128,9 +105,7 @@ function insertProfileMarkers() {
                 sTooltip = sAlt;
                 
                 sQuery = 'profile:' + sAlt + '';
-                fgProfileMarkers.addLayer(L.marker([v1, v2], {
-                    alt: sAlt, id: sID
-                }).bindTooltip(sTooltip));
+                fgProfileMarkers.addLayer(L.marker([v1, v2], { alt: sAlt, id: sID }).bindTooltip(sTooltip));
             });
         },
         error: function (error) {
@@ -257,16 +232,11 @@ function insertGeoRegMarkers(query_, scope_) {
                 
                 if ($(this).attr('type') == 'geo') {
                     sQuery = 'geo:' + sAlt + sQuerySecPart;
-                    fgBiblMarkers.addLayer(L.marker([v1, v2], {
-                        alt: sAlt, locType: 'point', biblQuery: sQuery
-                    }).bindTooltip(sTooltip));
+                    fgBiblMarkers.addLayer(L.marker([v1, v2], { alt: sAlt, locType: 'point', biblQuery: sQuery }).bindTooltip(sTooltip));
                 }
                 if ($(this).attr('type') == 'reg') {
                     sQuery = 'reg:' + sAlt + sQuerySecPart;
-                    fgBiblMarkers.addLayer(L.circle([v1, v2], {
-                        color: 'grey', weight: 1, fillColor: 'grey', radius: 90000,
-                        alt: sAlt, biblQuery: sQuery
-                    }).bindTooltip(sTooltip));
+                    fgBiblMarkers.addLayer(L.circle([v1, v2], { color: 'grey', weight: 1, fillColor: 'grey', radius: 90000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip));
                 }
             });
         },

@@ -69,8 +69,8 @@ To create a new Version
 
 var charTable_tunis = '’,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž';
 var charTable_cairo = '’,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž';
-var charTable_baghdad = 'ʔ,ā,ʕ,č,ḍ,ḓ,ḏ,ē,ǝ,ᵊ,ġ,ǧ,ḥ,ī,ḷ,ṃ,ō,š,ṣ,ṭ,ṯ,ū,ž,ẓ';
-var charTable_damasc = '’,ʕ,ʔ,ā,ḅ,ʕ,ḏ,̣ḏ,ǝ,ᵊ,ē,ġ,ǧ,ḥ,ī,ᴵ,ḷ,ṃ,ō,ṛ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ž';
+var charTable_baghdad = 'ʔ,ʕ,ā,b,č,d,ḍ,ḓ,ḏ,e,ē,ǝ,ġ,ǧ,ḥ,ī,ḷ,ṃ,ō,ṛ,š,ṣ,ṭ,ṯ,ū,ẓ';
+var charTable_damasc = 'ʕ,ʔ,ā,ḅ,ʕ,ḍ,ḏ,ǝ,ᵊ,ē,ġ,ǧ,ḥ,ī,ḷ,ṃ,ō,ṛ,ṣ,š,ṭ,ṯ,ū,ẓ,ž';
 var charTable_msa = 'ˀ,ˁ,ā,ḍ,ḏ,ē,ġ,ǧ,ḥ,ī,ḷ,ṣ,s̠,š,ṭ,ṯ,ū,ẓ,ʔ';
 
 var baghdadFields =
@@ -121,7 +121,7 @@ function onProfilesMapClick(e) {
 
 function onFeaturesMapClick(e) {
     query = e.latlng.lat.toFixed(2) + '.*' + e.latlng.lng.toFixed(2);
-    getFeature(e.layer.options.alt, e.layer.options.id, 'features_01.xslt');
+    getFeatureOfLocation(e.layer.options.alt, e.layer.options.id, 'features_01.xslt');
 }
 
 function onSamplesMapClick(e) {
@@ -162,59 +162,12 @@ var fgGeoDictMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClic
 var fgDictMarkers = L.featureGroup().addTo(mainMap).on("click", onDictMapClick);
 
 /* ************************************************************************* */
-/* *** General String functions ******************************************** */
-/* ************************************************************************* */
-function xmlToString(xmlData) {
-    var xmlString;
-    //IE
-    if (window.ActiveXObject) {
-        xmlString = xmlData.xml;
-    }
-    // code for Mozilla, Firefox, Opera, etc.
-    else {
-        xmlString = (new XMLSerializer()).serializeToString(xmlData);
-    }
-    return xmlString;
-}
-
-function countChar(s_, c_) {
-    ilen = s_.length;
-    var res = 0;
-    for (i = 0; i != ilen; i++) {
-        if (s_.charAt(i) == c_)
-        res = res + 1;
-    }
-    return res;
-}
-
-function sss(s_, slong_) {
-	if (slong_.substring(0, s_.length) == s_) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-function trim(s_) {
-    var res = s_;
-    while (res.charAt(0) == ' ') {
-        res = res.substring(1, res.length);
-    }
-
-    while (res.charAt(res.length -1) == ' ') {
-        res = res.substring(0, res.length -1);
-    }
-    return res;
-}
-
-function insert(str, index, value) {
-    return str.substr(0, index) + value + str.substr(index);
-}
-
-/* ************************************************************************* */
 /* ************************************************************************* */
 /* ************************************************************************* */
 function createCharTable(idSuffix_, chars_) {
+    //console.log('idSuffix_: ' + idSuffix_);
+    //console.log('chars_: ' + chars_);
+    
     sarr = chars_.split(',');
     s = '';
     for (var i = 0, len = sarr.length; i < len; i++) {
@@ -336,7 +289,6 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
     var toBeClosed = -1;
     secLabel_ = secLabel_.replace(/%20/, ' ');
     contents_ = contents_.replace(/{query}/, query_);
-    //console.log('append panel: ' + panelType_);
 
     $('.content-panel').each(function () {
         var panelID = $(this).data('pid');
@@ -368,24 +320,28 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
     var teiLink = '';
     if (teiLink_ == 'hasTeiLink') {
         switch (panelType_) {
-            case 'profileQuery': teiLink_ = 'getProfile("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xsl")';
+            case 'profileQuery': teiLink_ = 'getProfile("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xslt")';
             break;
-            case 'featureQuery': teiLink_ = 'getFeature("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xsl")';
+            case 'featureQuery': teiLink_ = 'getFeatureOfLocation("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xslt")';
             break;
-            case 'sampleQuery': teiLink_ = 'getSample("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xsl")';
+            case 'crossFeaturesResults': teiLink_ = 'showLingFeatures("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xslt")';
             break;
-            case 'textQuery': teiLink_ = 'getText("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xsl")';
+            case 'sampleQuery': teiLink_ = 'getSample("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xslt")';
+            break;
+            case 'textQuery': teiLink_ = 'getText("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xslt")';
             break;
         }
     } else {
         teiLink_ = '';
     }
 
+    console.log('teiLink_: ' + teiLink_);
     if ((contents_.indexOf('<pre ') == -1) &&(teiLink_.length > 0)) {
-        teiLink = "<a href='javascript:" + teiLink_ + "' class='aTEIButton'>TEI</a>";
+        teiLink = "<a href='javascript:" + teiLink_ + "' class='aTEIButton'>TEI</a>";        
     } else {
         teiLink = '';
     }
+    //console.log('teiLink: ' + teiLink);
     contents_ = contents_.replace(/{teiLink}/, teiLink);
 
     /* ******************************************************/
@@ -466,6 +422,13 @@ function createNewQueryBiblioPanel(pID_, pVisiblity_, pURL_) {
     appendPanel(searchContainer, "biblQueryLauncher", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
 }
 
+function createDisplayFeaturesPanel() {
+    var searchContainer =
+    "<div class='dvCrossFeatures' id='dvCrossFeatures'></div>";
+    //appendPanel(searchContainer, "crossFeaturesResults", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
+    appendPanel(searchContainer, "crossFeaturesResults", "", "grid-wrap", '', 'hasTeiLink', '', '');
+}
+
 function createNewCrossDictQueryPanel(pID_, pVisiblity_, pURL_) {
     var jsText = "getText(&#39;TUNICO DICTIONARY&#39;, &#39;dictFrontPage_Tunis&#39;, &#39;vicavTexts.xslt&#39;)";
 
@@ -486,7 +449,9 @@ function createNewCrossDictQueryPanel(pID_, pVisiblity_, pURL_) {
     appendPanel(searchContainer, "crossDictQueryLauncher", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
 }
 
-function createNewDictQueryPanel(dict_,                dictName_,                  idSuffix_,  xslt_,                   chartable_, selectFields_, pID_, pVisiblity_, pURL_) {
+function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_, selectFields_, pID_, pVisiblity_, pURL_) {
+    //console.log('chartable_:' + chartable_);
+    
     ob = $("#loading-wrapper" + idSuffix_).length;
     if (ob > 0) {
         alert('Dict query panel already exists');
@@ -529,9 +494,9 @@ function createNewDictQueryPanel(dict_,                dictName_,               
 /* *************************************************************************** */
 function autoDictQuery(suffixes_, query_, field_) {
     suffixes = suffixes_.split(',');
-    console.log('suffixes.length: ' + suffixes.length);
+    //console.log('suffixes.length: ' + suffixes.length);
     for (var i = 0; i < suffixes.length; i++) {
-        console.log('suffix: ' + suffixes[i]);
+        //console.log('suffix: ' + suffixes[i]);
         ob = document.getElementById('inpDictQuery' + suffixes[i]);
         if (ob == null) {
             switch (suffixes[i]) {
@@ -547,7 +512,8 @@ function autoDictQuery(suffixes_, query_, field_) {
                     break;
 
                 case '_baghdad':
-                    createNewDictQueryPanel('dc_acm_baghdad_eng', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_damasc, baghdadFields);
+                    //console.log('baghdad dict');
+                    createNewDictQueryPanel('dc_acm_baghdad_eng', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_baghdad, baghdadFields);
                     break;
 
                 case '_MSA':
@@ -575,7 +541,7 @@ function hideElement(id_) {
 }
 
 function getText(secLabel_, snippetID_, style_, pID_, pVisibility_, pURL_) {
-    console.log('getText: ' + secLabel_ + " : " + snippetID_ + " : " + style_ + " : " + pID_ + " : " + pVisibility_ + " : " + pURL_);
+    //console.log('getText: ' + secLabel_ + " : " + snippetID_ + " : " + style_ + " : " + pID_ + " : " + pVisibility_ + " : " + pURL_);
 
     qs = './text?id=' + snippetID_ + '&xslt=' + style_;
     //console.log(qs);
@@ -601,10 +567,10 @@ function getText(secLabel_, snippetID_, style_, pID_, pVisibility_, pURL_) {
                 		}
                 		
                 	} else {
-                		console.log('no el');	
+                		//console.log('no el');	
                 	}
             	} else {
-            		console.log('doc not ok');	
+            		//console.log('doc not ok');	
             	}
             	
                 appendPanel(result, "textQuery", secLabel_, "grid-wrap", "", "hasTeiLink", "", snippetID_, pID_, pVisibility_, pURL_);
@@ -625,7 +591,7 @@ function getDBSnippet(s_) {
     var refStrings = s_.split(' ');
     
     for (var i = 0, len = refStrings.length; i < len; i++) {
-        console.log('refString: ' + refStrings[i]);
+        //console.log('refString: ' + refStrings[i]);
         
         splitPoint = refStrings[i].indexOf(":");
         sHead = refStrings[i].substr(0, splitPoint);
@@ -645,6 +611,7 @@ function getDBSnippet(s_) {
 	        	break;
 	
 	        case 'func':
+	        	//console.log(sTail);
 	        	eval(trim(sTail));
 	        	break;
 	        	
@@ -674,7 +641,7 @@ function getDBSnippet(s_) {
 	        	break;
 	
 	        case 'feature':
-	        	getFeature(secLabel, snippetID, 'features_01.xslt', '', '', '');
+	        	getFeatureOfLocation(secLabel, snippetID, 'features_01.xslt', '', '', '');
 	        	break;
 	
 	        case 'profile':
@@ -720,9 +687,9 @@ function execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_) {
 }
 
 function execBiblQuery_zotID(query_, pID_, pVisiblity_, pURL_) {
-    console.log('execBiblQuery_zotID');
-    console.log('   query_: ' + query_);
-    console.log('   pID: ' + pID_);
+    //console.log('execBiblQuery_zotID');
+    //console.log('   query_: ' + query_);
+    //console.log('   pID: ' + pID_);
 
     query_ = query_.replace(/zotID:/g, '');
     qs = './biblio_id?query=' + query_ + '&xslt=biblio_tei_01.xslt'
@@ -749,39 +716,14 @@ function execBiblQuery_zotID(query_, pID_, pVisiblity_, pURL_) {
 }
 
 function execBiblQuery(query_, pID_, pVisiblity_, pURL_) {
-	console.log('query: ' + query_);
-    if (sss('reg:', query_) || 
-	    sss('geo:', query_) ||
-    	sss('vt:', query_)) {
+	//console.log('query: ' + query_);
+    if (sss('reg:', query_) || sss('geo:', query_) || sss('vt:', query_)) {
     	execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_);
     } else if (sss('zotID:', query_)) {
     	execBiblQuery_zotID(query_, pID_, pVisiblity_, pURL_);
     } else {
     	execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_);
     }
-
-    /* restQuery_ = query_.replace(/&/, ',');
-    qs = './biblio?query=' + restQuery_ + '&xslt=biblio_01.xslt'
-
-    $.ajax({
-        url: qs,
-        type: 'GET',
-        dataType: 'html',
-        cache: false,
-        crossDomain: true,
-        contentType: 'application/html; ',
-        success: function (result) {
-            if (result.includes('error type="user authentication"')) {
-                alert('Error: authentication did not work');
-            } else {
-                appendPanel(result, "biblQuery", "", "grid-wrap", query_, "noTeiLink", "", "", pID_, pVisiblity_, pURL_);
-            }
-        },
-        error: function (error) {
-            alert('Error: ' + error);
-        }
-    });
-    */
 }
 
 function getSample(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
@@ -828,7 +770,52 @@ function getCorpusText(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
     });
 }
 
-function getFeature(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
+function showLingFeatures(ana_, expl_, type_) {
+    ana_ = ana_.replace("#", '');
+    //console.log('expl_: ' + expl_);
+    if (type_ == 'tei') {
+        qs = './features?ana=' + encodeURIComponent(ana_) + '&expl=' + encodeURIComponent(expl_) + '&xslt=tei_2_html__v004__gen.xslt';
+    } else {
+        qs = './features?ana=' + encodeURIComponent(ana_) + '&expl=' + encodeURIComponent(expl_) + '&xslt=cross_features_01.xslt';
+    }
+    console.log('qs: ' + qs);
+
+    $.ajax({
+        url: qs,
+        type: 'GET',
+        dataType: 'html',
+        cache: false,
+        crossDomain: true,
+        contentType: 'application/html; ',
+        success: function (result) {
+            if (result.includes('error type="user authentication"')) {
+                alert('Error: authentication did not work');
+            } else {
+                //appendPanel(result, "featureQuery", "features", "grid-wrap", '', 'hasTeiLink', '', snippetID_, pID_, pVisiblity_, pURL_);
+                console.log(result);
+                result = result.replace(/==teiFuncID==/, '#' + ana_);
+                result = result.replace(/==teiFuncLabel==/, expl_);
+                
+                ob = document.getElementById("dvCrossFeatures");
+                if (ob) {
+                  ob.innerHTML = result;
+                } else {
+                  createDisplayFeaturesPanel();  
+                  ob = document.getElementById("dvCrossFeatures");
+                  if (ob) {
+                    ob.innerHTML = result;
+                  }
+                }
+            }
+        },
+        error: function (error) {
+            alert('Error: ' + error);
+        }
+    });
+}
+
+
+function getFeatureOfLocation(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
     qs = './profile?coll=vicav_lingfeatures&id=' + snippetID_ + '&xslt=' + style_;
 
     $.ajax({
@@ -893,11 +880,11 @@ function clearMarkerLayers() {
 /* **************************************************** */
 function execDictQuery_ajax(query_, idSuffix_) {
     if (query_.length > 0) {
-        console.log("query: " + query_);
-        console.log("idSuffix: " + idSuffix_);
+        //console.log("query: " + query_);
+        //console.log("idSuffix: " + idSuffix_);
 
         xslt = $("#inpDictQuery" + idSuffix_).attr('xslt');
-        teiQuery = query_.replace(xslt, "tei_2_html__v004__gen.xsl");
+        teiQuery = query_.replace(xslt, "tei_2_html__v004__gen.xslt");
         $("#inpDictQuery" + idSuffix_).attr('teiQuery', teiQuery);
 
         $.ajax({
@@ -936,7 +923,7 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
     }
     sInd = $("#slFieldSelect" + idSuffix_).val();
     sIndexUrl = './dict_index?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + q_;
-    console.log(sIndexUrl);
+    //console.log(sIndexUrl);
     $.ajax({
         url: sIndexUrl,
         type: 'GET',
@@ -1112,7 +1099,7 @@ function openDict_Tunis() {
 }
 
 function openDict_Baghdad() {
-    createNewDictQueryPanel('dc_acm_baghdad_eng', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_tunis, baghdadFields);
+    createNewDictQueryPanel('dc_acm_baghdad_eng', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_baghdad, baghdadFields);
 }
 
 function openDict_Cairo() {
@@ -1130,7 +1117,7 @@ function () {
 
     // Parse the given url parameters for views
     var currentURL = decodeURI(window.location.toString());
-    console.log('currentUrl: ' + currentURL);
+    //console.log('currentUrl: ' + currentURL);
 
     if (currentURL.includes('#')) {
         var args = currentURL.split('#');
@@ -1175,7 +1162,7 @@ function () {
         }
 
         // Parse the panels
-        console.log('args: ' + args);
+        //console.log('args: ' + args);
         for (var i = 1; i < args.length; i++) {
             setTimeout(function (y) {
                 var pArgs = args[y].split('=');
@@ -1225,7 +1212,7 @@ function () {
                     var snippetID = pArgs[1];
                     var caption = pArgs[2];
                     var pVisiblity = pArgs[3];
-                    getFeature(caption, snippetID, 'features_01.xslt', pID_, pVisiblity, true);
+                    getFeatureOfLocation(caption, snippetID, 'features_01.xslt', pID_, pVisiblity, true);
                 } else
 
                 if (queryFunc == 'sampleQuery') {
@@ -1264,7 +1251,7 @@ function () {
     }
 
     $("button").mousedown (function (event) {
-        console.log('Click');
+        //console.log('Click');
         alert('');
     });
 
@@ -1394,6 +1381,9 @@ function () {
     });
     $("#liVicavCrossDictQuery").mousedown (function (event) {
         createNewCrossDictQueryPanel();
+    });
+    $("#liVicavCrossFeatureQuery").mousedown (function (event) {
+        getText('EXPLORE FEATURES', 'vicav_explore_features', 'vicavTexts.xslt');
     });
 
 
@@ -1561,22 +1551,22 @@ function () {
     /* ****  FEATURES ******** */
     /* *********************** */
     $("#liFeatureBaghdad").mousedown (function (event) {
-        getFeature('Baghdad', 'ling_features_baghdad', 'features_01.xslt');
+        getFeatureOfLocation('Baghdad', 'ling_features_baghdad', 'features_01.xslt');
     });
     $("#liFeatureCairo").mousedown (function (event) {
-        getFeature('Cairo', 'ling_features_cairo', 'features_01.xslt');
+        getFeatureOfLocation('Cairo', 'ling_features_cairo', 'features_01.xslt');
     });
     $("#liFeatureDamascus").mousedown (function (event) {
-        getFeature('Damascus', 'ling_features_damascus', 'features_01.xslt');
+        getFeatureOfLocation('Damascus', 'ling_features_damascus', 'features_01.xslt');
     });
     $("#liFeatureDouz").mousedown (function (event) {
-        getFeature('Douz', 'ling_features_douz', 'features_01.xslt');
+        getFeatureOfLocation('Douz', 'ling_features_douz', 'features_01.xslt');
     });
     $("#liFeatureTunis").mousedown (function (event) {
-        getFeature('Tunis', 'ling_features_tunis', 'features_01.xslt');
+        getFeatureOfLocation('Tunis', 'ling_features_tunis', 'features_01.xslt');
     });
     $("#liFeatureUrfa").mousedown (function (event) {
-        getFeature('Urfa', 'ling_features_urfa', 'features_01.xslt');
+        getFeatureOfLocation('Urfa', 'ling_features_urfa', 'features_01.xslt');
     });
 
     /* ********************** */
