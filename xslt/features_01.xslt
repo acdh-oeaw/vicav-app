@@ -83,7 +83,7 @@
     <xsl:template match="tei:p"><p><xsl:apply-templates/></p></xsl:template>
     <xsl:template match="tei:seg"><span xml:space="preserve"><xsl:value-of select="."/></span></xsl:template>
     <xsl:template match="tei:w">
-        <span><xsl:if test="@ana='#'+$highLightIdentifier"><xsl:attribute name="style">color:red;</xsl:attribute></xsl:if>
+        <span><xsl:if test="contains(@ana,concat('#',$highLightIdentifier))"><xsl:attribute name="style">color:red;</xsl:attribute></xsl:if>
             <xsl:apply-templates/></span></xsl:template>
     
     <!-- 
