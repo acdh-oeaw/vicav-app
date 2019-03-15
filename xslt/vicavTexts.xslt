@@ -1,7 +1,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="1.0">
+  xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
 
-    <xsl:output method="html" encoding="UTF-8"/>
+    <xsl:output method="xhtml" encoding="UTF-8"/>
   <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
   <xsl:param name="param-images-base-path">images</xsl:param>
   <!-- we make sure that $images-base-path always has a trailing slash -->
