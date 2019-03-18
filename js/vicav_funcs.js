@@ -1530,7 +1530,7 @@ function () {
     });
 
     $("#navFeaturesGeoRegMarkers,#subNavFeaturesGeoRegMarkers").mousedown (function (event) {
-        clearMarkerLayers();
+        
         insertFeatureMarkers();
         adjustNav(this.id, "#subNavFeaturesGeoRegMarkers");
     });
