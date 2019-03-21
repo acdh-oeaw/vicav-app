@@ -196,9 +196,9 @@ function insertGeoRegMarkers(query_, scope_) {
 	//http://localhost:8984/vicav/bibl_markers_tei?query=vt:textbook,reg:Egypt&scope=geo_reg
     //for experimenting in BaseX Client: vicav_bibl_markers
     
-    //if (query_ == '') { query_ = 'none'; }
-	console.log('query_: ' + query_);
-	console.log('scope_: ' + scope_);
+    if (query_ == '') { query_ = '.*'; }
+	//console.log('query_: ' + query_);
+	//console.log('scope_: ' + scope_);
     $(".sub-nav-map-items .active").removeClass("active");
     sUrl = 'bibl_markers_tei?query=' + query_ + '&scope=' + scope_;
     /*sQuerySecPart = ',vt:textbook';*/
@@ -236,7 +236,7 @@ function insertGeoRegMarkers(query_, scope_) {
                 }
                 if ($(this).attr('type') == 'reg') {
                     sQuery = 'reg:' + sAlt + sQuerySecPart;
-                    fgBiblMarkers.addLayer(L.circle([v1, v2], { color: 'grey', weight: 1, fillColor: 'grey', radius: 90000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip));
+                    fgBiblMarkers.addLayer(L.circle([v1, v2], { color: 'rgb(168, 93, 143)', weight: 1, fillColor: 'rgb(168, 93, 143)', radius: 90000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip));
                 }
             });
         },

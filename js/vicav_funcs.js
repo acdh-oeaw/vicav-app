@@ -267,7 +267,7 @@ function changePanelVisibility(panel, type)   {
             }
         }
         args = args.join("&");
-        //console.log('replaceState (changePanelVisibility 2)');
+        console.log('replaceState (8)');
         window.history.replaceState({ }, "", baseUrl + "#" + args);
     } else if (type == 'close') {
         for (var i = 1; i < args.length; i++) {
@@ -277,8 +277,9 @@ function changePanelVisibility(panel, type)   {
             }
         }
         args = args.join("&");
-        //console.log('replaceState (changePanelVisibility 2)');
+        console.log('replaceState (changePanelVisibility 3)');
         //console.log('baseUrl + args: ' + baseUrl+"#"+args);
+        console.log('replaceState (9)');
         window.history.replaceState({}, "", baseUrl + "#" + args);
         panel.remove();
     }
@@ -335,7 +336,7 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
         teiLink_ = '';
     }
 
-    console.log('teiLink_: ' + teiLink_);
+    //console.log('teiLink_: ' + teiLink_);
     if ((contents_.indexOf('<pre ') == -1) &&(teiLink_.length > 0)) {
         teiLink = "<a href='javascript:" + teiLink_ + "' class='aTEIButton'>TEI</a>";        
     } else {
@@ -375,7 +376,8 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
                 argList = argList + locType_ + ",";
             }
             argList = argList + "open]";
-            //console.log('replaceState (appendPanel): ' + currentURL + "&" + argList);
+            console.log('replaceState (appendPanel): ' + currentURL + "&" + argList);
+            console.log('replaceState (10)');            
             window.history.replaceState({ }, "", currentURL + "&" + argList);
         }
     } else {
@@ -778,7 +780,7 @@ function showLingFeatures(ana_, expl_, type_) {
     } else {
         qs = './features?ana=' + encodeURIComponent(ana_) + '&expl=' + encodeURIComponent(expl_) + '&xslt=cross_features_01.xslt';
     }
-    console.log('qs: ' + qs);
+    //console.log('qs: ' + qs);
 
     $.ajax({
         url: qs,
@@ -792,7 +794,7 @@ function showLingFeatures(ana_, expl_, type_) {
                 alert('Error: authentication did not work');
             } else {
                 //appendPanel(result, "featureQuery", "features", "grid-wrap", '', 'hasTeiLink', '', snippetID_, pID_, pVisiblity_, pURL_);
-                console.log(result);
+                //console.log(result);
                 result = result.replace(/==teiFuncID==/, '#' + ana_);
                 result = result.replace(/==teiFuncLabel==/, expl_);
                 
@@ -953,9 +955,11 @@ function getSuffixID(id_) {
 }
 
 function updateUrl_biblMarker(query_, scope_) {
-    //console.log('query: ' + query_ + ' scope_: ' + scope_);
+    console.log('updateUrl_biblMarker');
+    console.log('query: ' + query_ + ' scope_: ' + scope_);
     currentURL = window.location.toString();
     if (currentURL.includes('#')) {
+        console.log('replaceState (4a): ' + query_ + ':' + scope_);
         var args_01 = currentURL.split('#');
         var args_02 = args_01[1].split('&');
         var sOut = '';
@@ -967,11 +971,10 @@ function updateUrl_biblMarker(query_, scope_) {
             }
         }
         var newUrl = args_01[0] + '#' + sOut;
-        //console.log('updateUrl_biblMarker::newUrl: ' + newUrl);
+        console.log('updateUrl_biblMarker::newUrl: ' + newUrl);
         //console.log(currentURL);
-        window.history.replaceState({
-        },
-        "", newUrl);
+        console.log('replaceState (4)');
+        window.history.replaceState({ }, "", newUrl);
     }
 }
 
@@ -1004,7 +1007,7 @@ function updateUrl_dictQuery(idSuffix_, query_, collname_) {
     for (var i = 1; i < args_.length; i++) {
         sout = sout + "&" + args_[i];
     }
-    //console.log('replaceState (updateUrl_dictQuery)');
+    console.log('replaceState (5)');
     window.history.replaceState({
     },
     "", args[0] + '#' + sout);
@@ -1117,7 +1120,7 @@ function () {
 
     // Parse the given url parameters for views
     var currentURL = decodeURI(window.location.toString());
-    //console.log('currentUrl: ' + currentURL);
+    console.log('reload: currentUrl: ' + currentURL);
 
     if (currentURL.includes('#')) {
         var args = currentURL.split('#');
@@ -1181,17 +1184,6 @@ function () {
                     var query = pArgs[1];
                     var pVisiblity = pArgs[2];
                     execBiblQuery(query, pID_, pVisiblity, true);
-                    /*
-                    if (sss('reg:', query) || 
-                    	sss('geo:', query) || 
-                    	sss('vt:', query)) {
-                    	execBiblQuery_tei(query, pID_, pVisiblity, true);
-                    } else if (sss('zotID:', query)) {
-                        execBiblQuery_zotID(query, pID_, pVisiblity, true);
-                    } else {
-                    	execBiblQuery_tei(query, pID_, pVisiblity, true);
-                    }
-                    */
                 } else
 
                 if (queryFunc == 'textQuery') {
@@ -1243,8 +1235,8 @@ function () {
             200 * i, i);
         }
     } else {
-        //console.log('aaa');
         insertGeoRegMarkers('.*', 'geo');
+        console.log('replaceState (6)');
         window.history.replaceState({ }, "", currentURL + "#map=[biblMarkers,,geo]&1=[textQuery,vicavMission,MISSION,open]&2=[textQuery,vicavNews,NEWS,open]");
         getText('MISSION', 'vicavMission', 'vicavTexts.xslt', 1, 'open', true);
         getText('NEWS', 'vicavNews', 'vicavTexts.xslt', 2, 'open', true);
@@ -1619,9 +1611,7 @@ function () {
     /* ********* WORD SELECTOR *******************************/
     /* *******************************************************/
 
-    $("[id^=id_opt]").click (
-    function (event) {
-    });
+    $("[id^=id_opt]").click ( function (event) { });
 
     $(document).on("keyup", '[id^=slWordSelect]',
     function (event) {
@@ -1731,8 +1721,7 @@ function () {
             $('#sub-nav-share-confirmation').fadeIn(100);
             setTimeout(function () {
                 $('#sub-nav-share-confirmation').fadeOut(200);
-            },
-            2000);
+            }, 2000);
         }
     });
 
