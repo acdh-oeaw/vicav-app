@@ -503,7 +503,7 @@ function autoDictQuery(suffixes_, query_, field_) {
         if (ob == null) {
             switch (suffixes[i]) {
                 case '_tunis':
-                	createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
+                	createNewDictQueryPanel('dc_tunico', 'TUNICO Dictionary', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
                 	break;
                 case '_cairo':
                 	createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
@@ -1098,7 +1098,7 @@ function openDict_Damascus() {
 }
 
 function openDict_Tunis() {
-    createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
+    createNewDictQueryPanel('dc_tunico', 'TUNICO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
 }
 
 function openDict_Baghdad() {
@@ -1226,7 +1226,7 @@ function () {
                     var pVisiblity = pArgs[3];
 
                     if (dict == 'dc_tunico') {
-                        createNewDictQueryPanel('dc_tunico', 'TUNCIO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, pID_, pVisiblity, true);
+                        createNewDictQueryPanel('dc_tunico', 'TUNICO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, pID_, pVisiblity, true);
                         query = './dict_api?query=' + query + '&dict=dc_tunico&xslt=tunis_dict_001.xslt';
                         execDictQuery_ajax(query, '_tunis');
                     }
