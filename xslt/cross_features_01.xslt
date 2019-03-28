@@ -40,8 +40,8 @@
                         <tr>
                             <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/></td>
                             <td class="tdFeaturesRightTarget">
-                                <xsl:apply-templates select="tei:row/tei:cell[@rend = 'tdRight']"/><xsl:text> </xsl:text>
-                                <i class="iFeaturesTrans">(<xsl:value-of select="tei:row/tei:cell[@rend = 'tdCentre']"/>)</i>
+                                <xsl:apply-templates select="tei:row/tei:cell[@rend = 'tdRight']"/>
+                                <i class="iFeaturesTrans" xml:space="preserve"><xsl:text> </xsl:text>(<xsl:value-of select="tei:row/tei:cell[@rend = 'tdCentre']"/>)</i>
                             </td>
                         </tr>                       
                     </xsl:for-each>
