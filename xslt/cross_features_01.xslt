@@ -4,7 +4,9 @@
     <xsl:param name="explanation"></xsl:param>
     
     <xsl:output method="xml" encoding="utf-8"/>
-    <xsl:strip-space elements="tei:cell"/>
+    <!-- <xsl:strip-space elements="tei:cell"/> -->
+    <xsl:strip-space elements="*"/>
+    <xsl:preserve-space elements=""/>
     <xsl:template match="/">
         
         <!-- 
