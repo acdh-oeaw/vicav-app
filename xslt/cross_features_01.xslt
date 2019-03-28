@@ -5,6 +5,7 @@
     
     <xsl:output method="xml" encoding="utf-8"/>
     <!-- <xsl:strip-space elements="tei:cell"/> -->
+    <!-- VERSION 3.1.2 -->
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements=""/>
     <xsl:template match="/">
@@ -22,7 +23,8 @@
             <div>
                 <table class="tbHeader">
                     <tr><td>
-                        <h2 xml:space="preserve">Features: <i> <xsl:value-of select="$explanation"/></i></h2></td>
+                        <h2 xml:space="preserve">Features: <i>
+                            <xsl:value-of select="$explanation"/></i></h2></td>
                         <!-- TEI deaktivated for the time being, problem with mixed xml.space -->
                         <!-- 
                         <td class="tdTeiLink"><a class='aTEIButton'>
@@ -36,7 +38,7 @@
                     <xsl:for-each select="//item">
                         <tr>
                             <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/></td>
-                            <td class="tdFeaturesRightTarget" xml:space="preserve">
+                            <td class="tdFeaturesRightTarget">
                                 <xsl:apply-templates select="tei:row/tei:cell[@rend = 'tdRight']"/><xsl:text> </xsl:text>
                                 <i class="iFeaturesTrans">(<xsl:value-of select="tei:row/tei:cell[@rend = 'tdCentre']"/>)</i>
                             </td>
@@ -60,7 +62,7 @@
             </xsl:if>
             <xsl:apply-templates/></span></xsl:template>
     <xsl:template match="tei:seg">
-        <span xml:space="preserve"><xsl:value-of select="."/></span>
+        <span><xsl:value-of select="."/></span>
     </xsl:template>
     
     <xsl:template match="tei:w">
