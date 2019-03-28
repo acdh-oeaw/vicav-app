@@ -3,9 +3,10 @@
     <xsl:param name="highLightIdentifier"></xsl:param>
     <xsl:param name="explanation"></xsl:param>
     
-    <xsl:output method="xml" encoding="utf-8"/>
+    <!-- <xsl:output method="xml" encoding="utf-8"/> -->
+    <xsl:output method="html"/>
     <!-- <xsl:strip-space elements="tei:cell"/> -->
-    <!-- VERSION 3.1.2 -->
+    <!-- VERSION 3.1.4 -->
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements=""/>
     <xsl:template match="/">
