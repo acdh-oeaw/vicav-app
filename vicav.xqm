@@ -237,8 +237,7 @@ function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn
     
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $q := 'collection("vicav_lingfeatures")//tei:row[.//tei:w[contains-token(@ana,"#' || $ana || '")][1] || .//tei:phr[contains-token(@ana,"#' || $ana || '")][1]]'
-    let $query := $ns || $q
-    
+    let $query := $ns || $q    
     let $results := xquery:eval($query)
     
     let $ress := 
@@ -247,7 +246,7 @@ function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn
         let $country := $item/../../../tei:head/tei:name[@type='ccountry']
         return
            <item city="{$city}">{$item}</item>
-    let $ress1 := <items xml:space="preserve">{$ress}</items>
+    let $ress1 := <items>{$ress}</items>
 
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
