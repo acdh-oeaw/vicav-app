@@ -27,7 +27,8 @@
                 <table class="tbFeatures">
                     <xsl:for-each select="//tei:row">
                         <xsl:choose>
-                            <xsl:when test="(string-length(tei:cell[@rend = 'tdRight']) = 0) and (string-length(tei:cell[@rend = 'tdCentre']) = 0)">
+                            <xsl:when test="(string-length(tei:cell[@rend = 'tdRight']) = 0) and 
+                                            (string-length(tei:cell[@rend = 'tdCentre']) = 0)">
                                 <tr>
                                     <td colspan="2" class="tdFeaturesHead"><xsl:copy-of select="tei:cell[@rend = 'tdLeft']"/></td>
                                 </tr>
@@ -84,8 +85,7 @@
     <xsl:template match="tei:hi[@rend = 'red']"><span style="color:red"><xsl:apply-templates/></span></xsl:template>
     <xsl:template match="tei:p"><p><xsl:apply-templates/></p></xsl:template>
     <xsl:template match="tei:seg"><span xml:space="preserve"><xsl:value-of select="."/></span></xsl:template>
-    <xsl:template match="tei:w">
-        <span><xsl:if test="contains(@ana,concat('#',$highLightIdentifier))"><xsl:attribute name="style">color:red;</xsl:attribute></xsl:if>
+    <xsl:template match="tei:w"><span><xsl:if test="contains(@ana,concat('#',$highLightIdentifier))"><xsl:attribute name="style">color:red;</xsl:attribute></xsl:if>
             <xsl:apply-templates/></span></xsl:template>
     
     <!-- 

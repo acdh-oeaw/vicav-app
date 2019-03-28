@@ -65,9 +65,7 @@
         <span><xsl:value-of select="."/></span>
     </xsl:template>
     
-    <xsl:template match="tei:w">
-        <span>
-            <xsl:if test="contains(@ana,concat('#',$highLightIdentifier))">
+    <xsl:template match="tei:w"><span><xsl:if test="contains(@ana,concat('#',$highLightIdentifier))">
                 <xsl:attribute name="style">color:red;</xsl:attribute>
             </xsl:if>
             <xsl:apply-templates/></span></xsl:template>
