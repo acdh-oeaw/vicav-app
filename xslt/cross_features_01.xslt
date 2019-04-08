@@ -37,6 +37,7 @@
                 
                 <table class="tbFeatures">
                     <xsl:for-each select="//item">
+                        <xsl:sort select="@city"/>
                         <tr>
                             <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/></td>
                             <td class="tdFeaturesRightTarget">
