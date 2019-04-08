@@ -29,16 +29,50 @@ function insertFeatureMarkers() {
     clearMarkerLayers();
     
     setExplanation('Features');
-    /*
-    fgFeatureMarkers.addLayer(L.marker([30.05, 31.23], {alt:'Cairo', id:'ling_features_cairo'}));
-    fgFeatureMarkers.addLayer(L.marker([33.51, 36.29], {alt:'Damascus', id:'ling_features_damascus'}));
-     */
-    fgFeatureMarkers.addLayer(L.marker([30.05, 31.23], {  alt: 'Cairo', id: 'ling_features_cairo' }).bindTooltip('Cairo'));
+    /* fgFeatureMarkers.addLayer(L.marker([30.05, 31.23], {  alt: 'Cairo', id: 'ling_features_cairo' }).bindTooltip('Cairo'));
     fgFeatureMarkers.addLayer(L.marker([33.51, 36.29], {  alt: 'Damascus', id: 'ling_features_damascus' }).bindTooltip('Damascus'));
     fgFeatureMarkers.addLayer(L.marker([36.8, 10.18], {  alt: 'Tunis', id: 'ling_features_tunis' }).bindTooltip('Tunis'));
     fgFeatureMarkers.addLayer(L.marker([37.15, 38.79], { alt: 'Şanlıurfa', id: 'ling_features_urfa'  }).bindTooltip('Şanlıurfa'));
     fgFeatureMarkers.addLayer(L.marker([33.45, 9.01], { alt: 'Douz', id: 'ling_features_douz' }).bindTooltip('Douz'));
     fgFeatureMarkers.addLayer(L.marker([33.33, 44.38], {alt: 'Baghdad', id: 'ling_features_baghdad'}).bindTooltip('Baghdad'));
+    clearMarkerLayers(); */
+    $.ajax({
+        url: 'feature_markers',
+        type: 'GET',
+        dataType: 'xml',
+        contentType: 'application/html; charset=utf-8',
+        success: function (result) {
+            s = '';
+            cnt = 0;
+            $(result).find('r').each(function (index) {
+                cnt = cnt + 1;
+                //console.log(sUrl);
+                loc = $(this).find('loc').text();
+                loc = loc.replace(/°/g, ".");
+                loc = loc.replace(/′N/g, ",");
+                loc = loc.replace(/′E/g, "");
+                if (loc.indexOf('′W') !== -1) {
+                    loc = loc.replace(/ /g, " -");
+                    loc = loc.replace(/′W/g, "");
+                }
+                
+                sTooltip = $(this).find('alt').text();
+                sID = $(this).attr('xml:id');
+                //console.log(loc + ' ' + sAlt);
+                values = loc.split(",");
+                v1 = parseFloat(values[0]);
+                v2 = parseFloat(values[1]);
+                
+                sQuery = 'profile:' + sTooltip + '';
+                fgFeatureMarkers.addLayer(L.marker([v1, v2], { alt: sTooltip, id: sID }).bindTooltip(sTooltip));
+                //fgFeatureMarkers.addLayer(L.marker([33.51, 36.29], {  alt: 'Damascus', id: 'ling_features_damascus' }).bindTooltip('Damascus'));
+            });
+        },
+        error: function (error) {
+            alert('Error: ' + error);
+        }
+    });
+    
     
     updateUrl_biblMarker('_features_', '');
 }

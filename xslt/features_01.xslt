@@ -85,8 +85,7 @@
     <xsl:template match="tei:hi[@rend = 'red']"><span style="color:red"><xsl:apply-templates/></span></xsl:template>
     <xsl:template match="tei:p"><p><xsl:apply-templates/></p></xsl:template>
     <xsl:template match="tei:seg"><span xml:space="preserve"><xsl:value-of select="."/></span></xsl:template>
-    <xsl:template match="tei:w"><span><xsl:if test="contains(@ana,concat('#',$highLightIdentifier))"><xsl:attribute name="style">color:red;</xsl:attribute></xsl:if>
-            <xsl:apply-templates/></span></xsl:template>
+    <xsl:template match="tei:w"><span><xsl:apply-templates/></span></xsl:template>
     
     <!-- 
    <xsl:template match="tei:cell"><td><xsl:apply-templates/></td></xsl:template>

@@ -1521,8 +1521,7 @@ function () {
         adjustNav(this.id, "#subNavProfilesGeoRegMarkers");
     });
 
-    $("#navFeaturesGeoRegMarkers,#subNavFeaturesGeoRegMarkers").mousedown (function (event) {
-        
+    $("#navFeaturesGeoRegMarkers,#subNavFeaturesGeoRegMarkers").mousedown (function (event) {        
         insertFeatureMarkers();
         adjustNav(this.id, "#subNavFeaturesGeoRegMarkers");
     });
