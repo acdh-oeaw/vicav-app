@@ -4,7 +4,7 @@
     <xsl:variable name="title">
         <xsl:value-of select="//tei:titleStmt/tei:title"/>
     </xsl:variable>
-  
+    
     <xsl:template match="/">
         <html>
             <xsl:comment>This is a generated page, do not edit!</xsl:comment>
