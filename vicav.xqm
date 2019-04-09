@@ -269,7 +269,7 @@ function vicav:get_text($id as xs:string*, $xsltfn as xs:string) {
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $q := 'collection("vicav_texts")//tei:div[@xml:id="' || $id || '"]'
     let $query := $ns || $q
-    let $results := xquery:eval($query)
+    let $results := parse-xml(serialize(xquery:eval($query), map {'method': 'xml', 'indent': 'yes'}))
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
     let $sHTML := xslt:transform-text($results, $style)

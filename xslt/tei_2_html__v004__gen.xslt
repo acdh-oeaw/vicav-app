@@ -34,7 +34,7 @@
     <xsl:template match="*">
         <span>
             <xsl:if test="preceding-sibling::node()[1]/self::*">
-                <xsl:text>
+                <xsl:text xml:space="preserve">
 
  </xsl:text>
             </xsl:if>
@@ -65,7 +65,7 @@
     <xsl:template match="@*">
         <span>
             <span class="spAttrName">
-                <xsl:text> </xsl:text>&#160;    
+                <xsl:text xml:space="preserve"> </xsl:text>&#160;    
                <xsl:value-of select="local-name()"/>
             </span>
             <span class="spEquals">=</span>
@@ -78,15 +78,13 @@
     </xsl:template>
     <xsl:template match="@xml:*">
         <span>
-            <xsl:text> </xsl:text>
+            <xsl:text xml:space="preserve"> </xsl:text>
             <span class="spAttrName">&#160;
                 <xsl:value-of select="concat('xml:',local-name())"/>
             </span>
             <span class="spEquals">=</span>
             <span class="spQuotes">"</span>
-            <span class="spValues">
-                <xsl:value-of select="."/>
-            </span>
+            <span class="spValues"><xsl:value-of select="."/></span>
             <span class="spQuotes">"</span>
         </span>
     </xsl:template>
