@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
    <!--This is a generated page, do not edit!-->
-   <!--Generated: 2018-09-06T13:00:34.467+02:00-->
+   <!--Generated: 2019-04-10T08:57:22.617+02:00-->
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
       <link rel="stylesheet" type="text/css" href="guidelines.css"></link>
@@ -63,22 +63,24 @@
             <p class="tocEntry"><a class="aH3Contents" href="#sourceOfExamples">12.2 ... of examples</a></p>
             <p class="tocEntry"><a class="aH3Contents" href="#sourceOfSenses">12.3 ... of senses</a></p>
             <p class="tocEntry"><a class="aH2Contents" href="#biblio">13 References</a></p><br></br><br></br></div>
-         <div class="dvRight">5.0
+         <div class="dvRight">
             <div class="tei-teiHeader"></div>
             <div class="tei-text">
                <div class="tei-body">
                   <h1>VICAV Dictionary Encoding Guidelines</h1>
-                  <p><span class="spAuthor">Charly Moerth, Stephan Procházka</span>Vienna, 2017
+                  <p><span class="spAuthor">Charly Moerth, Stephan Procházka</span>Vienna, 2017 - 2019
                   </p>
                   <h2 id="generalities">1 Introduction </h2>
-                  <p class="tei-p">The examples in the following guidelines are taken from dictionaries that are being
-                     produced 
+                  <p class="tei-p">Most of the examples in the following guidelines are taken from dictionaries that
+                     are being produced 
                      as part of the VICAV programme. These are 
                      <i>A Machine-readable Dictionary of Egyptian Arabic</i>, 
-                     <i>A machine-readable dictionary of Rabat Arabic</i>,
+                     <i>A Machine-readable Dictionary of Rabat Arabic</i>,
                      <i>A Digital Dictionary of Tunis Arabic</i>,
-                     <i>A digital dictionary of Damascus Arabic</i> and
-                     <i>A machine-readable dictionary of Modern Standard Arabic</i>.
+                     <i>A Digital Dictionary of Damascus Arabic</i> and
+                     <i>A Machine-readable Dictionary of Modern Standard Arabic</i>.
+                  </p>
+                  <p class="tei-p">Some examples are also taken from the <i>Dictionary of Modern Persian</i>.
                   </p>
                   <h2 id="basicStructure">2 Basic dictionary structure </h2>
                   <p class="tei-p">The VICAV dictionaries are encoded according to the Guidelines of the 
@@ -141,14 +143,14 @@
                   <p class="tei-p">Lemmas and MWUs basically have the same structure.</p><pre class="preBox">
 <span><span class="spRed">&lt;entry</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">kitaab_001</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>kitāb<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>kitāb<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
    ...
 <span class="spRed">&lt;/entry&gt;</span></span>
                         </pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div><pre class="preBox">
 <span><span class="spRed">&lt;entry</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">fi_0</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">multiWordUnit</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>fi baḥr<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>fi baḥr<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
    ...
 <span class="spRed">&lt;/entry&gt;</span></span>
@@ -166,7 +168,7 @@
                   <p class="tei-p">Examples are encoded making use of a <i>cit/quote</i> construction.
                   </p><pre class="preBox">
 <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">yibqa_ustaz_001</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">example</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ḥayibʔa ustāz in šāʔ allāh.<span class="spRed">&lt;/quote&gt;</span></span>
+   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ḥayibʔa ustāz in šāʔ allāh.<span class="spRed">&lt;/quote&gt;</span></span>
    ...
 <span class="spRed">&lt;/cit&gt;</span></span>
                         </pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
@@ -175,12 +177,12 @@
                      are involved, sentences are to be separated by a dash.
                   </p><pre class="preBox">
 ...
-<span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>tislam idēki. - ʔaḷḷāh yisallimak.<span class="spRed">&lt;/quote&gt;</span></span>
+<span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>tislam idēki. - ʔaḷḷāh yisallimak.<span class="spRed">&lt;/quote&gt;</span></span>
 ...</pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
                   <h3 id="proverbs">4.4 Proverbs</h3>
                   <p class="tei-p">Proverbs are a subtype of example.</p><pre class="preBox">
 <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">il_cagala_min_ish_shitaan_001</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">example</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">subtype</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">proverb</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>il-ʕagala min iš-šiṭān.<span class="spRed">&lt;/quote&gt;</span></span>
+   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>il-ʕagala min iš-šiṭān.<span class="spRed">&lt;/quote&gt;</span></span>
 
    <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">translation</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">en</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
       <span><span class="spRed">&lt;quote</span><span class="spRed">&gt;</span>Haste makes waste.<span class="spRed">&lt;/quote&gt;</span></span>
@@ -194,13 +196,13 @@
                   </p><pre class="preBox">
 <span><span class="spRed">&lt;entry</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">balad_0</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>balad<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>balad<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
    
    ...
    
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">inflected</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">ana</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">#n_pl</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>bilād<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>bilād<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
    ...
 <span class="spRed">&lt;/entry&gt;</span></span>
@@ -292,16 +294,16 @@
                   </p><pre class="preBox">
 ...
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>mara<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>mara<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 
 <span><span class="spRed">&lt;gramGrp</span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">pos</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>noun<span class="spRed">&lt;/gram&gt;</span></span>
-   <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>mrʔ<span class="spRed">&lt;/gram&gt;</span></span>
+   <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>mrʔ<span class="spRed">&lt;/gram&gt;</span></span>
 <span class="spRed">&lt;/gramGrp&gt;</span></span>
 
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">inflected</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">ana</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">#n_constructState</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>mirāt<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>mirāt<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 ...</pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
                   <h3 id="variants">5.2 Variants</h3>
@@ -350,7 +352,7 @@
                   </p><pre class="preBox">
 <span><span class="spRed">&lt;entry</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">bard_0</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>bard<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>bard<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
    ...
    <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
@@ -432,7 +434,7 @@
                   <p class="tei-p">Translation equivalents of examples are indicated in <i>cit/quote</i> constructions.
                   </p><pre class="preBox">
 <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">tislam_ideeki__001</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">example</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>tislam idēki! - ʔaḷḷāh yisallimak.<span class="spRed">&lt;/quote&gt;</span></span>
+   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>tislam idēki! - ʔaḷḷāh yisallimak.<span class="spRed">&lt;/quote&gt;</span></span>
 
    <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">translation</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">en</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
       <span><span class="spRed">&lt;quote</span><span class="spRed">&gt;</span>Thank you! - Not at all.<span class="spRed">&lt;/quote&gt;</span></span>
@@ -444,7 +446,7 @@
                      analogous manner.
                   </p><pre class="preBox">
 <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">tislam_ideeki__001</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">example</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>tislam idēki! - ʔaḷḷāh yisallimak.<span class="spRed">&lt;/quote&gt;</span></span>
+   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>tislam idēki! - ʔaḷḷāh yisallimak.<span class="spRed">&lt;/quote&gt;</span></span>
 
    <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">translation</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">en</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
       <span><span class="spRed">&lt;quote</span><span class="spRed">&gt;</span>Thank you! - Not at all.<span class="spRed">&lt;/quote&gt;</span></span>
@@ -503,7 +505,7 @@
                   </p><pre class="preBox">
 ...
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>šubra<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>šubra<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 ...
 <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
@@ -525,12 +527,12 @@
                   </p><pre class="preBox">
 ...
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʔaṣl-an<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʔaṣl-an<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 ...
 <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;xr</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">syn</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;ref</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>fi l-ʔaṣl<span class="spRed">&lt;/ref&gt;</span></span>
+      <span><span class="spRed">&lt;ref</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>fi l-ʔaṣl<span class="spRed">&lt;/ref&gt;</span></span>
    <span class="spRed">&lt;/xr&gt;</span></span>
 
    <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">translation</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">en</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
@@ -548,7 +550,7 @@
                   </p><pre class="preBox">
 <span><span class="spRed">&lt;entry</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">badal_001</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>badal<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>badal<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
    
    <span><span class="spRed">&lt;gramGrp</span><span class="spRed">&gt;</span>
@@ -653,13 +655,13 @@
                   </p><pre class="preBox">
 ...
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʔittāwib<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʔittāwib<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 
 <span><span class="spRed">&lt;gramGrp</span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">pos</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>verb<span class="spRed">&lt;/gram&gt;</span></span>
    <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">derivedVerbClass</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>I-t<span class="spRed">&lt;/gram&gt;</span></span>
-   <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ṯʔb<span class="spRed">&lt;/gram&gt;</span></span>
+   <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ṯʔb<span class="spRed">&lt;/gram&gt;</span></span>
 <span class="spRed">&lt;/gramGrp&gt;</span></span>
 ...</pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
                   <p class="tei-p">Loans of the structure CāC(a) are invariably assigned CʔC.</p>
@@ -896,13 +898,13 @@
 ...</pre><div class="dictSource">A Digital Dictionary of Damascus Arabic</div><pre class="preBox">
 ...
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>zēnab<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>zēnab<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 
 <span><span class="spRed">&lt;gramGrp</span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">pos</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>properNoun<span class="spRed">&lt;/gram&gt;</span></span>
    <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">gender</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>female<span class="spRed">&lt;/gram&gt;</span></span>
-   <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>zynb<span class="spRed">&lt;/gram&gt;</span></span>
+   <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>zynb<span class="spRed">&lt;/gram&gt;</span></span>
 <span class="spRed">&lt;/gramGrp&gt;</span></span>
 ...
 </pre><div class="dictSource">A Digital Dictionary of Damascus Arabic</div>
@@ -1107,20 +1109,20 @@
                   </p><pre class="preBox">
 ...
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>baṣal<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>baṣal<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 
 <span><span class="spRed">&lt;gramGrp</span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">pos</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>collectiveNoun<span class="spRed">&lt;/gram&gt;</span></span>
-   <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>bṣl<span class="spRed">&lt;/gram&gt;</span></span>
+   <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>bṣl<span class="spRed">&lt;/gram&gt;</span></span>
 <span class="spRed">&lt;/gramGrp&gt;</span></span>
 
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">inflected</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">ana</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">#n_unit</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>baṣala<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>baṣala<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">inflected</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">ana</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">#n_pl</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>baṣalāt<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>baṣalāt<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 ...</pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
                   <p class="tei-p">If a collective noun has no singulative this is recorded in the following manner:</p><pre class="preBox">
@@ -1147,19 +1149,19 @@
                   <p class="tei-p">Elatives should be registered under the respective positive forms.</p><pre class="preBox">
 ...
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>kuwayyis<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>kuwayyis<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">inflected</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">ana</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">#adj_sg_f</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>kuwayyisa<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>kuwayyisa<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">inflected</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">ana</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">#adj_pl</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>kuwayyisīn<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>kuwayyisīn<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">inflected</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">ana</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">#adj_elative</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʔaḥsan<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʔaḥsan<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 ...</pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
                   <p class="tei-p">In some cases it may make sense to treat a particular elative 
@@ -1167,12 +1169,12 @@
                   </p><pre class="preBox">
 ...
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʔaḥsan<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʔaḥsan<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 
 <span><span class="spRed">&lt;gramGrp</span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">pos</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>elative<span class="spRed">&lt;/gram&gt;</span></span>
-   <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ḥsn<span class="spRed">&lt;/gram&gt;</span></span>
+   <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ḥsn<span class="spRed">&lt;/gram&gt;</span></span>
 <span class="spRed">&lt;/gramGrp&gt;</span></span>
 
 <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
@@ -1239,13 +1241,13 @@
                   </p><pre class="preBox">
 <span><span class="spRed">&lt;entry</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">mashhur_001</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>mašhūr<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>mašhūr<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
 
    <span><span class="spRed">&lt;gramGrp</span><span class="spRed">&gt;</span>
       <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">pos</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>adjective<span class="spRed">&lt;/gram&gt;</span></span>
       <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">morph</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>passiveParticiple<span class="spRed">&lt;/gram&gt;</span></span>
-      <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>šhr<span class="spRed">&lt;/gram&gt;</span></span>
+      <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>šhr<span class="spRed">&lt;/gram&gt;</span></span>
    <span class="spRed">&lt;/gramGrp&gt;</span></span>
    ...
 <span class="spRed">&lt;/entry&gt;</span></span>
@@ -1268,7 +1270,7 @@
                   </p><pre class="preBox">
 ...
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʔafandim<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʔafandim<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 
 <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
@@ -1300,7 +1302,7 @@
                   </p><pre class="preBox">
 ...
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>maṛa<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>maṛa<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 ...
 <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
@@ -1326,7 +1328,7 @@
                   </p><pre class="preBox">
 ...
 <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">sharraftuuna_allaah_yisharraf_mi_daarak_001</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">example</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>šaṛṛaftūna. - ʔaḷḷāh yišaṛṛaf miʔdāṛak.<span class="spRed">&lt;/quote&gt;</span></span>
+   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>šaṛṛaftūna. - ʔaḷḷāh yišaṛṛaf miʔdāṛak.<span class="spRed">&lt;/quote&gt;</span></span>
    <span><span class="spRed">&lt;usg</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">prag</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">en</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>This phrase is used upon leaving.<span class="spRed">&lt;/usg&gt;</span></span>
 
    <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">literalTranslation</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">en</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
@@ -1408,7 +1410,7 @@
                      
                      <tr>
                         
-                        <td>ar-arz-x-cairo-vicTrans</td>
+                        <td>ar-arz-x-cairo-vicav</td>
                         
                         <td>Cairo Arabic, VICAV transcription</td>
                         
@@ -1457,6 +1459,81 @@
                      </tr>
                      
                   </table>
+                  <p class="tei-p">Let us analyse one example in detail. The language identifiers used for Egyptian Arabic
+                     are <i>ar-arz-x-cairo-vicav</i> and <i>ar-arz-x-cairo-arabic</i>.
+                  </p>
+                  <table>
+                     
+                     <tr>
+                        
+                        <td>
+                           <b>Component</b>
+                           
+                        </td>
+                        
+                        <td>
+                           <b>System</b>
+                           
+                        </td>
+                        
+                        <td>
+                           <b>Meaning</b>
+                           
+                        </td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ar</td>
+                        
+                        <td>ISO 639-2</td>
+                        
+                        <td>Arabic</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>arz</td>
+                        
+                        <td>ISO 639-3</td>
+                        
+                        <td>Egyptian Arabic</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>x</td>
+                        
+                        <td>BCP 47</td>
+                        
+                        <td>Begin of private use area</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>cairo</td>
+                        
+                        <td>(Location)</td>
+                        
+                        <td></td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>vicav</td>
+                        
+                        <td>(Transcription system)</td>
+                        
+                        <td></td>
+                        
+                     </tr>
+                     
+                  </table>
                   <h2 id="etymologies">9 Etymologies </h2>
                   <p class="tei-p">Etymologies are encoded by means of the <i>etym</i> element. According to 
                      our schema, these also have to be top-level elements which are placed after the 
@@ -1480,7 +1557,7 @@
                   <p class="tei-p">Feminine forms of substantives are encoded as separate entries.</p><pre class="preBox">
 <span><span class="spRed">&lt;entry</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">gaar_001</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>gāṛ<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>gāṛ<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
    ...
    <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
@@ -1492,7 +1569,7 @@
 
 <span><span class="spRed">&lt;entry</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">gaara_001</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>gāṛa<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>gāṛa<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
    ...
    <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
@@ -1508,16 +1585,16 @@
                   </p><pre class="preBox">
 <span><span class="spRed">&lt;entry</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">beet_000</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>bēt<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>bēt<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
 
    <span><span class="spRed">&lt;gramGrp</span><span class="spRed">&gt;</span>
       <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">pos</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>noun<span class="spRed">&lt;/gram&gt;</span></span>
-      <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>byt<span class="spRed">&lt;/gram&gt;</span></span>
+      <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>byt<span class="spRed">&lt;/gram&gt;</span></span>
    <span class="spRed">&lt;/gramGrp&gt;</span></span>
 
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">inflected</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">ana</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">#n_pl</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>biyūt<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>biyūt<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
 
    <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
@@ -1529,11 +1606,11 @@
 
 <span><span class="spRed">&lt;entry</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">beet_001</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>bēt<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>bēt<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
    ...
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">inflected</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">ana</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">#n_pl</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʔabyāt<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʔabyāt<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
 
    <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
@@ -1712,7 +1789,7 @@
 ...
 <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">construction</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>baʔa + li- + 
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>baʔa + li- + 
          <span><span class="spRed">&lt;seg</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">constrPart</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>pronSuffix | noun<span class="spRed">&lt;/seg&gt;</span></span> + 
          <span><span class="spRed">&lt;seg</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">constrPart</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>timeExpression<span class="spRed">&lt;/seg&gt;</span></span> <span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
@@ -1725,7 +1802,7 @@
 ...
 <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">construction</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>baʔa + li- + 
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>baʔa + li- + 
          <span><span class="spRed">&lt;seg</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">constrPart</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>pronSuffix | noun<span class="spRed">&lt;/seg&gt;</span></span> + 
          <span><span class="spRed">&lt;seg</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">constrPart</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>timeExpression<span class="spRed">&lt;/seg&gt;</span></span> <span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
@@ -1770,7 +1847,7 @@
                   <p class="tei-p">An anologous case is the following one:</p><pre class="preBox">
 ...
    <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʕand<span class="spRed">&lt;/orth&gt;</span></span>
+      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʕand<span class="spRed">&lt;/orth&gt;</span></span>
    <span class="spRed">&lt;/form&gt;</span></span>
    ...
    <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
@@ -1781,7 +1858,7 @@
    
    <span><span class="spRed">&lt;sense</span><span class="spRed">&gt;</span>
       <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">construction</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-         <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʕand + 
+         <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ʕand + 
             <span><span class="spRed">&lt;seg</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">constrPart</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>pronSuffix<span class="spRed">&lt;/seg&gt;</span></span>
                                     <span class="spRed">&lt;/orth&gt;</span></span>
       <span class="spRed">&lt;/form&gt;</span></span>
@@ -1895,7 +1972,7 @@
 
 <span><span class="spRed">&lt;gramGrp</span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">pos</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>noun<span class="spRed">&lt;/gram&gt;</span></span>
-   <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ṯqf<span class="spRed">&lt;/gram&gt;</span></span>
+   <span><span class="spRed">&lt;gram</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">root</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ṯqf<span class="spRed">&lt;/gram&gt;</span></span>
    <span><span class="spRed">&lt;usg</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">reg</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>formal<span class="spRed">&lt;/usg&gt;</span></span>
 <span class="spRed">&lt;/gramGrp&gt;</span></span>
 ...</pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
@@ -1905,12 +1982,12 @@
 ...
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">inflected</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">ana</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">#v_pp_m</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;usg</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">reg</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>informal<span class="spRed">&lt;/usg&gt;</span></span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>mittihim<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>mittihim<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">inflected</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">ana</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">#v_pp_m</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;usg</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">reg</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>formal<span class="spRed">&lt;/usg&gt;</span></span>
-   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>muttaham<span class="spRed">&lt;/orth&gt;</span></span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>muttaham<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 ...</pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
                   <h3 id="semanticLabels">10.7 Semantic classifications</h3>
@@ -1952,7 +2029,7 @@
                      looks like this:
                   </p><pre class="preBox">
 <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">yibqa_ustaz_001</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">example</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ḥayibʔa ustāz in šāʔ allāh.<span class="spRed">&lt;/quote&gt;</span></span>
+   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ḥayibʔa ustāz in šāʔ allāh.<span class="spRed">&lt;/quote&gt;</span></span>
 
    <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">translation</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">en</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
       <span><span class="spRed">&lt;quote</span><span class="spRed">&gt;</span>He will become a professor (hopefully).<span class="spRed">&lt;/quote&gt;</span></span>
@@ -2055,7 +2132,7 @@
                      used to encode usage examples.
                   </p><pre class="preBox">
 <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">limcit_cineeh_001</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">example</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>limʕit ʕinēh.<span class="spRed">&lt;/quote&gt;</span></span>
+   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>limʕit ʕinēh.<span class="spRed">&lt;/quote&gt;</span></span>
    ...
    <span><span class="spRed">&lt;bibl</span><span class="spRed">&gt;</span>4/82<span class="spRed">&lt;/bibl&gt;</span></span>
 <span class="spRed">&lt;/cit&gt;</span></span>
