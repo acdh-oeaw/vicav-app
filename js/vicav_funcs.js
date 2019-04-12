@@ -1263,8 +1263,8 @@ function () {
     $("#liVicavLinguistics").mousedown (function (event) {
         getText('LINGUISTICS', 'vicavLinguistics', 'vicavTexts.xslt');
     });
-    $("#liVicavDictionaries").mousedown (function (event) {
-        getText('DICTIONARIES', 'vicavDictionaries', 'vicavTexts.xslt');
+    $("#liVicavDictionariesTechnicalities").mousedown (function (event) {
+        getText('DICTIONARIES (TECHNICALITIES)', 'vicavDictionariesTechnicalities', 'vicavTexts.xslt');
     });
     $("#liVicavTypesOfText").mousedown (function (event) {
         getText('TYPES OF TEXT/DATA', 'vicavTypesOfText', 'vicavTexts.xslt');

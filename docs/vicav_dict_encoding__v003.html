@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
    <!--This is a generated page, do not edit!-->
-   <!--Generated: 2019-04-10T08:57:22.617+02:00-->
+   <!--Generated: 2019-04-12T13:13:29.778+02:00-->
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
       <link rel="stylesheet" type="text/css" href="guidelines.css"></link>
@@ -13,12 +13,12 @@
             <p class="tocEntry"></p>
             <p class="tocEntry"><a class="aH2Contents" href="#generalities">1 Introduction</a></p>
             <p class="tocEntry"><a class="aH2Contents" href="#basicStructure">2 Basic dictionary structure</a></p>
-            <p class="tocEntry"><a class="aH2Contents" href="#characterEncoding">3 Character encoding</a></p>
+            <p class="tocEntry"><a class="aH2Contents" href="#characterEncoding">3 Character encoding and Transcription</a></p>
             <p class="tocEntry"><a class="aH2Contents" href="#dictEntries">4 Dictionary entries</a></p>
             <p class="tocEntry"><a class="aH3Contents" href="#entryTypes">4.1 Lemmas and MWUs</a></p>
-            <p class="tocEntry"><a class="aH3Contents" href="#ids">4.2 Identifiers (IDs)</a></p>
-            <p class="tocEntry"><a class="aH3Contents" href="#examples">4.3 Illustrative sentences</a></p>
-            <p class="tocEntry"><a class="aH3Contents" href="#proverbs">4.4 Proverbs</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#examples">4.2 Illustrative sentences (Examples)</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#proverbs">4.3 Proverbs</a></p>
+            <p class="tocEntry"><a class="aH3Contents" href="#ids">4.4 Identifiers (IDs)</a></p>
             <p class="tocEntry"><a class="aH2Contents" href="#wordForms">5 Word forms</a></p>
             <p class="tocEntry"><a class="aH3Contents" href="#morphoAnots">5.1 Morphosyntactic annotations</a></p>
             <p class="tocEntry"><a class="aH3Contents" href="#variants">5.2 Variants</a></p>
@@ -78,9 +78,7 @@
                      <i>A Machine-readable Dictionary of Rabat Arabic</i>,
                      <i>A Digital Dictionary of Tunis Arabic</i>,
                      <i>A Digital Dictionary of Damascus Arabic</i> and
-                     <i>A Machine-readable Dictionary of Modern Standard Arabic</i>.
-                  </p>
-                  <p class="tei-p">Some examples are also taken from the <i>Dictionary of Modern Persian</i>.
+                     <i>A Machine-readable Dictionary of Modern Standard Arabic</i>. Some examples are also taken from the <i>Dictionary of Modern Persian</i>.
                   </p>
                   <h2 id="basicStructure">2 Basic dictionary structure </h2>
                   <p class="tei-p">The VICAV dictionaries are encoded according to the Guidelines of the 
@@ -135,10 +133,492 @@
          <span class="spRed">&lt;/div&gt;</span></span>
       <span class="spRed">&lt;/body&gt;</span></span>
                     </pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
-                  <h2 id="characterEncoding">3 Character encoding </h2>
-                  <p class="tei-p">Character encoding is based on Unicode (UTF-8).</p>
+                  <h2 id="characterEncoding">3 Character encoding and Transcription </h2>
+                  <p class="tei-p">Character encoding is based on Unicode (UTF-8). The transcription follows 
+                     a system which is widely applied in Arabic studies and also used in reference works
+                     such as the
+                     Encyclopedia of Arabic Language and Linguistics (Leiden: Brill, 2006-2009).
+                  </p>
+                  <p class="tei-p">Following a widespread convention in Arabic dialectology, the data
+                     is presented in in a broad phonological transcription that does not indicate allophones.
+                     The following 
+                     list represents most of the signs used in this application.
+                  </p>
+                  <table>
+                     
+                     <tr>
+                        
+                        <td>VICAV</td>
+                        
+                        <td>IPA</td>
+                        
+                        <td>arabic</td>
+                        
+                        <td>DIN</td>
+                        
+                        <td>chat</td>
+                        
+                        <td>Sound Description</td>
+                        
+                        <td>Unicode Character Name</td>
+                        
+                     </tr>
+                     
+                     
+                     <tr>
+                        
+                        <td>ʔ</td>
+                        
+                        <td>ʔ</td>
+                        
+                        <td>ء,أ,إ,آ,ئ,ؤ</td>
+                        
+                        <td>ʾ</td>
+                        
+                        <td>2</td>
+                        
+                        <td>Glottal stop</td>
+                        
+                        <td>LATIN LETTER GLOTTAL STOP</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ā</td>
+                        
+                        <td>aː</td>
+                        
+                        <td>ا,ى</td>
+                        
+                        <td>ā</td>
+                        
+                        <td>a</td>
+                        
+                        <td>Long vowel a</td>
+                        
+                        <td>LATIN SMALL LETTER A WITH MACRON</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ḅ</td>
+                        
+                        <td>bˤ</td>
+                        
+                        <td>ب</td>
+                        
+                        <td>b</td>
+                        
+                        <td>b</td>
+                        
+                        <td>Pharyngealized voiced bilabial stop</td>
+                        
+                        <td>LATIN SMALL LETTER B WITH DOT BELOW</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ʕ</td>
+                        
+                        <td>ʕ</td>
+                        
+                        <td>ع</td>
+                        
+                        <td>ʿ</td>
+                        
+                        <td>3</td>
+                        
+                        <td>Pharyngal voiced fricative</td>
+                        
+                        <td>LATIN LETTER PHARYNGEAL VOICED FRICATIVE</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ḏ̣</td>
+                        
+                        <td>ðˤ</td>
+                        
+                        <td>ض,ظ</td>
+                        
+                        <td>ḍ,ẓ</td>
+                        
+                        <td>dh,d,6,9</td>
+                        
+                        <td>Pharyngealized voiced dental fricative</td>
+                        
+                        <td>LATIN SMALL LETTER D WITH LINE BELOW + COMBINING DOT BELOW</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ḏ</td>
+                        
+                        <td>ð</td>
+                        
+                        <td>ذ</td>
+                        
+                        <td>ḏ</td>
+                        
+                        <td>dh</td>
+                        
+                        <td>Voiced dental fricative</td>
+                        
+                        <td>LATIN SMALL LETTER D WITH LINE BELOW</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ē</td>
+                        
+                        <td>eː</td>
+                        
+                        <td>ي</td>
+                        
+                        <td></td>
+                        
+                        <td>e,é</td>
+                        
+                        <td>Long vowel e</td>
+                        
+                        <td>LATIN SMALL LETTER E WITH MACRON</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ġ</td>
+                        
+                        <td>ɣ</td>
+                        
+                        <td>غ</td>
+                        
+                        <td>ġ</td>
+                        
+                        <td>gh,3</td>
+                        
+                        <td>Voiced velar fricative</td>
+                        
+                        <td>LATIN SMALL LETTER G WITH DOT ABOVE</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ǧ</td>
+                        
+                        <td>d͡ʒ</td>
+                        
+                        <td>ج</td>
+                        
+                        <td>ǧ</td>
+                        
+                        <td>dj</td>
+                        
+                        <td>Voiced palato-alveolar affricate</td>
+                        
+                        <td>LATIN SMALL LETTER G WITH CARON</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ḥ</td>
+                        
+                        <td>ħ</td>
+                        
+                        <td>ح</td>
+                        
+                        <td>ḥ</td>
+                        
+                        <td>7</td>
+                        
+                        <td>Voiceless pharyngeal fricative</td>
+                        
+                        <td>LATIN SMALL LETTER H WITH DOT BELOW</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ī</td>
+                        
+                        <td>iː</td>
+                        
+                        <td>ي</td>
+                        
+                        <td>ī</td>
+                        
+                        <td>i,ee</td>
+                        
+                        <td>Long vowel i</td>
+                        
+                        <td>LATIN SMALL LETTER I WITH MACRON</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ᴵ</td>
+                        
+                        <td>ə</td>
+                        
+                        <td></td>
+                        
+                        <td></td>
+                        
+                        <td></td>
+                        
+                        <td>Short Schwa vowel</td>
+                        
+                        <td>MODIFIER LETTER CAPITAL I</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ə</td>
+                        
+                        <td>ə</td>
+                        
+                        <td></td>
+                        
+                        <td></td>
+                        
+                        <td></td>
+                        
+                        <td>Schwa vowel</td>
+                        
+                        <td>LATIN SMALL LETTER SCHWA</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ᵊ</td>
+                        
+                        <td>ə</td>
+                        
+                        <td></td>
+                        
+                        <td></td>
+                        
+                        <td></td>
+                        
+                        <td>Short Schwa vowel</td>
+                        
+                        <td>MODIFIER LETTER SMALL SCHWA</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ḷ</td>
+                        
+                        <td>lˤ</td>
+                        
+                        <td>ل</td>
+                        
+                        <td>l</td>
+                        
+                        <td>l</td>
+                        
+                        <td>Pharyngealized alveolar lateral approximant</td>
+                        
+                        <td>LATIN SMALL LETTER L WITH DOT BELOW</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ṃ</td>
+                        
+                        <td>mˤ</td>
+                        
+                        <td>م</td>
+                        
+                        <td>m</td>
+                        
+                        <td>m</td>
+                        
+                        <td>Pharyngealized bilabial nasal</td>
+                        
+                        <td>LATIN SMALL LETTER M WITH DOT BELOW</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ō</td>
+                        
+                        <td>oː</td>
+                        
+                        <td>و</td>
+                        
+                        <td></td>
+                        
+                        <td>o</td>
+                        
+                        <td>Long vowel o</td>
+                        
+                        <td>LATIN SMALL LETTER O WITH MACRON</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ṛ</td>
+                        
+                        <td>ʁˁ</td>
+                        
+                        <td>ر</td>
+                        
+                        <td>r</td>
+                        
+                        <td>r</td>
+                        
+                        <td>Pharyngealized voiced uvular fricative</td>
+                        
+                        <td>LATIN SMALL LETTER R WITH DOT BELOW</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ṣ</td>
+                        
+                        <td>sˤ</td>
+                        
+                        <td>ص</td>
+                        
+                        <td>ṣ</td>
+                        
+                        <td>9</td>
+                        
+                        <td>Pharyngealized voiceless alveolar sibilant</td>
+                        
+                        <td>LATIN SMALL LETTER S WITH DOT BELOW</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>š</td>
+                        
+                        <td>ʃ</td>
+                        
+                        <td>ش</td>
+                        
+                        <td>š</td>
+                        
+                        <td>sh,ch</td>
+                        
+                        <td>Voiceless palato-alveolar sibilant</td>
+                        
+                        <td>LATIN SMALL LETTER S WITH CARON</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ṭ</td>
+                        
+                        <td>tˤ</td>
+                        
+                        <td>ش</td>
+                        
+                        <td>ṭ</td>
+                        
+                        <td>t,6</td>
+                        
+                        <td>pharyngealized voiceless alveolar stop</td>
+                        
+                        <td>LATIN SMALL LETTER T WITH DOT BELOW</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ṯ</td>
+                        
+                        <td>θ</td>
+                        
+                        <td>ث</td>
+                        
+                        <td>ṯ</td>
+                        
+                        <td>th,s</td>
+                        
+                        <td>Voiceless dental non-sibilant fricative</td>
+                        
+                        <td>LATIN SMALL LETTER T WITH LINE BELOW</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ū</td>
+                        
+                        <td>uː</td>
+                        
+                        <td>و</td>
+                        
+                        <td>ū</td>
+                        
+                        <td>oo,ou,u</td>
+                        
+                        <td>Long vowel u</td>
+                        
+                        <td>LATIN SMALL LETTER U WITH MACRON</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ẓ</td>
+                        
+                        <td>zˤ</td>
+                        
+                        <td>ز,ظ</td>
+                        
+                        <td>z,ẓ</td>
+                        
+                        <td>z</td>
+                        
+                        <td>Pharyngealized voiced alveolar sibilant</td>
+                        
+                        <td>LATIN SMALL LETTER Z WITH DOT BELOW</td>
+                        
+                     </tr>
+                     
+                     <tr>
+                        
+                        <td>ž</td>
+                        
+                        <td>ʒ</td>
+                        
+                        <td>ج</td>
+                        
+                        <td>ǧ</td>
+                        
+                        <td>j</td>
+                        
+                        <td>Voiced palato-alveolar sibilant</td>
+                        
+                        <td>LATIN SMALL LETTER Z WITH CARON</td>
+                        
+                     </tr>
+                     
+                  </table>
                   <h2 id="dictEntries">4 Dictionary entries </h2>
-                  <p class="tei-p">There are three types of entries: lemmas and multi-word units (MWUs) and examples.</p>
+                  <p class="tei-p">There are three types of entries: <i>lemmas</i>, <i>multi-word units (MWUs)</i> and <i>illustrative sentences (examples)</i>.
+                  </p>
                   <h3 id="entryTypes">4.1 Lemmas and MWUs</h3>
                   <p class="tei-p">Lemmas and MWUs basically have the same structure.</p><pre class="preBox">
 <span><span class="spRed">&lt;entry</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">kitaab_001</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
@@ -155,7 +635,33 @@
    ...
 <span class="spRed">&lt;/entry&gt;</span></span>
                         </pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
-                  <h3 id="ids">4.2 Identifiers (IDs)</h3>
+                  <h3 id="examples">4.2 Illustrative sentences (Examples)</h3>
+                  <p class="tei-p">In TEI (P5) illustrative sentences are encoded making use of a <i>cit/quote</i> construction.
+                  </p><pre class="preBox">
+<span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">yibqa_ustaz_001</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">example</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
+    <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ḥayibʔa ustāz in šāʔ allāh.<span class="spRed">&lt;/quote&gt;</span></span>
+    ...
+<span class="spRed">&lt;/cit&gt;</span></span>
+                    </pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
+                  <p class="tei-p">Ideally, examples should consist in complete sentences. Examples 
+                     should be concise, but can also contain several sentences. If dialogical models 
+                     are involved, sentences are to be separated by a dash.
+                  </p><pre class="preBox">
+...
+<span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>tislam idēki. - ʔaḷḷāh yisallimak.<span class="spRed">&lt;/quote&gt;</span></span>
+...
+                    </pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
+                  <h3 id="proverbs">4.3 Proverbs</h3>
+                  <p class="tei-p">Proverbs are a subtype of example.</p><pre class="preBox">
+                        <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">il_cagala_min_ish_shitaan_001</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">example</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">subtype</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">proverb</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
+                            <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>il-ʕagala min iš-šiṭān.<span class="spRed">&lt;/quote&gt;</span></span>
+                            
+                            <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">translation</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">en</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
+                                <span><span class="spRed">&lt;quote</span><span class="spRed">&gt;</span>Haste makes waste.<span class="spRed">&lt;/quote&gt;</span></span>
+                            <span class="spRed">&lt;/cit&gt;</span></span>
+                        <span class="spRed">&lt;/cit&gt;</span></span>
+                    </pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
+                  <h3 id="ids">4.4 Identifiers (IDs)</h3>
                   <p class="tei-p">As can be seen in the examples above, entries are assigned a unique identifier. 
                      In the VICAV dictionaries, these are made up of characters that are restricted 
                      to letters in the ASCII range. Usually, the IDs are created by pressing 
@@ -164,31 +670,6 @@
                      has to modify the ID manually by e.g. increasing the number at the end of 
                      the ID.
                   </p>
-                  <h3 id="examples">4.3 Illustrative sentences</h3>
-                  <p class="tei-p">Examples are encoded making use of a <i>cit/quote</i> construction.
-                  </p><pre class="preBox">
-<span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">yibqa_ustaz_001</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">example</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>ḥayibʔa ustāz in šāʔ allāh.<span class="spRed">&lt;/quote&gt;</span></span>
-   ...
-<span class="spRed">&lt;/cit&gt;</span></span>
-                        </pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
-                  <p class="tei-p">Ideally, examples should consist in complete sentences. Examples 
-                     should be concise, but can also contain several sentences. If dialogical models 
-                     are involved, sentences are to be separated by a dash.
-                  </p><pre class="preBox">
-...
-<span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>tislam idēki. - ʔaḷḷāh yisallimak.<span class="spRed">&lt;/quote&gt;</span></span>
-...</pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
-                  <h3 id="proverbs">4.4 Proverbs</h3>
-                  <p class="tei-p">Proverbs are a subtype of example.</p><pre class="preBox">
-<span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">xml:id</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">il_cagala_min_ish_shitaan_001</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">example</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">subtype</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">proverb</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-   <span><span class="spRed">&lt;quote</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-arz-x-cairo-vicav</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>il-ʕagala min iš-šiṭān.<span class="spRed">&lt;/quote&gt;</span></span>
-
-   <span><span class="spRed">&lt;cit</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">translation</span><span class="spQuotes">"</span></span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">en</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;quote</span><span class="spRed">&gt;</span>Haste makes waste.<span class="spRed">&lt;/quote&gt;</span></span>
-   <span class="spRed">&lt;/cit&gt;</span></span>
-<span class="spRed">&lt;/cit&gt;</span></span>
-                        </pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
                   <h2 id="wordForms">5 Word forms </h2>
                   <p class="tei-p">There are two types of <i>form</i> elements: <i>lemmas</i> and <i>wordforms</i>. 
                      Nominals are usually furnished with plural forms, verbs with the third person singular
@@ -307,20 +788,19 @@
 <span class="spRed">&lt;/form&gt;</span></span>
 ...</pre><div class="dictSource">A Machine-readable Dictionary of Egyptian Arabic</div>
                   <h3 id="variants">5.2 Variants</h3>
-                  <p class="tei-p">Only headwords may have variants. These are encoded as typed forms 
-                     nested in the top-level form of the entry.
+                  <p class="tei-p">Only headwords are marked up as <i>variants</i>.
                   </p><pre class="preBox">
 ...
 <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemma</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
    <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-apc-x-damascus-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>tžawwaz<span class="spRed">&lt;/orth&gt;</span></span>
+<span class="spRed">&lt;/form&gt;</span></span>
 
-   <span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">variant</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
-      <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-apc-x-damascus-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>dzawwaž‎<span class="spRed">&lt;/orth&gt;</span></span>
-   <span class="spRed">&lt;/form&gt;</span></span>
+<span><span class="spRed">&lt;form</span><span> <span class="spAttrName">type</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">lemmaVariant</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>
+   <span><span class="spRed">&lt;orth</span><span> <span class="spAttrName">xml:lang</span><span class="spEquals">=</span><span class="spQuotes">"</span><span class="spValue">ar-apc-x-damascus-vicTrans</span><span class="spQuotes">"</span></span><span class="spRed">&gt;</span>dzawwaž‎<span class="spRed">&lt;/orth&gt;</span></span>
 <span class="spRed">&lt;/form&gt;</span></span>
 ...</pre><div class="dictSource">A Digital Dictionary of Damascus Arabic</div>
                   <p class="tei-p">This is the only position where the <i>form</i> element may have the 
-                     <i>type="variant"</i> attribute. All other variants are simply listed but 
+                     <i>type="lemmaVariant"</i> attribute. All other variants are simply listed but 
                      not classified. In the following example two competing morphological forms 
                      are listed.
                   </p><pre class="preBox">
@@ -1353,9 +1833,11 @@
                   <h2 id="langIdentifiers">8 Language identifiers </h2>
                   <p class="tei-p">The values in the <i>xml:lang</i> attributes have been designed 
                      in compliance with Best Current Practice 47 (BCP 47) which in turn refers 
-                     to and aggregates a number of ISO standards (639-1, 639-2, ISO 15924, ISO 3166). 
+                     to and aggregates a number of ISO standards (639-1, 639-2, ISO 15924, ISO 3166-1).
+                     
                      The labels used as values in the <i>xml:lang</i> attributes reflect a hybrid 
-                     system that indicates both linguistic variety and writing system.
+                     system that indicates both linguistic variety and writing system. Examples of such
+                     language tags are:
                   </p>
                   <table>
                      
@@ -1487,7 +1969,7 @@
                         
                         <td>ar</td>
                         
-                        <td>ISO 639-2</td>
+                        <td><a target="_blank" href="https://www.loc.gov/standards/iso639-2/php/langcodes_name.php?iso_639_1=ar">ISO 639-1</a></td>
                         
                         <td>Arabic</td>
                         
@@ -1497,7 +1979,7 @@
                         
                         <td>arz</td>
                         
-                        <td>ISO 639-3</td>
+                        <td><a target="_blank" href="https://iso639-3.sil.org/code/arz">ISO 639-3</a></td>
                         
                         <td>Egyptian Arabic</td>
                         
@@ -1507,7 +1989,7 @@
                         
                         <td>x</td>
                         
-                        <td>BCP 47</td>
+                        <td><a target="_blank" href="https://tools.ietf.org/html/bcp47">BCP 47</a></td>
                         
                         <td>Begin of private use area</td>
                         
@@ -1517,9 +1999,9 @@
                         
                         <td>cairo</td>
                         
-                        <td>(Location)</td>
-                        
                         <td></td>
+                        
+                        <td>Location</td>
                         
                      </tr>
                      
@@ -1527,9 +2009,9 @@
                         
                         <td>vicav</td>
                         
-                        <td>(Transcription system)</td>
-                        
                         <td></td>
+                        
+                        <td>Transcription system of the VICAV Project</td>
                         
                      </tr>
                      
