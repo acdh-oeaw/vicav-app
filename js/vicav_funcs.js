@@ -626,9 +626,9 @@ function getDBSnippet(s_) {
 	        	break;
 	
 	        case 'flashcards':
-	        	dict = s2[0];
-	        	lesson = s2[1];
-	        	type = s2[2];
+	        	dict = sh[0];
+	        	lesson = sh[1];
+	        	type = sh[2];
 	        	getFlashCards(lesson, dict, type);
 	        	break;
 	
