@@ -1819,7 +1819,7 @@ function () {
 
 
 function getFlashCards(unit_, dict_, format_) {
-    uri = 'https://cs.acdh.oeaw.ac.at/modules/fcs-aggregator/switch.php?version=1.2&operation=searchRetrieve&query=unit=' +
+    uri = 'https://cs.acdh-dev.oeaw.ac.at/modules/fcs-aggregator/switch.php?version=1.2&operation=searchRetrieve&query=unit=' +
     unit_ + '&x-context=' + dict_ + '&startRecord=1&maximumRecords=1000&x-format=' + format_ + '&x-dataview=kwic,title';
     window.location.href = uri;
 }
