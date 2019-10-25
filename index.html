@@ -26,7 +26,13 @@
     <meta name="theme-color" content="#ffffff"/>
   </head>
   
-  <body>   
+  <body>
+    <div id="cookie-overlay" style="display: none;">
+      <div class="container">
+        <div class="cookie-message">This website uses cookies to ensure you get the best experience on our website. <a target="_blank" href="https://www.oeaw.ac.at/oeaw/impressum/">More info</a></div>
+        <div class="cookie-accept-btn">Accept</div>
+      </div>
+    </div>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand mr-0 mr-md-2" aria-label="Vicav" href="index.html">
@@ -323,10 +329,9 @@
       </div>
     </div>
     <div class="footer-imprint-bar">
-      © Copyright OEAW | <a href="https://arche.acdh.oeaw.ac.at/browser/imprint">Impressum/Imprint</a>
+      © Copyright OEAW | <a target="_blank" href="https://www.oeaw.ac.at/oeaw/impressum/">Impressum/Imprint</a>
     </div>
   </footer>
-  
       <!-- Bootstrap core JavaScript ================================================== -->
       <!-- Placed at the end of the document so the pages load faster -->
       <script src="js/jquery.js"></script>
@@ -335,10 +340,17 @@
       <script src="js/popper.min.js"></script>
       <script src="js/fundament.min.js"></script>
       <script src="js/leaflet.js"></script>
-    
       <script src="js/ch_globals.js?v=00004"></script>
       <script src="js/vicav_funcs.js?v=00008"></script>
       <script src="js/geo_data.js"></script>
-
+      <!-- Matomo -->
+      <script type="text/javascript">
+        var _paq = window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        /* Initialization function for the matomo instance in production goes here. */
+      </script>
+      <!-- End Matomo Code -->
   </body>
 </html>
