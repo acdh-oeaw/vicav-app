@@ -47,8 +47,6 @@ n=[type, ( id | query), status]
 /* ************************************************************************* */
 
 var inpSel = 0;
-var ramz = "";
-var usr = "";
 var containerCount = 0;
 var lastTextPanelID = '';
 var panelIDs =[];
@@ -596,8 +594,8 @@ function getText(secLabel_, snippetID_, style_, pID_, pVisibility_, pURL_) {
                 appendPanel(result, "textQuery", secLabel_, "grid-wrap", "", "hasTeiLink", "", snippetID_, pID_, pVisibility_, pURL_);
             }
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
 }
@@ -700,8 +698,8 @@ function execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_) {
                 appendPanel(result, "biblQuery", "", "grid-wrap", query_, "noTeiLink", "", "", pID_, pVisiblity_, pURL_);
             }
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
 }
@@ -729,8 +727,8 @@ function execBiblQuery_zotID(query_, pID_, pVisiblity_, pURL_) {
                 //appendPanel(result, "profileQuery", caption_, "grid-wrap", '',     'hasTeiLink', '', snippetID_, pID_, pVisiblity_, pURL_);
             }
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
 }
@@ -762,8 +760,8 @@ function getSample(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
             //console.log(result);
             appendPanel(result, "sampleQuery", caption_, "grid-wrap", '', 'hasTeiLink', '', snippetID_, pID_, pVisiblity_, pURL_);
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
 }
@@ -784,8 +782,8 @@ function getCorpusText(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
             //console.log(result);
             appendPanel(result, "sampleQuery", caption_, "grid-wrap", '', 'hasTeiLink', '', snippetID_, pID_, pVisiblity_, pURL_);
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
 }
@@ -828,8 +826,8 @@ function showLingFeatures(ana_, expl_, type_) {
                 }
             }
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
 }
@@ -852,8 +850,8 @@ function getFeatureOfLocation(caption_, snippetID_, style_, pID_, pVisiblity_, p
                 appendPanel(result, "featureQuery", caption_, "grid-wrap", '', 'hasTeiLink', '', snippetID_, pID_, pVisiblity_, pURL_);
             }
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
 }
@@ -877,8 +875,8 @@ function getProfile(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
                 appendPanel(result, "profileQuery", caption_, "grid-wrap", '', 'hasTeiLink', '', snippetID_, pID_, pVisiblity_, pURL_);
             }
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
 }
@@ -913,9 +911,6 @@ function execDictQuery_ajax(query_, idSuffix_) {
             dataType: 'html',
             cache: false,
             crossDomain: true,
-            headers: {
-                'autho': usr + ':' + ramz
-            },
             contentType: 'application/html; charset=utf-8',
             success: function (result) {
                 if (result.includes('error type="user authentication"')) {
@@ -928,8 +923,8 @@ function execDictQuery_ajax(query_, idSuffix_) {
                     $("#dvDictResults" + idSuffix_).html(result);
                 }
             },
-            error: function (error) {
-                alert('Error: ' + error);
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
             }
         });
     }
@@ -960,8 +955,8 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
             }
             $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
 }
