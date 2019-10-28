@@ -105,6 +105,24 @@ var MSAFields =
 
 
 /* ************************************************************************* */
+/* ** Polyfill Functions that make modern features work in IE 11 *********** */
+/* ************************************************************************* */
+if (!String.prototype.includes) {
+  String.prototype.includes = function(search, start) {
+    'use strict';
+    if (typeof start !== 'number') {
+      start = 0;
+    }
+    
+    if (start + search.length > this.length) {
+      return false;
+    } else {
+      return this.indexOf(search, start) !== -1;
+    }
+  };
+}
+
+/* ************************************************************************* */
 /* ** MAP Functions ******************************************************** */
 /* ************************************************************************* */
 function onBiblMapClick(e) {
@@ -1680,7 +1698,7 @@ function () {
         var sq = $("#" + inpID).val();
         collName = $("#" + inpID).attr('dict');
         fillWordSelector(sq, collName + '__ind', '_' + suf);
-        setTimeout(() => {
+        setTimeout(function() {
             $("#" + inpID).focus();
         },
         0);
