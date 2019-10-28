@@ -83,7 +83,7 @@ body .navbar ul.navbar-nav .navbar-icons a:hover{
 .panel-chrome.vertical{
     max-width: 25px;
     height: 100%;
-    max-height: initial;
+    max-height: 100%;
     padding: 10px 2px;
 }
 
@@ -156,6 +156,8 @@ body .navbar ul.navbar-nav .navbar-icons a:hover{
 }
 
 .vertical .chrome-title{
+    -ms-writing-mode: vertical-lr;
+    writing-mode: tb-lr;
     writing-mode: vertical-lr;
     margin-top: 10px;
     padding-left: 1px;
