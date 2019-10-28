@@ -925,6 +925,8 @@ function execDictQuery_ajax(query_, idSuffix_) {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 alert(errorThrown);
+                $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
+                $("#loading-wrapper" + idSuffix_).css('visibility', 'hidden');
             }
         });
     }
@@ -937,7 +939,7 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
         q_ = '*';
     }
     sInd = $("#slFieldSelect" + idSuffix_).val();
-    sIndexUrl = './dict_index?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + q_;
+    sIndexUrl = './dict_index?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + encodeURI(q_);
     //console.log(sIndexUrl);
     $.ajax({
         url: sIndexUrl,
@@ -957,6 +959,7 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert(errorThrown);
+            $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
         }
     });
 }
@@ -1041,7 +1044,7 @@ function execDictQuery(idSuffix_) {
             sq = field + '="' + sq + '"';
         }
         sq = sq.replace(/&/g, ',');
-        sQuery = './dict_api?query=' + sq + '&dict=' + collName + '&xslt=' + XSLTName;
+        sQuery = './dict_api?query=' + encodeURI(sq) + '&dict=' + collName + '&xslt=' + XSLTName;
 
         if (sQuery.length > 0) {
             execDictQuery_ajax(sQuery, idSuffix_);
