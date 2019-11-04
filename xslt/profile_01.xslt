@@ -92,16 +92,19 @@
             <br/>
         </div>
     </xsl:template>
+
+    <xsl:template match="tei:div[@type='typology']">
+        <div class="h3ProfileTypology">Typology</div>
+        <table class="tbProfile">
+            <tr><td colspan="2" class="tdProfileTableRight"><xsl:value-of select="tei:p[1]"/></td></tr>
+            <tr><td colspan="2" class="tdProfileTableRight"><xsl:value-of select="tei:p[2]"/></td></tr>
+        </table>   
+    </xsl:template>
+
+    <xsl:template match="tei:div[@type='positioning']"/>
     
-    <xsl:template match="tei:div">
+    <xsl:template match="tei:div[@type and not(./tei:head)]">
         <xsl:choose>
-            <xsl:when test="@type='typology'">
-                <div class="h3ProfileTypology">Typology</div>
-                <table class="tbProfile">
-                    <tr><td colspan="2" class="tdProfileTableRight"><xsl:value-of select="tei:p[1]"/></td></tr>
-                    <tr><td colspan="2" class="tdProfileTableRight"><xsl:value-of select="tei:p[2]"/></td></tr>
-                </table>                    
-            </xsl:when>
             <xsl:when test="@type='lingFeatures'">
                 <div class="h3Profile">Linguistic Features</div>
                 <xsl:apply-templates/>
@@ -136,7 +139,12 @@
             </xsl:when>
         </xsl:choose>
     </xsl:template>
-
+    
+    <xsl:template match="tei:div[@type and @type!='typology' and ./tei:head]/tei:head">
+        <div class="h3Profile"><xsl:value-of select="."/></div>
+    </xsl:template>
+    
+    <xsl:template match="tei:div[not(@type)]" />
     <xsl:template match="tei:hi">
         <xsl:choose>
             <xsl:when test="@rendition='#u'"><span style="text-decoration: underline;"><xsl:apply-templates/></span></xsl:when>
