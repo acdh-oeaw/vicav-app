@@ -1579,6 +1579,9 @@ function () {
     /* ********************** */
     /* ****  SAMPLES ******** */
     /* ********************** */
+
+    // @todo Needs refactoring as a lot of samples are coming.
+
     $("#liSampleCairo").mousedown (function (event) {
         getSample('Cairo', 'cairo_sample_01', 'sampletext_01.xslt');
     });
@@ -1600,6 +1603,17 @@ function () {
     $("#liSampleMSA").mousedown (function (event) {
         getSample('Modern Standard Arabic', 'msa_sample_01', 'sampletext_01.xslt');
     });
+    $("#liSampleAmdoun").mousedown (function (event) {
+        getSample('Amdoun', 'amdoun_sample_01', 'sampletext_01.xslt');
+    });
+    $("#liSampleAynDraham").mousedown (function (event) {
+        getSample('AynDraham', 'ayndraham_sample_01', 'sampletext_01.xslt');
+    });
+    $("#liSampleBalta").mousedown (function (event) {
+        getSample('Balta', 'balta_sample_01', 'sampletext_01.xslt');
+    });
+
+
 
 
     /* ******************************** */
