@@ -1606,11 +1606,17 @@ function () {
     $("#liSampleAmdoun").mousedown (function (event) {
         getSample('Amdoun', 'amdoun_sample_01', 'sampletext_01.xslt');
     });
-    $("#liSampleAynDraham").mousedown (function (event) {
+    $("#liSampleAynDraham1").mousedown (function (event) {
         getSample('AynDraham', 'ayndraham_sample_01', 'sampletext_01.xslt');
     });
-    $("#liSampleBalta").mousedown (function (event) {
+    $("#liSampleAynDraham2").mousedown (function (event) {
+        getSample('AynDraham', 'ayndraham_sample_02', 'sampletext_01.xslt');
+    });
+    $("#liSampleBalta1").mousedown (function (event) {
         getSample('Balta', 'balta_sample_01', 'sampletext_01.xslt');
+    });
+    $("#liSampleBalta2").mousedown (function (event) {
+        getSample('Balta', 'balta_sample_02', 'sampletext_01.xslt');
     });
 
 
