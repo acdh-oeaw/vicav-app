@@ -95,6 +95,25 @@ function insertSampleMarkers() {
     fgSampleMarkers.addLayer(L.marker([33.45, 9.01], {
         alt: 'Douz', id: 'douz_sample_01'
     }).bindTooltip('Douz'));
+
+    fgSampleMarkers.addLayer(L.marker([36.77, 9.09], {
+        alt: 'Amdoun', id: 'douz_sample_01'
+    }).bindTooltip('Amdoun'));
+
+    fgSampleMarkers.addLayer(L.marker([36.78, 8.67], {
+        alt: 'AynDraham 1', id: 'ayndraham_sample_01'
+    }).bindTooltip('AynDraham 1'));
+    fgSampleMarkers.addLayer(L.marker([36.78, 8.7], {
+        alt: 'AynDraham 2', id: 'ayndraham_sample_02'
+    }).bindTooltip('AynDraham 2'));
+
+    fgSampleMarkers.addLayer(L.marker([36.71, 8.94], {
+        alt: 'Balta 1', id: 'balta_sample_01'
+    }).bindTooltip('Balta 1'));
+    fgSampleMarkers.addLayer(L.marker([36.71, 9], {
+        alt: 'Balta 2', id: 'balta_sample_02'
+    }).bindTooltip('Balta 2'));
+
     
     updateUrl_biblMarker('_samples_', '');
 }
