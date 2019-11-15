@@ -54,7 +54,7 @@
                                 <xsl:variable name="wordform" select="tei:fs/tei:f[@name='wordform']"/>
                                 <xsl:message select="$wordform"></xsl:message>
                                 <xsl:choose>
-                                    <xsl:when test="not(matches($wordform, '^[„“-]$')) and not(matches(following-sibling::tei:w[1]/tei:fs/tei:f[@name='wordform'], '^(\W)$'))">
+                                    <xsl:when test="not(matches($wordform, '^[„-]$')) and not(matches(following-sibling::tei:w[1]/tei:fs/tei:f[@name='wordform'], '^\W+$'))">
                                         <xsl:value-of select="replace($wordform, '[\s&#160;]+$', '')"/>
                                         <xsl:value-of select="' '" />
                                     </xsl:when>
