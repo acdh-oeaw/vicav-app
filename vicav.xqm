@@ -4,6 +4,7 @@ declare namespace dc = 'http://purl.org/dc/elements/1.1/';
 declare namespace tei = 'http://www.tei-c.org/ns/1.0';
 declare namespace dcterms = "http://purl.org/dc/terms/";
 
+
 declare function vicav:expandExamplePointers($in as item(), $dict as document-node()*) {
     typeswitch ($in)
         case text()
@@ -679,7 +680,6 @@ function vicav:get_profile_markers() {
         <rs>{$out}</rs>
 };
 
-
 declare
 %rest:path("vicav/sample_markers")
 %rest:GET
@@ -689,13 +689,25 @@ function vicav:get_sample_markers() {
     let $entries := collection('vicav_samples')//tei:TEI
     let $out :=
     for $item in $entries
-    return
-        <r
-            type='geo'>{$item/@xml:id}
-            <loc>{$item/tei:text/tei:body//tei:geo[1]/text()}</loc>
-            <alt>{$item//tei:text[1]/tei:body[1]//tei:head[1]/tei:name[1]/text()}</alt>
-            <freq>1</freq>
-        </r>
+        let $loc := $item/tei:text/tei:body//tei:geo[1]/text()
+        let $alt := $item//tei:text[1]/tei:body[1]//tei:head[1]/tei:name[1]/text()
+
+        let $same_loc := $entries[.//tei:text/tei:body//tei:geo[1]/text() = $loc]/@xml:id
+        let $index := if ($same_loc) then 
+                        index-of($same_loc, $item/@xml:id)
+                        else (0) 
+
+        let $alt := if ($index > 1) then
+                        concat($alt, ' ', $index)
+                    else ($alt)
+        
+        return
+            <r
+                type='geo'>{$item/@xml:id}
+                <loc>{$loc}</loc>
+                <alt>{$alt}</alt>
+                <freq>1</freq>
+            </r>
     
     return
         <rs>{$out}</rs>

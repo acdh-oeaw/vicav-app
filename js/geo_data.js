@@ -114,6 +114,50 @@ function insertSampleMarkers() {
         alt: 'Balta 2', id: 'balta_sample_02'
     }).bindTooltip('Balta 2'));
 
+
+clearMarkerLayers();
+    $.ajax({
+        url: 'sample_markers',
+        type: 'GET',
+        dataType: 'xml',
+        contentType: 'application/html; charset=utf-8',
+        success: function (result) {
+            s = '';
+            cnt = 0;
+            $(result).find('r').each(function (index) {
+                cnt = cnt + 1;
+                //console.log(sUrl);
+                loc = $(this).find('loc').text();
+                if (loc){
+
+                                loc = loc.replace(/°/g, ".");
+                                loc = loc.replace(/′N/g, ",");
+                                loc = loc.replace(/′E/g, "");
+                                if (loc.indexOf('′W') !== -1) {
+                                    loc = loc.replace(/ /g, " -");
+                                    loc = loc.replace(/′W/g, "");
+                                }
+                                
+                                sAlt = $(this).find('alt').text();
+                                sID = $(this).attr('xml:id');
+                                //console.log(loc + ' ' + sAlt);
+                                values = loc.split(",");
+                                v1 = parseFloat(values[0]);
+                                v2 = parseFloat(values[1]);
+                                sTooltip = sAlt;
+                                
+                                sQuery = 'profile:' + sAlt + '';
+                                marker = L.marker([v1, v2], { alt: sAlt, id: sID }).bindTooltip(sTooltip);
+                                fgSampleMarkers.addLayer(marker);
+                                oms.addMarker(marker); 
+                            }
+            });
+        },
+        error: function (error) {
+            alert('Error: ' + error);
+        }
+    });
+    
     
     updateUrl_biblMarker('_samples_', '');
 }
@@ -271,7 +315,6 @@ function insertGeoRegMarkers(query_, scope_) {
         success: function (result) {
             s = '';
             cnt = 0;
-            console.log(result);
             
             $(result).find('r').each(function (index) {
                 cnt = cnt + 1;
