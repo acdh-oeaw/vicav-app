@@ -679,6 +679,28 @@ function vicav:get_profile_markers() {
         <rs>{$out}</rs>
 };
 
+
+declare
+%rest:path("vicav/sample_markers")
+%rest:GET
+%output:method("xml")
+
+function vicav:get_sample_markers() {
+    let $entries := collection('vicav_samples')//tei:TEI
+    let $out :=
+    for $item in $entries
+    return
+        <r
+            type='geo'>{$item/@xml:id}
+            <loc>{$item/tei:text/tei:body//tei:geo[1]/text()}</loc>
+            <alt>{$item//tei:text[1]/tei:body[1]//tei:head[1]/tei:name[1]/text()}</alt>
+            <freq>1</freq>
+        </r>
+    
+    return
+        <rs>{$out}</rs>
+};
+
 declare
 %rest:path("vicav/feature_markers")
 %rest:GET
