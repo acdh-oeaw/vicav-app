@@ -32,7 +32,7 @@ installation:
     - cd $CI_BUILDS_DIR
     - git clone https://$OPENAPI_USER:$OPENAPI_PW@github.com/acdh-oeaw/vicav-content.git --branch master
     - cd vicav-content
-    - for d in $(ls | grep vicav_); do cp -r ${d} $GIT_CLONE_PATH/$d done
+    - for d in $(ls | grep vicav_); do cp -r ${d} $GIT_CLONE_PATH/$d; done;
     # - npm install
     # - node_modules/.bin/mocha test.js
     # - cd $CI_BUILDS_DIR
@@ -50,7 +50,6 @@ installation:
     # - diffpng --output ../screenshots-diff/vleserver_basex vleserver_basex.png ../screenshots/vleserver_basex.png
   after_script:
     - rm -rf $GIT_CLONE_PATH*
-
 
   artifacts:
     when: on_failure
