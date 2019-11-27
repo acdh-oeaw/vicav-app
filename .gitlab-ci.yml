@@ -57,6 +57,10 @@ installation:
     when: on_failure
     expire_in: 1 day
     paths:
+      - $GIT_CLONE_PATH
+    when: on_success
+    expire_in: 1 day
+    paths:
       - $GIT_CLONE_PATH/screenshot.png
 
 clean-testbench:
