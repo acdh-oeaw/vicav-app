@@ -49,8 +49,9 @@ installation:
     #- mv screenshot.png
     # - diffpng --output ../screenshots-diff/vleserver_basex vleserver_basex.png ../screenshots/vleserver_basex.png
   after_script:
-    - rm -rf $GIT_CLONE_PATH
-    - rm -rf $CI_BUILDS_DIR/vicav-content
+    - rm -rf $GIT_CLONE_PATH 2>/dev/null
+    - mkdir -p $GIT_CLONE_PATH 2>/dev/null
+    - rm -rf $CI_BUILDS_DIR/vicav-content 2>/dev/null
 
   artifacts:
     when: on_failure
@@ -65,6 +66,6 @@ clean-testbench:
   variables:
      GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav-app
   script:
-      - rm -rf $GIT_CLONE_PATH*
-      - rm -rf $CI_BUILDS_DIR/openapi4restxq
-      - mkdir -p $GIT_CLONE_PATH
+    - rm -rf $GIT_CLONE_PATH 2>/dev/null
+    - mkdir -p $GIT_CLONE_PATH 2>/dev/null
+    - rm -rf $CI_BUILDS_DIR/vicav-content 2>/dev/null
