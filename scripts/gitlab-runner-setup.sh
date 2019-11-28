@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-git clone https://$OPENAPI_USER:$OPENAPI_PW@github.com/acdh-oeaw/vicav-content.git --branch master vicav_content
+git clone git@github.com:acdh-oeaw/vicav-content.git --branch master vicav_content
 cd vicav_content
 for d in $(ls | grep vicav_); do cp -r ${d} ../vicav_webapp/$d; done;
 for d in vicav_*; do echo "Directory $d:"; find "$d" -type f -regextype posix-egrep -regex '.*(jpg|JPG|png|PNG|svg)' -exec cp {} ../vicav_webapp/images -v \; ; done
