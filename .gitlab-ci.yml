@@ -49,7 +49,7 @@ installation:
     - mv screenshot.png $CI_BUILDS_DIR/vicav_webapp/artifacts
     # - diffpng --output ../screenshots-diff/vleserver_basex vleserver_basex.png ../screenshots/vleserver_basex.png
   after_script:
-    - rm -rf $CI_BUILDS_DIR/vicav-content 2>/dev/null
+    - rm -rf $CI_BUILDS_DIR/vicav_content 2>/dev/null
 
   artifacts:
     when: on_failure
@@ -70,4 +70,4 @@ clean-testbench:
   script:
     - rm -rf $GIT_CLONE_PATH 2>/dev/null
     - mkdir -p $GIT_CLONE_PATH 2>/dev/null
-    - rm -rf $CI_BUILDS_DIR/vicav-content 2>/dev/null
+    - rm -rf $CI_BUILDS_DIR/vicav_content 2>/dev/null
