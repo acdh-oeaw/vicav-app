@@ -26,27 +26,27 @@ installation:
   tags:
       - BaseX-9.2
   variables:
-     GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav-app
+     GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
      HOME: /home/gitlab-runner
   script:
     - cd $CI_BUILDS_DIR
-    - git clone https://$OPENAPI_USER:$OPENAPI_PW@github.com/acdh-oeaw/vicav-content.git --branch master
-    - cd vicav-content
-    - for d in $(ls | grep vicav_); do cp -r ${d} $GIT_CLONE_PATH/$d; done;
+    - ./vicav_webapp/scripts/gitlab-runner-setup.sh
+
     # - npm install
     # - node_modules/.bin/mocha test.js
     # - cd $CI_BUILDS_DIR
     # - rm -rf openapi4restxq
     # - git clone https://$OPENAPI_USER:$OPENAPI_PW@gitlab.com/acdh-oeaw/openapi4restxq.git --branch master_basex
     # - cd openapi4restxq
-    - cd $GIT_CLONE_PATH
     # - mkdir screenshots-actual
     # - mkdir screenshots-diff
     # - cd screenshots-actual
     # - '# wait a little for BaseX to pick up the changes'
     # - sleep 1.5 
     - chromium-browser --headless --disable-gpu --no-sandbox --screenshot --window-size=1280,1696 --virtual-time-budget=10000 http://localhost:8984/vicav
-    #- mv screenshot.png
+    - mkdir -p $CI_BUILDS_DIR/artifacts
+    - rm -rf $CI_BUILDS_DIR/artifacts/*  2>/dev/null
+    - mv screenshot.png $CI_BUILDS_DIR/artifacts
     # - diffpng --output ../screenshots-diff/vleserver_basex vleserver_basex.png ../screenshots/vleserver_basex.png
   after_script:
     - rm -rf $GIT_CLONE_PATH 2>/dev/null
@@ -61,7 +61,7 @@ installation:
     when: on_success
     expire_in: 1 day
     paths:
-      - $GIT_CLONE_PATH
+      - $CI_BUILDS_DIR/artifacts
 
 clean-testbench:
   stage: deploy
