@@ -20,8 +20,6 @@ run_tests:
     - rm -rf $CI_BUILDS_DIR/vicav_webapp/artifacts/*  2>/dev/null
     - diffpng screenshot.png ../screenshots_tpl/vicav-home.png --output screenshot-diff.png
     - mv screenshot*.png $CI_BUILDS_DIR/vicav_webapp/artifacts
-  after_script:
-    - rm -rf $CI_BUILDS_DIR/vicav_content 2>/dev/null
 
   artifacts:
     when: on_failure

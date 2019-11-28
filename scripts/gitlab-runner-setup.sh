@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
+rm -rf vicav_content 2>/dev/null
 git clone https://github.com/acdh-oeaw/vicav-content.git --branch master vicav_content
 cd vicav_content
 for d in $(ls | grep vicav_); do cp -r ${d} ../vicav_webapp/$d; done;
