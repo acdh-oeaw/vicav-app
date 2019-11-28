@@ -61,7 +61,7 @@ installation:
     when: on_success
     expire_in: 1 day
     paths:
-      - $GIT_CLONE_PATH/screenshot.png
+      - $GIT_CLONE_PATH
 
 clean-testbench:
   stage: deploy
