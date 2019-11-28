@@ -18,7 +18,7 @@ run_tests:
     - chromium-browser --headless --disable-gpu --no-sandbox --screenshot --window-size=1280,1696 --virtual-time-budget=10000 http://localhost:8984/vicav
     - mkdir -p $CI_BUILDS_DIR/vicav_webapp/artifacts
     - rm -rf $CI_BUILDS_DIR/vicav_webapp/artifacts/*  2>/dev/null
-    - diffpng $CI_BUILDS_DIR/screenshot.png $GIT_CLONE_PATH/screenshots/vicav-home.png --output $CI_BUILDS_DIR/screenshot-diff.png
+    - diffpng $CI_BUILDS_DIR/screenshot.png $GIT_CLONE_PATH/screenshots/vicav-home.png --output $GIT_CLONE_PATH/artifacts/screenshot-diff.png
     - mv $CI_BUILDS_DIR/screenshot*.png $CI_BUILDS_DIR/vicav_webapp/artifacts
 
   artifacts:
