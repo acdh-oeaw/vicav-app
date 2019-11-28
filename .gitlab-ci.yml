@@ -1,0 +1,40 @@
+stages:
+  - build
+  - test
+  - deploy
+
+run_tests:
+  except:
+      - tags
+  stage: test
+  tags:
+      - BaseX-9.2
+  variables:
+     GIT_STRATEGY: clone
+     GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
+     HOME: /home/gitlab-runner
+  script:
+    - cd $CI_BUILDS_DIR
+    - ./vicav_webapp/scripts/gitlab-runner-setup.sh
+    - chromium-browser --headless --disable-gpu --no-sandbox --screenshot --window-size=1280,1696 --virtual-time-budget=10000 http://localhost:8984/vicav
+    - mkdir -p $CI_BUILDS_DIR/vicav_webapp/artifacts
+    - rm -rf $CI_BUILDS_DIR/vicav_webapp/artifacts/*  2>/dev/null
+    - mv $CI_BUILDS_DIR/screenshot*.png $GIT_CLONE_PATH/artifacts
+    - diffpng  --output $GIT_CLONE_PATH/artifacts/screenshot-diff $GIT_CLONE_PATH/screenshots/vicav-home.png $GIT_CLONE_PATH/artifacts/screenshot.png
+
+  artifacts:
+    when: always
+    expire_in: 1 day
+    paths:
+      - $GIT_CLONE_PATH/artifacts
+
+clean-testbench:
+  stage: deploy
+  tags:
+      - BaseX-9.2
+  variables:
+     GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav-app
+  script:
+    - rm -rf $GIT_CLONE_PATH 2>/dev/null
+    - mkdir -p $GIT_CLONE_PATH 2>/dev/null
+    - rm -rf $CI_BUILDS_DIR/vicav_content 2>/dev/null
