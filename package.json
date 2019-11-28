@@ -1,0 +1,27 @@
+{
+  "name": "vicav-app",
+  "version": "1.0.0",
+  "description": "VICAV Dictionary of arabic varieties",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "cypress": "^3.7.0"
+  },
+  "scripts": {
+    "cypress:open": "cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acdh-oeaw/vicav-app.git"
+  },
+  "author": "Charly Moerth, Omar Siam, Mau Zsofia Abraham et al.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/acdh-oeaw/vicav-app/issues"
+  },
+  "homepage": "https://github.com/acdh-oeaw/vicav-app#readme"
+}
