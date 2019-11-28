@@ -19,7 +19,7 @@ run_tests:
     - mkdir -p $CI_BUILDS_DIR/vicav_webapp/artifacts
     - rm -rf $CI_BUILDS_DIR/vicav_webapp/artifacts/*  2>/dev/null
     - mv $CI_BUILDS_DIR/screenshot*.png $GIT_CLONE_PATH/artifacts
-    - diffpng  --output $GIT_CLONE_PATH/artifacts/screenshot-diff $GIT_CLONE_PATH/screenshots/vicav-home.png $GIT_CLONE_PATH/screenshot.png
+    - diffpng  --output $GIT_CLONE_PATH/artifacts/screenshot-diff $GIT_CLONE_PATH/screenshots/vicav-home.png $GIT_CLONE_PATH/artifacts/screenshot.png
 
   artifacts:
     when: always
