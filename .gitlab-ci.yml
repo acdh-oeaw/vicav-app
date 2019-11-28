@@ -22,11 +22,7 @@ run_tests:
     - mv $CI_BUILDS_DIR/screenshot*.png $CI_BUILDS_DIR/vicav_webapp/artifacts
 
   artifacts:
-    when: on_failure
-    expire_in: 1 day
-    paths:
-      - $GIT_CLONE_PATH/artifacts
-    when: on_success
+    when: always
     expire_in: 1 day
     paths:
       - $GIT_CLONE_PATH/artifacts
