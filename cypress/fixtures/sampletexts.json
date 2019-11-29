@@ -1,18 +1,32 @@
 {
 	"Tunis": {
-	"label": "Tunis",
-	"snippetid": "tunis_sample_01",
-	"sentences": [
-		"nhāṛ li-ṯnīn baʕd il-fažr əmšīt l-is-sūq bāš nišri ʕ9am w-xu9ṛa kīma bītinžāl w-ṯūm.",
-		"šrīt zūz kīlu buṛdgāna b-dīnāṛ zāda.",
-		"mā-xḏīt-š ṭmāṭim cla xāṭir kānit ġālya baṛša.",
-		"tʕaddīt baḥḏa xūya li-kbīr, baʕd xḏīt tāksi w-rawwaḥt li-d-dāṛ qbal nuṣṣ in-nhāṛ.",
-		"baʕd šwayya žāu z-zġāṛ m-il-maktab w-klīna xubz w-lūbya.",
-		"baʕd li-fṭūr shalthum: „āš bāš taʕmlu f-il-līl?“ ",
-		"qālūli: „il-yūm bāš nuquʕdu fi-d-dāṛ, āma/amma/lākin ġudwa nḥibbu nqāblu ṣḥābna.",
-		"bāš nimšīu mʕāhum il-wild ʕammna lli yuskun f-ir-Ryāna.",
-		"ġādi bāš nušuṛbu qahwa w-naḥkīu šwayya.“",
-		"āna qutt-ilhum: „bāhi, āma/amma/lākin mā-tinsāū-š bāš thizzu buṛṭāblūwāt-kum w-kallmū-ni īḏa kān bāš tžīu ṃṃaxxaṛ.“"
-	]
+		"labels": ["Tunis"],
+		"snippetid": "tunis_sample_01",
+		"sentences": [
+			"nhāṛ li-ṯnīn baʕd il-fažr əmšīt l-is-sūq bāš nišri ʕ9am w-xu9ṛa kīma bītinžāl w-ṯūm.",
+			"šrīt zūz kīlu buṛdgāna b-dīnāṛ zāda.",
+			"mā-xḏīt-š ṭmāṭim cla xāṭir kānit ġālya baṛša.",
+			"tʕaddīt baḥḏa xūya li-kbīr, baʕd xḏīt tāksi w-rawwaḥt li-d-dāṛ qbal nuṣṣ in-nhāṛ.",
+			"baʕd šwayya žāu z-zġāṛ m-il-maktab w-klīna xubz w-lūbya.",
+			"baʕd li-fṭūr shalthum: „āš bāš taʕmlu f-il-līl?“",
+			"qālūli: „il-yūm bāš nuquʕdu fi-d-dāṛ, āma/amma/lākin ġudwa nḥibbu nqāblu ṣḥābna.",
+			"bāš nimšīu mʕāhum il-wild ʕammna lli yuskun f-ir-Ryāna.",
+			"ġādi bāš nušuṛbu qahwa w-naḥkīu šwayya.“",
+			"āna qutt-ilhum: „bāhi, āma/amma/lākin mā-tinsāū-š bāš thizzu buṛṭāblūwāt-kum w-kallmū-ni īḏa kān bāš tžīu ṃṃaxxaṛ.“"
+		]
+	},
+	"SidiHmeda 3": {
+		"labels": ["SidiHmeda 3", "SidiHmeda"],
+		"snippetid": "sidihmeda_sample_01",
+		"sentences": [
+			"nhāṛ l-iṯnīn baʕd ṣlǟt il-fažⁱr mšīt l-is-sūq w-šrīt ᵃʕḏ̣am w-šwayya xuḏ̣ṛa, kīma l-bitinžǟn w-iṯ-ṯūm.",
+			"w-šrīt zūz kīlu burgdǟn b-sūm munǟsib f-is-sūq. amma mā-xḏīt-š iṭ-ṭmāṭim ʕal-xāṭirha ġālya baṛša.",
+			"baʕdikš mšīt baḥḏa xūya l-ⁱkbīr w-baʕdikš rkibⁱt f-it-taksi w-ržaʕt l-id-dāṛ qbal ṣlǟt iḏ̣-ḏ̣uhᵘṛ.",
+			"w-baʕd ⁱšwayya žū l-ūlǟd min madⁱrsa w-klīna xubz w-fūl.",
+			"w-baʕd l-ⁱfṭūṛ sʔilthum fīsaʕ qult-ilhum: šnēy miš taʕmlu f-il-[masǟ]?",
+			"yǟxi hūma qālū-li: il-yūm biš nabqu f-id-dāṛ, amma ġudwa biš nšūfu ṣḥābna w-numšu mʕāhum ⁱl-dāṛ wild xālti illi yuskun fi-ḥayy il-baḥḏǟna.",
+			"w-ġādīka biš nušᵘṛbu qahwa w-nitḥaddṯu in-šāḷḷa.",
+			"qult-ilhum: bǟhi, mā-tansū-š biš thizzu mʕākum tǟlīfōnǟtkum biš nisʔilkum kǟn ḥbastu."
+		]
 	}
 }

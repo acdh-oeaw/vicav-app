@@ -6,7 +6,11 @@ let checksampleTexts = function(fixture) {
     
     cy.get('#subNavSamplesGeoRegMarkers').click()
 
-    cy.get('img[alt='+ fixture.label + ']').click({force: true})
+    for (let l = 0; l < fixture.labels.length; l++) {
+        cy.get('img[alt="'+ fixture.labels[l] + '"]').click({force: true});
+    }
+
+
     cy.get('[data-snippetid=' + fixture.snippetid + '] .spSentence').as('sentences')
 
     cy.get('@sentences').then((sentences) => {
@@ -14,7 +18,7 @@ let checksampleTexts = function(fixture) {
             let fixture_s = fixture.sentences[s]
 
             cy.get(sentences[s]).then(function(el) {
-                assert.equal(el.text().replace(/\s/g, ' '), fixture_s)
+                assert.equal(el.text().replace(/(^\s+)|(\s+$)/g, '').replace(/\s/g, ' '), fixture_s)
             })
         }          
     })
