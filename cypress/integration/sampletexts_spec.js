@@ -1,15 +1,15 @@
 const sampletexts = require('../fixtures/sampletexts')
+let checksampleTexts = function(fixture, label) {
+    cy.fixture('sampletexts.xml').then(f => {
+        cy.writeFile("./vicav_samples/sampletexts.xml", f);
+    })
 
-let checksampleTexts = function(fixture) {
-    cy.visit('http://localhost:8984/vicav')
+    cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,_samples_,]')
     cy.get('img.leaflet-marker-icon') // Wait until the initial markers appear.
-    
-    cy.get('#subNavSamplesGeoRegMarkers').click()
 
     for (let l = 0; l < fixture.labels.length; l++) {
         cy.get('img[alt="'+ fixture.labels[l] + '"]').click({force: true});
     }
-
 
     cy.get('[data-snippetid=' + fixture.snippetid + '] .spSentence').as('sentences')
 
@@ -28,7 +28,7 @@ describe('VICAV samples test', function() {
     for(let text in sampletexts) {
         it('Check ' + text + ' sentences', function() {
             // Write the number to input field
-            checksampleTexts(sampletexts[text])
+            checksampleTexts(sampletexts[text], text)
         })
     }
 })
