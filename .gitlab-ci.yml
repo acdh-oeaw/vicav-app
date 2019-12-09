@@ -1,8 +1,41 @@
 stages:
   - build
   - test
-  - deploy
+  - cleanup
 
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+
+# cache using branch name
+# https://gitlab.com/help/ci/caching/index.md
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .npm
+    - cache/Cypress
+    - node_modules
+
+build-develop:
+  except:
+      - tags
+  stage: build
+  tags:
+      - BaseX-9.2
+  variables:
+     GIT_STRATEGY: clone
+     GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
+     HOME: /home/gitlab-runner
+  script:
+    - pwd
+    - cd $GIT_CLONE_PATH
+    - npm ci
+    # check Cypress binary path and cached versions
+    # useful to make sure we are not carrying around old versions
+    - npx cypress cache path
+    - npx cypress cache list
+    - $(npm bin)/cypress verify
+    
 run_tests:
   except:
       - tags
@@ -16,20 +49,19 @@ run_tests:
   script:
     - cd $CI_BUILDS_DIR
     - ./vicav_webapp/scripts/gitlab-runner-setup.sh
-    - chromium-browser --headless --disable-gpu --no-sandbox --screenshot --window-size=1280,1696 --virtual-time-budget=10000 http://localhost:8984/vicav
     - mkdir -p $CI_BUILDS_DIR/vicav_webapp/artifacts
     - rm -rf $CI_BUILDS_DIR/vicav_webapp/artifacts/*  2>/dev/null
-    - mv $CI_BUILDS_DIR/screenshot*.png $GIT_CLONE_PATH/artifacts
-    - diffpng  --output $GIT_CLONE_PATH/artifacts/screenshot-diff $GIT_CLONE_PATH/screenshots/vicav-home.png $GIT_CLONE_PATH/artifacts/screenshot.png
+    - cd $GIT_CLONE_PATH
+    - $(npm bin)/cypress run
 
   artifacts:
     when: always
     expire_in: 1 day
     paths:
-      - $GIT_CLONE_PATH/artifacts
+      - $GIT_CLONE_PATH/cypress
 
 clean-testbench:
-  stage: deploy
+  stage: cleanup
   tags:
       - BaseX-9.2
   variables:
@@ -38,3 +70,4 @@ clean-testbench:
     - rm -rf $GIT_CLONE_PATH 2>/dev/null
     - mkdir -p $GIT_CLONE_PATH 2>/dev/null
     - rm -rf $CI_BUILDS_DIR/vicav_content 2>/dev/null
+  when: always
