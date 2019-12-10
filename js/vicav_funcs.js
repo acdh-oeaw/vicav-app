@@ -1614,23 +1614,6 @@ function () {
     $("#liSampleMSA").mousedown (function (event) {
         getSample('Modern Standard Arabic', 'msa_sample_01', 'sampletext_01.xslt');
     });
-    $("#liSampleAmdoun").mousedown (function (event) {
-        getSample('Amdoun', 'amdoun_sample_01', 'sampletext_01.xslt');
-    });
-    $("#liSampleAynDraham1").mousedown (function (event) {
-        getSample('AynDraham', 'ayndraham_sample_01', 'sampletext_01.xslt');
-    });
-    $("#liSampleAynDraham2").mousedown (function (event) {
-        getSample('AynDraham', 'ayndraham_sample_02', 'sampletext_01.xslt');
-    });
-    $("#liSampleBalta1").mousedown (function (event) {
-        getSample('Balta', 'balta_sample_01', 'sampletext_01.xslt');
-    });
-    $("#liSampleBalta2").mousedown (function (event) {
-        getSample('Balta', 'balta_sample_02', 'sampletext_01.xslt');
-    });
-
-
 
 
     /* ******************************** */
