@@ -141,7 +141,6 @@ function onFeaturesMapClick(e) {
 }
 
 function onSamplesMapClick(e) {
-    console.log(e)
     getSample('', e.layer.options.id, 'sampletext_01.xslt');
 }
 
