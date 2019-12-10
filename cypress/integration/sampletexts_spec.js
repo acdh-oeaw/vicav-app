@@ -16,6 +16,11 @@ let checksampleTexts = function(fixture, label) {
             cy.get(sentences[s]).then(function(el) {
                 assert.equal(el.text().replace(/(^\s+)|(\s+$)/g, '').replace(/\s/g, ' '), fixture_s)
             })
+            for (let variant in fixture.variants) {
+                cy.contains(variant).scrollIntoView().trigger('mouseover').then(function(el) {
+                    cy.contains(fixture.variants[variant])
+                });
+            }
         }          
     })
 }
