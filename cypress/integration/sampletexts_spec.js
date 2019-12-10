@@ -1,9 +1,5 @@
 const sampletexts = require('../fixtures/sampletexts')
 let checksampleTexts = function(fixture, label) {
-    cy.fixture('sampletexts.xml').then(f => {
-        cy.writeFile("./vicav_samples/sampletexts.xml", f);
-    })
-
     cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,_samples_,]')
     cy.get('img.leaflet-marker-icon') // Wait until the initial markers appear.
 
