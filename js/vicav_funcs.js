@@ -172,8 +172,7 @@ mainMap.scrollWheelZoom.disable();
 
 var fgBiblMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
 var fgProfileMarkers = L.featureGroup().addTo(mainMap).on("click", onProfilesMapClick);
-var fgSampleMarkers = L.featureGroup().addTo(mainMap);
-//.on("click", onSamplesMapClick);
+var fgSampleMarkers = L.featureGroup().addTo(mainMap); // Click event is now handled through OverlappingMarkerSpiderifier
 var fgFeatureMarkers = L.featureGroup().addTo(mainMap).on("click", onFeaturesMapClick);
 var fgGeoDictMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
 var fgDictMarkers = L.featureGroup().addTo(mainMap).on("click", onDictMapClick);
@@ -181,7 +180,6 @@ var fgDictMarkers = L.featureGroup().addTo(mainMap).on("click", onDictMapClick);
 var oms = new OverlappingMarkerSpiderfier(mainMap, {nearbyDistance: 2});
 
 oms.addListener('click', function(marker) {
-    console.log(marker)
   getSample('', marker.options.id, 'sampletext_01.xslt');
 });
 

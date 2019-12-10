@@ -78,44 +78,7 @@ function insertFeatureMarkers() {
 }
 
 function insertSampleMarkers() {
-    /* ******************************** */
-    /* Create with geo_samples_txt__001.xq */
-    /* ******************************** */
-    fgSampleMarkers.addLayer(L.marker([33.51, 36.29], { alt: 'Damascus', id: 'damascus_sample_01' }).bindTooltip('Damascus'));
-    fgSampleMarkers.addLayer(L.marker([30.05, 31.23], { alt: 'Cairo', id: 'cairo_sample_01' }).bindTooltip('Cairo'));
-    fgSampleMarkers.addLayer(L.marker([33.33, 44.38], {
-        alt: 'Baghdad', id: 'baghdad_sample_01'
-    }).bindTooltip('Baghdad'));
-    fgSampleMarkers.addLayer(L.marker([37.15, 38.79], {
-        alt: 'Şanlıurfa', id: 'urfa_sample_01'
-    }).bindTooltip('Şanlıurfa'));
-    fgSampleMarkers.addLayer(L.marker([36.8, 10.18], {
-        alt: 'Tunis', id: 'tunis_sample_01'
-    }).bindTooltip('Tunis'));
-    fgSampleMarkers.addLayer(L.marker([33.45, 9.01], {
-        alt: 'Douz', id: 'douz_sample_01'
-    }).bindTooltip('Douz'));
-
-    fgSampleMarkers.addLayer(L.marker([36.77, 9.09], {
-        alt: 'Amdoun', id: 'douz_sample_01'
-    }).bindTooltip('Amdoun'));
-
-    fgSampleMarkers.addLayer(L.marker([36.78, 8.67], {
-        alt: 'AynDraham 1', id: 'ayndraham_sample_01'
-    }).bindTooltip('AynDraham 1'));
-    fgSampleMarkers.addLayer(L.marker([36.78, 8.7], {
-        alt: 'AynDraham 2', id: 'ayndraham_sample_02'
-    }).bindTooltip('AynDraham 2'));
-
-    fgSampleMarkers.addLayer(L.marker([36.71, 8.94], {
-        alt: 'Balta 1', id: 'balta_sample_01'
-    }).bindTooltip('Balta 1'));
-    fgSampleMarkers.addLayer(L.marker([36.71, 9], {
-        alt: 'Balta 2', id: 'balta_sample_02'
-    }).bindTooltip('Balta 2'));
-
-
-clearMarkerLayers();
+    clearMarkerLayers();
     $.ajax({
         url: 'sample_markers',
         type: 'GET',
@@ -153,8 +116,8 @@ clearMarkerLayers();
                             }
             });
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
     
