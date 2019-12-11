@@ -689,6 +689,7 @@ function vicav:get_sample_markers() {
     let $entries := collection('vicav_samples')//tei:TEI
     let $out :=
     for $item in $entries
+        order by $item/@xml:id
         let $loc := $item/tei:text/tei:body//tei:geo[1]/text()
         let $alt := $item//tei:text[1]/tei:body[1]//tei:head[1]/tei:name[1]/text()
 
@@ -696,10 +697,10 @@ function vicav:get_sample_markers() {
         let $index := if ($same_loc) then 
                         index-of($same_loc, $item/@xml:id)
                         else (0) 
-
+(:
         let $alt := if ($index > 1) then
                         concat($alt, ' ', $index)
-                    else ($alt)
+                    else ($alt) :)
         
         return
             <r

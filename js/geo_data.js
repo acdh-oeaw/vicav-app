@@ -86,9 +86,8 @@ function insertSampleMarkers() {
         contentType: 'application/html; charset=utf-8',
         success: function (result) {
             s = '';
-            cnt = 0;
-            $(result).find('r').each(function (index) {
-                cnt = cnt + 1;
+            let results = $(result).find('r')
+            results.each(function (index) {
                 //console.log(sUrl);
                 loc = $(this).find('loc').text();
                 if (loc){
@@ -103,7 +102,12 @@ function insertSampleMarkers() {
                                 
                                 sAlt = $(this).find('alt').text();
                                 sID = $(this).attr('xml:id');
-                                //console.log(loc + ' ' + sAlt);
+
+                                let sCnt = sID.replace(/^\w+_0?/, '')
+                                console.log(sCnt)
+                                if (sCnt && parseInt(sCnt) > 1) {
+                                    sAlt = sAlt + ' (' + sCnt + ')'
+                                }
                                 values = loc.split(",");
                                 v1 = parseFloat(values[0]);
                                 v2 = parseFloat(values[1]);

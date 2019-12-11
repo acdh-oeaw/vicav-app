@@ -7,7 +7,6 @@ describe('Profiles', function() {
 
 	    cy.get('img[src="images/tunis-zeituna-1988.jpg"]').should('be.visible')
 	    cy.contains("‏تونس")    
-	    cy.contains("‏تونس")
     });
 })
 
