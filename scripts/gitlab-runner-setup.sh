@@ -1,11 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
+cd ${CI_BUILDS_DIR}
 rm -rf vicav_content 2>/dev/null
-git clone https://github.com/acdh-oeaw/vicav-content.git --branch master vicav_content
+git clone ${VICAV_CONTENT_REPO} --branch master vicav_content
 cd vicav_content
-for d in $(ls | grep vicav_); do cp -r ${d} ../vicav_webapp/$d; done;
+#for d in $(ls | grep vicav_); do cp -rv ${d} ${GIT_CLONE_PATH}; done;
 for d in vicav_*; do echo "Directory $d:"; find "$d" -type f -regextype posix-egrep -regex '.*(jpg|JPG|png|PNG|svg)' -exec cp {} ../vicav_webapp/images -v \; ; done
+
+cd ${GIT_CLONE_PATH}/cypress/fixtures
+for d in $(ls | grep vicav_); do cp -rv ${d} ${CI_BUILDS_DIR}/vicav_content; done;
 
 echo '<commands>
 	<set option="CHOP">false</set>

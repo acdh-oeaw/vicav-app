@@ -25,6 +25,7 @@ build-develop:
   variables:
      GIT_STRATEGY: clone
      GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
+     VICAV_CONTENT_REPO: https://github.com/acdh-oeaw/vicav-content.git
      HOME: /home/gitlab-runner
   script:
     - pwd
@@ -35,6 +36,10 @@ build-develop:
     - npx cypress cache path
     - npx cypress cache list
     - $(npm bin)/cypress verify
+    - cd $CI_BUILDS_DIR
+    - ./vicav_webapp/scripts/gitlab-runner-setup.sh
+    - mkdir -p $CI_BUILDS_DIR/vicav_webapp/artifacts
+    - rm -rf $CI_BUILDS_DIR/vicav_webapp/artifacts/*  2>/dev/null
     
 run_tests:
   except:
@@ -47,11 +52,6 @@ run_tests:
      GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
      HOME: /home/gitlab-runner
   script:
-    - cd $CI_BUILDS_DIR
-    - ./vicav_webapp/scripts/gitlab-runner-setup.sh
-    - mkdir -p $CI_BUILDS_DIR/vicav_webapp/artifacts
-    - rm -rf $CI_BUILDS_DIR/vicav_webapp/artifacts/*  2>/dev/null
-    - cd $GIT_CLONE_PATH
     - $(npm bin)/cypress run
 
   artifacts:
