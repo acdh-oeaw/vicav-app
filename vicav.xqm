@@ -260,6 +260,49 @@ function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn
 };
 
 declare
+%rest:path("vicav/explore_samples")
+%rest:query-param("query", "{$query}")
+%rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("sentences", "{$sentences}")
+
+%rest:GET
+
+function vicav:explore_samples($query as xs:string*, $sentences as xs:string*, $xsltfn as xs:string) {
+    let $places := tokenize($query, ',')
+    (:if ($sentences != '') then
+        
+    else
+      :)  
+    let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
+    
+    let $qs :=
+        for $id in $places
+            return "'" || $id || "'" 
+    
+    let $qq := 'collection("vicav_samples")//tei:TEI[@xml:id = [' || string-join($qs, ',') || '] ]'
+
+    let $query := $ns || $qq    
+    let $results := xquery:eval($query)
+    
+    let $ress := 
+      for $item in $results
+        let $city := $item//tei:body/tei:head/tei:name
+        return
+           <item city="{$city}">{$item}</item>
+    let $ress1 := <items>{$ress}</items>
+
+    let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
+    let $style := doc($stylePath)
+    let $sHTML := xslt:transform-text($ress1, $style)
+    
+    return
+        (:<div type="lingFeatures">{$sHTML}</div>:)
+        (:$ress1:)
+        $sHTML
+};
+
+
+declare
 %rest:path("vicav/text")
 %rest:query-param("id", "{$id}")
 %rest:query-param("xslt", "{$xsltfn}")
