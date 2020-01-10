@@ -24,8 +24,8 @@
             <div>
                 <table class="tbHeader">
                     <tr><td>
-                        <h2 xml:space="preserve">Features: <i>
-                            <xsl:value-of select="$explanation"/></i></h2></td>
+                        <h2 xml:space="preserve">Compare samples: <i>
+                            <xsl:value-of select="string-join(distinct-values(./items//item/@city), ', ')"/></i></h2></td>
                         <!-- TEI deaktivated for the time being, problem with mixed xml.space -->
                         <!-- 
                         <td class="tdTeiLink"><a class='aTEIButton'>
@@ -35,9 +35,9 @@
                 </table>    
                 
                 
-                <table class="tbFeatures">
-                    <xsl:variable name="root" select="."/>
-                    <xsl:for-each select="distinct-values(//items//tei:s/@n)">
+                <xsl:variable name="root" select="."/>
+                <xsl:for-each select="distinct-values(//items//tei:s/@n)">
+                    <table class="tbFeatures">
                         <xsl:variable name="sentence" select="."/>
                         <xsl:for-each select="$root/items//item">
                             <xsl:sort select="@city"/>
@@ -49,9 +49,10 @@
                                 </td>
                             </tr>                       
                         </xsl:for-each>
-                    </xsl:for-each>
+                    </table>
+                    <br/>
+                </xsl:for-each>
                     
-                </table>
             </div>         
         </div>
         <!--             </body>        </html> -->

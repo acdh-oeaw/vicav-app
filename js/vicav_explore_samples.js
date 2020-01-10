@@ -1,9 +1,26 @@
 
-function createDisplayCrossSamplesPanel() {
+var oms = new OverlappingMarkerSpiderfier(mainMap, {nearbyDistance: 2});
+
+oms.addListener('click', function(marker) {
+    var isComparisonOpen = document.getElementById("dvCrossSamples");
+    if (isComparisonOpen) {
+		let samples = window.localStorage.getItem('crossSamples.samples') + ',' + marker.options.id;
+		window.localStorage.setItem('crossSamples.samples', samples)
+        showExploreSamples(samples, '', 'html')
+    }
+    else {
+        getSample('', marker.options.id, 'sampletext_01.xslt');
+    }
+});
+
+function createDisplayCrossSamplesPanel(pID_ = '', pVisiblity_ = 'open', pURL_ = true) {
+    window.localStorage.setItem('crossSamples.samples', '')
+    window.localStorage.setItem('crossSamples.sentences', '')
+
     var searchContainer =
-    "<div class='dvCrossSamples' id='dvCrossSamples'></div>";
-    //appendPanel(searchContainer, "crossFeaturesResults", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
-    appendPanel(searchContainer, "crossSamplesResults", "", "grid-wrap", '', 'hasTeiLink', '', '');
+    "<div class='dvCrossSamples' id='dvCrossSamples'><h2>Click on sample markers to add them. Reload the page to start again.</h2><div class='content'></div>";
+    appendPanel(searchContainer, "crossSamplesResults", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
+    //appendPanel(searchContainer, "crossSamplesResults", "", "grid-wrap", '', 'hasTeiLink', '', '');
 }
 
 function showExploreSamples(query_, sentences_, type_) {
@@ -47,18 +64,12 @@ function showExploreSamples(query_, sentences_, type_) {
     });
 }
 
-function createExploreSamplesPanel(pID_, pVisiblity_, pURL_) {
-    var searchContainer =
-    "<form action='javascript:void(0);' class='newQueryForm form-inline mt-2 mt-md-0'>" +
-    "    <button class='biblQueryBtn'>Query</button><br/>" +
-    "</form>" +
-    "<p>For details as to how to formulate meaningful queries in the bibliography <a class='aVicText' href='javascript:createBiblExplanationPanel()'>click here</a>.</p>";
-    appendPanel(searchContainer, "biblQueryLauncher", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
-}
-
-
 // Navigation entry
 $("#liExploreSamples").mousedown (function (event) {
-    showExploreSamples('tunis_sample_01,garia_sample_01', '1', 'html');
+    clearMarkerLayers();
+    insertSampleMarkers();
+    adjustNav(this.id, "#subNavSamplesGeoRegMarkers");
+	createDisplayCrossSamplesPanel();
+//    showExploreSamples('tunis_sample_01,garia_sample_01', '1', 'html');
 });
 

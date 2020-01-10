@@ -105,7 +105,6 @@ function insertSampleMarkers() {
                                 sID = $(this).attr('xml:id');
 
                                 let sCnt = sID.replace(/^\w+_0?/, '')
-                                console.log(sCnt)
                                 if (sCnt && parseInt(sCnt) > 1) {
                                     sAlt = sAlt + ' (' + sCnt + ')'
                                 }

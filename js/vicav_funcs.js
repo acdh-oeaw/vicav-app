@@ -180,13 +180,6 @@ var fgFeatureMarkers = L.featureGroup().addTo(mainMap).on("click", onFeaturesMap
 var fgGeoDictMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
 var fgDictMarkers = L.featureGroup().addTo(mainMap).on("click", onDictMapClick);
 
-var oms = new OverlappingMarkerSpiderfier(mainMap, {nearbyDistance: 2});
-
-oms.addListener('click', function(marker) {
-  getSample('', marker.options.id, 'sampletext_01.xslt');
-});
-
-
 
 /* ************************************************************************* */
 /* ************************************************************************* */
@@ -1212,6 +1205,13 @@ function () {
                 if (queryFunc == 'biblQueryLauncher') {
                     var pVisiblity = pArgs[1];
                     createNewQueryBiblioPanel(pID_, pVisiblity, true);
+                } else
+
+                if (queryFunc == 'crossSamplesResults') {
+                    var query = pArgs[1];
+                    var pVisiblity = pArgs[2];
+                    createDisplayCrossSamplesPanel(pID_, pVisiblity, true);
+//                    (query, pID_, pVisiblity, true);
                 } else
 
                 if (queryFunc == 'biblQuery') {
