@@ -13,13 +13,13 @@ oms.addListener('click', function(marker) {
     }
 });
 
-function createDisplayCrossSamplesPanel(pID_ = '', pVisiblity_ = 'open', pURL_ = true) {
+function createDisplayCrossSamplesPanel(pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
     window.localStorage.setItem('crossSamples.samples', '')
     window.localStorage.setItem('crossSamples.sentences', '')
 
     var searchContainer =
     "<div class='dvCrossSamples' id='dvCrossSamples'><h2>Click on sample markers to add them. Reload the page to start again.</h2><div class='content'></div>";
-    appendPanel(searchContainer, "crossSamplesResults", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
+    appendPanel(searchContainer, "crossSamplesResults", "", "grid-wrap", '', 'hasTeiLink', '', '', pID_, pVisiblity_, pURL_);
     //appendPanel(searchContainer, "crossSamplesResults", "", "grid-wrap", '', 'hasTeiLink', '', '');
 }
 
