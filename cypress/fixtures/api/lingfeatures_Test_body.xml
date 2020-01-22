@@ -1,0 +1,466 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:acdh="http://acdh.oeaw.ac.at">
+   <div>
+      <table class="tbHeader">
+         <tr>
+            <td>
+               <h2>A List of Linguistic Features of Test Arabic</h2>
+            </td>
+            <td class="tdTeiLink">{teiLink}</td>
+         </tr>
+      </table>
+      <p xml:space="preserve">By <i>Test (2018)</i></p>
+      <table class="tbFeatures">
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Interrogatives</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="3">who?</td>
+            <td class="tdFeaturesCom">Most commonly dialects show reflexes of CA <i>man</i>.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightSource">Who is this man? – He is my friend</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">škūn</span><span xml:space="preserve"> </span><span>hā</span><span>-</span><span>ṛ</span><span>-</span><span>ṛāžil</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>hūwa</span><span xml:space="preserve"> </span><span>ṣāḥbi</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">whose?</td>
+            <td class="tdFeaturesRightSource">Whose car is this? – This is our car. It’s small but it’s good.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>hāḏi</span><span xml:space="preserve"> </span><span>kaṛhabt</span><span xml:space="preserve"> </span><span style="color:red">əškūn</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>hāḏi</span><span xml:space="preserve"> </span><span>l</span><span>-</span><span>kaṛhaba</span><span xml:space="preserve"> </span><span>mtāʕna</span><span>.</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>hāḏi</span><span xml:space="preserve"> </span><span>kaṛahbitna</span><span>.</span><span xml:space="preserve"> </span><span>hīya</span><span xml:space="preserve"> </span><span>zġīra</span><span>,</span><span xml:space="preserve"> </span><span>āma</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>amma</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>lākin</span><span xml:space="preserve"> </span><span>bāhya</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">what?</td>
+            <td class="tdFeaturesRightSource">Fatima, what are you doing now? – I’m watching TV.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">āš/š</span><span>-</span><span>ʕāmla</span><span xml:space="preserve"> </span><span>taww</span><span>(</span><span>a</span><span>)</span><span>,</span><span xml:space="preserve"> </span><span>yā</span><span xml:space="preserve"> </span><span>Fāṭma</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>nitfarriž</span><span xml:space="preserve"> </span><span>f</span><span>-</span><span>it</span><span>-</span><span>talfza</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="3">why?</td>
+            <td class="tdFeaturesCom">A very common pattern are reflexes of CA <i>li + ’ayy</i> or <i>li + ’ayy + šay’</i></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightSource">Why didn’t he come? – I don’t know.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">ʕlāš</span><span xml:space="preserve"> </span><span>ma</span><span>-</span><span>žā</span><span>-</span><span>š</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>ma</span><span>-</span><span>naʕṛaf</span><span>-</span><span>š</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="3">where?</td>
+            <td class="tdFeaturesCom">A very common pattern are reflexes of CA <i>fī + ’ayna</i></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightSource">Where is my mobile (phone)? – Here it is!</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">wīn</span><span xml:space="preserve"> </span><span>il</span><span>-</span><span>buṛṭābil</span><span xml:space="preserve"> </span><span>imtāʕi</span><span>?</span><span>-</span><span xml:space="preserve"> </span><span>(</span><span>a</span><span>)</span><span>hāwa</span><span xml:space="preserve"> </span><span>hnā</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>hāw</span><span xml:space="preserve"> </span><span>əhnā</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">where to?</td>
+            <td class="tdFeaturesRightSource">Where are you (m./f.) going? – I am going home.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">wīn</span><span xml:space="preserve"> </span><span>māši</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>māšya</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>māši</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>māšya</span><span xml:space="preserve"> </span><span>l</span><span>-</span><span>id</span><span>-</span><span>dāṛ</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">where from?</td>
+            <td class="tdFeaturesRightSource">Where are you (m./f.; sg./pl.) from? – I am/ We are from….</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">mnīn</span><span xml:space="preserve"> </span><span>inti</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>intūma</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>āna</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>aḥna</span><span xml:space="preserve"> </span><span>min</span><span xml:space="preserve"> </span><span>…</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">when?</td>
+            <td class="tdFeaturesRightSource">Fatima, when did you see Muhammad? – I saw him yesterday.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">waqtāš</span><span xml:space="preserve"> </span><span>rīt/šuft</span><span xml:space="preserve"> </span><span>Muḥammad</span><span>,</span><span xml:space="preserve"> </span><span>yā</span><span xml:space="preserve"> </span><span>Fāṭma</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>rītu</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>šuftu</span><span xml:space="preserve"> </span><span>lbāraḥ</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>mbāraḥ</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">how?</td>
+            <td class="tdFeaturesRightSource">How are you (m./f.)? – I’m fine.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span class="phr" style="color:red"><span>šnūwa</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>šnīye</span><span xml:space="preserve"> </span></span><span>ḥwālik</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>lā</span><span xml:space="preserve"> </span><span>bās</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">how much?</td>
+            <td class="tdFeaturesRightSource">How much is half a kilo of lemons? – It’s 10 Pounds.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span class="phr"></span><span>əṛṭal</span><span xml:space="preserve"> </span><span style="color:red">līmūn</span><span>?</span><span>-</span><span xml:space="preserve"> </span><span>b</span><span>-</span><span>dīnāṛ</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">how many?</td>
+            <td class="tdFeaturesRightSource">How many children do you (f.) have? – I have two daughters andthree sons.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">qaddāš</span><span xml:space="preserve"> </span><span>ʕandik</span><span xml:space="preserve"> </span><span>ūlād</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>ʕandi</span><span xml:space="preserve"> </span><span>zūz</span><span xml:space="preserve"> </span><span>bnāt</span><span xml:space="preserve"> </span><span>w</span><span>-</span><span>tlāṯ</span><span>(</span><span>a</span><span>)</span><span xml:space="preserve"> </span><span>ūlād</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">which?</td>
+            <td class="tdFeaturesRightSource">In which neighbourhood do you live? – We live in Zamalik.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>f</span><span>-</span><span style="color:red">āni</span><span xml:space="preserve"> </span><span>žīha</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>f</span><span>-</span><span>ānu</span><span xml:space="preserve"> </span><span>ḥayy</span><span xml:space="preserve"> </span><span>tusuknu</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>nusuknu</span><span xml:space="preserve"> </span><span>fi</span><span xml:space="preserve"> </span><span>Bāb</span><span xml:space="preserve"> </span><span>Swīqa</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Demonstratives</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">this</td>
+            <td class="tdFeaturesRightSource">Who is this man? – He is my friend.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>škūn</span><span xml:space="preserve"> </span><span style="color:red">hā</span><span>-</span><span>ṛ</span><span>-</span><span>ṛāžil</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>hūwa</span><span xml:space="preserve"> </span><span>ṣāḥbi</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Pronouns</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">I</td>
+            <td class="tdFeaturesRightSource">I am a teacher.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Presentatives</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">here is … (m.)</td>
+            <td class="tdFeaturesRightSource">Where is my mobile? – Here is the phone!</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>wīn</span><span xml:space="preserve"> </span><span>il</span><span>-</span><span>buṛṭābil</span><span xml:space="preserve"> </span><span>imtāʕi</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span class="phr" style="color:red"><span>(</span><span>a</span><span>)</span><span>hāwa</span><span xml:space="preserve"> </span></span><span>hnā</span><span>/</span><span xml:space="preserve"> </span><span>hāw</span><span xml:space="preserve"> </span><span>əhnā</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">here is … (f.)</td>
+            <td class="tdFeaturesRightSource">Where is the car? – Here it is!</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Adverbs</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">here</td>
+            <td class="tdFeaturesRightSource">We have been here for 8 years.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>ʕandna</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>ʕanna</span><span xml:space="preserve"> </span><span>ṯmānya</span><span xml:space="preserve"> </span><span>snīn</span><span xml:space="preserve"> </span><span class="phr" style="color:red"><span>hūni</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>əhnā</span><span xml:space="preserve"> </span></span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">now</td>
+            <td class="tdFeaturesRightSource">Fatima, what are you doing now? – I’m watching TV.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>āš/š</span><span>-</span><span>ʕāmla</span><span xml:space="preserve"> </span><span class="phr" style="color:red"><span>taww</span><span>(</span><span>a</span><span>)</span><span xml:space="preserve"> </span></span><span>,</span><span xml:space="preserve"> </span><span>yā</span><span xml:space="preserve"> </span><span>Fāṭma</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>nitfarriž</span><span xml:space="preserve"> </span><span>f</span><span>-</span><span>it</span><span>-</span><span>talfza</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">today</td>
+            <td class="tdFeaturesRightSource">It’s very hot today.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>id</span><span>-</span><span>dinya</span><span xml:space="preserve"> </span><span>sxūna</span><span xml:space="preserve"> </span><span>baṛša</span><span xml:space="preserve"> </span><span class="phr" style="color:red"><span>l</span><span>-</span><span>yūm</span><span xml:space="preserve"> </span></span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">yesterday</td>
+            <td class="tdFeaturesRightSource">Yesterday it rained.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span class="phr" style="color:red"><span>ilbāraḥ</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>imbāraḥ</span><span xml:space="preserve"> </span></span><span>ṣabb</span><span xml:space="preserve"> </span><span>li</span><span>-</span><span>mṭaṛ</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">tomorrow</td>
+            <td class="tdFeaturesRightSource">Hey kids, tomorrow you have to study.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>yā</span><span xml:space="preserve"> </span><span>ūlād</span><span>,</span><span xml:space="preserve"> </span><span style="color:red">ġudwa</span><span xml:space="preserve"> </span><span>yilzimkum</span><span xml:space="preserve"> </span><span>taqṛāu</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">last year</td>
+            <td class="tdFeaturesRightSource">Last year we had many problems.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span class="phr" style="color:red"><span>il</span><span>-</span><span>ʕām</span><span xml:space="preserve"> </span><span>illi</span><span xml:space="preserve"> </span><span>fāt</span><span xml:space="preserve"> </span></span><span>/</span><span xml:space="preserve"> </span><span>ʕāmnāwal</span><span xml:space="preserve"> </span><span>kānit</span><span xml:space="preserve"> </span><span>ʕandna</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>ʕanna</span><span xml:space="preserve"> </span><span>baṛša</span><span xml:space="preserve"> </span><span>mšākil</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Numerals</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">eight</td>
+            <td class="tdFeaturesRightSource">We have been here for 8 years.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>ʕandna</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>ʕanna</span><span xml:space="preserve"> </span><span style="color:red">ṯmānya</span><span xml:space="preserve"> </span><span>snīn</span><span xml:space="preserve"> </span><span>hūni</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>əhnā</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">eleven</td>
+            <td class="tdFeaturesRightSource">What’s the time? It’s 11 o’clock.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>qaddāš</span><span xml:space="preserve"> </span><span>il</span><span>-</span><span>waqt</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>la</span><span>-</span><span style="color:red">ḥdāš</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">twelve</td>
+            <td class="tdFeaturesRightSource">They have 12 goats and 2 cows.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>ʕandhum</span><span xml:space="preserve"> </span><span style="color:red">ṯnāš</span><span>-</span><span>in</span><span xml:space="preserve"> </span><span>miʕza</span><span xml:space="preserve"> </span><span>w</span><span>-</span><span>zūz</span><span xml:space="preserve"> </span><span>bagṛāt</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>bagaṛtīn</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">eighteen</td>
+            <td class="tdFeaturesRightSource">There are 18 new students in our class.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>famma</span><span xml:space="preserve"> </span><span style="color:red">ṯmunṭāš</span><span>-</span><span>in</span><span xml:space="preserve"> </span><span>ṭālib</span><span xml:space="preserve"> </span><span>ždīd</span><span xml:space="preserve"> </span><span>f</span><span>-</span><span>il</span><span>-</span><span>qism</span><span xml:space="preserve"> </span><span>imtāʕna</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Adjectives</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">good</td>
+            <td class="tdFeaturesRightSource">How are you (m./f.)? – I’m fine.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>šnūwa</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>šnīye</span><span xml:space="preserve"> </span><span>ḥwālik</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span class="phr" style="color:red"><span>lā</span><span xml:space="preserve"> </span><span>bās</span><span xml:space="preserve"> </span></span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Colours</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">white</td>
+            <td class="tdFeaturesRightSource">My husband wears a white shirt. We have a white car.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>ṛāžli</span><span xml:space="preserve"> </span><span>lābis</span><span xml:space="preserve"> </span><span>sūrīya</span><span xml:space="preserve"> </span><span style="color:red">bīḏ̣a</span><span xml:space="preserve"> </span><span>w</span><span>-</span><span>āna</span><span xml:space="preserve"> </span><span>lābsa</span><span xml:space="preserve"> </span><span>rūba</span><span xml:space="preserve"> </span><span>bīḏ̣a</span><span>.</span><span xml:space="preserve"> </span><span>ʕandna</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>ʕanna</span><span xml:space="preserve"> </span><span>kaṛhaba</span><span xml:space="preserve"> </span><span>bīḏ̣a</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">black</td>
+            <td class="tdFeaturesRightSource">I don’t like this black shirt. / car.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>ma</span><span>-</span><span>nḥibb</span><span>-</span><span>əš</span><span xml:space="preserve"> </span><span>hā</span><span>-</span><span>l</span><span>-</span><span>maryūl</span><span xml:space="preserve"> </span><span>il</span><span>-</span><span style="color:red">akḥal</span><span>.</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>hā</span><span>-</span><span>l</span><span>-</span><span>kaṛhaba</span><span xml:space="preserve"> </span><span>l</span><span>-</span><span>kaḥla</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">pink</td>
+            <td class="tdFeaturesRightSource">My wife bought a pink shirt / bag.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>maṛti</span><span xml:space="preserve"> </span><span>šrāt</span><span xml:space="preserve"> </span><span>maryūl</span><span xml:space="preserve"> </span><span style="color:red">waṛdi</span><span>.</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>sāk</span><span xml:space="preserve"> </span><span>waṛdi</span><span>.</span><span xml:space="preserve"> </span><span>(</span><span>maryūl</span><span xml:space="preserve"> </span><span>f</span><span>-</span><span>ir</span><span>-</span><span>rose</span><span>.</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>sāk</span><span xml:space="preserve"> </span><span>f</span><span>-</span><span>ir</span><span>-</span><span>rose</span><span>.</span><span>)</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">grey</td>
+            <td class="tdFeaturesRightSource">a grey wall/a grey bag</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>ḥīṭ</span><span xml:space="preserve"> </span><span style="color:red">ərmādi</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>sāk</span><span xml:space="preserve"> </span><span>ərmādi</span><span>(</span><span>ḥīṭ</span><span xml:space="preserve"> </span><span>gris</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>sāk</span><span xml:space="preserve"> </span><span>gris</span><span>)</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">orange</td>
+            <td class="tdFeaturesRightSource">an orange shirt / car</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>maryūl</span><span xml:space="preserve"> </span><span style="color:red">buṛdgāni</span><span>(</span><span>maryūl</span><span xml:space="preserve"> </span><span>f</span><span>-</span><span>il</span><span>-</span><span>orange</span><span>)</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Prepositions</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">
+               <i>fi</i> vs. <i>bi</i>
+               </td>
+            <td class="tdFeaturesRightSource">There are 18 new students in our class.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>famma</span><span xml:space="preserve"> </span><span>ṯmunṭāš</span><span>-</span><span>in</span><span xml:space="preserve"> </span><span>ṭālib</span><span xml:space="preserve"> </span><span>ždīd</span><span xml:space="preserve"> </span><span style="color:red">f</span><span>-</span><span>il</span><span>-</span><span>qism</span><span xml:space="preserve"> </span><span>imtāʕna</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Important verbs</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">to do</td>
+            <td class="tdFeaturesRightSource">Fatima, what are you doing now? – I’m watching TV.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>āš/š</span><span>-</span><span style="color:red">ʕāmla</span><span xml:space="preserve"> </span><span>taww</span><span>(</span><span>a</span><span>)</span><span>,</span><span xml:space="preserve"> </span><span>yā</span><span xml:space="preserve"> </span><span>Fāṭma</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>nitfarriž</span><span xml:space="preserve"> </span><span>f</span><span>-</span><span>it</span><span>-</span><span>talfza</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">to stay</td>
+            <td class="tdFeaturesRightSource">Stay a bit longer! – No, I don’t have time.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">uqʕud</span><span xml:space="preserve"> </span><span>šwayya</span><span>!</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>lā</span><span>,</span><span xml:space="preserve"> </span><span>mā</span><span>-</span><span>ʕandī</span><span>-</span><span>š</span><span xml:space="preserve"> </span><span>waqt</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">to speak</td>
+            <td class="tdFeaturesRightSource">Do you speak Arabic? – Just, a little.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">titkallim</span><span xml:space="preserve"> </span><span>b</span><span>-</span><span>il</span><span>-</span><span>ʕarbi</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>šwayya</span><span xml:space="preserve"> </span><span>baṛka</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">to rain</td>
+            <td class="tdFeaturesRightSource">Yesterday it rained.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>ilbāraḥ/imbāraḥ</span><span xml:space="preserve"> </span><span class="phr" style="color:red"><span>ṣabb</span><span xml:space="preserve"> </span><span>li</span><span>-</span><span>mṭaṛ</span><span xml:space="preserve"> </span></span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">to open</td>
+            <td class="tdFeaturesRightSource">Open the window!</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">ḥill</span><span xml:space="preserve"> </span><span>iš</span><span>-</span><span>šubbāk</span><span>!</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">to close</td>
+            <td class="tdFeaturesRightSource">Close the doors!</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">sakkir</span><span xml:space="preserve"> </span><span>il</span><span>-</span><span>bībān</span><span>!</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">to take</td>
+            <td class="tdFeaturesRightSource">What did you take? – Nothing.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>šnūwa</span><span xml:space="preserve"> </span><span style="color:red">xḏīt</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>ḥatta</span><span xml:space="preserve"> </span><span>šayy</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>ḥāža</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">to give</td>
+            <td class="tdFeaturesRightSource">Did you give the letter to Ahmad? – Yes, I gave it to him.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">ʕṭīt</span><span>-</span><span>ši</span><span xml:space="preserve"> </span><span>ž</span><span>-</span><span>žwāb</span><span xml:space="preserve"> </span><span>l</span><span>-</span><span>Aḥmad</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>ʔayy</span><span>,</span><span xml:space="preserve"> </span><span>ʕṭīt</span><span>-</span><span>hū</span><span>-</span><span>lu</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">to see</td>
+            <td class="tdFeaturesRightSource">The children saw a beggar behind our house.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>iz</span><span>-</span><span>zġāṛ</span><span xml:space="preserve"> </span><span style="color:red">šāfu</span><span xml:space="preserve"> </span><span>ṭallāb</span><span xml:space="preserve"> </span><span>wṛā</span><span xml:space="preserve"> </span><span>dāṛ</span><span>na</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">to want</td>
+            <td class="tdFeaturesRightSource">Do you (f.) want to drink tea or coffee? – Tea please.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">tḥibb</span><span xml:space="preserve"> </span><span>tušṛub</span><span xml:space="preserve"> </span><span>tāy</span><span xml:space="preserve"> </span><span>walla</span><span xml:space="preserve"> </span><span>qahwa</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span class="phr"></span><span>tāy</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">to bring</td>
+            <td class="tdFeaturesRightSource">Bring me the big bottle, please! – I'm right with you.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">žīb</span><span xml:space="preserve"> </span><span>li</span><span xml:space="preserve"> </span><span>d</span><span>-</span><span>dabbūza</span><span>,</span><span xml:space="preserve"> </span><span>b</span><span>-</span><span>ṛaḅḅi</span><span>!</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>tfaḏḏaḷ</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">to have</td>
+            <td class="tdFeaturesRightSource">They have a lot of money, but they are bad people.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">ʕand</span><span xml:space="preserve"> </span><span>hum</span><span xml:space="preserve"> </span><span>baṛša</span><span xml:space="preserve"> </span><span>flūs</span><span>,</span><span xml:space="preserve"> </span><span>āma</span><span xml:space="preserve"> </span><span>amma</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>lākin</span><span xml:space="preserve"> </span><span>hūma</span><span xml:space="preserve"> </span><span>nās</span><span xml:space="preserve"> </span><span>xayba</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Phrasemes</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="3">since/for</td>
+            <td class="tdFeaturesCom">Many Arabic dialects use periphrastic constructions to render English ‛since’.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightSource">We have been here for 8 years.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">ʕandna</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>ʕanna</span><span xml:space="preserve"> </span><span>ṯmānya</span><span xml:space="preserve"> </span><span>snīn</span><span xml:space="preserve"> </span><span>hūni</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>əhnā</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Nouns</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">women</td>
+            <td class="tdFeaturesRightSource">What are those women doing there? – They are baking bread.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>āš/š</span><span>-</span><span>ʕāmlīn</span><span xml:space="preserve"> </span><span>hāk</span><span>-</span><span>li</span><span>-</span><span style="color:red">nsā</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>yṭayybu</span><span xml:space="preserve"> </span><span>f</span><span>-</span><span>il</span><span>-</span><span>xubz</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">husband</td>
+            <td class="tdFeaturesRightSource">My husband wears a white shirt.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">ṛāžl</span><span xml:space="preserve"> </span><span>i</span><span xml:space="preserve"> </span><span>lābis</span><span xml:space="preserve"> </span><span>sūrīya</span><span xml:space="preserve"> </span><span>bīḏ̣a</span><span xml:space="preserve"> </span><span>w</span><span>-</span><span>āna</span><span xml:space="preserve"> </span><span>lābsa</span><span xml:space="preserve"> </span><span>rūba</span><span xml:space="preserve"> </span><span>bīḏ̣a</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">friend</td>
+            <td class="tdFeaturesRightSource">Who is this man? – He is my friend</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>škūn</span><span xml:space="preserve"> </span><span>hā</span><span>-</span><span>ṛ</span><span>-</span><span>ṛāžil</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>hūwa</span><span xml:space="preserve"> </span><span style="color:red">ṣāḥb</span><span xml:space="preserve"> </span><span>i</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Neologisms</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">mobile vs. cellphone</td>
+            <td class="tdFeaturesRightSource">Where is my mobile (phone)? – Here it is!</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>wīn</span><span xml:space="preserve"> </span><span>il</span><span>-</span><span style="color:red">buṛṭābil</span><span xml:space="preserve"> </span><span>imtāʕi</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span>(</span><span>a</span><span>)</span><span>hāwa</span><span xml:space="preserve"> </span><span>hnā</span><span xml:space="preserve"> </span><span>/</span><span xml:space="preserve"> </span><span>hāw</span><span xml:space="preserve"> </span><span>əhnā</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Modality</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">being unable</td>
+            <td class="tdFeaturesRightSource">We cannot pay the rent.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span class="phr" style="color:red"><span>mā</span><span>-</span><span>nnažžmū</span><span>-</span><span>š</span><span xml:space="preserve"> </span></span><span>nxallṣu</span><span xml:space="preserve"> </span><span>l</span><span>-</span><span>krā</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">ability</td>
+            <td class="tdFeaturesRightSource">Can you (~do you know how to) play Shqubba? – Yes.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">taʕraf</span><span>-</span><span>ši</span><span xml:space="preserve"> </span><span>talʕab</span><span xml:space="preserve"> </span><span>šqubba</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span>ʔayy</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">possibility</td>
+            <td class="tdFeaturesRightSource">Can you come tomorrow?</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"></td>
+         </tr>
+         <tr>
+            <td colspan="2" class="tdFeaturesHead">Other items</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">a little</td>
+            <td class="tdFeaturesRightSource">Do you speak Arabic? – Just, a little.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>titkallim</span><span xml:space="preserve"> </span><span>b</span><span>-</span><span>il</span><span>-</span><span>ʕarbi</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span style="color:red">šwayya</span><span xml:space="preserve"> </span><span>baṛka</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">existential (there is, there are)</td>
+            <td class="tdFeaturesRightSource">There are 18 new students in our class.</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span style="color:red">famma</span><span xml:space="preserve"> </span><span>ṯmunṭāš</span><span>-</span><span>in</span><span xml:space="preserve"> </span><span>ṭālib</span><span xml:space="preserve"> </span><span>ždīd</span><span xml:space="preserve"> </span><span>f</span><span>-</span><span>il</span><span>-</span><span>qism</span><span xml:space="preserve"> </span><span>imtāʕna</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesLeft" rowspan="2">Genitive explicative</td>
+            <td class="tdFeaturesRightSource">Where is my mobile? – Here it is!</td>
+         </tr>
+         <tr>
+            <td class="tdFeaturesRightTarget"><span>wīn</span><span xml:space="preserve"> </span><span>il</span><span>-</span><span>buṛṭābil</span><span xml:space="preserve"> </span><span>imtāʕi</span><span>?</span><span xml:space="preserve"> </span><span>–</span><span xml:space="preserve"> </span><span class="phr" style="color:red"><span>(</span><span>a</span><span>)</span><span>hāwa</span><span xml:space="preserve"> </span><span>hnā</span><span xml:space="preserve"> </span></span><span>/</span><span xml:space="preserve"> </span><span>hāw</span><span xml:space="preserve"> </span><span>əhnā</span><span>.</span><span xml:space="preserve"> </span></td>
+         </tr>
+      </table>
+   </div>
+</div>
