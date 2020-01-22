@@ -41,8 +41,8 @@
                         <tr>
                             <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/></td>
                             <td class="tdFeaturesRightTarget">
-                                <xsl:apply-templates select="tei:row/tei:cell[@rend = 'tdRight']"/>
-                                <i class="iFeaturesTrans" xml:space="preserve"><xsl:text> </xsl:text>(<xsl:value-of select="tei:row/tei:cell[@rend = 'tdCentre']"/>)</i>
+                                <xsl:apply-templates select=".//tei:quote[@xml:lang='ar']"/>
+                                <i class="iFeaturesTrans" xml:space="preserve"><xsl:text> </xsl:text>(<xsl:value-of select=".//tei:quote[@xml:lang = 'en']"/>)</i>
                             </td>
                         </tr>                       
                     </xsl:for-each>
@@ -59,7 +59,7 @@
     <xsl:template match="tei:p"></xsl:template>
     <xsl:template match="tei:phr">
         <span>
-            <xsl:if test="contains(@ana,concat('#',$highLightIdentifier))">
+            <xsl:if test="contains(@ana,$highLightIdentifier)">
                 <xsl:attribute name="style">color:red;</xsl:attribute>
             </xsl:if>
             <xsl:apply-templates/></span></xsl:template>
@@ -67,11 +67,19 @@
         <span><xsl:value-of select="."/></span>
     </xsl:template>
     
-    <xsl:template match="tei:w"><span><xsl:if test="contains(@ana,concat('#',$highLightIdentifier))">
+    <xsl:template match="tei:w"><span><xsl:if test="contains(@ana,$highLightIdentifier)">
                 <xsl:attribute name="style">color:red;</xsl:attribute>
             </xsl:if>
-            <xsl:apply-templates/></span></xsl:template>
+            <xsl:apply-templates/></span>
+        <xsl:if test="not(./@join = 'right')  and not(following-sibling::*[1]/name() = 'pc')">
+            <span xml:space="preserve"> </span>
+        </xsl:if>
+    </xsl:template>
     
+    <xsl:template match="tei:pc">
+        <span><xsl:apply-templates/></span>
+        <xsl:if test="not(./@join = 'right')">
+            <span xml:space="preserve"> </span></xsl:if></xsl:template>
     <!-- 
    <xsl:template match="tei:cell"><td><xsl:apply-templates/></td></xsl:template>
    <xsl:template match="tei:row">
