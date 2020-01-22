@@ -18,7 +18,7 @@ let checksampleTexts = function(fixture, label) {
             })
             for (let variant in fixture.variants) {
                 cy.contains(variant).scrollIntoView().trigger('mouseover').then(function(el) {
-                    cy.contains(fixture.variants[variant])
+                    cy.get('.tooltip').contains(fixture.variants[variant])
                 });
             }
         }          
