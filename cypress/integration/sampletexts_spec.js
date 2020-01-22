@@ -1,12 +1,12 @@
 const sampletexts = require('../fixtures/sampletexts')
-
-let checksampleTexts = function(fixture) {
-    cy.visit('http://localhost:8984/vicav')
+let checksampleTexts = function(fixture, label) {
+    cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,_samples_,]')
     cy.get('img.leaflet-marker-icon') // Wait until the initial markers appear.
-    
-    cy.get('#subNavSamplesGeoRegMarkers').click()
 
-    cy.get('img[alt='+ fixture.label + ']').click({force: true})
+    for (let l = 0; l < fixture.labels.length; l++) {
+        cy.get('img[alt="'+ fixture.labels[l] + '"]').click({force: true});
+    }
+
     cy.get('[data-snippetid=' + fixture.snippetid + '] .spSentence').as('sentences')
 
     cy.get('@sentences').then((sentences) => {
@@ -14,8 +14,13 @@ let checksampleTexts = function(fixture) {
             let fixture_s = fixture.sentences[s]
 
             cy.get(sentences[s]).then(function(el) {
-                assert.equal(el.text().replace(/\s/g, ' '), fixture_s)
+                assert.equal(el.text().replace(/(^\s+)|(\s+$)/g, '').replace(/\s/g, ' '), fixture_s)
             })
+            for (let variant in fixture.variants) {
+                cy.contains(variant).scrollIntoView().trigger('mouseover').then(function(el) {
+                    cy.get('.tooltip').contains(fixture.variants[variant])
+                });
+            }
         }          
     })
 }
@@ -24,7 +29,7 @@ describe('VICAV samples test', function() {
     for(let text in sampletexts) {
         it('Check ' + text + ' sentences', function() {
             // Write the number to input field
-            checksampleTexts(sampletexts[text])
+            checksampleTexts(sampletexts[text], text)
         })
     }
 })

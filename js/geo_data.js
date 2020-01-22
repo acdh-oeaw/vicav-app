@@ -78,23 +78,53 @@ function insertFeatureMarkers() {
 }
 
 function insertSampleMarkers() {
-    /* ******************************** */
-    /* Create with geo_samples_txt__001.xq */
-    /* ******************************** */
-    fgSampleMarkers.addLayer(L.marker([33.51, 36.29], { alt: 'Damascus', id: 'damascus_sample_01' }).bindTooltip('Damascus'));
-    fgSampleMarkers.addLayer(L.marker([30.05, 31.23], { alt: 'Cairo', id: 'cairo_sample_01' }).bindTooltip('Cairo'));
-    fgSampleMarkers.addLayer(L.marker([33.33, 44.38], {
-        alt: 'Baghdad', id: 'baghdad_sample_01'
-    }).bindTooltip('Baghdad'));
-    fgSampleMarkers.addLayer(L.marker([37.15, 38.79], {
-        alt: 'Şanlıurfa', id: 'urfa_sample_01'
-    }).bindTooltip('Şanlıurfa'));
-    fgSampleMarkers.addLayer(L.marker([36.8, 10.18], {
-        alt: 'Tunis', id: 'tunis_sample_01'
-    }).bindTooltip('Tunis'));
-    fgSampleMarkers.addLayer(L.marker([33.45, 9.01], {
-        alt: 'Douz', id: 'douz_sample_01'
-    }).bindTooltip('Douz'));
+    clearMarkerLayers();
+    $.ajax({
+        url: 'sample_markers',
+        type: 'GET',
+        dataType: 'xml',
+        contentType: 'application/html; charset=utf-8',
+        success: function (result) {
+            s = '';
+            let results = $(result).find('r')
+            results.each(function (index) {
+                //console.log(sUrl);
+                loc = $(this).find('loc').text();
+                if (loc){
+
+                                loc = loc.replace(/°/g, ".");
+                                loc = loc.replace(/′N/g, ",");
+                                loc = loc.replace(/′E/g, "");
+                                if (loc.indexOf('′W') !== -1) {
+                                    loc = loc.replace(/ /g, " -");
+                                    loc = loc.replace(/′W/g, "");
+                                }
+                                
+                                sAlt = $(this).find('alt').text();
+                                sID = $(this).attr('xml:id');
+
+                                let sCnt = sID.replace(/^\w+_0?/, '')
+                                console.log(sCnt)
+                                if (sCnt && parseInt(sCnt) > 1) {
+                                    sAlt = sAlt + ' (' + sCnt + ')'
+                                }
+                                values = loc.split(",");
+                                v1 = parseFloat(values[0]);
+                                v2 = parseFloat(values[1]);
+                                sTooltip = sAlt;
+                                
+                                sQuery = 'profile:' + sAlt + '';
+                                marker = L.marker([v1, v2], { alt: sAlt, id: sID }).bindTooltip(sTooltip);
+                                fgSampleMarkers.addLayer(marker);
+                                oms.addMarker(marker); 
+                            }
+            });
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+        }
+    });
+    
     
     updateUrl_biblMarker('_samples_', '');
 }
@@ -252,7 +282,6 @@ function insertGeoRegMarkers(query_, scope_) {
         success: function (result) {
             s = '';
             cnt = 0;
-            console.log(result);
             
             $(result).find('r').each(function (index) {
                 cnt = cnt + 1;
