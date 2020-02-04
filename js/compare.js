@@ -82,10 +82,9 @@ $.ajax({
 
       $("[data-snippetid='compare-samples'] .location").tagit({
           autocomplete: {
-            delay: 0, 
-            minLength: 2,       
+            delay: 200, 
+            minLength: 1,       
             source: function( request, response ) {
-
                 var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
                 response( $.grep( data, function( value ) {
                   console.log(value);
@@ -96,18 +95,20 @@ $.ajax({
               }
           },
           allowSpaces: true,
+          placeholderText: 'Seach place names...'
       });
     }
 });
 
 $(document).ready(function(event) {
   var location = getParam('location') //encodeURIComponent($('[name=location]', this)[0].value);
-  $('[name="location"]', this)[0].value = location;
-  var $form = $('form.compare-samples');
-  console.log(location)
 
-
-  $.ajax({
+  if (location){
+    $('[name="location"]', this)[0].value = location;
+    var $form = $('form.compare-samples');
+    
+    
+    $.ajax({
       url: 'explore_samples?query=' + encodeURIComponent(location) + '&sentences=all&xslt=cross_samples_01.xslt',
       dataType: 'html',
       cache: false,
@@ -136,12 +137,13 @@ $(document).ready(function(event) {
           console.log($form)
           $form.siblings('.results').html(result);
         }
-      }
-  });
+       }
+    });
+  }
     //event.preventDefault();
 });
-     
-   $("body").tooltip({
-        selector: '[data-toggle="tooltip"]',
-        trigger: 'hover focus'
-    });
+
+$("body").tooltip({
+    selector: '[data-toggle="tooltip"]',
+    trigger: 'hover focus'
+});
