@@ -11,7 +11,19 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
+const fs = require('fs')
+
 module.exports = (on, config) => {
+
+  on('task', {
+    deleteFile (filename) {
+      if (fs.unlinkSync(filename)) {
+        return true
+      }
+
+      return null
+    }
+  });
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
 }
