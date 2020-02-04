@@ -160,7 +160,7 @@ function onDictMapClick(e) {
     }
 }
 
-var mainMap = L.map('dvMainMap').setView([19.064, 24.544], 4);
+var mainMap = L.map('dvMainMap');
 L.tileLayer('https://api.mapbox.com/styles/v1/acetin/cjb22mkrf16qf2spyl3u1vee3/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWNldGluIiwiYSI6ImNqYjIybG5xdTI4OWYyd285dmsydGFkZWQifQ.xG4sN5u8h-BoXaej6OjkXw', {
     maxZoom: 20,
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
@@ -183,7 +183,25 @@ oms.addListener('click', function(marker) {
   getSample('', marker.options.id, 'sampletext_01.xslt');
 });
 
+var config = {
+    map: {
+        zoom: 4, 
+        center: [19.064, 24.544]
+    }
+}
 
+$.ajax({
+  dataType: "json",
+  url: 'config.json?v=00001',
+  data: null,
+  success: function(configOverride) {
+        $.extend(true, config, configOverride);
+        mainMap.setView(config.map.center, config.map.zoom);
+    },
+  error: function() {
+        mainMap.setView(config.map.center, config.map.zoom);
+    }   
+});
 
 /* ************************************************************************* */
 /* ************************************************************************* */
