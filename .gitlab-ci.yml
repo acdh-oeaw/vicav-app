@@ -5,7 +5,7 @@ stages:
 
 variables:
   npm_config_cache: "$CI_PROJECT_DIR/.npm"
-  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+  CYPRESS_CACHE_FOLDER: "$CI_BUILDS_DIR/cache/Cypress"
 
 # cache using branch name
 # https://gitlab.com/help/ci/caching/index.md
@@ -65,7 +65,7 @@ clean-testbench:
   tags:
       - BaseX-9.2
   variables:
-     GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav-webapp
+     GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
   script:
     - rm -rf $GIT_CLONE_PATH 2>/dev/null
     - mkdir -p $GIT_CLONE_PATH 2>/dev/null
