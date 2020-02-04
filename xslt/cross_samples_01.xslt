@@ -42,7 +42,7 @@
                         <xsl:for-each select="$root/items//item">
                             <xsl:sort select="@city"/>
                             <tr>
-                                <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/><br/>
+                                <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/>
                                 <small>
                                 <xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)</xsl:if></small>
                             </td>
