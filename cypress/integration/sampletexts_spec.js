@@ -7,6 +7,13 @@ let checksampleTexts = function(fixture, label) {
         cy.get('img[alt="'+ fixture.labels[l] + '"]').click({force: true});
     }
 
+    if (fixture.person !== undefined) {
+        cy.get('[data-snippetid=' + fixture.snippetid + '] i').as('snippet')
+        cy.get('@snippet').contains(fixture.person);
+        cy.get('@snippet').contains(fixture.sex)
+        cy.get('@snippet').contains(fixture.age);
+    }
+
     cy.get('[data-snippetid=' + fixture.snippetid + '] .spSentence').as('sentences')
 
     cy.get('@sentences').then((sentences) => {
