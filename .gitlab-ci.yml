@@ -65,7 +65,7 @@ clean-testbench:
   tags:
       - BaseX-9.2
   variables:
-     GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav-app
+     GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav-webapp
   script:
     - rm -rf $GIT_CLONE_PATH 2>/dev/null
     - mkdir -p $GIT_CLONE_PATH 2>/dev/null
