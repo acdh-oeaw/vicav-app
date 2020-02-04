@@ -70,14 +70,13 @@
 <xsl:template match="//tei:div[@type='sampleText']/tei:p/tei:s | //tei:div[@type='corpusText']/tei:u">
 <span class="spSentence">
     <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
-        
         <xsl:attribute name="title">                    
             <xsl:variable name="nn" select="@n"/>
             <xsl:value-of select="//tei:s[@type='translationSentence'][@n=$nn] | //tei:div[@type='dvTranslations']/tei:u[@n=$nn]"/>
         </xsl:attribute>
         <i class="fa fa-commenting-o" aria-hidden="true"></i>
     </span>
-    
+    <xsl:value-of select="' '" />
     <xsl:for-each select="tei:w | tei:c | tei:seg | tei:pc">
         <!-- <span >
             <xsl:attribute name="onmouseover">omi('')</xsl:attribute>
@@ -87,7 +86,6 @@
          -->
         
         <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
-
             <xsl:attribute name="data-toggle">
                 <xsl:choose>
                 <xsl:when test="string-length(tei:fs/tei:f[@name='pos'])>0 or string-length(tei:fs/tei:f[@name='lemma'])>0 or string-length(tei:fs/tei:f[@name='translation'])>0 or string-length(./tei:fs/tei:f[@name='variant'])>0 or string-length(tei:fs/tei:f[@name='comment'])>0">tooltip</xsl:when>
