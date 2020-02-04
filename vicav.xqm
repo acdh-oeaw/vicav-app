@@ -279,16 +279,21 @@ function vicav:explore_samples($query as xs:string*, $sentences as xs:string*, $
         for $id in $places
             return "'" || $id || "'" 
     
-    let $qq := 'collection("vicav_samples")//tei:TEI[@xml:id = [' || string-join($qs, ',') || '] ]'
+    let $qq := 'collection("vicav_samples")//tei:TEI[@xml:id = [' || string-join($qs, ',') || '] or .//tei:name/text() = [' || string-join($qs, ',') || ']]'
 
     let $query := $ns || $qq    
     let $results := xquery:eval($query)
     
+
     let $ress := 
       for $item in $results
         let $city := $item//tei:body/tei:head/tei:name
+        let $informant := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/text()
+        let $age := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/@age
+        let $sex := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/@sex
+
         return
-           <item city="{$city}">{$item}</item>
+           <item city="{$city}" informant="{$informant}" age="{$age}" sex="{$sex}">{$item}</item>
     let $ress1 := <items>{$ress}</items>
 
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn

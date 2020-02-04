@@ -1,3 +1,9 @@
+var getParam = function(name) { 
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"); 
+  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search); 
+  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " ")); 
+}
+
 var accentMap = {
   "â": "a",
   "æ": "a",
@@ -94,8 +100,48 @@ $.ajax({
     }
 });
 
-$('form.compare-samples').submit(function(event) {
-  console.log($(this).serialize());
-  event.preventDefault();
-})
-   
+$(document).ready(function(event) {
+  var location = getParam('location') //encodeURIComponent($('[name=location]', this)[0].value);
+  $('[name="location"]', this)[0].value = location;
+  var $form = $('form.compare-samples');
+  console.log(location)
+
+
+  $.ajax({
+      url: 'explore_samples?query=' + encodeURIComponent(location) + '&sentences=all&xslt=cross_samples_01.xslt',
+      dataType: 'html',
+      cache: false,
+      crossDomain: true,
+      contentType: 'application/html; ',
+      success: function (result) {
+        if (result.includes('error type="user authentication"')) {
+            alert('Error: authentication did not work');
+        } 
+        else {              
+          var doc = new DOMParser().parseFromString(result, "text/html");
+          if (doc) {
+            var el = doc.getElementsByTagName("div")[0];
+              if (el) {
+                var shortTitle = el.getAttribute("name"); 
+                if (shortTitle) {
+                  secLabel_ = shortTitle;
+                }
+                
+              } else {
+                //console.log('no el'); 
+              }
+          } else {
+            //console.log('doc not ok');  
+          }
+          console.log($form)
+          $form.siblings('.results').html(result);
+        }
+      }
+  });
+    //event.preventDefault();
+});
+     
+   $("body").tooltip({
+        selector: '[data-toggle="tooltip"]',
+        trigger: 'hover focus'
+    });
