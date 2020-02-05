@@ -17,6 +17,7 @@ describe('Home page', function() {
 	    cy.get('img.leaflet-marker-icon') // Wait until the initial markers appear.
 
 	    cy.get('img[alt^="Khorasan"]').should('not.be.visible');
+	    cy.task('deleteFile', 'config.json')
     	});
     })
 })

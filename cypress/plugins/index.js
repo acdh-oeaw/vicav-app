@@ -16,12 +16,15 @@ const fs = require('fs')
 module.exports = (on, config) => {
 
   on('task', {
-    deleteFile (filename) {
-      if (fs.unlinkSync(filename)) {
-        return true
-      }
+      deleteFile (filename) {
 
-      return null
+      try {
+        if (fs.existsSync(path)) {
+        fs.unlinkSync(filename);
+        }
+      } catch(err) {
+        return null;
+      }
     }
   });
   // `on` is used to hook into various events Cypress emits
