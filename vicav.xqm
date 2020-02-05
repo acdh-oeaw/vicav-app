@@ -265,18 +265,24 @@ declare
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:query-param("sentences", "{$sentences}")
 %rest:query-param("highlight", "{$highlight}")
+%rest:query-param("person", "{$person}")
+
 
 %rest:GET
 
-function vicav:explore_samples($query as xs:string*, $sentences as xs:string*, $highlight as xs:string*, $xsltfn as xs:string) {
+function vicav:explore_samples($query as xs:string*, $sentences as xs:string*, $person as xs:string*, $highlight as xs:string*, $xsltfn as xs:string) {
     let $places := tokenize($query, ',')
 
-    let $ss := if (not($sentences) or $sentences = 'any') then 
+    let $ss := if (not($sentences) or $sentences = 'any' or $sentences = 'all') then 
             "any"
         else 
            $sentences
 
-    (:if ($sentences != '') then
+
+    if ($person) 
+    else 
+
+        (:if ($sentences != '') then
         
     else
       :)  
@@ -288,11 +294,11 @@ function vicav:explore_samples($query as xs:string*, $sentences as xs:string*, $
             return "'" || $id || "'" 
 
     
-    let $qq := 'collection("vicav_samples")//tei:TEI[@xml:id = [' || 
+    let $qq := 'collection("vicav_samples")//tei:TEI[(@xml:id = [' || 
         string-join($qs, ',') || 
         '] or .//tei:name/text() = [' || 
         string-join($qs, ',') || 
-        ']]'
+        '])]'
 
     let $query := $ns || $qq    
     let $results := xquery:eval($query)
