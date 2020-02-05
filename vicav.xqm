@@ -305,7 +305,7 @@ function vicav:explore_samples(
         else ''
 
     let $sex_q := if (not(empty($sex))) then
-        ' and (.//tei:person/@sex = lower-case(' || $sex || ')'
+        ' and (.//tei:person/@sex = lower-case("' || $sex || '"))'
         else ''
 
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
@@ -316,7 +316,8 @@ function vicav:explore_samples(
 
     
     let $qq := 'collection("vicav_samples")//tei:TEI[(@xml:id = [' || string-join($qs, ',') || '])'
-        || $person_q  || ')]'
+        || $person_q || 
+        'or (.//tei:name/text() = [' || string-join($qs, ',') || ']' || $age_q || $sex_q || ')]'
 
     let $query := $ns || $qq    
     let $results := xquery:eval($query)
