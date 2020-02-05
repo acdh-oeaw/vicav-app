@@ -1,7 +1,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
-    <xsl:param name="highLightIdentifier"></xsl:param>
-    <xsl:param name="explanation"></xsl:param>
+    <xsl:param name="highlight"></xsl:param>
+    <xsl:param name="sentences"></xsl:param>
     
     <!-- <xsl:output method="xml" encoding="utf-8"/> -->
     <xsl:output method="html" encoding="utf-8"/>
@@ -35,7 +35,11 @@
                 
                 
                 <xsl:variable name="root" select="."/>
-                <xsl:for-each select="distinct-values(//items//tei:s/@n)">
+                <xsl:variable name="all-sentences" select="distinct-values(/items//tei:s/@n)" />
+                <xsl:variable name="selected-sentences" select="tokenize($sentences, ',')" />
+                <xsl:variable name="sentences-shown" select="if ($sentences = 'any' or $sentences= '') then $all-sentences else $selected-sentences"/>
+
+                <xsl:for-each select="$sentences-shown">
                     <xsl:variable name="sentence" select="."/>
                     <h3><xsl:value-of select="$sentence"/></h3>
                     <table class="tbFeatures">
@@ -52,7 +56,6 @@
                             </tr>                       
                         </xsl:for-each>
                     </table>
-                    <br/>
                 </xsl:for-each>
                     
             </div>         

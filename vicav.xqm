@@ -264,26 +264,38 @@ declare
 %rest:query-param("query", "{$query}")
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:query-param("sentences", "{$sentences}")
+%rest:query-param("highlight", "{$highlight}")
 
 %rest:GET
 
-function vicav:explore_samples($query as xs:string*, $sentences as xs:string*, $xsltfn as xs:string) {
+function vicav:explore_samples($query as xs:string*, $sentences as xs:string*, $highlight as xs:string*, $xsltfn as xs:string) {
     let $places := tokenize($query, ',')
+
+    let $ss := if (not($sentences) or $sentences = 'any') then 
+            "any"
+        else 
+           $sentences
+
     (:if ($sentences != '') then
         
     else
       :)  
+
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     
     let $qs :=
         for $id in $places
             return "'" || $id || "'" 
+
     
-    let $qq := 'collection("vicav_samples")//tei:TEI[@xml:id = [' || string-join($qs, ',') || '] or .//tei:name/text() = [' || string-join($qs, ',') || ']]'
+    let $qq := 'collection("vicav_samples")//tei:TEI[@xml:id = [' || 
+        string-join($qs, ',') || 
+        '] or .//tei:name/text() = [' || 
+        string-join($qs, ',') || 
+        ']]'
 
     let $query := $ns || $qq    
     let $results := xquery:eval($query)
-    
 
     let $ress := 
       for $item in $results
@@ -294,12 +306,13 @@ function vicav:explore_samples($query as xs:string*, $sentences as xs:string*, $
 
         return
            <item city="{$city}" informant="{$informant}" age="{$age}" sex="{$sex}">{$item}</item>
+
     let $ress1 := <items>{$ress}</items>
 
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
-    let $sHTML := xslt:transform-text($ress1, $style)
-    
+    let $sHTML := xslt:transform-text($ress1, $style, map {"highlight":string($highlight),"sentences":$ss})
+
     return
         (:<div type="lingFeatures">{$sHTML}</div>:)
         (:$ress1:)
