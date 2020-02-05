@@ -15,21 +15,32 @@
 			<form class="compare-samples">
 				<fieldset name="person">
 					<label for="person">Person(s):</label>
-					<small>If you want to include selected speakers, add their ID here, eg. Beja1. They will appear regardless of other filters.</small>
+					<small>If you want to include selected informants, add their ID here, eg. Beja1. They will appear regardless of other filters.</small>
 					<div><input class="person" name="person"/></div>
 				</fieldset>
 
 				<fieldset>
+					<fieldset>
 					<label for="location">Location(s):</label>
 					<small>Type transliterated place names. Accents and capitalization is ignored eg. "ba" will find you "Bǟža". Use ' for ʔ and ʕ.</small>
 					<div><input class="location" name="location" /></div>
-
-					
+					</fieldset>
+					<fieldset>
+					<label for="sex">Sex:</label>
+					<small>Informant is male or female.</small>
+					<fieldset>
+					<input class="sex" name="sex" type="checkbox" value="m" checked="checked" />
+					<label for="sex[m]">Male</label>
+					<input class="sex" name="sex" type="checkbox" value="f" checked="checked" />
+					<label for="sex[f]">Female</label>
+				</fieldset>
+					</fieldset>
+					<fieldset>
 					<label for="person">Age:</label> <span class="display-age"></span>
-					<small>Use the slider to restrict results to texts whose informant is in this age group.</small>
+					<small>Use the slider to restrict minimum and maximum age of informants.</small>
 					<input class="age" name="age" value="0,100" />
 					<div class="age-slider"></div>
-
+					</fieldset>
 				</fieldset>
 				<button type="submit">Compare texts</button>
 			</form>

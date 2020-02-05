@@ -305,8 +305,13 @@ function vicav:explore_samples(
         'and (.//tei:person/@age > ' || min($age_bounds) || ') and (.//tei:person/@age < ' || max($age_bounds) || ')'
         else ''
 
-    let $sex_q := if (not(empty($sex))) then
-        ' and (.//tei:person/@sex = lower-case("' || $sex || '"))'
+    let $sex_qqs := if (not(empty($sex))) then
+        for $s in tokenize($sex, ',')
+            return '"' || lower-case($s) || '"'
+        else ()
+
+    let $sex_q := if (not(empty($sex_qqs))) then
+        ' and (.//tei:person/@sex = [' || string-join($sex_qqs, ',') || '])'
         else ''
 
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"

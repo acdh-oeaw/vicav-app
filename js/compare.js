@@ -1,7 +1,26 @@
+var $root = $('[data-pid=1]');
+
 var getParam = function(name) { 
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"); 
-  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex.exec(location.search); 
-  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " ")); 
+  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)", 'g'), match = regex.exec(window.location.search);
+  results = [];
+
+  for (var i = 0; i<10; i++ ) {
+    if (match == null) { break; }
+    results.push(match)
+    match = regex.exec(window.location.search);
+  }
+
+  if (results == []) {
+    return ""
+  } else if (results.length == 1) {
+      return decodeURIComponent(results[0][1].replace(/\+/g, " "));
+  } else {
+    return results.map(function(r) {
+      return decodeURIComponent(r[1].replace(/\+/g, " "))
+    })
+  }
+ 
 }
 
 var accentMap = {
@@ -137,28 +156,48 @@ $.ajax({
 });
 
 $(document).ready(function(event) {
+
   var location = getParam('location')
   var person = getParam('person')
-  var age = getParam('age')
-  var $root = $('[data-pid=1]');
+  var age = getParam('age');
+  var sex= getParam('sex');
 
-  if (age) {
-    $('[name="age"]', $root)[0].value = age;
+  $('[name="age"]', $root)[0].value = age;
+  $('[name="location"]', $root)[0].value = location;
+  $('[name="person"]', $root)[0].value = person;
+
+  if (sex.indexOf('m') != -1) {
+    $('[name="sex"][value=m]', $root).prop('checked', true);
+  } else {
+    $('[name="sex"][value=m]', $root).prop('checked', false);
   }
+
+  if (sex.indexOf('f') != -1) {
+    $('[name="sex"][value=f]', $root).prop('checked', true);
+  } else {
+    $('[name="sex"][value=f]', $root).prop('checked', false);
+  }
+
+  
   $('.display-age', $root).text( $('[name="age"]', $root)[0].value.split(',').join(' - '))
   $('[name="age"]', $root).hide();
 
   if (location || person){
-    $('[name="location"]', $root)[0].value = location;
-    $('[name="person"]', $root)[0].value = person;
-    var $form = $('form.compare-samples', $root);
-    
-    $.ajax({
-      url: 'explore_samples?query=' + 
+    var $form = $('form.compare-samples', $root); 
+  console.log()
+  console.log($form.serialize())
+
+  var url = 'explore_samples?query=' + 
         encodeURIComponent(location) + 
         '&person=' + encodeURIComponent(person) + 
         '&age=' + encodeURIComponent(age) + 
-        '&sentences=any&xslt=cross_samples_01.xslt',
+        '&sex=' + encodeURIComponent(new Array(sex).join(',')) + 
+        '&sentences=any&xslt=cross_samples_01.xslt';
+
+  console.log(url);
+    
+    $.ajax({
+      url: url,
       dataType: 'html',
       cache: false,
       crossDomain: true,
