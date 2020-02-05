@@ -100,16 +100,65 @@ $.ajax({
     }
 });
 
-$(document).ready(function(event) {
-  var location = getParam('location') //encodeURIComponent($('[name=location]', this)[0].value);
+// Init person widges
 
-  if (location){
-    $('[name="location"]', this)[0].value = location;
-    var $form = $('form.compare-samples');
-    
+$.ajax({
+    url: "sample_persons",
+    dataType: "xml",
+    success: function( xmlResponse ) {
+      var data = $( "person", xmlResponse ).map(function() {
+        if( $( this ).text() !== "") {
+          return {
+            value: $( this ).text(),
+            label: [$( this ).text(), $( this ).attr('sex'), $( this ).attr('age')].join('/') 
+          };
+        }
+      }).get();
+
+      // Uniques.
+      data = Array.from(new Set(data.map(JSON.stringify))).map(JSON.parse);
+
+      $("[data-snippetid='compare-samples'] .person").tagit({
+          autocomplete: {
+            delay: 200, 
+            minLength: 1,       
+            source: function( request, response ) {
+                var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
+                response( $.grep( data, function( value ) {
+                  value = value.label || value.value || value;
+                  return matcher.test( value );
+                }) );
+              }
+          },
+          allowSpaces: true,
+          placeholderText: 'Search speaker IDs like Beja1...'
+      });
+    }
+});
+
+$(document).ready(function(event) {
+  var location = getParam('location')
+  var person = getParam('person')
+  var age = getParam('age')
+  var $root = $('[data-pid=1]');
+
+  if (age) {
+    $('[name="age"]', $root)[0].value = age;
+  }
+  $('.display-age', $root).text( $('[name="age"]', $root)[0].value.split(',').join(' - '))
+  $('[name="age"]', $root).hide();
+
+  if (location || person){
+    $('[name="location"]', $root)[0].value = location;
+    $('[name="person"]', $root)[0].value = person;
+    var $form = $('form.compare-samples', $root);
     
     $.ajax({
-      url: 'explore_samples?query=' + encodeURIComponent(location) + '&sentences=all&xslt=cross_samples_01.xslt',
+      url: 'explore_samples?query=' + 
+        encodeURIComponent(location) + 
+        '&person=' + encodeURIComponent(person) + 
+        '&age=' + encodeURIComponent(age) + 
+        '&sentences=any&xslt=cross_samples_01.xslt',
       dataType: 'html',
       cache: false,
       crossDomain: true,
@@ -119,28 +168,23 @@ $(document).ready(function(event) {
             alert('Error: authentication did not work');
         } 
         else {              
-          var doc = new DOMParser().parseFromString(result, "text/html");
-          if (doc) {
-            var el = doc.getElementsByTagName("div")[0];
-              if (el) {
-                var shortTitle = el.getAttribute("name"); 
-                if (shortTitle) {
-                  secLabel_ = shortTitle;
-                }
-                
-              } else {
-                //console.log('no el'); 
-              }
-          } else {
-            //console.log('doc not ok');  
-          }
-          console.log($form)
           $form.siblings('.results').html(result);
         }
        }
     });
   }
-    //event.preventDefault();
+
+  $( ".age-slider", $root ).slider({
+    range: true,
+    min: 0,
+    max: 100,
+    step: 10,
+    values:  $('[name="age"]', $root)[0].value == '' ? [0,100] : $('[name="age"]', $root)[0].value.split(','),
+    slide: function( event, ui ) {
+      $('[name="age"]', $root).val(ui.values[ 0 ] + "," + ui.values[ 1 ] );
+      $('.display-age', $root).text( $('[name="age"]', $root)[0].value.split(',').join(' - '))
+    }
+  });
 });
 
 $("body").tooltip({

@@ -11,11 +11,26 @@
 
 	</head>
 	<body>
-		<div class="" data-snippetid="compare-samples" data-filled="true" data-pid="1">
+		<div class="" data-snippetid="compare-samples" data-filled="true" data-pid="1" style="margin: 50px">
 			<form class="compare-samples">
-				<label for="location">Location(s): </label>
-				<small>Type transliterated place names. Accents and capitalization is ignored eg. "ba" will find you "Bǟža".</small>
-				<input class="location" name="location" size="500" />
+				<fieldset name="person">
+					<label for="person">Person(s):</label>
+					<small>If you want to include selected speakers, add their ID here, eg. Beja1. They will appear regardless of other filters.</small>
+					<div><input class="person" name="person"/></div>
+				</fieldset>
+
+				<fieldset>
+					<label for="location">Location(s):</label>
+					<small>Type transliterated place names. Accents and capitalization is ignored eg. "ba" will find you "Bǟža". Use ' for ʔ and ʕ.</small>
+					<div><input class="location" name="location" /></div>
+
+					
+					<label for="person">Age:</label> <span class="display-age"></span>
+					<small>Use the slider to restrict results to texts whose informant is in this age group.</small>
+					<input class="age" name="age" value="0,100" />
+					<div class="age-slider"></div>
+
+				</fieldset>
 				<button type="submit">Compare texts</button>
 			</form>
 			<div class="results"></div>

@@ -227,6 +227,7 @@ function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:
         $sHTML
 };
 
+
 declare
 %rest:path("vicav/features")
 %rest:query-param("ana", "{$ana}")
@@ -799,6 +800,26 @@ function vicav:get_sample_markers() {
     return
         <rs>{$out}</rs>
 };
+
+declare
+%rest:path("vicav/sample_persons")
+%rest:GET
+%output:method("xml")
+
+function vicav:get_sample_persons() {
+    let $persons := collection('vicav_samples')//tei:TEI//tei:person
+    let $out :=
+    for $person in $persons
+        order by $person/text()
+        return 
+        <person age="{$person/@age}" sex="{$person/@sex}">
+            {$person/text()}
+        </person>
+    
+    return
+        <persons>{$out}</persons>
+};
+
 
 declare
 %rest:path("vicav/feature_markers")
