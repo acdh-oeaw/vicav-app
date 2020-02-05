@@ -156,7 +156,7 @@ $.ajax({
 });
 
 $(document).ready(function(event) {
-
+  var sentences = getParam('sentences')
   var location = getParam('location')
   var person = getParam('person')
   var age = getParam('age');
@@ -178,13 +178,29 @@ $(document).ready(function(event) {
     $('[name="sex"][value=f]', $root).prop('checked', false);
   }
 
+  if (sentences == 'any') {
+      $('[value=any][name="sentences"]', $root).prop('checked', true);
+  } else {
+      $('[value=any][name="sentences"]', $root).prop('checked', false);
+
+      $('[type=text][name="sentences"]', $root)[0].value = sentences;    
+  }
+
+  $('[type=text][name="sentences"]', $root).change(function() {
+    $('[value=any][name="sentences"]', $root).prop('checked', false);
+  });    
+
+  $('[value=any][name="sentences"]', $root).click(function() {
+    $('[type=text][name="sentences"]', $root)[0].value = ''
+  });
+
+
   
   $('.display-age', $root).text( $('[name="age"]', $root)[0].value.split(',').join(' - '))
   $('[name="age"]', $root).hide();
 
   if (location || person){
     var $form = $('form.compare-samples', $root); 
-  console.log()
   console.log($form.serialize())
 
   var url = 'explore_samples?query=' + 
@@ -192,7 +208,7 @@ $(document).ready(function(event) {
         '&person=' + encodeURIComponent(person) + 
         '&age=' + encodeURIComponent(age) + 
         '&sex=' + encodeURIComponent(new Array(sex).join(',')) + 
-        '&sentences=any&xslt=cross_samples_01.xslt';
+        '&sentences='+ encodeURIComponent(sentences.replace(/\s+/g, '')) + '&xslt=cross_samples_01.xslt';
 
   console.log(url);
     
