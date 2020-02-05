@@ -3,6 +3,7 @@ declare namespace bib = 'http://purl.org/net/biblio#';
 declare namespace dc = 'http://purl.org/dc/elements/1.1/';
 declare namespace tei = 'http://www.tei-c.org/ns/1.0';
 declare namespace dcterms = "http://purl.org/dc/terms/";
+declare namespace prof = "http://basex.org/modules/prof";
 
 
 declare function vicav:expandExamplePointers($in as item(), $dict as document-node()*) {
@@ -266,11 +267,21 @@ declare
 %rest:query-param("sentences", "{$sentences}")
 %rest:query-param("highlight", "{$highlight}")
 %rest:query-param("person", "{$person}")
+%rest:query-param("age", "{$age}")
+%rest:query-param("sex", "{$sex}")
 
 
 %rest:GET
 
-function vicav:explore_samples($query as xs:string*, $sentences as xs:string*, $person as xs:string*, $highlight as xs:string*, $xsltfn as xs:string) {
+function vicav:explore_samples(
+    $query as xs:string*, 
+    $sentences as xs:string*, 
+    $person as xs:string*, 
+    $age as xs:string*, 
+    $sex as xs:string*, 
+    $highlight as xs:string*, 
+    $xsltfn as xs:string) {
+    
     let $places := tokenize($query, ',')
 
     let $ss := if (not($sentences) or $sentences = 'any' or $sentences = 'all') then 
@@ -279,13 +290,23 @@ function vicav:explore_samples($query as xs:string*, $sentences as xs:string*, $
            $sentences
 
 
-    if ($person) 
-    else 
+    let $age_bounds := if ($age) then
+            for $a in tokenize($age, ',')
+            order by number($a)
+            return $a
+        else ()
 
-        (:if ($sentences != '') then
-        
-    else
-      :)  
+    let $person_q := if (not(empty($person))) then
+        ' or (.//tei:person/text() = "'|| $person ||'" )'
+        else ''
+
+    let $age_q := if (not(empty($age_bounds))) then 
+        'and (.//tei:person/@age > ' || min($age_bounds) || ') and (.//tei:person/@age < ' || max($age_bounds) || ')'
+        else ''
+
+    let $sex_q := if (not(empty($sex))) then
+        ' and (.//tei:person/@sex = lower-case(' || $sex || ')'
+        else ''
 
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     
@@ -294,11 +315,8 @@ function vicav:explore_samples($query as xs:string*, $sentences as xs:string*, $
             return "'" || $id || "'" 
 
     
-    let $qq := 'collection("vicav_samples")//tei:TEI[(@xml:id = [' || 
-        string-join($qs, ',') || 
-        '] or .//tei:name/text() = [' || 
-        string-join($qs, ',') || 
-        '])]'
+    let $qq := 'collection("vicav_samples")//tei:TEI[(@xml:id = [' || string-join($qs, ',') || '])'
+        || $person_q  || ')]'
 
     let $query := $ns || $qq    
     let $results := xquery:eval($query)
