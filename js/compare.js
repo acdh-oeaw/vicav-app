@@ -11,7 +11,7 @@ var getParam = function(name) {
     match = regex.exec(window.location.search);
   }
 
-  if (results == []) {
+  if (results.length == 0) {
     return ""
   } else if (results.length == 1) {
       return decodeURIComponent(results[0][1].replace(/\+/g, " "));
@@ -118,7 +118,6 @@ $.ajax({
       });
     }
 });
-
 // Init person widges
 
 $.ajax({
@@ -222,7 +221,7 @@ $(document).ready(function(event) {
         if (result.includes('error type="user authentication"')) {
             alert('Error: authentication did not work');
         } 
-        else {              
+        else {
           $form.siblings('.results').html(result);
         }
        }
