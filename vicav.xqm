@@ -722,14 +722,16 @@ declare
 function vicav:get_feature_markers() {
     let $entries := collection('vicav_lingfeatures')//tei:TEI
     let $out :=
-    for $item in $entries
-    return
-        <r
-            type='geo'>{$item/@xml:id}
-            <loc>{$item//tei:geo/text()}</loc>
-            <alt>{$item//tei:head[1]/tei:name[1]/text()}</alt>
-            <freq>1</freq>
-        </r>
+        for $item in $entries
+            return
+                if ($item/@xml:id and $item//tei:geo/text()) then
+                <r
+                    type='geo'>{$item/@xml:id}
+                    <loc>{$item//tei:geo/text()}</loc>
+                    <alt>{$item//tei:head[1]/tei:name[1]/text()}</alt>
+                    <freq>1</freq>
+                </r>
+                else ''
     
     return
         <rs>{$out}</rs>

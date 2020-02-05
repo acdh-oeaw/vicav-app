@@ -1,7 +1,7 @@
 {
 	"Tunis": {
-		"labels": ["Tunis"],
-		"snippetid": "tunis_sample_01",
+		"labels": ["Tunis2"],
+		"snippetid": "tunis2_sample_01",
 		"sentences": [
 			"nhāṛ li-ṯnīn baʕd il-fažr əmšīt l-is-sūq bāš nišri ʕ9am w-xu9ṛa kīma bītinžāl w-ṯūm.",
 			"šrīt zūz kīlu buṛdgāna b-dīnāṛ zāda.",
@@ -30,6 +30,9 @@
 		"variants": {
 			"ḥbastu": "ⁱbṭītu",
 			"masǟ": "Standard Arabic",
-		}
+		},
+		"person": "Test1",
+		"age": 20,
+		"sex": "m"
 	}
 }

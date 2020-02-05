@@ -56,6 +56,7 @@ function insertFeatureMarkers() {
                     loc = loc.replace(/′W/g, "");
                 }
                 
+
                 sTooltip = $(this).find('alt').text();
                 sID = $(this).attr('xml:id');
                 //console.log(loc + ' ' + sAlt);
