@@ -161,8 +161,8 @@ $(document).ready(function(event) {
   var person = getParam('person')
   var age = getParam('age');
   var sex= getParam('sex');
-console.log(word)
 
+  $('[name="word"]', $root)[0].value = word;
   $('[name="age"]', $root)[0].value = age;
   $('[name="location"]', $root)[0].value = location;
   $('[name="person"]', $root)[0].value = person;
