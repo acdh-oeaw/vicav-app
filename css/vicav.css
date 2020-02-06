@@ -1429,3 +1429,8 @@ img.footer-acdh-logo{
 
 .cookie-accept-btn:hover {
   background-color: #d2b33d; }
+
+/* Compare samples window */
+a.word-search {
+    color: inherit;
+}

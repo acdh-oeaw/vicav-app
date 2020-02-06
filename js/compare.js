@@ -157,9 +157,11 @@ $.ajax({
 $(document).ready(function(event) {
   var sentences = getParam('sentences')
   var location = getParam('location')
+  var word = getParam('word')
   var person = getParam('person')
   var age = getParam('age');
   var sex= getParam('sex');
+console.log(word)
 
   $('[name="age"]', $root)[0].value = age;
   $('[name="location"]', $root)[0].value = location;
@@ -198,19 +200,18 @@ $(document).ready(function(event) {
   $('.display-age', $root).text( $('[name="age"]', $root)[0].value.split(',').join(' - '))
   $('[name="age"]', $root).hide();
 
-  if (location || person){
+  if (location || person || word){
     var $form = $('form.compare-samples', $root); 
-  console.log($form.serialize())
+  
+  var xsl = (word) ? 'cross_samples_word_01.xslt' : 'cross_samples_01.xslt'
 
-  var url = 'explore_samples?query=' + 
-        encodeURIComponent(location) + 
+  var url = 'explore_samples?'+
+        'location=' + encodeURIComponent(location) + 
+        '&word=' + encodeURIComponent(word) +
         '&person=' + encodeURIComponent(person) + 
         '&age=' + encodeURIComponent(age) + 
         '&sex=' + encodeURIComponent(new Array(sex).join(',')) + 
-        '&sentences='+ encodeURIComponent(sentences.replace(/\s+/g, '')) + '&xslt=cross_samples_01.xslt';
-
-  console.log(url);
-    
+        '&sentences='+ encodeURIComponent(sentences.replace(/\s+/g, '')) + '&xslt=' + xsl;
     $.ajax({
       url: url,
       dataType: 'html',

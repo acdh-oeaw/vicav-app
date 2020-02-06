@@ -2,6 +2,7 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
 xmlns="http://www.w3.org/1999/xhtml" 
 xmlns:tei="http://www.tei-c.org/ns/1.0"
+xmlns:acdh="http://acdh.oeaw.ac.at"
 version="2.0">    
 <xsl:output method="html"/>
 
@@ -35,28 +36,39 @@ version="2.0">
         </xsl:choose>
     </xsl:variable>      
 
-    <span class="w" data-html="true" data-placement="top">
-        <xsl:if test="./tei:fs">
-            <xsl:attribute name="class">
-                 <xsl:value-of select="./@class" />
-                sample-text-tooltip
-            </xsl:attribute>
-            <xsl:attribute name="title">
-                <xsl:if test="string-length(tei:fs/tei:f[@name='pos'])&gt;0">&lt;span class="spPos"&gt;POS:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='pos']"/>&lt;br/&gt;</xsl:if>
-                <xsl:if test="string-length(tei:fs/tei:f[@name='lemma'])&gt;0">&lt;span class="spLemma"&gt;Lemma:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='lemma']"/>&lt;br/&gt;</xsl:if>                            
-                <xsl:if test="string-length(tei:fs/tei:f[@name='translation'])&gt;0">&lt;span class="spTrans"&gt;English:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='translation']"/></xsl:if>
-                <xsl:if test="string-length(tei:fs/tei:f[@name='variant'])&gt;0">&lt;span class="spTrans"&gt;Alternative form:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='variant']"/></xsl:if>                                                        
-                <xsl:if test="string-length(tei:fs/tei:f[@name='comment'])&gt;0">&lt;span class="spTrans"&gt;Note:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='comment']"/></xsl:if>                                                        
-            </xsl:attribute>
+    <a class="word-search" target="_blank">
+        <xsl:attribute name="href">
+            <xsl:value-of select="'compare-samples.html?word='"/>
+            <xsl:value-of select="$wordform" />
+            <xsl:value-of select="'&amp;location='"/>
+            <xsl:value-of select="string-join(distinct-values(//tei:body/tei:head/tei:name/text()), ',')"/>
+        </xsl:attribute>
+        <span class="w" data-html="true" data-placement="top">
+            <xsl:if test="./tei:fs">
+                <xsl:if test="$wordform = $highlight">
+                    <xsl:attribute name="style">color: red</xsl:attribute>
+                </xsl:if>
+                <xsl:attribute name="class">
+                     <xsl:value-of select="./@class" />
+                    sample-text-tooltip
+                </xsl:attribute>
+                <xsl:attribute name="title">
+                    <xsl:if test="string-length(tei:fs/tei:f[@name='pos'])&gt;0">&lt;span class="spPos"&gt;POS:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='pos']"/>&lt;br/&gt;</xsl:if>
+                    <xsl:if test="string-length(tei:fs/tei:f[@name='lemma'])&gt;0">&lt;span class="spLemma"&gt;Lemma:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='lemma']"/>&lt;br/&gt;</xsl:if>                            
+                    <xsl:if test="string-length(tei:fs/tei:f[@name='translation'])&gt;0">&lt;span class="spTrans"&gt;English:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='translation']"/></xsl:if>
+                    <xsl:if test="string-length(tei:fs/tei:f[@name='variant'])&gt;0">&lt;span class="spTrans"&gt;Alternative form:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='variant']"/></xsl:if>                                                        
+                    <xsl:if test="string-length(tei:fs/tei:f[@name='comment'])&gt;0">&lt;span class="spTrans"&gt;Note:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='comment']"/></xsl:if>                                                        
+                </xsl:attribute>
 
-            <xsl:choose>
-                <xsl:when test="string-length(tei:fs/tei:f[@name='pos'])>0 or string-length(tei:fs/tei:f[@name='lemma'])>0 or string-length(tei:fs/tei:f[@name='translation'])>0 or string-length(./tei:fs/tei:f[@name='variant'])>0 or string-length(tei:fs/tei:f[@name='comment'])>0">
-                    <xsl:attribute name="data-toggle">tooltip</xsl:attribute></xsl:when>
-                <xsl:otherwise></xsl:otherwise>
-            </xsl:choose>
-        </xsl:if>
-        <xsl:value-of select="$wordform"/>
-    </span>
+                <xsl:choose>
+                    <xsl:when test="string-length(tei:fs/tei:f[@name='pos'])>0 or string-length(tei:fs/tei:f[@name='lemma'])>0 or string-length(tei:fs/tei:f[@name='translation'])>0 or string-length(./tei:fs/tei:f[@name='variant'])>0 or string-length(tei:fs/tei:f[@name='comment'])>0">
+                        <xsl:attribute name="data-toggle">tooltip</xsl:attribute></xsl:when>
+                    <xsl:otherwise></xsl:otherwise>
+                </xsl:choose>
+            </xsl:if>
+            <xsl:value-of select="$wordform"/>
+        </span>
+    </a>
 
     <xsl:if test="not(matches($wordform, '^[„-]$')) and
         not(following-sibling::*[1]/name() = 'pc') and

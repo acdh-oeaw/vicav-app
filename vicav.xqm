@@ -263,8 +263,9 @@ function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn
 
 declare
 %rest:path("vicav/explore_samples")
-%rest:query-param("query", "{$query}")
+%rest:query-param("location", "{$location}")
 %rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("word", "{$word}")
 %rest:query-param("sentences", "{$sentences}")
 %rest:query-param("highlight", "{$highlight}")
 %rest:query-param("person", "{$person}")
@@ -275,7 +276,8 @@ declare
 %rest:GET
 
 function vicav:explore_samples(
-    $query as xs:string*, 
+    $location as xs:string*, 
+    $word as xs:string*,
     $sentences as xs:string*, 
     $person as xs:string*, 
     $age as xs:string*, 
@@ -283,13 +285,10 @@ function vicav:explore_samples(
     $highlight as xs:string*, 
     $xsltfn as xs:string) {
     
-    let $places := tokenize($query, ',')
-
     let $ss := if (not($sentences) or $sentences = 'any' or $sentences = 'all') then 
             "any"
         else 
            $sentences
-
 
     let $age_bounds := if ($age) then
             for $a in tokenize($age, ',')
@@ -298,8 +297,20 @@ function vicav:explore_samples(
         else ()
 
     let $person_q := if (not(empty($person))) then
-        ' or (.//tei:person/text() = "'|| $person ||'" )'
+        '(.//tei:person/text() = "'|| $person ||'" )'
         else ''
+
+    let $person_q_sep := if ($person_q) then ' or ' else ''
+
+    let $word_sep := if ($location != '' and $word != '') then
+            ' and ' 
+        else 
+            '' 
+
+    let $word_q := if (not(empty($word)) and $word) then
+            $word_sep || '(.//tei:w[contains-token(.,"' || $word || '")][1] or .//tei:phr[contains-token(.,"' || $word || '")][1])'
+        else ''
+
 
     let $age_q := if (not(empty($age_bounds))) then 
         'and (.//tei:person/@age > ' || min($age_bounds) || ') and (.//tei:person/@age < ' || max($age_bounds) || ')'
@@ -316,20 +327,34 @@ function vicav:explore_samples(
 
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     
-    let $qs :=
-        for $id in $places
-            return "'" || $id || "'" 
+    let $locations_arr := tokenize($location, ',')
 
-    
-    let $qq := 'collection("vicav_samples")//tei:TEI[(@xml:id = [' || string-join($qs, ',') || '])'
-        || $person_q || 
-        'or (.//tei:name/text() = [' || string-join($qs, ',') || ']' || $age_q || $sex_q || ')]'
+    let $qs := if (not(empty($locations_arr))) then
+        for $id in $locations_arr
+            return "'" || $id || "'" 
+        else 
+            ()
+
+    let $location_q := if(not(empty($qs))) then 
+        './/tei:name/text() = [' || string-join($qs, ',') || ']'
+    else
+        ""
+
+
+    let $qq := 'collection("vicav_samples")//tei:TEI[' || $person_q || 
+        $person_q_sep || '(' || $location_q || $word_q  || $age_q || $sex_q || ')]'
+
 
     let $query := $ns || $qq    
     let $results := xquery:eval($query)
 
+    let $start := 1
+    let $records := 10
+
+    let $rendered := $results
+
     let $ress := 
-      for $item in $results
+      for $item in $rendered
         let $city := $item//tei:body/tei:head/tei:name
         let $informant := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/text()
         let $age := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/@age
@@ -342,7 +367,8 @@ function vicav:explore_samples(
 
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
-    let $sHTML := xslt:transform-text($ress1, $style, map {"highlight":string($highlight),"sentences":$ss})
+    
+    let $sHTML := xslt:transform-text($ress1, $style, map {"highlight":string($word),"filter-word": $word, "sentences":$ss})
 
     return
         (:<div type="lingFeatures">{$sHTML}</div>:)
