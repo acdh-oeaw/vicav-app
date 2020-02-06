@@ -40,8 +40,8 @@ version="2.0">
         <xsl:attribute name="href">
             <xsl:value-of select="'compare-samples.html?word='"/>
             <xsl:value-of select="$wordform" />
-            <xsl:value-of select="'&amp;location='"/>
-            <xsl:value-of select="string-join(distinct-values(//tei:body/tei:head/tei:name/text()), ',')"/>
+<!--            <xsl:value-of select="'&amp;location='"/>
+            <xsl:value-of select="string-join(distinct-values(//tei:body/tei:head/tei:name/text()), ',')"/>-->
         </xsl:attribute>
         <span class="w" data-html="true" data-placement="top">
             <xsl:if test="./tei:fs">
