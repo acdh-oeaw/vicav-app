@@ -860,13 +860,15 @@ declare
 %output:method("xml")
 
 function vicav:get_sample_words() {
-    let $persons := distinct-values(normalize-space(collection('vicav_samples')//tei:TEI//tei:w/tei:f[@type="wordform"]/text()))
+    let $persons := for $w in collection('vicav_samples')//tei:TEI//tei:w//tei:f[@name="wordform"]/text()
+       return replace(normalize-space($w), '[\s&#160;]', '')
+
     let $out :=
-    for $person in $persons
-        order by $person/text()
+    for $person in distinct-values($persons)
+        order by $person
         return 
         <word>
-            {$person/text()}
+            {$person}
         </word>
     
     return
