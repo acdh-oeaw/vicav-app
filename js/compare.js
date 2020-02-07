@@ -89,7 +89,7 @@ $.ajax({
     url: "sample_words",
     dataType: "xml",
     success: function( xmlResponse ) {
-      var data = $( "r", xmlResponse ).map(function() {
+      var data = $( "word", xmlResponse ).map(function() {
         if( $( this ).text() !== "") {
           return {
             value: $( this ).text(),
@@ -100,7 +100,7 @@ $.ajax({
 
       data = Array.from(new Set(data.map(JSON.stringify))).map(JSON.parse);
 
-      $("[data-snippetid='compare-samples'] .location").tagit({
+      $("[data-snippetid='compare-samples'] .word").tagit({
           autocomplete: {
             delay: 200, 
             minLength: 2,       
