@@ -45,7 +45,7 @@ version="2.0">
         </xsl:attribute>
         <span class="w" data-html="true" data-placement="top">
             <xsl:if test="./tei:fs">
-                <xsl:if test="$wordform = $highlight">
+                <xsl:if test="$wordform = $highlight or $wordform = tokenize($highlight, ',')">
                     <xsl:attribute name="style">color: red</xsl:attribute>
                 </xsl:if>
                 <xsl:attribute name="class">

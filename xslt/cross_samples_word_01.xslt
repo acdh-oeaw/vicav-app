@@ -19,21 +19,35 @@
                 </table>    
                                 
                 <xsl:variable name="root" select="."/>
+                
+                <xsl:variable name="sentences-containing">
+                    <xsl:for-each select="tokenize($filter-word, ',')">
+                        <xsl:variable name="word" select="."/>
+                        <xsl:for-each select="$root/items//item//tei:s[.//tei:w[contains-token(., $word)]]">
+                            <xsl:sequence select="."/>
+                        </xsl:for-each>
+                     </xsl:for-each>
+                 </xsl:variable>
+
+                 <xsl:value-of select="count($sentences-containing/*)"/>
 
                 <xsl:for-each select="distinct-values(/items//tei:s/@n)">
                     <xsl:variable name="sentence" select="."/>
-                    <xsl:if test="count($root/items//item//tei:s[@n=$sentence and .//tei:w[contains-token(., $filter-word)]]) > 0">
+                    <xsl:if test="count($root/items//item//tei:s[@n=$sentence and index-of($sentences-containing/tei:s, .) > 1]) > 0">
                     <h3><xsl:value-of select="$sentence"/></h3>
                     <table class="tbFeatures">
                         <xsl:for-each select="$root/items//item">
                             <xsl:sort select="@city"/>
-                            <xsl:if test="count(.//tei:s[@n=$sentence and .//tei:w[contains-token(., $filter-word)]]) > 0">
+                            <xsl:if test="count(.//tei:s[@n=$sentence and index-of($sentences-containing/tei:s, .) > 0]) > 0">
                             <tr>
                                 <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/>
                                 <small>
                                 <xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)</xsl:if></small>
                             </td>
                                 <td class="tdFeaturesRightTarget">
+                                    <xsl:for-each select=".//tei:div[@type='sampleText']//tei:s[@n=$sentence]">
+                                        <xsl:value-of select="index-of($sentences-containing, .)" />
+                                    </xsl:for-each>
                                     <xsl:apply-templates select=".//tei:div[@type='sampleText']//tei:s[@n=$sentence]"/>
                                 </td>
                             </tr>                       

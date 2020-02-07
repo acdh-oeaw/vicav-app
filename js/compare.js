@@ -84,6 +84,41 @@ var unique = function(array) {
   return newArray;
 }
 
+
+$.ajax({
+    url: "sample_words",
+    dataType: "xml",
+    success: function( xmlResponse ) {
+      var data = $( "r", xmlResponse ).map(function() {
+        if( $( this ).text() !== "") {
+          return {
+            value: $( this ).text(),
+            label: $(this).text()
+          };
+        }
+      }).get();
+
+      data = Array.from(new Set(data.map(JSON.stringify))).map(JSON.parse);
+
+      $("[data-snippetid='compare-samples'] .location").tagit({
+          autocomplete: {
+            delay: 200, 
+            minLength: 2,       
+            source: function( request, response ) {
+                var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
+                response( $.grep( data, function( value ) {
+                  value = value.label || value.value || value;
+
+                  return matcher.test( value ) || matcher.test( normalize( value.toLowerCase() ) );
+                }) );
+              }
+          },
+          allowSpaces: true,
+          placeholderText: 'Search words...'
+      });
+    }
+});
+
 $.ajax({
     url: "sample_markers",
     dataType: "xml",

@@ -1434,3 +1434,28 @@ img.footer-acdh-logo{
 a.word-search {
     color: inherit;
 }
+
+body.compare-samples-window {
+    padding-top: 0;
+    padding: 25px; 
+}
+
+form.compare-samples > fieldset.column {
+    border: silver 1px solid;
+    padding: 5px;
+    min-width: 45%;
+    float: left;
+    margin-right: 10px;
+}
+form.compare-samples > fieldset.actions {
+    text-align: center;
+    clear: both;
+    padding: 10px 0;
+}
+form.compare-samples fieldset > fieldset {
+    border: none;
+}
+
+form.compare-samples .sentences > fieldset {
+    display: inline-block;
+}
