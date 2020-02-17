@@ -45,9 +45,6 @@
                                 <xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)</xsl:if></small>
                             </td>
                                 <td class="tdFeaturesRightTarget">
-                                    <xsl:for-each select=".//tei:div[@type='sampleText']//tei:s[@n=$sentence]">
-                                        <xsl:value-of select="index-of($sentences-containing, .)" />
-                                    </xsl:for-each>
                                     <xsl:apply-templates select=".//tei:div[@type='sampleText']//tei:s[@n=$sentence]"/>
                                 </td>
                             </tr>                       
