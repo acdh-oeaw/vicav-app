@@ -307,7 +307,7 @@ function vicav:explore_samples(
             '' 
 
     let $word_qs := for $w in tokenize($word, ',')
-            return '(.//tei:w[contains-token(.,"' || $w || '")][1] or .//tei:phr[contains-token(.,"' || $w || '")][1])'
+            return '(.//tei:w[contains-token(.,"' || $w || '")][1] or .//tei:f[contains-token(.,"' || $w || ' ")][1] or .//tei:phr[contains-token(.,"' || $w || '")][1])'
 
     let $word_q := if (not(empty($word_qs))) then
         $word_sep || '(' || string-join($word_qs, ' or ') || ')'
@@ -322,7 +322,7 @@ function vicav:explore_samples(
 
     let $age_sep := if (string($word) != "" or string($location) != "") then " and " else ""
 
-    let $age_q := if (not(empty($age_bounds))) then 
+    let $age_q := if (not(empty($age_bounds)) and ($age_bounds[2] != "100" or $age_bounds[1] != "0")) then 
         $age_sep || '(.//tei:person/@age > ' || min($age_bounds) || ') and (.//tei:person/@age < ' || max($age_bounds) || ')'
         else ''
 

@@ -33,7 +33,7 @@
 
                 <xsl:for-each select="distinct-values(/items//tei:s/@n)">
                     <xsl:variable name="sentence" select="."/>
-                    <xsl:if test="count($root/items//item//tei:s[@n=$sentence and index-of($sentences-containing/tei:s, .) > 1]) > 0">
+                    <xsl:if test="count($root/items//item//tei:s[@n=$sentence and index-of($sentences-containing/tei:s, .) > 0]) > 0">
                     <h3><xsl:value-of select="$sentence"/></h3>
                     <table class="tbFeatures">
                         <xsl:for-each select="$root/items//item">
