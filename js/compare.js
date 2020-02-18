@@ -120,14 +120,14 @@ $.ajax({
 });
 
 $.ajax({
-    url: "sample_markers",
+    url: "sample_locations",
     dataType: "xml",
     success: function( xmlResponse ) {
-      var data = $( "r", xmlResponse ).map(function() {
-        if( $( "alt", this ).text() !== "") {
+      var data = $( "location", xmlResponse ).map(function() {
+        if( $( "name", this ).text() !== "") {
           return {
-            value: $( "alt", this ).text(),
-            label: $("alt", this).text()
+            value: $( "name", this ).text(),
+            label: $("label", this).text()
           };
         }
       }).get();

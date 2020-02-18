@@ -21,6 +21,8 @@
                 <xsl:variable name="selected-sentences" select="tokenize($sentences, ',')" />
                 <xsl:variable name="sentences-shown" select="if ($sentences = 'any' or $sentences= '') then $all-sentences else $selected-sentences"/>
 
+                <xsl:value-of select="count($sentences-shown*)"/> sentences found.
+
                 <xsl:for-each select="$sentences-shown">
                     <xsl:variable name="sentence" select="."/>
                     <h3><xsl:value-of select="$sentence"/></h3>

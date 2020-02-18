@@ -803,6 +803,35 @@ function vicav:get_profile_markers() {
 };
 
 declare
+%rest:path("vicav/sample_locations")
+%rest:GET
+%output:method("xml")
+function vicav:get_sample_locations() {
+    let $entries := collection('vicav_samples')//tei:TEI/(.//tei:name[1], .//tei:place/tei:region[1], .//tei:place/tei:country[1])
+
+
+    let $labels :=
+    for $item in $entries
+        order by $item/text()
+
+        let $label := if ($item/name() = 'region') then
+            'region:' || $item/text()
+        else if ($item/name() = 'country') then
+            'country:' || $item/text() 
+        else 
+            $item/text()
+        return $label
+    
+    let $out:= for $label in distinct-values($labels)
+        return <location>
+            <label>{$label}</label>
+            <name>{replace($label, '^.+:', '')}</name>
+        </location>
+       
+    return  <results>{$out}</results>
+};
+
+declare
 %rest:path("vicav/sample_markers")
 %rest:GET
 %output:method("xml")
