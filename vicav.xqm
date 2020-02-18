@@ -306,8 +306,11 @@ function vicav:explore_samples(
         else 
             '' 
 
+
     let $word_qs := for $w in tokenize($word, ',')
-            return '(.//tei:w[contains-token(.,"' || $w || '")][1] or .//tei:f[contains-token(.,"' || $w || ' ")][1] or .//tei:phr[contains-token(.,"' || $w || '")][1])'
+            let $match_str := '[matches(.,"(^|\W)' || replace($w, '\*', '.*') || '($|\W)")]'
+        return 
+            '(.//tei:w' || $match_str || ' or .//tei:f' || $match_str || ' or .//tei:phr' || $match_str || ')'
 
     let $word_q := if (not(empty($word_qs))) then
         $word_sep || '(' || string-join($word_qs, ' or ') || ')'

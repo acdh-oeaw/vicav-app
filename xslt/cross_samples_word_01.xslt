@@ -23,13 +23,14 @@
                 <xsl:variable name="sentences-containing">
                     <xsl:for-each select="tokenize($filter-word, ',')">
                         <xsl:variable name="word" select="."/>
-                        <xsl:for-each select="$root/items//item//tei:s[.//tei:w[contains-token(., $word)]]">
+                        <xsl:for-each 
+                            select="$root/items//item//tei:s[.//tei:w[matches(., concat('(\W|^)', replace($word, '\*', '.*'), '(\W|$)' ))]]">
                             <xsl:sequence select="."/>
                         </xsl:for-each>
                      </xsl:for-each>
                  </xsl:variable>
 
-                 <xsl:value-of select="count($sentences-containing/*)"/> sentences found.
+                <p xml:space="preserve"><xsl:value-of select="count($sentences-containing/*)"/> sentences found.</p>
 
                 <xsl:for-each select="distinct-values(/items//tei:s/@n)">
                     <xsl:variable name="sentence" select="."/>
