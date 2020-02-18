@@ -341,7 +341,11 @@ function vicav:explore_samples(
             return "'" || $id || "'" 
 
     let $location_q := if(not(empty($loc_qs))) then 
-        './/tei:name/text() = [' || string-join($loc_qs, ',') || ']'
+        '(.//tei:name/text() = [' || string-join($loc_qs, ',') || '] ' || 
+        ' or .//tei:settlement/text() = [' || string-join($loc_qs, ',') || ']'||        
+        ' or .//tei:region/text() = [' || string-join($loc_qs, ',') || ']'||        
+        ' or .//tei:country/text() = [' || string-join($loc_qs, ',') || ']'||
+        ')'
     else
         ""
 
@@ -363,7 +367,6 @@ function vicav:explore_samples(
 
         return
            <item city="{$city}" informant="{$informant}" age="{$age}" sex="{$sex}">{$item}</item>
-
     let $ress1 := <items>{$ress}</items>
 
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn

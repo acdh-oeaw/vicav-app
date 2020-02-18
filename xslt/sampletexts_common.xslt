@@ -13,7 +13,7 @@ version="2.0">
         <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
             <xsl:attribute name="title">                    
                 <xsl:variable name="nn" select="@n"/>
-                <xsl:value-of select="//tei:s[@type='translationSentence'][@n=$nn] | //tei:div[@type='dvTranslations']/tei:u[@n=$nn]"/>
+                <xsl:value-of select="(//tei:s[@type='translationSentence'][@n=$nn] | //tei:div[@type='dvTranslations']/tei:u[@n=$nn])[1]"/>
             </xsl:attribute>
             <i class="fa fa-commenting-o" aria-hidden="true"></i>
         </span>
@@ -49,11 +49,14 @@ version="2.0">
                     <xsl:attribute name="style">color: red</xsl:attribute>
                 </xsl:if>
                 <xsl:attribute name="class">
-                     <xsl:value-of select="./@class" />
-                    sample-text-tooltip
+                    <xsl:value-of select="./@class" />
+                    <xsl:value-of select="'sample-text-tooltip'" />
+                    <xsl:if test="string-length(./tei:fs/tei:f[@name='variant']/text())&gt;0">
+                        <xsl:value-of select="' sample-text-variant'"/>
+                    </xsl:if>
                 </xsl:attribute>
                 <xsl:attribute name="title">
-                    <xsl:if test="string-length(tei:fs/tei:f[@name='pos'])&gt;0">&lt;span class="spPos"&gt;POS:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='pos']"/>&lt;br/&gt;</xsl:if>
+                <xsl:if test="string-length(tei:fs/tei:f[@name='pos'])&gt;0">&lt;span class="spPos"&gt;POS:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='pos']"/>&lt;br/&gt;</xsl:if>
                     <xsl:if test="string-length(tei:fs/tei:f[@name='lemma'])&gt;0">&lt;span class="spLemma"&gt;Lemma:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='lemma']"/>&lt;br/&gt;</xsl:if>                            
                     <xsl:if test="string-length(tei:fs/tei:f[@name='translation'])&gt;0">&lt;span class="spTrans"&gt;English:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='translation']"/></xsl:if>
                     <xsl:if test="string-length(tei:fs/tei:f[@name='variant'])&gt;0">&lt;span class="spTrans"&gt;Alternative form:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='variant']"/></xsl:if>                                                        
