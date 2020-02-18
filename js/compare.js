@@ -240,7 +240,7 @@ $(document).ready(function(event) {
   
   var xsl = (word && word != '') ? 'cross_samples_word_01.xslt' : 'cross_samples_01.xslt'
 
-  var sentencesUri = (Array.isArray(sentences) && sentences.indexOf('any') != -1) ? 'any' : s.replace(/\s+/g, '')
+  var sentencesUri = (Array.isArray(sentences) && sentences.indexOf('any') != -1) ? 'any' : sentences.replace(/\s+/g, '')
 
   var url = 'explore_samples?'+
         'location=' + encodeURIComponent(location) + 
