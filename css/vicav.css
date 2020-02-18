@@ -1461,6 +1461,7 @@ form.compare-samples .sentences > fieldset {
 }
 
 [data-toggle = "tooltip"].sample-text-variant {
-    background-color: rgba(200,200,255,0.5);
+    background-color: rgba(165, 129, 3,0.5);
+    color: white;
     padding: 0 2px;
 }

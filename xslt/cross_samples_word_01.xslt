@@ -29,7 +29,7 @@
                      </xsl:for-each>
                  </xsl:variable>
 
-                 <xsl:value-of select="count($sentences-containing/*)"/>
+                 <xsl:value-of select="count($sentences-containing/*)"/> sentences found.
 
                 <xsl:for-each select="distinct-values(/items//tei:s/@n)">
                     <xsl:variable name="sentence" select="."/>
@@ -41,7 +41,7 @@
                             <xsl:if test="count(.//tei:s[@n=$sentence and index-of($sentences-containing/tei:s, .) > 0]) > 0">
                             <tr>
                                 <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/>
-                                <small>
+                                <small xml:space="preserve">
                                 <xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)</xsl:if></small>
                             </td>
                                 <td class="tdFeaturesRightTarget">
