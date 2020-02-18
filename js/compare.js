@@ -16,8 +16,8 @@ var getParam = function(name) {
   } else if (results.length == 1) {
       return decodeURIComponent(results[0][1].replace(/\+/g, " "));
   } else {
-    return results.map(function(r) {
-      return decodeURIComponent(r[1].replace(/\+/g, " "))
+    return results.filter((r) => { return r[1] != '' }).map(function(r) {
+        return decodeURIComponent(r[1].replace(/\+/g, " "))
     })
   }
  
@@ -141,7 +141,6 @@ $.ajax({
             source: function( request, response ) {
                 var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
                 response( $.grep( data, function( value ) {
-                  console.log(value);
                   value = value.label || value.value || value;
 
                   return matcher.test( value ) || matcher.test( normalize( value.toLowerCase() ) );
@@ -191,6 +190,7 @@ $.ajax({
 
 $(document).ready(function(event) {
   var sentences = getParam('sentences')
+
   var location = getParam('location')
   var word = getParam('word')
   var person = getParam('person')
@@ -238,7 +238,9 @@ $(document).ready(function(event) {
   if (location || person || word){
     var $form = $('form.compare-samples', $root); 
   
-  var xsl = (word) ? 'cross_samples_word_01.xslt' : 'cross_samples_01.xslt'
+  var xsl = (word && word != '') ? 'cross_samples_word_01.xslt' : 'cross_samples_01.xslt'
+
+  var sentencesUri = (Array.isArray(sentences) && sentences.indexOf('any') != -1) ? 'any' : s.replace(/\s+/g, '')
 
   var url = 'explore_samples?'+
         'location=' + encodeURIComponent(location) + 
@@ -246,7 +248,7 @@ $(document).ready(function(event) {
         '&person=' + encodeURIComponent(person) + 
         '&age=' + encodeURIComponent(age) + 
         '&sex=' + encodeURIComponent(new Array(sex).join(',')) + 
-        '&sentences='+ encodeURIComponent(sentences.replace(/\s+/g, '')) + '&xslt=' + xsl;
+        '&sentences='+ encodeURIComponent(sentencesUri) + '&xslt=' + xsl;
     $.ajax({
       url: url,
       dataType: 'html',
