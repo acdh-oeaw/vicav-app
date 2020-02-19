@@ -36,7 +36,7 @@ version="2.0">
         </xsl:choose>
     </xsl:variable>
 
-    <a class="word-search" target="_blank">
+    <a class="word-search">
         <xsl:attribute name="href">
             <xsl:value-of select="'compare-samples.html?word='"/>
             <xsl:value-of select="$wordform" />
@@ -49,7 +49,7 @@ version="2.0">
                     <xsl:sequence select="if (contains(. ,'.*')) then matches($wordform, .) else $wordform = ."/>
                 </xsl:for-each>
             </xsl:variable>
-            <xsl:if test="$matchesHighlights = true()">
+            <xsl:if test="$matchesHighlights != '' and $matchesHighlights = true()">
                 <xsl:attribute name="style">
                    color: red
                 </xsl:attribute>

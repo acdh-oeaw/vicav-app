@@ -1440,6 +1440,12 @@ body.compare-samples-window {
     padding: 25px; 
 }
 
+body.compare-samples-window .show-sentence {
+    display: block;
+    float: left;
+    margin: 0 4px 0 2px;
+}
+
 form.compare-samples > fieldset.column {
     border: silver 1px solid;
     padding: 5px;
