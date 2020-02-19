@@ -1462,7 +1462,7 @@ form.compare-samples fieldset > fieldset {
     border: none;
 }
 
-form.compare-samples .sentences > fieldset {
+form.compare-samples .sentences-wrapper > fieldset {
     display: inline-block;
 }
 
