@@ -35,24 +35,28 @@
                 <xsl:for-each select="distinct-values(/items//tei:s/@n)">
                     <xsl:variable name="sentence" select="."/>
                     <xsl:if test="count($root/items//item//tei:s[@n=$sentence and index-of($sentences-containing/tei:s, .) > 0]) > 0">
-                    <h3><xsl:value-of select="$sentence"/></h3>
-                    <table class="tbFeatures">
-                        <xsl:for-each select="$root/items//item">
-                            <xsl:sort select="@city"/>
-                            <xsl:if test="count(.//tei:s[@n=$sentence and index-of($sentences-containing/tei:s, .) > 0]) > 0">
-                            <tr>
-                                <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/>
-                                <small xml:space="preserve">
-                                <xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)</xsl:if></small>
-                            </td>
-                                <td class="tdFeaturesRightTarget">
-                                    <xsl:apply-templates select=".//tei:div[@type='sampleText']//tei:s[@n=$sentence]"/>
-                                </td>
-                            </tr>                       
-                        </xsl:if>
-                        </xsl:for-each>
-                    </table>
-                </xsl:if>
+                        <h3><xsl:value-of select="$sentence"/></h3>
+
+                        <xsl:for-each-group select="$root/items//item" group-by="(.//tei:region[1], 'unknown')[1]">
+                            <xsl:if test="count(current-group()//tei:s[@n=$sentence and index-of($sentences-containing/tei:s, .) > 0]) > 0">
+                                <h4><xsl:value-of select="current-grouping-key()"/></h4>
+                                <table class="tbFeatures">
+                                    <xsl:for-each select="current-group()">
+                                        <xsl:sort select="@city"/>
+                                        <tr>
+                                            <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/>
+                                            <small xml:space="preserve">
+                                            <xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)</xsl:if></small>
+                                        </td>
+                                            <td class="tdFeaturesRightTarget">
+                                                <xsl:apply-templates select=".//tei:div[@type='sampleText']//tei:s[@n=$sentence]"/>
+                                            </td>
+                                        </tr>                       
+                                    </xsl:for-each>
+                                </table>
+                            </xsl:if>
+                        </xsl:for-each-group>
+                    </xsl:if>
                 </xsl:for-each>                  
             </div>         
         </div>

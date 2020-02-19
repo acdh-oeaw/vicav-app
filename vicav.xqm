@@ -239,7 +239,7 @@ declare
 function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn as xs:string) {
     
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $q := 'collection("vicav_lingfeatures")//tei:cit[@type="featureSample" and (.//tei:w[contains-token(@ana,"' || $ana || '")][1] || .//tei:phr[contains-token(@ana,"' || $ana || '")][1])]'
+    let $q := 'collection("vicav_lingfeatures")//tei:cit[@type="featureSample" and (.//tei:w[contains-token(@ana,"' || $ana || '")][1] or .//tei:phr[contains-token(@ana,"' || $ana || '")][1])]'
     let $query := $ns || $q    
     let $results := xquery:eval($query)
     
@@ -308,9 +308,12 @@ function vicav:explore_samples(
 
 
     let $word_qs := for $w in tokenize($word, ',')
-            let $match_str := '[matches(.,"(^|\W)' || replace($w, '\*', '.*') || '($|\W)")]'
-        return 
-            '(.//tei:w' || $match_str || ' or .//tei:f' || $match_str || ' or .//tei:phr' || $match_str || ')'
+            let $match_str := if (contains($w, '*')) then
+                '[matches(.,"(^|\W)' || replace($w, '\*', '.*') || '($|\W)")][1]'
+                else 
+                '[contains-token(.,"' || $w || '")][1]'
+            return 
+                '(.//tei:w' || $match_str || ' or .//tei:f' || $match_str || ' or .//tei:phr' || $match_str || ')'
 
     let $word_q := if (not(empty($word_qs))) then
         $word_sep || '(' || string-join($word_qs, ' or ') || ')'
