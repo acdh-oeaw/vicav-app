@@ -48,5 +48,23 @@ describe('VICAV Compare samples window', function() {
 			cy.contains('span', 'bītinžāl').should('have.css', 'color').and('be.colored', 'red')
 		})
 	})
+
+
+	it ('supports search by gender', () => {
+		cy.visit('http://localhost:8984/vicav/compare-samples.html?location=Tunis2%2CTest&sex=f')
+		cy.get('.results .spSentence').then(() => {
+			cy.contains('Test1/m/20').should('not.exist')
+			cy.contains('Test2/f/40')
+		})
+	})
+
+	it ('supports search by gender', () => {
+		cy.visit('http://localhost:8984/vicav/compare-samples.html?location=Tunis2%2CTest&age=0,30')
+		cy.get('.results .spSentence').then(() => {
+			cy.contains('Test2/f/40').should('not.exist')
+			cy.contains('Test1/m/20')
+		})
+	})
+
 })
 

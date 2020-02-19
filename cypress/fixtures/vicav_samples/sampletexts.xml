@@ -3190,9 +3190,20 @@
       </fileDesc>
       <profileDesc>
          <particDesc>
-            <person sex="f" age="40" role="unknown"/>
+            <person sex="f" age="40">Test2</person>
          </particDesc>
+         <settingDesc>
+            <place>
+               <settlement>Sīdi Ḥmǟda</settlement>
+               <region>Siliana</region>
+               <country>Tunisia</country>
+               <location>
+                  <geo>35.96, 9.54</geo>
+               </location>
+            </place>
+         </settingDesc>
       </profileDesc>
+
    </teiHeader>
    <text>
       <body>
