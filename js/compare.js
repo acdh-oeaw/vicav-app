@@ -238,8 +238,6 @@ $(document).ready(function(event) {
   if (location || person || word){
     var $form = $('form.compare-samples', $root); 
   
-  var xsl = (word && word != '') ? 'cross_samples_word_01.xslt' : 'cross_samples_01.xslt'
-
   var sentencesUri = (Array.isArray(sentences) && sentences.indexOf('any') != -1) ? 'any' : sentences.replace(/\s+/g, '')
 
   var url = 'explore_samples?'+
@@ -248,7 +246,7 @@ $(document).ready(function(event) {
         '&person=' + encodeURIComponent(person) + 
         '&age=' + encodeURIComponent(age) + 
         '&sex=' + encodeURIComponent(new Array(sex).join(',')) + 
-        '&sentences='+ encodeURIComponent(sentencesUri) + '&xslt=' + xsl;
+        '&sentences='+ encodeURIComponent(sentencesUri) + '&xslt=cross_samples_01.xslt';
     $.ajax({
       url: url,
       dataType: 'html',

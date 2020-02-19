@@ -378,7 +378,7 @@ function vicav:explore_samples(
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
     
-    let $sHTML := xslt:transform-text($ress1, $style, map {"highlight":string($word),"filter-word": string($word), "sentences":$ss})
+    let $sHTML := xslt:transform-text($ress1, $style, map {"highlight":string($word),"filter-words": string($word), "filter-sentences":$ss})
 
     return
         (:<div type="lingFeatures">{$sHTML}</div>:)

@@ -34,7 +34,7 @@ version="2.0">
                 <xsl:value-of select="replace(., '[\s&#160;]+$', '')"/>
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:variable>      
+    </xsl:variable>
 
     <a class="word-search" target="_blank">
         <xsl:attribute name="href">
@@ -44,10 +44,17 @@ version="2.0">
             <xsl:value-of select="string-join(distinct-values(//tei:body/tei:head/tei:name/text()), ',')"/>-->
         </xsl:attribute>
         <span class="w" data-html="true" data-placement="top">
+            <xsl:variable name="matchesHighlights">
+                <xsl:for-each select="tokenize(replace($highlight, '\*', '.*'), ',')">
+                    <xsl:sequence select="if (contains(. ,'.*')) then matches($wordform, .) else $wordform = ."/>
+                </xsl:for-each>
+            </xsl:variable>
+            <xsl:if test="$matchesHighlights = true()">
+                <xsl:attribute name="style">
+                   color: red
+                </xsl:attribute>
+            </xsl:if>
             <xsl:if test="./tei:fs">
-                <xsl:if test="$wordform = $highlight or $wordform = tokenize($highlight, ',')">
-                    <xsl:attribute name="style">color: red</xsl:attribute>
-                </xsl:if>
                 <xsl:attribute name="class">
                     <xsl:value-of select="./@class" />
                     <xsl:value-of select="'sample-text-tooltip'" />
