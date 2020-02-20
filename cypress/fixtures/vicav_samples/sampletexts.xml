@@ -547,15 +547,6 @@
                      </w>
                      <w>
                         <fs>
-                           <f name="wordform"></f>
-                           <f name="pos"/>
-                           <f name="lemma"/>
-                           <f name="translation"/>
-                           <f name="other"/>
-                        </fs>
-                     </w>
-                     <w>
-                        <fs>
                            <f name="wordform">baʕd</f>
                            <f name="pos"/>
                            <f name="lemma"/>
