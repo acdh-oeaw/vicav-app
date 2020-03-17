@@ -24,6 +24,11 @@ version="2.0">
     </span>
 </xsl:template>
 
+<xsl:template match="tei:quote[@xml:lang = 'ar']">
+        <xsl:for-each select="tei:w | tei:c | tei:seg | tei:pc">
+            <xsl:apply-templates select="."/>
+        </xsl:for-each>
+</xsl:template>
 <xsl:template match="tei:w">
     <xsl:variable name="wordform">
         <xsl:choose>

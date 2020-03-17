@@ -4,7 +4,8 @@
     xmlns:acdh="http://acdh.oeaw.ac.at"
     version="2.0">
     <xsl:param name="highLightIdentifier"></xsl:param>
-    
+    <xsl:include href="sampletexts_common.xslt"/>
+
     <xsl:preserve-space elements="*"/>
     <xsl:output method="html" encoding="utf-8"/>
     <xsl:template match="/">
@@ -86,33 +87,6 @@
     <xsl:template match="tei:hi[@rend = 'bold']"><b><xsl:apply-templates/></b></xsl:template>
     <xsl:template match="tei:hi[@rend = 'red']"><span style="color:red"><xsl:apply-templates/></span></xsl:template>
     <xsl:template match="tei:p"><p><xsl:apply-templates/></p></xsl:template>
-    <xsl:template match="tei:seg"><span xml:space="preserve"><xsl:value-of select="."/></span></xsl:template>
-    <xsl:template match="tei:w">
-        <xsl:variable name="w" select="."/>        
-        <xsl:variable name="current-feature" select="acdh:current-feature-ana($w)"/>
-        <span>
-            <xsl:if test="$current-feature = $w/@ana">
-                <xsl:attribute name="style">color:red</xsl:attribute>
-            </xsl:if>
-            <xsl:apply-templates/>
-        </span>
-        <xsl:if test="not(./@join = 'right')  and not(following-sibling::*[1]/name() = 'pc')">
-            <span xml:space="preserve"> </span>
-        </xsl:if>
-    </xsl:template>
-    <xsl:template match="tei:phr">
-        <xsl:variable name="current-feature" select="acdh:current-feature-ana(.)"/>
-        <span class="phr">
-            <xsl:if test="$current-feature = ./@ana">
-                <xsl:attribute name="style">color:red</xsl:attribute>
-                <xsl:apply-templates/>
-            </xsl:if>
-        </span>
-    </xsl:template>
-    <xsl:template match="tei:pc">
-        <span><xsl:apply-templates/></span>
-        <xsl:if test="not(./@join = 'right')">
-            <span xml:space="preserve"> </span></xsl:if></xsl:template>
     
     <!-- 
    <xsl:template match="tei:cell"><td><xsl:apply-templates/></td></xsl:template>
