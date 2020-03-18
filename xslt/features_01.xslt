@@ -66,7 +66,7 @@
         </div>
         <!--             </body>        </html> -->
     </xsl:template>
-    
+    <!--  
     <xsl:function name="acdh:current-feature-ana">
         <xsl:param name="w"></xsl:param>        
         <xsl:choose>
@@ -78,7 +78,7 @@
                 <xsl:value-of select="concat('semlib:', $calculated-semlib)"/>
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:function>
+    </xsl:function>-->
     
     <xsl:template match="tei:lbl"><xsl:apply-templates /></xsl:template>
     <xsl:template match="tei:fs"></xsl:template>
