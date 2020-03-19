@@ -7,7 +7,8 @@ version="2.0">
 <xsl:output method="html"/>
 
 <xsl:param name="highlight"></xsl:param>
-
+<xsl:param name="highLightIdentifier" select="()"></xsl:param>
+    
 <xsl:template match="//tei:div[@type='sampleText']/tei:p/tei:s | //tei:div[@type='corpusText']/tei:u">
     <span class="spSentence">
         <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
@@ -55,14 +56,25 @@ version="2.0">
     </xsl:for-each>
 </xsl:function>
     
+<xsl:function name="acdh:highlight-identifier">
+    <xsl:param name="el"></xsl:param>
+    
+</xsl:function>
+    
 <xsl:function name="acdh:word-span">
     <xsl:param name="w"></xsl:param>
-    <xsl:param name="highlight"></xsl:param>
     <xsl:variable name="wordform" select="acdh:get-wordform($w)"/>
     <xsl:variable name="matchesHighlights" select="acdh:matches-highlight($wordform)"/>
+    <xsl:variable name="highLightIdentifier">
+        <xsl:choose>
+            <xsl:when test="not(empty($highLightIdentifier))"><xsl:value-of select="$highLightIdentifier"/></xsl:when>
+            <xsl:otherwise><xsl:value-of select="acdh:current-feature-ana($w)"/></xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="matchesHighlightId" select="not(empty($highLightIdentifier)) and not(empty(($w/@ana))) and (contains($w/@ana,$highLightIdentifier) or contains($w/parent::tei:phr/@ana, $highLightIdentifier))"/>
     
     <span class="w" data-html="true" data-placement="top">
-        <xsl:if test="$matchesHighlights != '' and $matchesHighlights = true()">
+        <xsl:if test="$matchesHighlights = true() or $matchesHighlightId = true()">
             <xsl:attribute name="style">
                 color: red
             </xsl:attribute>
@@ -166,6 +178,18 @@ version="2.0">
     </xsl:if>
 </xsl:function>
     
+<xsl:function name="acdh:current-feature-ana">
+    <xsl:param name="w"></xsl:param>        
+    <xsl:choose>
+        <xsl:when test="$w/ancestor::tei:cit[@type='featureSample']/@ana != ''">
+            <xsl:value-of select="$w/ancestor::tei:cit[@type='featureSample']/@ana"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:variable name="calculated-semlib" select="lower-case(replace(replace($w/ancestor::tei:cit[@type='featureSample']/tei:lbl, '\s+', '_'), '[^\w_]', ''))"/>
+            <xsl:value-of select="concat('semlib:', $calculated-semlib)"/>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:function>    
     
 <xsl:template match="tei:w" mode="sample">
     <xsl:variable name="wordform" select="acdh:get-wordform(.)"/>
@@ -187,7 +211,7 @@ version="2.0">
     
     <xsl:choose>
         <xsl:when test="$type='feature'">
-            <xsl:sequence select="acdh:word-span($w, $highlight)"></xsl:sequence>            
+            <xsl:sequence select="acdh:word-span($w)"></xsl:sequence>            
         </xsl:when>
         <xsl:otherwise>
             <a class="word-search">
@@ -195,7 +219,7 @@ version="2.0">
                     <xsl:value-of select="'compare-samples.html?word='"/>
                     <xsl:value-of select="$wordform" />
                 </xsl:attribute>
-                <xsl:sequence select="acdh:word-span($w, $highlight)"></xsl:sequence>
+                <xsl:sequence select="acdh:word-span($w)"></xsl:sequence>
             </a>       
         </xsl:otherwise>
     </xsl:choose>
