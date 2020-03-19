@@ -19,9 +19,13 @@ version="2.0">
         </span>
         <xsl:value-of select="' '" />
         <xsl:for-each select="./(tei:w | tei:c | tei:pc | tei:choice)">
+            <xsl:variable name="position" select="position()"/>
             <xsl:choose>
                 <xsl:when test="./name() = 'w'">
-                    <xsl:apply-templates select="." mode="sample"/>
+                    <xsl:sequence select="acdh:word-block(., 'sample', $position)" />
+                </xsl:when>
+                <xsl:when test="./name() = 'choice'">
+                    <xsl:sequence select="acdh:choice-block(., 'sample')" />
                 </xsl:when>
                 <xsl:otherwise><xsl:apply-templates select="." /></xsl:otherwise>
             </xsl:choose>
@@ -31,9 +35,13 @@ version="2.0">
 
 <xsl:template match="tei:quote[@xml:lang = 'ar']">
     <xsl:for-each select="./(tei:w | tei:c | tei:pc | tei:choice)">
+        <xsl:variable name="position" select="position()"/>
         <xsl:choose>
             <xsl:when test="./name() = 'w'">
-                <xsl:apply-templates select="." mode="feature"/>
+                <xsl:sequence select="acdh:word-block(., 'feature', $position)" />
+            </xsl:when>
+            <xsl:when test="./name() = 'choice'">
+                <xsl:sequence select="acdh:choice-block(., 'feature')" />
             </xsl:when>
             <xsl:otherwise><xsl:apply-templates select="." /></xsl:otherwise>
         </xsl:choose>
@@ -92,11 +100,12 @@ version="2.0">
             <xsl:value-of select="replace($w, '[\s&#160;]+$', '')"/>
         </xsl:otherwise>
     </xsl:choose>
-    
 </xsl:function>
 
-<xsl:template match="tei:choice">
-    <xsl:variable name="variants" select="tei:seg[position() >= 2]"/>
+<xsl:function name="acdh:choice-block">
+    <xsl:param name="choice"></xsl:param>
+    <xsl:param name="mode"></xsl:param>
+    <xsl:variable name="variants" select="$choice/tei:seg[position() >= 2]"/>
     <xsl:variable name="variant_count" select="count($variants)"></xsl:variable>
     <xsl:variable name="variants-value">
         <xsl:for-each select="$variants">
@@ -128,16 +137,19 @@ version="2.0">
         <xsl:if test="$variants">&lt;span class="spTrans"&gt;Alternative form:&lt;/span&gt;&#160;<xsl:value-of select="$variants-value"/>&lt;br/&gt;</xsl:if>  
         <xsl:if test="count($variants//tei:f[@name='informant'])&gt;0">&lt;span class="spTrans"&gt;Alternative form informant:&lt;/span&gt;&#160;<xsl:value-of select="string-join($variants/tei:f[@name='informant'], ', ')"/></xsl:if>
     </xsl:attribute>
-    <xsl:for-each select="./tei:seg[1]/*">
+    <xsl:for-each select="$choice/tei:seg[1]/*">
         <xsl:choose>
             <xsl:when test="./name() = 'w'">
-                <xsl:apply-templates select="." mode="sample"/>
+                <xsl:variable select="position()" name="position"/>
+                <xsl:sequence select="acdh:word-block(., $mode, $position)"></xsl:sequence>
             </xsl:when>
             <xsl:when test="./name() = 'phr'">
                 <xsl:for-each select="./*">
                     <xsl:choose>
                         <xsl:when test="name() = 'w'">
-                            <xsl:apply-templates select="." mode="sample"></xsl:apply-templates>
+                            <xsl:variable select="position()" name="position"/>
+                            
+                            <xsl:sequence select="acdh:word-block(., $mode, $position)"></xsl:sequence>
                         </xsl:when>
                         <xsl:otherwise><xsl:apply-templates select="." /></xsl:otherwise>                        
                     </xsl:choose>
@@ -147,34 +159,50 @@ version="2.0">
         </xsl:choose>
     </xsl:for-each>
     </span>
-</xsl:template>
-        
-<xsl:template match="tei:w" mode="feature">
-    <xsl:variable name="wordform" select="acdh:get-wordform(.)"/>
-    <xsl:sequence select="acdh:word-span(., $highlight)"></xsl:sequence>
-    <xsl:if test="not(matches($wordform, '^[„-]$')) and
-        not(following-sibling::*[1]/name() = 'pc') and
-        not(matches(following-sibling::tei:w[1]/tei:fs/tei:f[@name='wordform'], '^\W+$'))">
-        <xsl:value-of select="' '" />
+    <xsl:if test="
+        not($choice/following-sibling::*[1]/name() = 'pc') and
+        not(matches($choice/following-sibling::tei:w[1]/tei:fs/tei:f[@name='wordform'], '^\W+$'))">
+        <xsl:value-of select="' '"/>
     </xsl:if>
-</xsl:template>
+</xsl:function>
+    
     
 <xsl:template match="tei:w" mode="sample">
     <xsl:variable name="wordform" select="acdh:get-wordform(.)"/>
-    <a class="word-search">
-        <xsl:attribute name="href">
-            <xsl:value-of select="'compare-samples.html?word='"/>
-            <xsl:value-of select="$wordform" />
-        </xsl:attribute>
-        <xsl:sequence select="acdh:word-span(., $highlight)"></xsl:sequence>
-    </a>
-
-    <xsl:if test="not(matches($wordform, '^[„-]$')) and
+    <xsl:variable name="add-space" select="not(matches($wordform, '^[„-]$')) and
         not(following-sibling::*[1]/name() = 'pc') and
-        not(matches(following-sibling::tei:w[1]/tei:fs/tei:f[@name='wordform'], '^\W+$'))">
+        not(matches(following-sibling::tei:w[1]/tei:fs/tei:f[@name='wordform'], '^\W+$')) "/>
+        <xsl:sequence select="acdh:word-block(., 'sample', $add-space)"></xsl:sequence>        
+</xsl:template>
+    
+<xsl:function name="acdh:word-block">
+    <xsl:param name="w"></xsl:param>
+    <xsl:param name="type"></xsl:param>
+    <xsl:param name="position"></xsl:param>
+    <xsl:variable name="wordform" select="acdh:get-wordform($w)"/>
+    <xsl:variable name="add-space" select="not(matches($wordform, '^[„-]$')) and
+        not($w/following-sibling::*[1]/name() = 'pc') and
+        not(matches($w/following-sibling::tei:w[1]/tei:fs/tei:f[@name='wordform'], '^\W+$')) and
+        (not($w/ancestor::tei:choice) or $position != count($w/parent::*/*))"/>
+    
+    <xsl:choose>
+        <xsl:when test="$type='feature'">
+            <xsl:sequence select="acdh:word-span($w, $highlight)"></xsl:sequence>            
+        </xsl:when>
+        <xsl:otherwise>
+            <a class="word-search">
+                <xsl:attribute name="href">
+                    <xsl:value-of select="'compare-samples.html?word='"/>
+                    <xsl:value-of select="$wordform" />
+                </xsl:attribute>
+                <xsl:sequence select="acdh:word-span($w, $highlight)"></xsl:sequence>
+            </a>       
+        </xsl:otherwise>
+    </xsl:choose>
+    <xsl:if test="$add-space">
         <xsl:value-of select="' '" />
     </xsl:if>
-</xsl:template>
+</xsl:function>
 
 <xsl:template match="tei:c">
     <xsl:value-of select="."/>
