@@ -4,9 +4,9 @@ xmlns="http://www.w3.org/1999/xhtml"
 xmlns:tei="http://www.tei-c.org/ns/1.0"
 xmlns:acdh="http://acdh.oeaw.ac.at"
 version="2.0">    
-<xsl:output method="html"/>
+<xsl:output method="xml"/>
 
-<xsl:param name="highlight"></xsl:param>
+<xsl:param name="highlight" select="()"></xsl:param>
 <xsl:param name="highLightIdentifier" select="()"></xsl:param>
     
 <xsl:template match="//tei:div[@type='sampleText']/tei:p/tei:s | //tei:div[@type='corpusText']/tei:u">
@@ -75,9 +75,7 @@ version="2.0">
     
     <span class="w" data-html="true" data-placement="top">
         <xsl:if test="$matchesHighlights = true() or $matchesHighlightId = true()">
-            <xsl:attribute name="style">
-                color: red
-            </xsl:attribute>
+            <xsl:attribute name="style">color: red</xsl:attribute>
         </xsl:if>
         <xsl:if test="$w/tei:fs">
             <xsl:attribute name="class">

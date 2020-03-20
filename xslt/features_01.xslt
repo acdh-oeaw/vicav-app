@@ -6,7 +6,6 @@
     <xsl:include href="sampletexts_common.xslt"/>
 
     <xsl:preserve-space elements="*"/>
-    <xsl:output method="html" encoding="utf-8"/>
     <xsl:template match="/">
         
         <!-- 

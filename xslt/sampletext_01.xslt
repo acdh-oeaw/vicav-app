@@ -3,7 +3,6 @@
     xmlns="http://www.w3.org/1999/xhtml" 
     xmlns:tei="http://www.tei-c.org/ns/1.0"
     version="2.0">    
-    <xsl:output method="html"/>
     <xsl:include href="sampletexts_common.xslt"/>
     <xsl:template match="/">        
         <div>                       
