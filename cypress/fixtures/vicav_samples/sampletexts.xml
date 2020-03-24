@@ -929,15 +929,6 @@
                      </w>
                      <w>
                         <fs>
-                           <f name="wordform"></f>
-                           <f name="pos"/>
-                           <f name="lemma"/>
-                           <f name="translation"/>
-                           <f name="other"/>
-                        </fs>
-                     </w>
-                     <w>
-                        <fs>
                            <f name="wordform">„āš</f>
                            <f name="pos"/>
                            <f name="lemma"/>
@@ -1040,15 +1031,6 @@
                      <w>
                         <fs>
                            <f name="wordform">:</f>
-                           <f name="pos"/>
-                           <f name="lemma"/>
-                           <f name="translation"/>
-                           <f name="other"/>
-                        </fs>
-                     </w>
-                     <w>
-                        <fs>
-                           <f name="wordform"></f>
                            <f name="pos"/>
                            <f name="lemma"/>
                            <f name="translation"/>
@@ -3131,16 +3113,31 @@
                         <f name="other"/>
                      </fs>
                   </w>
-                  <w>
-                     <fs>
-                        <f name="wordform">ḥbastu</f>
-                        <f name="pos"/>
-                        <f name="lemma"/>
-                        <f name="translation"/>
-                        <f name="other"/>
-                        <f name="variant">ⁱbṭītu</f>
-                     </fs>
-                  </w>
+                  <choice>
+                     <seg>
+                        <w>
+                           <fs>
+                              <f name="wordform">ḥbastu</f>
+                              <f name="pos"/>
+                              <f name="lemma"/>
+                              <f name="translation"/>
+                              <f name="other"/>
+                           </fs>
+                        </w>
+                        
+                     </seg>
+                     <seg>
+                        <w>
+                           <fs>
+                              <f name="wordform">ⁱbṭītu</f>
+                              <f name="pos"/>
+                              <f name="lemma"/>
+                              <f name="translation"/>
+                              <f name="other"/>
+                           </fs>
+                        </w>
+                     </seg>
+                  </choice>
                   <pc force="strong" join="left">.</pc>
                </s>
             </p>

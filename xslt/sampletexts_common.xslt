@@ -221,7 +221,7 @@ version="2.0">
             </a>       
         </xsl:otherwise>
     </xsl:choose>
-    <xsl:if test="$add-space">
+    <xsl:if test="not($wordform = '') and $add-space">
         <xsl:value-of select="' '" />
     </xsl:if>
 </xsl:function>
