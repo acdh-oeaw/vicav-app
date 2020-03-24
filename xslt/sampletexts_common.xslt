@@ -86,7 +86,7 @@ version="2.0">
                 <xsl:if test="string-length($w/tei:fs/tei:f[@name='pos'])&gt;0">&lt;span class="spPos"&gt;POS:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='pos']"/>&lt;br/&gt;</xsl:if>
                 <xsl:if test="string-length($w/tei:fs/tei:f[@name='lemma'])&gt;0">&lt;span class="spLemma"&gt;Lemma:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='lemma']"/>&lt;br/&gt;</xsl:if>                            
                 <xsl:if test="string-length($w/tei:fs/tei:f[@name='translation'])&gt;0">&lt;span class="spTrans"&gt;English:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='translation']"/>&lt;br/&gt;</xsl:if>
-                <xsl:if test="count($w//tei:f[@name='informant'])&gt;0">&lt;span class="spTrans"&gt;Alternative form informant:&lt;/span&gt;&#160;<xsl:value-of select="string-join($w/tei:f[@name='informant'], ', ')"/>&lt;br/&gt;</xsl:if>
+                <xsl:if test="count($w//tei:f[@name='informant'])&gt;0">&lt;span class="spTrans"&gt;Informant:&lt;/span&gt;&#160;<xsl:value-of select="string-join(distinct-values($w//tei:f[@name='informant']), ', ')"/>&lt;br/&gt;</xsl:if>
                 <xsl:if test="string-length($w/tei:fs/tei:f[@name='comment'])&gt;0">&lt;span class="spTrans"&gt;Note:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='comment']"/>&lt;br/&gt;</xsl:if>                                                        
             </xsl:attribute>
             
@@ -145,7 +145,7 @@ version="2.0">
     <span class="phr sample-text-tooltip sample-text-variant" data-toggle="tooltip" data-html="true" data-placement="top" href="#">
     <xsl:attribute name="title">
         <xsl:if test="$variants">&lt;span class="spTrans"&gt;Alternative form:&lt;/span&gt;&#160;<xsl:value-of select="$variants-value"/>&lt;br/&gt;</xsl:if>  
-        <xsl:if test="count($variants//tei:f[@name='informant'])&gt;0">&lt;span class="spTrans"&gt;Alternative form informant:&lt;/span&gt;&#160;<xsl:value-of select="string-join($variants/tei:f[@name='informant'], ', ')"/></xsl:if>
+        <xsl:if test="count($variants//tei:f[@name='informant'])&gt;0">&lt;span class="spTrans"&gt;Alternative form informant:&lt;/span&gt;&#160;<xsl:value-of select="string-join(distinct-values($variants//tei:f[@name='informant']), ', ')"/></xsl:if>
     </xsl:attribute>
     <xsl:for-each select="$choice/tei:seg[1]/*">
         <xsl:choose>
