@@ -382,8 +382,10 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
             var currentURL = window.location.toString();
 
             switch (panelType_) {
+                case 'crossSamplesForm':
+                case 'crossSamplesResult':
                 case 'biblQuery':
-                qry = query_.replace("&", "+");
+                qry = query_.replace(/&/g, "+").replace(/=/g, '|');
                 var argList = pID + "=[" + panelType_ + "," + qry + ",";
                 break;
 
@@ -427,6 +429,7 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
         var htmlCont = panelType_ + ": " + secLabel_;
     }
     $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass(cssClass).attr("data-pid", pID).addClass(cssClass).attr("data-snippetID", snippetID_).appendTo(".panels-wrap").append(resCont).find(".chrome-title").html(htmlCont);
+    return pID
 }
 
 function setExplanation(s_) {
@@ -1196,6 +1199,8 @@ function () {
         for (var i = 1; i < args.length; i++) {
             setTimeout(function (y) {
                 var pArgs = args[y].split('=');
+                                    console.log(pArgs)
+
 
                 var pID_ = pArgs[0];
                 pArgs = pArgs[1].replace(/((\[\s*)|(\s*\]))/g, "");
@@ -1207,10 +1212,17 @@ function () {
                     createNewQueryBiblioPanel(pID_, pVisiblity, true);
                 } else
 
-                if (queryFunc == 'crossSamplesResults') {
+                if (queryFunc == 'crossSamplesForm') {
                     var query = pArgs[1];
                     var pVisiblity = pArgs[2];
-                    createDisplayCrossSamplesPanel(pID_, pVisiblity, true);
+                    createDisplayCrossSamplesPanel(query, pID_, pVisiblity, true);
+//                    (query, pID_, pVisiblity, true);
+                } else
+                if (queryFunc == 'crossSamplesResult') {
+                    console.log(pArgs)
+                    var query = pArgs[1];
+                    var pVisiblity = pArgs[2];
+                    createCrossSamplesResultsPanel('', query, pID_, pVisiblity, true);
 //                    (query, pID_, pVisiblity, true);
                 } else
 

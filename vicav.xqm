@@ -285,7 +285,7 @@ function vicav:explore_samples(
     $highlight as xs:string*, 
     $xsltfn as xs:string) {
     
-    let $ss := if (not($sentences) or $sentences = 'any' or $sentences = 'all') then 
+    let $ss := if (empty($sentences) or $sentences = 'any' or $sentences = 'all') then 
             "any"
         else 
            $sentences
@@ -300,8 +300,7 @@ function vicav:explore_samples(
     let $person_q_sep := if ($person_q) then ' or ' else ''
 
     (: Word query :)
-    
-    let $word_sep := if (string($location) != "" and string($word) != "") then
+    let $word_sep := if (not(empty($location)) and not(string($location) = "") and not(empty($word)) and not(string($word) = "")) then
             ' and ' 
         else 
             '' 

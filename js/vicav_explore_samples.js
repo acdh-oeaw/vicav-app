@@ -13,14 +13,33 @@ oms.addListener('click', function(marker) {
     }
 });
 
-function createDisplayCrossSamplesPanel(pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
-    window.localStorage.setItem('crossSamples.samples', '')
-    window.localStorage.setItem('crossSamples.sentences', '')
+function createDisplayCrossSamplesPanel(query_, pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
+    var pID = appendPanel('', "crossSamplesForm", "", "grid-wrap", '', 'hasTeiLink', '', 'compare-samples', pID_, pVisiblity_, pURL_);
+    var $root = $('[data-pid=' + pID + ']');
+    $( 'div[data-pid=' + pID + '] .grid-wrap' ).load( "compare-samples.html form" , function() {
+        $('form.compare-samples', $root).submit(function(event) {
+            event.preventDefault();
+            formSubmit($root, function (result, query) {
+                if (result.includes('error type="user authentication"')) {
+                    alert('Error: authentication did not work');
+                } 
+                else {
+                    createCrossSamplesResultsPanel(result, query)
+                }
+            });
+        })
 
-    var searchContainer =
-    "<div class='dvCrossSamples' id='dvCrossSamples'><h2>Click on sample markers to add them. Reload the page to start again.</h2><div class='content'></div>";
-    appendPanel(searchContainer, "crossSamplesResults", "", "grid-wrap", '', 'hasTeiLink', '', '', pID_, pVisiblity_, pURL_);
-    //appendPanel(searchContainer, "crossSamplesResults", "", "grid-wrap", '', 'hasTeiLink', '', '');
+    });    
+}
+
+function createCrossSamplesResultsPanel(contents_ = '', query_ = '', pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
+    if (contents_ == '' && query_ != '') {
+        crossSamplesQuery(query_.replace(/\+/g, '&').replace(/\|/g, '='), function(result, query) {
+            return appendPanel(result, "crossSamplesResult", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-samples-result', '', pVisiblity_, pURL_);
+        })
+    } else if (contents_ !== '') {
+        return appendPanel(contents_, "crossSamplesResult", "", "grid-wrap", query_, 'hasTeiLink', '', 'compare-samples-result', '', pVisiblity_, pURL_);
+    }
 }
 
 function showExploreSamples(query_, sentences_, type_) {
