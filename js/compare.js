@@ -1,5 +1,9 @@
 var $root = $('[data-pid=1]');
 
+loadLocations($root);
+loadPersons($root);
+loadWords($root);
+
 var getParam = function(name) { 
   name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]"); 
   var regex = new RegExp("[\\?&]" + name + "=([^&#]*)", 'g'), match = regex.exec(window.location.search);

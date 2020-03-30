@@ -1465,6 +1465,10 @@ form.compare-samples fieldset > fieldset {
 form.compare-samples .sentences-wrapper > fieldset {
     display: inline-block;
 }
+.tagit-autocomplete,
+.ui-menu-item-wrapper {
+    z-index: 99999 !important;
+}
 
 [data-toggle = "tooltip"].sample-text-variant {
     background-color: rgba(165, 129, 3,0.5);

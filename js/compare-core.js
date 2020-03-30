@@ -59,109 +59,122 @@ var unique = function(array) {
   return newArray;
 }
 
+function loadWords($root) {
+  $.ajax({
+      url: "sample_words",
+      dataType: "xml",
+      success: function( xmlResponse ) {
+        var data = $( "word", xmlResponse ).map(function() {
+          if( $( this ).text() !== "") {
+            return {
+              value: $( this ).text(),
+              label: $(this).text()
+            };
+          }
+        }).get();
 
-$.ajax({
-    url: "sample_words",
-    dataType: "xml",
-    success: function( xmlResponse ) {
-      var data = $( "word", xmlResponse ).map(function() {
-        if( $( this ).text() !== "") {
-          return {
-            value: $( this ).text(),
-            label: $(this).text()
-          };
-        }
-      }).get();
+        data = Array.from(new Set(data.map(JSON.stringify))).map(JSON.parse);
 
-      data = Array.from(new Set(data.map(JSON.stringify))).map(JSON.parse);
+        $(".word", $root).tagit({
+            autocomplete: {
+              delay: 200, 
+              minLength: 2,       
+              source: function( request, response ) {
+                  var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
+                  response( $.grep( data, function( value ) {
+                    value = value.label || value.value || value;
 
-      $("[data-snippetid='compare-samples'] .word").tagit({
-          autocomplete: {
-            delay: 200, 
-            minLength: 2,       
-            source: function( request, response ) {
-                var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
-                response( $.grep( data, function( value ) {
-                  value = value.label || value.value || value;
+                    return matcher.test( value ) || matcher.test( normalize( value.toLowerCase() ) );
+                  }) );
+                }
+            },
+            allowSpaces: true,
+            placeholderText: 'Search words...'
+        });
+      }
+  });
+}
 
-                  return matcher.test( value ) || matcher.test( normalize( value.toLowerCase() ) );
-                }) );
-              }
-          },
-          allowSpaces: true,
-          placeholderText: 'Search words...'
-      });
-    }
-});
+function loadLocations($root) {
+  $.ajax({
+      url: "sample_locations",
+      dataType: "xml",
+      success: function( xmlResponse ) {
+        var data = $( "location", xmlResponse ).map(function() {
+          if( $( "name", this ).text() !== "") {
+            return {
+              value: $( "name", this ).text(),
+              label: $("label", this).text()
+            };
+          }
+        }).get();
 
-$.ajax({
-    url: "sample_locations",
-    dataType: "xml",
-    success: function( xmlResponse ) {
-      var data = $( "location", xmlResponse ).map(function() {
-        if( $( "name", this ).text() !== "") {
-          return {
-            value: $( "name", this ).text(),
-            label: $("label", this).text()
-          };
-        }
-      }).get();
+        data = Array.from(new Set(data.map(JSON.stringify))).map(JSON.parse);
 
-      data = Array.from(new Set(data.map(JSON.stringify))).map(JSON.parse);
+        $(".location", $root).tagit({
+            autocomplete: {
+              delay: 200, 
+              minLength: 1,       
+              source: function( request, response ) {
+                  var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
+                  response( $.grep( data, function( value ) {
+                    value = value.label || value.value || value;
 
-      $("[data-snippetid='compare-samples'] .location").tagit({
-          autocomplete: {
-            delay: 200, 
-            minLength: 1,       
-            source: function( request, response ) {
-                var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
-                response( $.grep( data, function( value ) {
-                  value = value.label || value.value || value;
-
-                  return matcher.test( value ) || matcher.test( normalize( value.toLowerCase() ) );
-                }) );
-              }
-          },
-          allowSpaces: true,
-          placeholderText: 'Seach place names...'
-      });
-    }
-});
+                    return matcher.test( value ) || matcher.test( normalize( value.toLowerCase() ) );
+                  }) );
+                }
+            },
+            allowSpaces: true,
+            placeholderText: 'Seach place names...'
+        });
+      }
+  });
+}
 // Init person widges
 
-$.ajax({
-    url: "sample_persons",
-    dataType: "xml",
-    success: function( xmlResponse ) {
-      var data = $( "person", xmlResponse ).map(function() {
-        if( $( this ).text() !== "") {
-          return {
-            value: $( this ).text(),
-            label: [$( this ).text(), $( this ).attr('sex'), $( this ).attr('age')].join('/') 
-          };
-        }
-      }).get();
+$(document).on('DOMNodeInserted', "[data-snippetid='compare-samples']", function(event) {
+  loadWords($(event.target))
+  loadLocations($(event.target))
 
-      // Uniques.
-      data = Array.from(new Set(data.map(JSON.stringify))).map(JSON.parse);
+  loadPersons($(event.target))
+})
 
-      $("[data-snippetid='compare-samples'] .person").tagit({
-          autocomplete: {
-            delay: 200, 
-            minLength: 1,       
-            source: function( request, response ) {
-                var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
-                response( $.grep( data, function( value ) {
-                  value = value.label || value.value || value;
-                  return matcher.test( value );
-                }) );
-              }
-          },
-          allowSpaces: true,
-          placeholderText: 'Search speaker IDs like Beja1...'
-      });
-    }
-});
+function loadPersons($root) {
+  $.ajax({
+      url: "sample_persons",
+      dataType: "xml",
+      success: function( xmlResponse ) {
+        var data = $( "person", xmlResponse ).map(function() {
+          if( $( this ).text() !== "") {
+            return {
+              value: $( this ).text(),
+              label: [$( this ).text(), $( this ).attr('sex'), $( this ).attr('age')].join('/') 
+            };
+          }
+        }).get();
+
+        // Uniques.
+        data = Array.from(new Set(data.map(JSON.stringify))).map(JSON.parse);
+
+        $(".person", $root).tagit({
+              autocomplete: {
+                delay: 200, 
+                minLength: 1,       
+                source: function( request, response ) {
+                    var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
+                    response( $.grep( data, function( value ) {
+                      value = value.label || value.value || value;
+                      return matcher.test( value );
+                    }) );
+                  }
+              },
+              allowSpaces: true,
+              placeholderText: 'Search speaker IDs like Beja1...'
+          });
+
+      }
+  });
+}
 
 
 function attachAgeSliderHandler($root) {
