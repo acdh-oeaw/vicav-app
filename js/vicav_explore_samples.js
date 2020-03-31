@@ -19,7 +19,7 @@ function createDisplayCrossSamplesPanel(query_, pID_ = '', pVisiblity_ = 'open',
         var $root = $('[data-pid=' + pID + ']');
         $('form.compare-samples', $root).submit(function(event) {
             event.preventDefault();
-            formSubmit($root, function (result, query) {
+            crossSamplesFormSubmit($root, function (result, query) {
                 if (result.includes('error type="user authentication"')) {
                     alert('Error: authentication did not work');
                 } 
@@ -33,12 +33,38 @@ function createDisplayCrossSamplesPanel(query_, pID_ = '', pVisiblity_ = 'open',
 }
 
 function createCrossSamplesResultsPanel(contents_ = '', query_ = '', pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
-    if (contents_ == '' && query_ != '') {
-        crossSamplesQuery(query_.replace(/\+/g, '&').replace(/\|/g, '='), function(result, query) {
-            return appendPanel(result, "crossSamplesResult", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-samples-result', '', pVisiblity_, pURL_);
+    var attachPagingHandlers = function(pID, query) {
+        var $root = $('[data-pid=' + pID + ']');
+
+        $root.on('click', 'a[data-sentence]', function(e) {
+            var sentence = $(e.target).attr('data-sentence');
+            e.preventDefault();
+            
+            if (query.match("sentences=")) {
+                query = query.replace(/sentences=[0-9]*/, 'sentences=' + sentence);
+            } else {
+                query = query + 'sentences=' + sentence
+            }
+            crossSamplesQuery(query, function(result) {
+                $('.grid-wrap > div', $root)[0].innerHTML = result;
+                var currentURL = decodeURI(window.location.toString());
+                var re = new RegExp("^(.*&" + pID + "=\\[.*?\\,.*)sentences|[0-9]*(.*\\])$")
+                var newUrl = currentURL.replace(re, '$1sentences=' + sentence + '$2')
+                window.history.replaceState({ }, "", newUrl);
+
+            })
+        })        
+    }
+        query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
+
+    if (contents_ == '' && query != '') {
+        crossSamplesQuery(query, function(result) {
+            var pID = appendPanel(result, "crossSamplesResult", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-samples-result', '', pVisiblity_, pURL_);
+            attachPagingHandlers(pID, query)
         })
     } else if (contents_ !== '') {
-        return appendPanel(contents_, "crossSamplesResult", "", "grid-wrap", query_, 'hasTeiLink', '', 'compare-samples-result', '', pVisiblity_, pURL_);
+        var pID = appendPanel(contents_, "crossSamplesResult", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-samples-result', '', pVisiblity_, pURL_);
+            attachPagingHandlers(pID, query)
     }
 }
 

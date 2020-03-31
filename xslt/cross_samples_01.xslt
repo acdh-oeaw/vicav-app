@@ -59,11 +59,11 @@
                     <xsl:variable name="sentence" select="."/>
                     <xsl:if test="count($root/items//item//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .) > 0]) > 0">
                         <xsl:if test="not($prev_sentence = '')">
-                            <a onclick="javascript:window.location.href = window.location.href.replace(/sentences=[0-9]*/, 'sentences='+ '{$prev_sentence}')" class="prev-link">Previous</a>
+                            <a href="#" data-sentence="{$prev_sentence}" class="prev-link">Previous</a>
                         </xsl:if>
                         <h3><xsl:value-of select="$sentence"/></h3>
                         <xsl:if test="not(empty($next_sentence))">
-                            <a onclick="javascript:window.location.href = window.location.href.replace(/sentences=[0-9]*/, 'sentences='+ '{$next_sentence}')" class="next-link">Next</a>
+                            <a href="#" data-sentence="{$next_sentence}" class="next-link">Next</a>
                         </xsl:if>
 
                         <xsl:for-each-group select="$root/items//item" group-by="(.//tei:region[1], 'unknown')[1]">

@@ -75,7 +75,7 @@ $(document).ready(function(event) {
 
   if (location || person || word){
     attachAgeSliderHandler($root)
-    formSubmit($root, function (result) {
+    crossSamplesFormSubmit($root, function (result) {
         if (result.includes('error type="user authentication"')) {
             alert('Error: authentication did not work');
         } 
@@ -85,6 +85,17 @@ $(document).ready(function(event) {
         }
     });
   }
+
+  $(document).on('click', 'a.prev-link', function(e) {
+    e.preventDefault();
+    $('input[name="sentences"]', $root)[0].value = $(e.target).attr('data-sentence');
+    $('form', $root).submit();
+  })
+  $(document).on('click', 'a.next-link', function(e) {
+    e.preventDefault()
+    $('input[name="sentences"]', $root)[0].value = $(e.target).attr('data-sentence');
+    $('form', $root).submit();
+  })
 });
 
 $("body").tooltip({
