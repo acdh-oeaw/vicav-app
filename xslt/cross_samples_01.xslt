@@ -11,6 +11,17 @@
     <xsl:template match="/">
         <xsl:variable name="all-sentences" select="distinct-values(/items//tei:s/@n)" />
         <xsl:variable name="selected-sentences" select="tokenize($filter-sentences, ',')" />
+        <xsl:variable name="prev_sentence">
+            <xsl:if test="count($selected-sentences) = 1 and number($selected-sentences[1]) > 1">
+                <xsl:value-of select="number($selected-sentences[1]) - 1"/>
+            </xsl:if>
+        </xsl:variable>
+        <xsl:variable name="next_sentence">
+            <xsl:if test="count($selected-sentences) = 1 and number($selected-sentences[1]) &lt; max($all-sentences)">
+                <xsl:value-of select="number($selected-sentences[1]) + 1"/>
+            </xsl:if>
+        </xsl:variable>
+
         <xsl:variable name="sentences-shown" select="if ($filter-sentences = 'any' or $filter-sentences = '') then $all-sentences else $selected-sentences"/>
         <xsl:variable name="root" select="."/>
         
@@ -47,11 +58,18 @@
                 <xsl:for-each select="$sentences-shown">
                     <xsl:variable name="sentence" select="."/>
                     <xsl:if test="count($root/items//item//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .) > 0]) > 0">
+                        <xsl:if test="not($prev_sentence = '')">
+                            <a onclick="javascript:window.location.href = window.location.href.replace(/sentences=[0-9]*/, 'sentences='+ '{$prev_sentence}')" class="prev-link">Previous</a>
+                        </xsl:if>
                         <h3><xsl:value-of select="$sentence"/></h3>
+                        <xsl:if test="not(empty($next_sentence))">
+                            <a onclick="javascript:window.location.href = window.location.href.replace(/sentences=[0-9]*/, 'sentences='+ '{$next_sentence}')" class="next-link">Next</a>
+                        </xsl:if>
 
                         <xsl:for-each-group select="$root/items//item" group-by="(.//tei:region[1], 'unknown')[1]">
                             <xsl:if test="count(current-group()//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .) > 0]) > 0">
                                 <h4><xsl:value-of select="current-grouping-key()"/></h4>
+                                
                                 <table class="tbFeatures">
                                     <xsl:for-each select="current-group()">
                                         <xsl:sort select="@city"/>

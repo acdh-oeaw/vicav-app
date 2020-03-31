@@ -285,8 +285,8 @@ function vicav:explore_samples(
     $highlight as xs:string*, 
     $xsltfn as xs:string) {
     
-    let $ss := if (empty($sentences) or $sentences = 'any' or $sentences = 'all') then 
-            "any"
+    let $ss := if (empty($sentences) or $sentences = '') then 
+            "1"
         else 
            $sentences
 
