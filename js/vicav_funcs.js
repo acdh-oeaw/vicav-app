@@ -259,7 +259,7 @@ function changeURLMapParameter(newParameter) {
     }
 }
 
-function changePanelVisibility(panel, type)   {
+function changePanelVisibility(panel, type, expand)   {
     var pID = panel.data('pid');
     var currentURL = window.location.toString();
     var args = currentURL.split('#');
@@ -274,7 +274,11 @@ function changePanelVisibility(panel, type)   {
                 panel.addClass('closed-panel');
             }
         } else {
-            var visState = 'open';
+            if (expand) {
+              var visState = 'expanded';
+            } else {
+              var visState = 'open';
+            }
             panel.removeClass('closed-panel');
             panel.addClass('open-panel');
         }
@@ -315,7 +319,10 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
     secLabel_ = secLabel_.replace(/%20/, ' ');
     contents_ = contents_.replace(/{query}/, query_);
 
+    console.log([contents_, panelType_, secLabel_, contClass_, query_, teiLink_, locType_, snippetID_, pID_, pVisiblity_, pURL_])
+
     $('.content-panel').each(function () {
+        if (pVisiblity_ != 'closed') $(this).removeClass('expanded-panel');
         var panelID = $(this).data('pid');
         if ($(this).hasClass("open-panel")) {
             openPans += 1;
@@ -1189,7 +1196,7 @@ function () {
         }
 
         // Parse the panels
-        //console.log('args: ' + args);
+        // console.log('args: ' + args);
         for (var i = 1; i < args.length; i++) {
             setTimeout(function (y) {
                 var pArgs = args[y].split('=');
@@ -1207,6 +1214,7 @@ function () {
                 if (queryFunc == 'biblQuery') {
                     var query = pArgs[1];
                     var pVisiblity = pArgs[2];
+                    var pVisiblity = pArgs[3];
                     execBiblQuery(query, pID_, pVisiblity, true);
                 } else
 
@@ -1631,6 +1639,17 @@ function () {
             var panel = $(this).parents(':eq(1)');
             changePanelVisibility(panel, 'maximize');
         }
+    });
+
+    $(document).on("click", '.chrome-expand', function () {
+        var panel = $(this).parents(':eq(1)');
+        $('.content-panel').each(function() {
+          var currentPanel = $(this);
+          currentPanel.removeClass('expanded-panel');
+          changePanelVisibility(currentPanel, 'minimize');
+        });
+        changePanelVisibility(panel, 'maximize', true);
+        panel.addClass('expanded-panel');
     });
 
     /* *******************************************************/

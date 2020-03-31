@@ -50,10 +50,14 @@ body .navbar ul.navbar-nav .navbar-icons a:hover{
 }
 
 .content-panel.closed-panel{
-    width: 25px;
+    flex-basis: 25px;
     background-color: rgb(168, 93, 143);
     height: 500px;
     overflow: hidden;
+}
+
+.content-panel.expanded-panel {
+    max-width: none;
 }
 
 .content-panel{
@@ -111,7 +115,9 @@ body .navbar ul.navbar-nav .navbar-icons a:hover{
 }
 
 .panel-chrome .fa{
-    color: rgb(168, 93, 143);
+    color: #fff;
+    font-size: 21px;
+    margin-left: 5px;
 }
 
 .panel-chrome .fa-circle{
