@@ -1440,7 +1440,7 @@ body.compare-samples-window {
     padding: 25px; 
 }
 
-body.compare-samples-window .show-sentence {
+.show-sentence {
     display: block;
     float: left;
     margin: 0 4px 0 2px;
@@ -1474,4 +1474,17 @@ form.compare-samples .sentences-wrapper > fieldset {
     background-color: rgba(165, 129, 3,0.5);
     color: white;
     padding: 0 2px;
+}
+.sentences-nav {
+    text-align: center;
+}
+
+.sentences-nav .prev-link {
+    float: left;
+}
+.sentences-nav .next-link {
+    float: right;
+}
+.sentences-nav input {
+    width: 50px;
 }

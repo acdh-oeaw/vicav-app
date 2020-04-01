@@ -428,7 +428,7 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
     } else {
         var htmlCont = panelType_ + ": " + secLabel_;
     }
-    $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass(cssClass).attr("data-pid", pID).addClass(cssClass).attr("data-snippetID", snippetID_).appendTo(".panels-wrap").append(resCont).find(".chrome-title").html(htmlCont);
+    $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass(cssClass).attr("data-pid", pID).addClass(cssClass).attr("data-query", query_).attr("data-snippetID", snippetID_).appendTo(".panels-wrap").append(resCont).find(".chrome-title").html(htmlCont);
     return pID
 }
 
@@ -1199,8 +1199,6 @@ function () {
         for (var i = 1; i < args.length; i++) {
             setTimeout(function (y) {
                 var pArgs = args[y].split('=');
-                                    console.log(pArgs)
-
 
                 var pID_ = pArgs[0];
                 pArgs = pArgs[1].replace(/((\[\s*)|(\s*\]))/g, "");
@@ -1219,7 +1217,6 @@ function () {
 //                    (query, pID_, pVisiblity, true);
                 } else
                 if (queryFunc == 'crossSamplesResult') {
-                    console.log(pArgs)
                     var query = pArgs[1];
                     var pVisiblity = pArgs[2];
                     createCrossSamplesResultsPanel('', query, pID_, pVisiblity, true);

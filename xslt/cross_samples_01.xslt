@@ -48,22 +48,34 @@
             <div>
                 <table class="tbHeader">
                     <tr><td>
-                        <h2 xml:space="preserve">Compare samples: <i>
-                            <xsl:value-of select="string-join(distinct-values(./items//item/@city), ', ')"/></i></h2></td>
+                        <h2 xml:space="preserve">Compare samples</h2></td>
                     </tr>
+                    <tr><td><i>
+                            <xsl:value-of select="string-join(distinct-values(./items//item/@city), ', ')"/></i>
+                    </td></tr>
                 </table>    
                                 
                 <p xml:space="preserve"><xsl:value-of select="count($filtered-by-word/*)"/> sentences found.</p>
 
+                <div class="sentences-nav">
+                    <xsl:if test="not($prev_sentence = '')">
+                        <a href="#" data-sentence="{$prev_sentence}" class="prev-link"><i class="fa fa-chevron-left"/> Previous</a>
+                    </xsl:if>
+                    <xsl:if test="not($next_sentence = '')">
+                        <a href="#" data-sentence="{$next_sentence}" class="next-link">Next <i class="fa fa-chevron-right"></i></a>
+                    </xsl:if>
+                    <input name="sentences">
+                        <xsl:attribute name="value"><xsl:value-of select="string-join($selected-sentences, ',')"/></xsl:attribute>
+                        / <xsl:value-of select="max($all-sentences)"/>
+                    </input>
+                </div>
+
+
                 <xsl:for-each select="$sentences-shown">
                     <xsl:variable name="sentence" select="."/>
                     <xsl:if test="count($root/items//item//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .) > 0]) > 0">
-                        <xsl:if test="not($prev_sentence = '')">
-                            <a href="#" data-sentence="{$prev_sentence}" class="prev-link">Previous</a>
-                        </xsl:if>
-                        <h3><xsl:value-of select="$sentence"/></h3>
-                        <xsl:if test="not(empty($next_sentence))">
-                            <a href="#" data-sentence="{$next_sentence}" class="next-link">Next</a>
+                        <xsl:if test="count($selected-sentences) > 1">
+                            <h3><xsl:value-of select="$sentence"/></h3>
                         </xsl:if>
 
                         <xsl:for-each-group select="$root/items//item" group-by="(.//tei:region[1], 'unknown')[1]">

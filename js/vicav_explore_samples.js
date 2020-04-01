@@ -36,23 +36,32 @@ function createCrossSamplesResultsPanel(contents_ = '', query_ = '', pID_ = '', 
     var attachPagingHandlers = function(pID, query) {
         var $root = $('[data-pid=' + pID + ']');
 
-        $root.on('click', 'a[data-sentence]', function(e) {
-            var sentence = $(e.target).attr('data-sentence');
-            e.preventDefault();
-            
-            if (query.match("sentences=")) {
-                query = query.replace(/sentences=[0-9]*/, 'sentences=' + sentence);
+        function changeSentence(sentence) {
+            var query = $root.attr('data-query').replace(/\+/g, '&').replace(/\|/g, '=')
+            if (query.match(/sentences=/)) {
+                query = query.replace(/sentences=[0-9]*/, 'sentences=' + encodeURIComponent(sentence));
             } else {
-                query = query + 'sentences=' + sentence
+                query = query + 'sentences=' + encodeURIComponent(sentence)
             }
             crossSamplesQuery(query, function(result) {
-                $('.grid-wrap > div', $root)[0].innerHTML = result;
+                $('.grid-wrap > div', $root).html(result);
                 var currentURL = decodeURI(window.location.toString());
                 var re = new RegExp("^(.*&" + pID + "=\\[.*?\\,.*)sentences|[0-9]*(.*\\])$")
-                var newUrl = currentURL.replace(re, '$1sentences=' + sentence + '$2')
+                var newUrl = currentURL.replace(re, '$1sentences|' + sentence + '$2')
                 window.history.replaceState({ }, "", newUrl);
-
             })
+        }
+
+        $root.on('change', '[name=sentences]', function(e) {
+            var sentence = $(e.target)[0].value.split(/,\s*/).join(',');
+            e.preventDefault();
+            changeSentence(sentence);
+        })
+
+        $root.on('click', 'a[data-sentence]', function(e) {
+            e.preventDefault();
+            var sentence = $(e.target).attr('data-sentence');
+            changeSentence(sentence);
         })        
     }
         query = query_.replace(/\+/g, '&').replace(/\|/g, '=')

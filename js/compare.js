@@ -80,7 +80,6 @@ $(document).ready(function(event) {
             alert('Error: authentication did not work');
         } 
         else {
-          console.log($('form', $root)[0])
           $($('form', $root)[0]).siblings('.results').html(result);
         }
     });
