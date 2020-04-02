@@ -1435,11 +1435,6 @@ a.word-search {
     color: inherit;
 }
 
-body.compare-samples-window {
-    padding-top: 0;
-    padding: 25px; 
-}
-
 .show-sentence {
     display: block;
     float: left;
