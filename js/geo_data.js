@@ -69,8 +69,8 @@ function insertFeatureMarkers() {
                 //fgFeatureMarkers.addLayer(L.marker([33.51, 36.29], {  alt: 'Damascus', id: 'ling_features_damascus' }).bindTooltip('Damascus'));
             });
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
     
@@ -173,8 +173,8 @@ function insertProfileMarkers() {
                 fgProfileMarkers.addLayer(L.marker([v1, v2], { alt: sAlt, id: sID }).bindTooltip(sTooltip));
             });
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
     
@@ -304,8 +304,8 @@ function insertGeoRegMarkers(query_, scope_) {
                 }
             });
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
     
