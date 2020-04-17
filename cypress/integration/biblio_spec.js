@@ -14,7 +14,7 @@ describe('Regional bibliography', function() {
 	    cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,.*,reg]')
 	    cy.get('path.leaflet-interactive') // Wait until the initial markers appear.
 
-	    cy.get('path[d="M304.4000000000001,209.16999788329076a11,11 0 1,0 22,0 a11,11 0 1,0 -22,0 "]')
+	    cy.get('path[data-testid="reg_Tunisia"]')
 	    	.scrollIntoView()
 	    	.trigger('mouseover', {force: true})
 	    	.then(function (el) {
@@ -31,7 +31,7 @@ describe('Dictionaries bibliography', function() {
 	    cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,vt:dictionary,geo_reg]')
 	    cy.get('path.leaflet-interactive') // Wait until the initial markers appear.
 
-	    cy.get('path[d="M304.4000000000001,209.16999788329076a11,11 0 1,0 22,0 a11,11 0 1,0 -22,0 "]')
+	    cy.get('path[data-testid="reg_Tunisia"]')
 	    	.scrollIntoView()
 	    	.trigger('mouseover', {force: true})
 	    	.then(function (el) {
@@ -41,7 +41,7 @@ describe('Dictionaries bibliography', function() {
 		    cy.get('.dvBibBook')
 		})
 
-	    cy.get('img[alt^="Douz"]').click({force: true}).then(el => {
+	    cy.get('img[data-testid="geo_Douz"]').click({force: true}).then(el => {
 		    cy.contains('geo:Douz,vt:dictionary')
 	    })
     })
@@ -53,7 +53,7 @@ describe('Textbooks bibliography', function() {
 	    cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,vt:textbook,geo_reg]')
 	    cy.get('path.leaflet-interactive') // Wait until the initial markers appear.
 
-	    cy.get('path[d="M304.4000000000001,209.16999788329076a11,11 0 1,0 22,0 a11,11 0 1,0 -22,0 "]')
+	    cy.get('path[data-testid="reg_Tunisia"]')
 	    	.scrollIntoView()
 	    	.trigger('mouseover', {force: true})
 	    	.then(function (el) {
