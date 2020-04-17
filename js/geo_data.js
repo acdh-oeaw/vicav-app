@@ -69,8 +69,8 @@ function insertFeatureMarkers() {
                 //fgFeatureMarkers.addLayer(L.marker([33.51, 36.29], {  alt: 'Damascus', id: 'ling_features_damascus' }).bindTooltip('Damascus'));
             });
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
     
@@ -173,8 +173,8 @@ function insertProfileMarkers() {
                 fgProfileMarkers.addLayer(L.marker([v1, v2], { alt: sAlt, id: sID }).bindTooltip(sTooltip));
             });
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
     
@@ -296,16 +296,20 @@ function insertGeoRegMarkers(query_, scope_) {
                 
                 if ($(this).attr('type') == 'geo') {
                     sQuery = 'geo:' + sAlt + sQuerySecPart;
-                    fgBiblMarkers.addLayer(L.marker([v1, v2], { alt: sAlt, locType: 'point', biblQuery: sQuery }).bindTooltip(sTooltip));
+                    var marker = L.marker([v1, v2], { alt: sAlt, locType: 'point', biblQuery: sQuery }).bindTooltip(sTooltip);
+                    fgBiblMarkers.addLayer(marker);
+                    $(marker._icon).attr('data-testid', 'geo_'+sAlt);
                 }
                 if ($(this).attr('type') == 'reg') {
                     sQuery = 'reg:' + sAlt + sQuerySecPart;
-                    fgBiblMarkers.addLayer(L.circle([v1, v2], { color: 'rgb(168, 93, 143)', weight: 1, fillColor: 'rgb(168, 93, 143)', radius: 90000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip));
+                    var circle = L.circle([v1, v2], { color: 'rgb(168, 93, 143)', weight: 1, fillColor: 'rgb(168, 93, 143)', radius: 90000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip);
+                    fgBiblMarkers.addLayer(circle);
+                    $(circle._path).attr('data-testid', 'reg_'+sAlt);
                 }
             });
         },
-        error: function (error) {
-            alert('Error: ' + error);
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
         }
     });
     
