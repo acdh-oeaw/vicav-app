@@ -69,10 +69,6 @@ $(document).ready(function(event) {
     $('[type=text][name="sentences"]', $root)[0].value = ''
   });
 
-
-  $('.display-age', $root).text( $('[name="age"]', $root)[0].value.split(',').join(' - '))
-  $('[name="age"]', $root).hide();
-
   if (location || person || word){
     attachAgeSliderHandler($root)
     crossSamplesFormSubmit($root, function (result) {

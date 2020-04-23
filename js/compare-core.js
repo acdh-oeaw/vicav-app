@@ -135,8 +135,8 @@ function loadLocations($root) {
 $(document).on('DOMNodeInserted', "[data-snippetid='compare-samples']", function(event) {
 	loadWords($(event.target))
 	loadLocations($(event.target))
-
 	loadPersons($(event.target))
+	attachAgeSliderHandler($(event.target))
 })
 
 function loadPersons($root) {
@@ -189,6 +189,9 @@ function attachAgeSliderHandler($root) {
 			$('.display-age', $root).text( $('[name="age"]', $root)[0].value.split(',').join(' - '))
 		}
 	});
+
+	$('.display-age', $root).text( $('[name="age"]', $root)[0].value.split(',').join(' - '))
+	$('[name="age"]', $root).hide();
 }
 
 function crossSamplesQuery(query, success_callback) {
