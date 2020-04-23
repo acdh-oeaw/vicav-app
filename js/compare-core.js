@@ -78,7 +78,7 @@ function loadWords($root) {
 			$(".word", $root).tagit({
 				autocomplete: {
 					delay: 200, 
-					minLength: 2,       
+					minLength: 1,       
 					source: function( request, response ) {
 						var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
 						response( $.grep( data, function( value ) {
