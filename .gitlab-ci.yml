@@ -52,6 +52,7 @@ run_tests:
      GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
      HOME: /home/gitlab-runner
   script:
+    - $GIT_CLONE_PATH/scripts/run-unit-tests.sh
     - $(npm bin)/cypress run
 
   artifacts:

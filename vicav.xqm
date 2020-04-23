@@ -261,6 +261,30 @@ function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn
         $sHTML
 };
 
+declare function vicav:query_clause($name as xs:string, $args as xs:string+) as xs:string {
+    let $filtered := for $a in $args
+                        return if ($a) then $a 
+                    else 
+                        ()
+    let $left := if (count($filtered) > 1) then '(' else ''
+    let $right := if (count($filtered) > 1) then ')' else ''
+
+    let $out := $left || string-join($filtered, ' ' || $name || ' ') || $right
+    return $out
+};  
+
+declare function vicav:or($args as xs:string+) as xs:string {
+    let $out := vicav:query_clause('or', $args)
+    return $out
+};  
+
+
+declare function vicav:and($args as xs:string+) as xs:string {
+    let $out := vicav:query_clause('and', $args)
+    return $out
+};  
+
+
 declare
 %rest:path("vicav/explore_samples")
 %rest:query-param("location", "{$location}")
@@ -297,38 +321,27 @@ function vicav:explore_samples(
         '(.//tei:person/text() = ['|| string-join($ps, ',') ||'])'
         else ''
 
-    let $person_q_sep := if ($person_q) then ' or ' else ''
-
-    (: Word query :)
-    let $word_sep := if (not(empty($location)) and not(string($location) = "") and not(empty($word)) and not(string($word) = "")) then
-            ' and ' 
-        else 
-            '' 
-
-
     let $word_qs := for $w in tokenize($word, ',')
             let $match_str := if (contains($w, '*')) then
                 '[matches(.,"(^|\W)' || replace($w, '\*', '.*') || '($|\W)")][1]'
                 else 
                 '[contains-token(.,"' || $w || '")][1]'
             return 
-                '(.//tei:w' || $match_str || ' or .//tei:f' || $match_str || ' or .//tei:phr' || $match_str || ')'
+                vicav:or(('.//tei:w' || $match_str, './/tei:f' || $match_str, './/tei:phr' || $match_str))
 
-    let $word_q := if (not(empty($word_qs))) then
-        $word_sep || '(' || string-join($word_qs, ' or ') || ')'
-        else ''
+    let $word_q := vicav:or($word_qs)
 
-     (: Age query :)
     let $age_bounds := if ($age) then
             for $a in tokenize($age, ',')
             order by number($a)
             return $a
         else ()
 
-    let $age_sep := if (string($word) != "" or string($location) != "") then " and " else ""
-
     let $age_q := if (not(empty($age_bounds)) and ($age_bounds[2] != "100" or $age_bounds[1] != "0")) then 
-        $age_sep || '(.//tei:person/@age > ' || min($age_bounds) || ') and (.//tei:person/@age < ' || max($age_bounds) || ')'
+        vicav:and((
+            '(.//tei:person/@age > ' || min($age_bounds) || ')',
+            ' (.//tei:person/@age < ' || max($age_bounds) || ')'
+        ))
         else ''
 
     let $sex_qqs := if (not(empty($sex))) then
@@ -337,30 +350,28 @@ function vicav:explore_samples(
         else ()
 
     let $sex_q := if (not(empty($sex_qqs))) then
-        ' and (.//tei:person/@sex = [' || string-join($sex_qqs, ',') || '])'
+        ' (.//tei:person/@sex = [' || string-join($sex_qqs, ',') || '])'
         else ''
-
-    let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     
     let $loc_qs := for $id in tokenize($location, ',')
             return "'" || $id || "'" 
 
     let $location_q := if(not(empty($loc_qs))) then 
-        '(.//tei:name/text() = [' || string-join($loc_qs, ',') || '] ' || 
-        ' or .//tei:settlement/text() = [' || string-join($loc_qs, ',') || ']'||        
-        ' or .//tei:region/text() = [' || string-join($loc_qs, ',') || ']'||        
-        ' or .//tei:country/text() = [' || string-join($loc_qs, ',') || ']'||
-        ')'
+        vicav:or((
+            './/tei:name/text() = [' || string-join($loc_qs, ',') || ']',  
+            './/tei:settlement/text() = [' || string-join($loc_qs, ',') || ']', 
+            './/tei:region/text() = [' || string-join($loc_qs, ',') || ']',        
+            './/tei:country/text() = [' || string-join($loc_qs, ',') || ']'
+        ))
     else
         ""
 
-    let $final_query := if ($person_q != "" and not($location_q or $word_q or $age_q or $sex_q)) then
-        'collection("vicav_samples")//tei:TEI[' || $person_q || ']'
-        else 
-            'collection("vicav_samples")//tei:TEI[' || $person_q || $person_q_sep || 
-                '(' || $location_q || $word_q  || $age_q || $sex_q || ')]'
+    let $loc_word_age_sex_q := vicav:and(($person_q, $location_q, $age_q, $sex_q))
 
-    let $query := $ns || $final_query    
+    let $full_tei_query := vicav:or(($person_q, $loc_word_age_sex_q))
+
+    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("vicav_samples")//tei:TEI[' 
+        || $full_tei_query || ']'
     let $results := xquery:eval($query)
 
     let $ress := 
