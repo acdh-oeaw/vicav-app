@@ -66,8 +66,7 @@
                     </xsl:if>
                     <input name="sentences">
                         <xsl:attribute name="value"><xsl:value-of select="string-join($selected-sentences, ',')"/></xsl:attribute>
-                        / <xsl:value-of select="max($all-sentences)"/>
-                    </input>
+                    </input> / <xsl:value-of select="max($all-sentences)"/>
                 </div>
 
 
@@ -88,8 +87,7 @@
                                         <xsl:if test="count(.//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .) > 0]) > 0">
                                         <tr>
                                             <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/>
-                                            <small xml:space="preserve">
-                                            <xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)</xsl:if></small>
+                                            <small xml:space="preserve"><xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)</xsl:if></small>
                                         </td>
                                             <td class="tdFeaturesRightTarget">
                                                 <a class="show-sentence" title="Show full sample text">

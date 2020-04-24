@@ -9,17 +9,17 @@ declare %updating %unit:before-module function test:before-all-tests() {
 
 
 declare %updating %unit:before-module function test:before-all-test() {
-  (:file:write-text(
-    file:parent(static-base-uri()) ||'fixtures/explore-samples-gender-age-only.xml', 
+  file:write-text(
+    file:parent(static-base-uri()) ||'fixtures/explore-samples-word.xml', 
     vicav:explore_samples(
-      (), 
-      (),
+      "", 
+      'ṯūm,b*tin*',
       (), 
       (), 
       "0,100", 
       "m,f", 
       (), 
-      "cross_samples_01.xslt")):)
+      "cross_samples_01.xslt"))
 };
   
 (:~ Initializing function, which is called once after all tests. :)
