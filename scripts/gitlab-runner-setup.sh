@@ -16,7 +16,6 @@ echo "<commands>
 	<create-db name='vicav_corpus'>${CI_BUILDS_DIR}/vicav_content/vicav_corpus</create-db>
 	<create-db name='vicav_lingfeatures'>${CI_BUILDS_DIR}/vicav_content/vicav_lingfeatures</create-db>
 	<create-db name='vicav_profiles'>${CI_BUILDS_DIR}/vicav_content/vicav_profiles</create-db>
-	<create-db name='vicav_samples'>${CI_BUILDS_DIR}/vicav_content/vicav_samples</create-db>
 	<create-db name='vicav_texts'>${CI_BUILDS_DIR}/vicav_content/vicav_texts</create-db>
 	<create-db name='vicav_biblio'>${CI_BUILDS_DIR}/vicav_content/vicav_biblio</create-db>
 </commands>" > deploy-vicav.bxs
