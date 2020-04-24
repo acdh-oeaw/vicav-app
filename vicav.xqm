@@ -284,22 +284,7 @@ declare function vicav:and($args as xs:string+) as xs:string {
     return $out
 };  
 
-
-declare
-%rest:path("vicav/explore_samples")
-%rest:query-param("location", "{$location}")
-%rest:query-param("xslt", "{$xsltfn}")
-%rest:query-param("word", "{$word}")
-%rest:query-param("sentences", "{$sentences}")
-%rest:query-param("highlight", "{$highlight}")
-%rest:query-param("person", "{$person}")
-%rest:query-param("age", "{$age}")
-%rest:query-param("sex", "{$sex}")
-
-
-%rest:GET
-
-function vicav:explore_samples(
+declare function vicav:explore-samples-data(
     $location as xs:string*, 
     $word as xs:string*,
     $sentences as xs:string*, 
@@ -307,12 +292,9 @@ function vicav:explore_samples(
     $age as xs:string*, 
     $sex as xs:string*, 
     $highlight as xs:string*, 
-    $xsltfn as xs:string) {
-    
-    let $ss := if (empty($sentences) or $sentences = '') then 
-            "1"
-        else 
-           $sentences
+    $xsltfn as xs:string
+) as element() {
+   
 
     let $ps := for $p in tokenize($person, ',')
             return "'" || $p || "'" 
@@ -384,6 +366,48 @@ function vicav:explore_samples(
         return
            <item city="{$city}" informant="{$informant}" age="{$age}" sex="{$sex}">{$item}</item>
     let $ress1 := <items>{$ress}</items>
+    return $ress1    
+};
+
+
+declare
+%rest:path("vicav/explore_samples")
+%rest:query-param("location", "{$location}")
+%rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("word", "{$word}")
+%rest:query-param("sentences", "{$sentences}")
+%rest:query-param("highlight", "{$highlight}")
+%rest:query-param("person", "{$person}")
+%rest:query-param("age", "{$age}")
+%rest:query-param("sex", "{$sex}")
+
+
+%rest:GET
+
+function vicav:explore_samples(
+    $location as xs:string*, 
+    $word as xs:string*,
+    $sentences as xs:string*, 
+    $person as xs:string*, 
+    $age as xs:string*, 
+    $sex as xs:string*, 
+    $highlight as xs:string*, 
+    $xsltfn as xs:string) {
+    let $ss := if (empty($sentences) or $sentences = '') then 
+            "1"
+        else 
+           $sentences
+
+    let $ress1 := vicav:explore-samples-data(
+        $location, 
+        $word,
+        $sentences, 
+        $person, 
+        $age, 
+        $sex, 
+        $highlight, 
+        $xsltfn
+    ) 
 
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)

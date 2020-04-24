@@ -6,20 +6,19 @@ declare %updating %unit:before-module function test:before-all-tests() {
   db:create('vicav_samples', file:parent(static-base-uri()) || '/../cypress/fixtures/vicav_samples/sampletexts.xml')
 };
 
-
-
 declare %updating %unit:before-module function test:before-all-test() {
-  file:write-text(
-    file:parent(static-base-uri()) ||'fixtures/explore-samples-word.xml', 
-    vicav:explore_samples(
-      "", 
-      'ṯūm,b*tin*',
+  (:file:write-text(
+    file:parent(static-base-uri()) ||'../fixtures/explore-samples-locations-data.xml', 
+    serialize(vicav:explore-samples-data(
+      "Tunis2,Test", 
+      (),
       (), 
       (), 
       "0,100", 
       "m,f", 
       (), 
       "cross_samples_01.xslt"))
+  ):)
 };
   
 (:~ Initializing function, which is called once after all tests. :)
@@ -57,7 +56,7 @@ declare %unit:test function test:explore-samples-locations() {
     "0,100", 
     "m,f", 
     "", 
-    "cross_samples_01.xslt"), file:read-text(file:parent(static-base-uri()) || 'fixtures/explore-samples-locations.xml'))
+    "cross_samples_01.xslt"), file:read-text(file:parent(static-base-uri()) || '../fixtures/explore-samples-locations.xml'))
 };
 
 declare %unit:test function test:explore-samples-word() {
@@ -69,7 +68,7 @@ declare %unit:test function test:explore-samples-word() {
     "", 
     "m,f", 
     "", 
-    "cross_samples_01.xslt"), file:read-text(file:parent(static-base-uri()) || 'fixtures/explore-samples-word.xml'))
+    "cross_samples_01.xslt"), file:read-text(file:parent(static-base-uri()) || '../fixtures/explore-samples-word.xml'))
 };
 
 declare %unit:test function test:explore-samples-gender-age-only() {
@@ -81,5 +80,5 @@ declare %unit:test function test:explore-samples-gender-age-only() {
       "0,100", 
       "m,f", 
       (), 
-      "cross_samples_01.xslt"), file:read-text(file:parent(static-base-uri()) || 'fixtures/explore-samples-gender-age-only.xml'))
+      "cross_samples_01.xslt"), file:read-text(file:parent(static-base-uri()) || '../fixtures/explore-samples-gender-age-only.xml'))
 };
