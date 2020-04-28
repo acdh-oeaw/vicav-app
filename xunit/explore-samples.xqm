@@ -48,7 +48,7 @@ declare %unit:test function test:or() {
 };
 
 declare %unit:test function test:explore-samples-locations() {
-  unit:assert-equals(vicav:explore_samples(
+ unit:assert-equals(serialize(vicav:explore-samples-data(
     "Tunis2,Test", 
     "",
     "", 
@@ -56,11 +56,11 @@ declare %unit:test function test:explore-samples-locations() {
     "0,100", 
     "m,f", 
     "", 
-    "cross_samples_01.xslt"), file:read-text(file:parent(static-base-uri()) || '../fixtures/explore-samples-locations.xml'))
+    "cross_samples_01.xslt")), serialize(doc(file:parent(static-base-uri()) || '../fixtures/explore-samples-locations-data.xml'))
+  )
 };
-
 declare %unit:test function test:explore-samples-word() {
-  unit:assert-equals(vicav:explore_samples(
+  unit:assert-equals(serialize(vicav:explore-samples-data(
     "", 
     "ṯūm,b*tin*",
     "", 
@@ -68,11 +68,12 @@ declare %unit:test function test:explore-samples-word() {
     "", 
     "m,f", 
     "", 
-    "cross_samples_01.xslt"), file:read-text(file:parent(static-base-uri()) || '../fixtures/explore-samples-word.xml'))
+    "cross_samples_01.xslt")), serialize(doc(file:parent(static-base-uri()) || '../fixtures/explore-samples-word-data.xml'))
+  )
 };
 
 declare %unit:test function test:explore-samples-gender-age-only() {
-  unit:assert-equals( vicav:explore_samples(
+  unit:assert-equals( serialize(vicav:explore-samples-data(
       (), 
       (),
       (), 
@@ -80,5 +81,6 @@ declare %unit:test function test:explore-samples-gender-age-only() {
       "0,100", 
       "m,f", 
       (), 
-      "cross_samples_01.xslt"), file:read-text(file:parent(static-base-uri()) || '../fixtures/explore-samples-gender-age-only.xml'))
+      "cross_samples_01.xslt")), serialize(doc(file:parent(static-base-uri()) || '../fixtures/explore-samples-gender-age-only-data.xml'))
+  )
 };
