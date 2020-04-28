@@ -8,14 +8,14 @@ declare %updating %unit:before-module function test:before-all-tests() {
 
 declare %updating %unit:before-module function test:before-all-test() {
   (:file:write-text(
-    file:parent(static-base-uri()) ||'../fixtures/explore-samples-locations-data.xml', 
+    file:parent(static-base-uri()) ||'../fixtures/explore-samples-word-data.xml', 
     serialize(vicav:explore-samples-data(
-      "Tunis2,Test", 
-      (),
+      (), 
+      "ṯūm,b*tin*",
       (), 
       (), 
       "0,100", 
-      "m,f", 
+      (), 
       (), 
       "cross_samples_01.xslt"))
   ):)
@@ -66,7 +66,7 @@ declare %unit:test function test:explore-samples-word() {
     "", 
     "", 
     "", 
-    "m,f", 
+    "", 
     "", 
     "cross_samples_01.xslt")), serialize(doc(file:parent(static-base-uri()) || '../fixtures/explore-samples-word-data.xml'))
   )

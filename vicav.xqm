@@ -303,7 +303,7 @@ declare function vicav:explore-samples-data(
         '(.//tei:person/text() = ['|| string-join($ps, ',') ||'])'
         else ''
 
-    let $word_qs := for $w in tokenize($word, ',')
+    let $word_q := for $w in tokenize($word, ',')
             let $match_str := if (contains($w, '*')) then
                 '[matches(.,"(^|\W)' || replace($w, '\*', '.*') || '($|\W)")][1]'
                 else 
@@ -311,8 +311,7 @@ declare function vicav:explore-samples-data(
             return 
                 vicav:or(('.//tei:w' || $match_str, './/tei:f' || $match_str, './/tei:phr' || $match_str))
 
-    let $word_q := vicav:or($word_qs)
-
+    
     let $age_bounds := if ($age) then
             for $a in tokenize($age, ',')
             order by number($a)
@@ -348,7 +347,7 @@ declare function vicav:explore-samples-data(
     else
         ""
 
-    let $loc_word_age_sex_q := vicav:and(($person_q, $location_q, $age_q, $sex_q))
+    let $loc_word_age_sex_q := vicav:and(($location_q, $word_q, $age_q, $sex_q))
 
     let $full_tei_query := vicav:or(($person_q, $loc_word_age_sex_q))
 
