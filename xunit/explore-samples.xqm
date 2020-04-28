@@ -54,7 +54,7 @@ declare %unit:test function test:explore-samples-locations() {
     "", 
     "", 
     "0,100", 
-    "m,f", 
+    "", 
     "", 
     "cross_samples_01.xslt")), serialize(doc(file:parent(static-base-uri()) || '../fixtures/explore-samples-locations-data.xml'))
   )

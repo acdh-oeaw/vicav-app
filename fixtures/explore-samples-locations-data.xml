@@ -1,4 +1,1688 @@
 <items>
+  <item city="Tunis2" informant="" age="" sex="">
+    <TEI xmlns="http://www.tei-c.org/ns/1.0" xml:id="tunis2_sample_01">
+      <teiHeader>
+         <fileDesc>
+            <titleStmt>
+               <title>Short sample text of Tunis2 Arabic</title>
+               <author>Ines Dallaji</author>
+            </titleStmt>
+            <publicationStmt>
+               <publisher>ACDH-OeAW</publisher>
+               <pubPlace>Vienna</pubPlace>
+               <date>2018-03-21</date>
+               <availability status="restricted">
+                  <p>
+                     <ref type="license" target="http://creativecommons.org/licenses/by-nc-sa/3.0/"/>
+                  </p>
+               </availability>
+            </publicationStmt>
+            <sourceDesc>
+               <p>This is an original digital text</p>
+            </sourceDesc>
+         </fileDesc>
+      </teiHeader>
+      <text>
+         <body>
+            <head xml:space="preserve">Short sample text of <name xml:lang="eng">Tunis2</name> Arabic</head>
+            <div type="positioning">
+               <p>
+                  <geo>36.81, 10.19</geo>
+               </p>
+            </div>
+            <div type="sampleText">
+               <p>
+                  <s n="1">
+                     <w>
+                        <fs>
+                           <f name="wordform">nhāṛ</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">li</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">ṯnīn</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">baʕd</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">il</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">fažr</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">əmšīt</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">l</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">is</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">sūq</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">bāš</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">nišri</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">ʕ9am</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">w</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">xu9ṛa</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">kīma</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">bītinžāl</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">w</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">ṯūm</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">.</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                  </s>
+                  <s n="2">
+                     <w>
+                        <fs>
+                           <f name="wordform">šrīt</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">zūz</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">kīlu</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">buṛdgāna</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">b</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">dīnāṛ</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">zāda</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">.</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                  </s>
+                  <s n="3">
+                     <w>
+                        <fs>
+                           <f name="wordform">mā</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">xḏīt</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">š</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">ṭmāṭim</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">cla</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">xāṭir</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">kānit</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">ġālya</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">baṛša</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">.</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                  </s>
+                  <s n="4">
+                     <w>
+                        <fs>
+                           <f name="wordform">tʕaddīt</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">baḥḏa</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">xūya</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">li</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">kbīr</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">,</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">baʕd</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">xḏīt</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">tāksi</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">w</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">rawwaḥt</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">li</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">d</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">dāṛ</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">qbal</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">nuṣṣ</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">in</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">nhāṛ</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">.</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                  </s>
+                  <s n="5">
+                     <w>
+                        <fs>
+                           <f name="wordform">baʕd</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">šwayya</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">žāu</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">z</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">zġāṛ</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">m</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">il</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">maktab</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">w</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">klīna</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">xubz</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">w</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">lūbya</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">.</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                  </s>
+                  <s n="6">
+                     <w>
+                        <fs>
+                           <f name="wordform">baʕd</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">li</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">fṭūr</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">shalthum</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">:</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">„āš</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">bāš</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">taʕmlu</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">f</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">il</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">līl</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">?</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">“</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                  </s>
+                  <s n="7">
+                     <w>
+                        <fs>
+                           <f name="wordform">qālūli</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">:</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">„il</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">yūm</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">bāš</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">nuquʕdu</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">fi</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">d</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">dāṛ</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">,</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform"/>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">āma/amma/lākin</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">ġudwa</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">nḥibbu</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">nqāblu</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">ṣḥābna</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">.</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                  </s>
+                  <s n="8">
+                     <w>
+                        <fs>
+                           <f name="wordform">bāš</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">nimšīu</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">mʕāhum</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">il</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">wild</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">ʕammna</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">lli</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">yuskun</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">f</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">ir</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">Ryāna</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">.</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                  </s>
+                  <s n="9">
+                     <w>
+                        <fs>
+                           <f name="wordform">ġādi</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">bāš</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">nušuṛbu</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">qahwa</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">w</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">naḥkīu</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">šwayya</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">.“</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                  </s>
+                  <s n="10">
+                     <w>
+                        <fs>
+                           <f name="wordform">āna</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">qutt</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">ilhum</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">:</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform"/>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">„bāhi</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">,</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform"/>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">āma/amma/lākin</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">mā</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">tinsāū</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">š</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">bāš</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">thizzu</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">buṛṭāblūwāt-kum</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">w</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">-</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">kallmū-ni</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">īḏa</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">kān</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">bāš</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">tžīu</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">ṃṃaxxaṛ</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">.</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                     <w>
+                        <fs>
+                           <f name="wordform">“</f>
+                           <f name="pos"/>
+                           <f name="lemma"/>
+                           <f name="translation"/>
+                           <f name="other"/>
+                        </fs>
+                     </w>
+                  </s>
+               </p>
+            </div>
+            <div type="dvTranslations">
+               <p>
+                  <s type="translationSentence" n="1">Am Montag nach der Morgendämmerung ging ich
+                     zum Markt, um Eier und Gemüse wie Melanzani und Knoblauch zu kaufen. </s>
+                  <s type="translationSentence" n="2">Ich kaufte auch 2 Kilo Orangen um 1 Dinar. </s>
+                  <s type="translationSentence" n="3">Tomaten nahm ich keine, weil sie sehr teuer
+                     waren. </s>
+                  <s type="translationSentence" n="4">Ich schaute noch bei meinem älteren Bruder
+                     vorbei, dann nahm ich ein Taxi und kehrte vor Mittag nach Hause zurück. </s>
+                  <s type="translationSentence" n="5">Kurz darauf kamen die Kinder aus der Schule
+                     und wir aßen Brot und Bohnen. </s>
+                  <s type="translationSentence" n="6">Nach dem Mittagessen fragte ich sie: „Was
+                     werdet ihr am Abend machen?“ </s>
+                  <s type="translationSentence" n="7">Sie sagten zu mir: „Heute bleiben wir zu
+                     Hause, aber morgen möchten wir unsere Freunde treffen. </s>
+                  <s type="translationSentence" n="8">Wir werden mit ihnen zu unserem Cousin, der im
+                     Viertel ir-Ryāna wohnt, gehen. </s>
+                  <s type="translationSentence" n="9">Dort werden wir Kaffee trinken und uns
+                     unterhalten.“ </s>
+                  <s type="translationSentence" n="10">Ich sagte zu ihnen: „Gut, aber vergesst nicht
+                     eure Handys mitzunehmen und ruft mich an, falls ihr euch verspätet.</s>
+               </p>
+            </div>
+         </body>
+      </text>
+   </TEI>
+  </item>
   <item city="Test" informant="Test1" age="20" sex="m">
     <TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:file="http://expath.org/ns/file" xml:id="test_sample_01">
    <teiHeader>
