@@ -315,8 +315,6 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
     secLabel_ = secLabel_.replace(/%20/, ' ');
     contents_ = contents_.replace(/{query}/, query_);
 
-    console.log([contents_, panelType_, secLabel_, contClass_, query_, teiLink_, locType_, snippetID_, pID_, pVisiblity_, pURL_])
-
     $('.content-panel').each(function () {
         if (pVisiblity_ != 'closed') $(this).removeClass('expanded-panel');
         var panelID = $(this).data('pid');

@@ -136,8 +136,8 @@ $(document).on('DOMNodeInserted', "[data-snippetid='compare-samples']", function
 	loadWords($(event.target))
 	loadLocations($(event.target))
 	loadPersons($(event.target))
-	attachAgeSliderHandler($(event.target))
 })
+
 
 function loadPersons($root) {
 	$.ajax({
@@ -171,13 +171,12 @@ function loadPersons($root) {
         	allowSpaces: true,
         	placeholderText: 'Search speaker IDs like Beja1...'
         });
-
     }
 });
 }
 
-
 function attachAgeSliderHandler($root) {
+
 	$( ".age-slider", $root ).slider({
 		range: true,
 		min: 0,

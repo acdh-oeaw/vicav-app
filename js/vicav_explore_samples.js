@@ -16,7 +16,10 @@ oms.addListener('click', function(marker) {
 function createDisplayCrossSamplesPanel(query_, pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
     $( '<div>' ).load( "compare-samples.html form" , function(event) {
         var pID = appendPanel(this.innerHTML, "crossSamplesForm", "", "grid-wrap", '', 'hasTeiLink', '', 'compare-samples', pID_, pVisiblity_, pURL_);
+
         var $root = $('[data-pid=' + pID + ']');
+        attachAgeSliderHandler($root)
+
         $('form.compare-samples', $root).submit(function(event) {
             event.preventDefault();
             crossSamplesFormSubmit($root, function (result, query) {
