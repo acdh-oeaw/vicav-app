@@ -29,8 +29,13 @@ let checksampleTexts = function(fixture, label) {
 
     for (let variant in fixture.variants) {
         cy.contains(variant).scrollIntoView().trigger('mouseover').then(($el) => {
-            const toolTipID = $el.attr('aria-describedBy')
-
+            let toolTipID = $el.attr('aria-describedBy')
+            if (toolTipID === undefined) {
+                toolTipID = $el.find('span').attr('aria-describedBy')
+            }
+            if (toolTipID === undefined) {
+                toolTipID = $el.closest('span').attr('aria-describedBy')
+            }
             cy.get('#'+toolTipID).contains(fixture.variants[variant])
             // At the end of this test we have to move the virtual mouse away.
             // We can just pretend we have a lot of mouse cursors and not move away.
