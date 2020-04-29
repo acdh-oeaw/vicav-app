@@ -217,6 +217,7 @@ function crossSamplesFormSubmit($root, success_callback) {
 	if (    $('[name="sex"][value=f]', $root).prop('checked')) {
 		sex.push('f')
 	}
+
 	query = $form.serialize().replace(/(&sex=[a-z])/g, '') + ('&sex=' + encodeURIComponent(sex.join(',')));
 
   //var sentencesUri = (Array.isArray(sentences) && sentences.indexOf('any') != -1) ? 'any' : sentences.replace(/\s+/g, '')

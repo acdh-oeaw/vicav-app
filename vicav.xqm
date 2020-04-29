@@ -395,7 +395,7 @@ function vicav:explore_samples(
     let $ss := if (empty($sentences) or $sentences = '') then 
             "1"
         else 
-           $sentences
+           replace($sentences, '[^\d,]+', '')
 
     let $ress1 := vicav:explore-samples-data(
         $location, 

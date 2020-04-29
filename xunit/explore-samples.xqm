@@ -22,8 +22,8 @@ declare %updating %unit:before-module function test:before-all-test() {
 };
   
 (:~ Initializing function, which is called once after all tests. :)
-declare %unit:after-module function test:after-all-tests() {
-  ()
+declare %updating %unit:after-module function test:after-all-tests() {
+    db:drop('vicav_samples')
 };
   
 (:~ Initializing function, which is called before each test. :)
@@ -82,5 +82,19 @@ declare %unit:test function test:explore-samples-gender-age-only() {
       "m,f", 
       (), 
       "cross_samples_01.xslt")), serialize(doc(file:parent(static-base-uri()) || '../fixtures/explore-samples-gender-age-only-data.xml'))
+  )
+};
+
+
+declare %unit:test function test:explore-samples-locations-persons-data() {
+  unit:assert-equals( serialize(vicav:explore-samples-data(
+      "Tunis2", 
+      (),
+      (), 
+      "Test1", 
+      "0,100", 
+      "m,f", 
+      (), 
+      "cross_samples_01.xslt")), serialize(doc(file:parent(static-base-uri()) || '../fixtures/explore-samples-locations-persons-data-data.xml'))
   )
 };
