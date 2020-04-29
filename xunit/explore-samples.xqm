@@ -93,8 +93,8 @@ declare %unit:test function test:explore-samples-locations-persons-data() {
       (), 
       "Test1", 
       "0,100", 
-      "m,f", 
       (), 
-      "cross_samples_01.xslt")), serialize(doc(file:parent(static-base-uri()) || '../fixtures/explore-samples-locations-persons-data-data.xml'))
+      (), 
+      "cross_samples_01.xslt")), serialize(doc(file:parent(static-base-uri()) || '../fixtures/explore-samples-location-person-data.xml'))
   )
 };

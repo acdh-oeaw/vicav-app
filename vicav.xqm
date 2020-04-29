@@ -392,10 +392,10 @@ function vicav:explore_samples(
     $sex as xs:string*, 
     $highlight as xs:string*, 
     $xsltfn as xs:string) {
-    let $ss := if (empty($sentences) or $sentences = '') then 
+    let $ss := if ((empty($word) or $word = '') and (empty($sentences) or $sentences = '')) then 
             "1"
         else 
-           replace($sentences, '[^\d,]+', '')
+            if (empty($word)) then replace($sentences, '[^\d,]+', '') else ""
 
     let $ress1 := vicav:explore-samples-data(
         $location, 

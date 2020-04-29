@@ -56,24 +56,26 @@
                 </table>    
                                 
                 <p xml:space="preserve"><xsl:value-of select="count($filtered-by-word/*)"/> sentences found.</p>
-
-                <div class="sentences-nav">
-                    <xsl:if test="not($prev_sentence = '')">
-                        <a href="#" data-sentence="{$prev_sentence}" class="prev-link"><i class="fa fa-chevron-left"/> Previous</a>
-                    </xsl:if>
-                    <xsl:if test="not($next_sentence = '')">
-                        <a href="#" data-sentence="{$next_sentence}" class="next-link">Next <i class="fa fa-chevron-right"></i></a>
-                    </xsl:if>
-                    <input name="sentences">
-                        <xsl:attribute name="value"><xsl:value-of select="string-join($selected-sentences, ',')"/></xsl:attribute>
-                    </input> / <xsl:value-of select="max($all-sentences)"/>
-                </div>
+                <xsl:value-of select="$filter-sentences"/>
+                <xsl:if test="$filter-sentences">
+                    <div class="sentences-nav">
+                        <xsl:if test="not($prev_sentence = '')">
+                            <a href="#" data-sentence="{$prev_sentence}" class="prev-link"><i class="fa fa-chevron-left"/> Previous</a>
+                        </xsl:if>
+                        <xsl:if test="not($next_sentence = '')">
+                            <a href="#" data-sentence="{$next_sentence}" class="next-link">Next <i class="fa fa-chevron-right"></i></a>
+                        </xsl:if>
+                        <input name="sentences">
+                            <xsl:attribute name="value"><xsl:value-of select="string-join($selected-sentences, ',')"/></xsl:attribute>
+                        </input> / <xsl:value-of select="max($all-sentences)"/>
+                    </div>
+                </xsl:if>
 
 
                 <xsl:for-each select="$sentences-shown">
                     <xsl:variable name="sentence" select="."/>
                     <xsl:if test="count($root/items//item//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .) > 0]) > 0">
-                        <xsl:if test="count($selected-sentences) > 1">
+                        <xsl:if test="count($selected-sentences) > 1 or not($filter-sentences)">
                             <h3><xsl:value-of select="$sentence"/></h3>
                         </xsl:if>
 
