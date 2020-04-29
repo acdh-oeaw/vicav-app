@@ -347,7 +347,7 @@ declare function vicav:explore-samples-data(
     else
         ""
 
-    let $loc_word_age_sex_q := vicav:and(($location_q, $word_q, $age_q, $sex_q))
+    let $loc_word_age_sex_q := if (($location_q != '' or $word_q != '') or $person_q = '') then vicav:and(($location_q, $word_q, $age_q, $sex_q)) else ''
 
     let $full_tei_query := vicav:or(($person_q, $loc_word_age_sex_q))
 

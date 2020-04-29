@@ -8,14 +8,14 @@ declare %updating %unit:before-module function test:before-all-tests() {
 
 declare %updating %unit:before-module function test:before-all-test() {
   (:file:write-text(
-    file:parent(static-base-uri()) ||'../fixtures/explore-samples-word-data.xml', 
+    file:parent(static-base-uri()) ||'../fixtures/explore-samples-person-only.xml', 
     serialize(vicav:explore-samples-data(
       (), 
-      "ṯūm,b*tin*",
+      (),
       (), 
-      (), 
+      "Test1", 
       "0,100", 
-      (), 
+      "m,f", 
       (), 
       "cross_samples_01.xslt"))
   ):)
@@ -96,5 +96,19 @@ declare %unit:test function test:explore-samples-locations-persons-data() {
       (), 
       (), 
       "cross_samples_01.xslt")), serialize(doc(file:parent(static-base-uri()) || '../fixtures/explore-samples-location-person-data.xml'))
+  )
+};
+
+
+declare %unit:test function test:explore-samples-locations-person-only-data() {
+  unit:assert-equals( serialize(vicav:explore-samples-data(
+      (), 
+      (),
+      (), 
+      "Test1", 
+      "0,100", 
+      "m,f", 
+      (), 
+      "cross_samples_01.xslt")), serialize(doc(file:parent(static-base-uri()) || '../fixtures/explore-samples-person-only-data.xml'))
   )
 };
