@@ -53,7 +53,7 @@
                     </td></tr>
                 </table>    
                                 
-                <p xml:space="preserve"><xsl:value-of select="count($filtered-by-word/*)"/> sentences found.</p>
+                <p xml:space="preserve"><xsl:value-of select="count($filtered-by-word/tei:s)"/> sentences found.</p>
                 
                 <xsl:if test="$filter-sentences">
                     <div class="sentences-nav">
