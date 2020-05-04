@@ -212,9 +212,8 @@ version="2.0">
             <xsl:sequence select="acdh:word-span($w)"></xsl:sequence>            
         </xsl:when>
         <xsl:otherwise>
-            <a class="word-search">
-                <xsl:attribute name="href">
-                    <xsl:value-of select="'compare-samples.html?word='"/>
+            <a class="word-search" href="#">
+                <xsl:attribute name="data-wordform">
                     <xsl:value-of select="$wordform" />
                 </xsl:attribute>
                 <xsl:sequence select="acdh:word-span($w)"></xsl:sequence>

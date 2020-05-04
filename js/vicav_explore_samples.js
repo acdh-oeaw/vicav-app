@@ -61,6 +61,25 @@ function createCrossSamplesResultsPanel(contents_ = '', query_ = '', pID_ = '', 
             changeSentence(sentence);
         })
 
+        $root.on('click', 'a[data-sampletext]', function(e) {    
+            e.preventDefault();
+            var sample = $(e.target).closest('[data-sampletext]').attr('data-sampletext');
+            if (sample) {
+                getSample('', sample, 'sampletext_01.xslt');
+            }
+        })
+
+        $root.on('click', 'a[data-wordform]', function(e) {    
+            e.preventDefault();
+
+            var word = $(e.target).closest('[data-wordform]').attr('data-wordform');
+            console.log($(e.target))
+
+            crossSamplesQuery('word=' + word, function(result) {
+                createCrossSamplesResultsPanel(result, 'word=' + word);
+            })
+        })
+
         $root.on('click', 'a[data-sentence]', function(e) {
             e.preventDefault();
             var sentence = $(e.target).attr('data-sentence');

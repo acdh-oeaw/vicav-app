@@ -90,11 +90,9 @@
                                             <small xml:space="preserve"><xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)</xsl:if></small>
                                         </td>
                                             <td class="tdFeaturesRightTarget">
-                                                <a class="show-sentence" title="Show full sample text">
-                                                    <xsl:attribute name="href">
-                                                        <xsl:value-of select="'index.html#map=[biblMarkers,_samples_,]&amp;1=[sampleQuery,'"/>
+                                                <a class="show-sentence" title="Show full sample text" href="#">
+                                                    <xsl:attribute name="data-sampletext">
                                                         <xsl:value-of select=".//tei:TEI/@xml:id" />
-                                                        <xsl:value-of select="',,open]'"/>
                                                     </xsl:attribute>
                                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </a>
