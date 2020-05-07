@@ -16,7 +16,7 @@ DROP DATABASE vicav_samples; DROP DATABASE vicav_lingfeatures"
 echo "<commands>
 	<set option='CHOP'>false</set>
 	<create-db name='vicav_corpus'>${CI_BUILDS_DIR}/vicav_content/vicav_corpus</create-db>
-	<create-db name='vicav_lingfeatures'>${CI_BUILDS_DIR}/vicav_content/vicav_lingfeatures</create-db>
+	<create-db name='vicav_lingfeatures'>${GIT_CLONE_PATH}/fixtures/vicav_lingfeatures</create-db>
 	<create-db name='vicav_profiles'>${CI_BUILDS_DIR}/vicav_content/vicav_profiles</create-db>
 	<create-db name='vicav_texts'>${CI_BUILDS_DIR}/vicav_content/vicav_texts</create-db>
 	<create-db name='vicav_samples'>${GIT_CLONE_PATH}/fixtures/vicav_samples/sampletexts.xml</create-db>
