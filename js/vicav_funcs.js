@@ -176,14 +176,21 @@ mainMap.scrollWheelZoom.disable();
 var fgBiblMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
 var fgProfileMarkers = L.featureGroup().addTo(mainMap).on("click", onProfilesMapClick);
 var fgSampleMarkers = L.featureGroup().addTo(mainMap); // Click event is now handled through OverlappingMarkerSpiderifier
-var fgFeatureMarkers = L.featureGroup().addTo(mainMap).on("click", onFeaturesMapClick);
+var fgFeatureMarkers = L.featureGroup().addTo(mainMap);
 var fgGeoDictMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
 var fgDictMarkers = L.featureGroup().addTo(mainMap).on("click", onDictMapClick);
 
 var oms = new OverlappingMarkerSpiderfier(mainMap, {nearbyDistance: 2});
 
 oms.addListener('click', function(marker) {
-  getSample('', marker.options.id, 'sampletext_01.xslt');
+    switch (marker.options.type) {
+        case 'sample':
+            getSample('', marker.options.id, 'sampletext_01.xslt');
+            break;
+        case 'feature':
+            getFeatureOfLocation(marker.options.alt, marker.options.id, 'features_01.xslt');
+            break;
+    }
 });
 
 
