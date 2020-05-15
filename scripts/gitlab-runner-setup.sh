@@ -3,7 +3,7 @@ set -euo pipefail
 
 cd ${CI_BUILDS_DIR} # this is usually the webapp directory of the BaseX instance
 
-git clone https://github.com/xspec/xspec.git
+git clone "https://github.com/xspec/xspec.git" "xspec" 2> /dev/null || (cd xspec ; git pull)
 export SAXON_CP=${CI_BUILDS_DIR}/../lib/custom/saxon9he.jar
 
 rm -rf vicav_content 2>/dev/null
