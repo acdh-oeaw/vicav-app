@@ -55,6 +55,7 @@ run_tests:
     - mkdir -p $GIT_CLONE_PATH/artifacts
     - rm -rf $GIT_CLONE_PATH/artifacts/*  2>/dev/null
     - $GIT_CLONE_PATH/scripts/run-unit-tests.sh > $GIT_CLONE_PATH/artifacts/XUNIT_OUTPUT.txt
+    - find $GIT_CLONE_PATH/xspec -name "*.xspec" -exec $CI_BUILD_DIR/xspec/bin/xspec.sh -t {} \;  
     - $(npm bin)/cypress run
 
   artifacts:
