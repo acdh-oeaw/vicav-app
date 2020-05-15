@@ -11,6 +11,7 @@ version="2.0">
     
 <xsl:template match="//tei:div[@type='sampleText']/tei:p/tei:s | //tei:div[@type='corpusText']/tei:u">
     <span class="spSentence">
+        <xsl:attribute name="xml:space">preserve</xsl:attribute>      
         <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
             <xsl:attribute name="title">                    
                 <xsl:variable name="nn" select="@n"/>
@@ -206,7 +207,6 @@ version="2.0">
         not($w/following-sibling::*[1]/name() = 'pc') and
         not(matches($w/following-sibling::tei:w[1]/tei:fs/tei:f[@name='wordform'], '^\W+$')) and
         (not($w/ancestor::tei:choice) or $position != count($w/parent::*/*))"/>
-    
     <xsl:choose>
         <xsl:when test="$type='feature'">
             <xsl:sequence select="acdh:word-span($w)"></xsl:sequence>            
