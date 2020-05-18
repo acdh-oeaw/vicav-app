@@ -21,5 +21,5 @@ echo "<commands>
 	<create-db name='vicav_biblio'>${CI_BUILDS_DIR}/vicav_content/vicav_biblio</create-db>
 </commands>" > deploy-vicav.bxs
 
-${CI_BUILDS_DIR}/../bin/basexclient -Uadmin -Padmin -c ./deploy-vicav.bxs
+/opt/basex/bin/basexclient -Uadmin -Padmin -c ./deploy-vicav.bxs
 
