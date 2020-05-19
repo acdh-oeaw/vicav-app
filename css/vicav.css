@@ -763,6 +763,7 @@ h4::after{
 
 [data-toggle = "tooltip"]{
     cursor: pointer;
+    background-color: rgba(255,255,0,0.3);
 }
 
 div.imgProfile{
@@ -1428,3 +1429,57 @@ img.footer-acdh-logo{
 
 .cookie-accept-btn:hover {
   background-color: #d2b33d; }
+
+/* Compare samples window */
+a.word-search {
+    color: inherit;
+}
+
+.show-sentence {
+    display: block;
+    float: left;
+    margin: 0 4px 0 2px;
+}
+
+form.compare-samples > fieldset.column {
+    border: silver 1px solid;
+    padding: 5px;
+    min-width: 45%;
+    float: left;
+    margin-right: 10px;
+}
+form.compare-samples > fieldset.actions {
+    text-align: center;
+    clear: both;
+    padding: 10px 0;
+}
+form.compare-samples fieldset > fieldset {
+    border: none;
+}
+
+form.compare-samples .sentences-wrapper > fieldset {
+    display: inline-block;
+}
+.tagit-autocomplete,
+.ui-menu-item-wrapper {
+    z-index: 99999 !important;
+}
+
+[data-toggle = "tooltip"].sample-text-variant {
+    background-color: rgba(165, 129, 3,0.5);
+    color: white;
+    padding: 0 2px;
+}
+.sentences-nav {
+    text-align: center;
+}
+
+.sentences-nav .prev-link {
+    float: left;
+}
+.sentences-nav .next-link {
+    float: right;
+}
+.sentences-nav input {
+    width: 50px;
+}
