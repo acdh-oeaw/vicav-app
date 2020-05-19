@@ -22,6 +22,7 @@ build-develop:
   stage: build
   tags:
       - BaseX-9.2
+      - tunocent
   variables:
      GIT_STRATEGY: clone
      GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
@@ -45,6 +46,7 @@ run_tests:
   stage: test
   tags:
       - BaseX-9.2
+      - tunocent 
   variables:
      GIT_STRATEGY: clone
      GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
@@ -68,6 +70,7 @@ clean-testbench:
   stage: cleanup
   tags:
       - BaseX-9.2
+      - tunocent
   variables:
      GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
   script:
