@@ -284,7 +284,8 @@ declare function vicav:and($args as xs:string+) as xs:string {
     return $out
 };  
 
-declare function vicav:explore-samples-data(
+declare function vicav:explore-data(
+    $collection as xs:string,
     $location as xs:string*, 
     $word as xs:string*,
     $sentences as xs:string*, 
@@ -351,7 +352,7 @@ declare function vicav:explore-samples-data(
 
     let $full_tei_query := vicav:or(($person_q, $loc_word_age_sex_q))
 
-    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("vicav_samples")//tei:TEI[' 
+    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || $collection ||'")//tei:TEI[' 
         || $full_tei_query || ']'
     let $results := xquery:eval($query)
 
@@ -398,7 +399,8 @@ function vicav:explore_samples(
             if (empty($word) or $word = '') then replace($sentences, '[^\d,]+', '') else ""
 
 
-    let $ress1 := vicav:explore-samples-data(
+    let $ress1 := vicav:explore-data(
+        'vicav_samples',
         $location, 
         $word,
         $sentences, 
@@ -407,12 +409,26 @@ function vicav:explore_samples(
         $sex, 
         $highlight, 
         $xsltfn
-    ) 
+    )//item
+
+    let $ress2 := vicav:explore-data(
+        'vicav_lingfeatures',
+        $location, 
+        $word,
+        $sentences, 
+        $person, 
+        $age, 
+        $sex, 
+        $highlight, 
+        $xsltfn
+    )//item 
+
+    let $ress := <items>{$ress1}{$ress2}</items>
 
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
     
-    let $sHTML := xslt:transform-text($ress1, $style, map {"highlight":string($word),"filter-words": string($word), "filter-sentences":$ss})
+    let $sHTML := xslt:transform-text($ress, $style, map {"highlight":string($word),"filter-words": string($word), "filter-sentences":$ss})
 
     return
         (:<div type="lingFeatures">{$sHTML}</div>:)

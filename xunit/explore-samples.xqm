@@ -10,7 +10,7 @@ declare %updating %unit:before-module function test:before-all-test() {
   (: Gererate new fixtures with this
   file:write-text(
     file:parent(static-base-uri()) ||'../fixtures/explore-samples-location-person-data.xml', 
-    serialize(vicav:explore-samples-data(
+    serialize(vicav:explore-data(
       "Tunis2", 
       (),
       (), 
@@ -48,7 +48,8 @@ declare %unit:test function test:or() {
 };
 
 declare %unit:test function test:explore-samples-locations() {
- unit:assert-equals(vicav:explore-samples-data(
+ unit:assert-equals(vicav:explore-data(
+    "vicav_samples",
     "Tunis2,Test", 
     "",
     "", 
@@ -61,7 +62,8 @@ declare %unit:test function test:explore-samples-locations() {
 };
 
 declare %unit:test function test:explore-samples-word() {
-  unit:assert-equals(vicav:explore-samples-data(
+  unit:assert-equals(vicav:explore-data(
+    "vicav_samples",
     "", 
     "ṯūm,b*tin*",
     "", 
@@ -74,7 +76,8 @@ declare %unit:test function test:explore-samples-word() {
 };
 
 declare %unit:test function test:explore-samples-gender-age-only() {
-  unit:assert-equals(vicav:explore-samples-data(
+  unit:assert-equals(vicav:explore-data(
+    "vicav_samples",
       (), 
       (),
       (), 
@@ -88,7 +91,8 @@ declare %unit:test function test:explore-samples-gender-age-only() {
 
 
 declare %unit:test function test:explore-samples-locations-persons-data() {
-  unit:assert-equals(vicav:explore-samples-data(
+  unit:assert-equals(vicav:explore-data(
+    "vicav_samples",
       "Tunis2", 
       (),
       (), 
@@ -102,7 +106,8 @@ declare %unit:test function test:explore-samples-locations-persons-data() {
 
 
 declare %unit:test function test:explore-samples-person-only-data() {
-  unit:assert-equals(vicav:explore-samples-data(
+  unit:assert-equals(vicav:explore-data(
+    "vicav_samples",
       (), 
       (),
       (), 
@@ -111,5 +116,19 @@ declare %unit:test function test:explore-samples-person-only-data() {
       "m,f", 
       (), 
       "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('test_sample_01')
+  )
+};
+
+declare %unit:test function test:explore-lingfeatures-locations-data() {
+  unit:assert-equals(vicav:explore-data(
+    "vicav_lingfeatures",
+      "Test", 
+      (),
+      (),
+      (), 
+      (), 
+      (), 
+      (), 
+      "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('ling_features_test')
   )
 };
