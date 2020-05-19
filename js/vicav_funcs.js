@@ -136,7 +136,7 @@ function onProfilesMapClick(e) {
 }
 
 function onFeaturesMapClick(e) {
-    query = e.latlng.lat.toFixed(2) + '.*' + e.latlng.lng.toFixed(2);
+    //query = e.latlng.lat.toFixed(2) + '.*' + e.latlng.lng.toFixed(2);
     getFeatureOfLocation(e.layer.options.alt, e.layer.options.id, 'features_01.xslt');
 }
 
@@ -185,15 +185,13 @@ var oms = new OverlappingMarkerSpiderfier(mainMap, {nearbyDistance: 2});
 oms.addListener('click', function(marker) {
     switch (marker.options.type) {
         case 'sample':
-            getSample('', marker.options.id, 'sampletext_01.xslt');
+            getSample(marker.options.alt, marker.options.id, 'sampletext_01.xslt');
             break;
         case 'feature':
             getFeatureOfLocation(marker.options.alt, marker.options.id, 'features_01.xslt');
             break;
     }
 });
-
-
 
 /* ************************************************************************* */
 /* ************************************************************************* */
@@ -329,8 +327,6 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
     secLabel_ = secLabel_.replace(/%20/, ' ');
     contents_ = contents_.replace(/{query}/, query_);
 
-    console.log([contents_, panelType_, secLabel_, contClass_, query_, teiLink_, locType_, snippetID_, pID_, pVisiblity_, pURL_])
-
     $('.content-panel').each(function () {
         if (pVisiblity_ != 'closed') $(this).removeClass('expanded-panel');
         var panelID = $(this).data('pid');
@@ -396,8 +392,10 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
             var currentURL = window.location.toString();
 
             switch (panelType_) {
+                case 'crossSamplesForm':
+                case 'crossSamplesResult':
                 case 'biblQuery':
-                qry = query_.replace("&", "+");
+                qry = query_.replace(/&/g, "+").replace(/=/g, '|');
                 var argList = pID + "=[" + panelType_ + "," + qry + ",";
                 break;
 
@@ -440,7 +438,8 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
     } else {
         var htmlCont = panelType_ + ": " + secLabel_;
     }
-    $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass(cssClass).attr("data-pid", pID).addClass(cssClass).attr("data-snippetID", snippetID_).appendTo(".panels-wrap").append(resCont).find(".chrome-title").html(htmlCont);
+    $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass(cssClass).attr("data-pid", pID).addClass(cssClass).attr("data-query", query_).attr("data-snippetID", snippetID_).appendTo(".panels-wrap").append(resCont).find(".chrome-title").html(htmlCont);
+    return pID
 }
 
 function setExplanation(s_) {
@@ -1219,6 +1218,19 @@ function () {
                 if (queryFunc == 'biblQueryLauncher') {
                     var pVisiblity = pArgs[1];
                     createNewQueryBiblioPanel(pID_, pVisiblity, true);
+                } else
+
+                if (queryFunc == 'crossSamplesForm') {
+                    var query = pArgs[1];
+                    var pVisiblity = pArgs[2];
+                    createDisplayCrossSamplesPanel(query, pID_, pVisiblity, true);
+//                    (query, pID_, pVisiblity, true);
+                } else
+                if (queryFunc == 'crossSamplesResult') {
+                    var query = pArgs[1];
+                    var pVisiblity = pArgs[2];
+                    createCrossSamplesResultsPanel('', query, pID_, pVisiblity, true);
+//                    (query, pID_, pVisiblity, true);
                 } else
 
                 if (queryFunc == 'biblQuery') {

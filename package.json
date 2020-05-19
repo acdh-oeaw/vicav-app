@@ -14,7 +14,8 @@
     "popper.js": "^1.12.5"
   },
   "devDependencies": {
-    "cypress": "^4.3.0"
+    "cypress": "^4.3.0",
+    "chai-colors": "^1.0.1"
   },
   "scripts": {
     "cypress:open": "cypress open"

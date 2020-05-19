@@ -1,11 +1,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
-    <xsl:param name="highLightIdentifier"></xsl:param>
-    <xsl:param name="explanation"></xsl:param>
     
-    <!-- <xsl:output method="xml" encoding="utf-8"/> -->
-    <xsl:output method="html" encoding="utf-8"/>
-    <!-- <xsl:strip-space elements="tei:cell"/> -->
+    <xsl:param name="explanation"></xsl:param>
+    <xsl:include href="sampletexts_common.xslt"/>
+  
     <!-- VERSION 3.1.4 -->
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements=""/>
@@ -52,7 +50,6 @@
         <!--             </body>        </html> -->
     </xsl:template>
     
-    <xsl:template match="tei:fs"></xsl:template>
     <xsl:template match="tei:head"></xsl:template>
     <xsl:template match="tei:hi[@rend = 'italic']"><i><xsl:apply-templates/></i></xsl:template>
     <xsl:template match="tei:hi[@rend = 'bold']"><b><xsl:apply-templates/></b></xsl:template>
