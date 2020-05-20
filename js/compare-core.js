@@ -138,6 +138,13 @@ $(document).on('DOMNodeInserted', "[data-snippetid='compare-samples']", function
 	loadPersons($(event.target))
 })
 
+$(document).on('DOMNodeInserted', "[data-snippetid='compare-features']", function(event) {
+	loadWords($(event.target))
+	loadLocations($(event.target))
+	loadPersons($(event.target))
+	loadFeatures($(event.target))
+})
+
 
 function loadPersons($root) {
 	$.ajax({
@@ -175,8 +182,44 @@ function loadPersons($root) {
 });
 }
 
-function attachAgeSliderHandler($root) {
 
+function loadFeatures($root) {
+	$.ajax({
+		url: "feature_labels",
+		dataType: "xml",
+		success: function( xmlResponse ) {
+			var data = $( "feature", xmlResponse ).map(function() {
+				if( $( this ).text() !== "") {
+					return {
+						value: $( this ).attr('ana'),
+						label: $( this ).text() 
+					};
+				}
+			}).get();
+
+        // Uniques.
+        data = Array.from(new Set(data.map(JSON.stringify))).map(JSON.parse);
+
+        $(".features", $root).tagit({
+        	autocomplete: {
+        		delay: 200, 
+        		minLength: 1,       
+        		source: function( request, response ) {
+        			var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
+        			response( $.grep( data, function( value ) {
+        				value = value.label || value.value || value;
+        				return matcher.test( value );
+        			}) );
+        		}
+        	},
+        	allowSpaces: true,
+        	placeholderText: 'Search features like "who?"...'
+        });
+    }
+});
+}
+
+function attachAgeSliderHandler($root) {
 	$( ".age-slider", $root ).slider({
 		range: true,
 		min: 0,
@@ -193,7 +236,7 @@ function attachAgeSliderHandler($root) {
 	$('[name="age"]', $root).hide();
 }
 
-function crossSamplesQuery(query, success_callback) {
+function compareQuery(query, success_callback) {
 	var url = 'explore_samples?'+ query + '&xslt=cross_samples_01.xslt';
 	$.ajax({
 		url: url,
@@ -207,8 +250,8 @@ function crossSamplesQuery(query, success_callback) {
 	});
 }
 
-function crossSamplesFormSubmit($root, success_callback) {
-	var $form = $('form.compare-samples', $root); 
+function compareFormSubmit($root, success_callback) {
+	var $form = $('form[class^=compare]', $root); 
 
 	var sex = []
 	if ($('[name="sex"][value=m]', $root).prop('checked')) {
@@ -221,5 +264,5 @@ function crossSamplesFormSubmit($root, success_callback) {
 	query = $form.serialize().replace(/(&sex=[a-z])/g, '') + ('&sex=' + encodeURIComponent(sex.join(',')));
 
   //var sentencesUri = (Array.isArray(sentences) && sentences.indexOf('any') != -1) ? 'any' : sentences.replace(/\s+/g, '')
-  crossSamplesQuery(query, success_callback)
+  compareQuery(query, success_callback)
 }

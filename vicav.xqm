@@ -372,6 +372,7 @@ declare function vicav:explore-data(
 
 declare
 %rest:path("vicav/explore_samples")
+%rest:query-param("type", "{$type}")
 %rest:query-param("location", "{$location}")
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:query-param("word", "{$word}")
@@ -385,6 +386,7 @@ declare
 %rest:GET
 
 function vicav:explore_samples(
+    $type as xs:string*, 
     $location as xs:string*, 
     $word as xs:string*,
     $sentences as xs:string*, 
@@ -398,9 +400,14 @@ function vicav:explore_samples(
         else 
             if (empty($word) or $word = '') then replace($sentences, '[^\d,]+', '') else ""
 
+    let $resourcetype := if (empty($type) or $type = '') then 
+            "samples"
+        else 
+            $type
+
 
     let $ress1 := vicav:explore-data(
-        'vicav_samples',
+        'vicav_' || $resourcetype,
         $location, 
         $word,
         $sentences, 
@@ -411,19 +418,7 @@ function vicav:explore_samples(
         $xsltfn
     )//item
 
-    let $ress2 := vicav:explore-data(
-        'vicav_lingfeatures',
-        $location, 
-        $word,
-        $sentences, 
-        $person, 
-        $age, 
-        $sex, 
-        $highlight, 
-        $xsltfn
-    )//item 
-
-    let $ress := <items>{$ress1}{$ress2}</items>
+    let $ress := <items>{$ress1}</items>
 
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
@@ -919,6 +914,21 @@ function vicav:get_sample_markers() {
     return
         <rs>{$out}</rs>
 };
+
+declare
+%rest:path("vicav/feature_labels")
+%rest:GET
+%output:method("xml")
+
+function vicav:get_feature_labels() {
+    let $features := collection('vicav_lingfeatures')//tei:TEI//tei:cit[@type="featureSample"]
+    let $out := for $ana in distinct-values($features/@ana)
+        return <feature ana="{$ana}">{$features[./@ana = $ana][1]/tei:lbl/text()}</feature>
+
+    return
+        <features>{$out}</features>
+};
+
 
 declare
 %rest:path("vicav/sample_persons")

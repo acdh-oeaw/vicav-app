@@ -7,7 +7,7 @@ function createDisplayCrossSamplesPanel(query_, pID_ = '', pVisiblity_ = 'open',
 
         $('form.compare-samples', $root).submit(function(event) {
             event.preventDefault();
-            crossSamplesFormSubmit($root, function (result, query) {
+            compareFormSubmit($root, function (result, query) {
                 if (result.includes('error type="user authentication"')) {
                     alert('Error: authentication did not work');
                 } 
@@ -31,7 +31,7 @@ function createCrossSamplesResultsPanel(contents_ = '', query_ = '', pID_ = '', 
             } else {
                 query = query + 'sentences=' + encodeURIComponent(sentence)
             }
-            crossSamplesQuery(query, function(result) {
+            compareQuery(query, function(result) {
                 $('.grid-wrap > div', $root).html(result);
                 var currentURL = decodeURI(window.location.toString());
                 var re = new RegExp("^(.*&" + pID + "=\\[.*?\\,.*)sentences|[0-9]*(.*\\])$")
@@ -60,7 +60,7 @@ function createCrossSamplesResultsPanel(contents_ = '', query_ = '', pID_ = '', 
             var word = $(e.target).closest('[data-wordform]').attr('data-wordform');
             console.log($(e.target))
 
-            crossSamplesQuery('word=' + word, function(result) {
+            compareQuery('word=' + word, function(result) {
                 createCrossSamplesResultsPanel(result, 'word=' + word);
             })
         })
@@ -74,7 +74,7 @@ function createCrossSamplesResultsPanel(contents_ = '', query_ = '', pID_ = '', 
         query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
 
     if (contents_ == '' && query != '') {
-        crossSamplesQuery(query, function(result) {
+        compareQuery(query, function(result) {
             var pID = appendPanel(result, "crossSamplesResult", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-samples-result', '', pVisiblity_, pURL_);
             attachPagingHandlers(pID, query)
         })
@@ -91,4 +91,3 @@ $("#liExploreSamples").mousedown (function (event) {
     adjustNav(this.id, "#subNavSamplesGeoRegMarkers");
 	createDisplayCrossSamplesPanel('','', 'open', false);
 });
-
