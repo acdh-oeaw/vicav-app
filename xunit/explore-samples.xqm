@@ -53,11 +53,8 @@ declare %unit:test function test:explore-samples-locations() {
     "Tunis2,Test", 
     "",
     "", 
-    "", 
     "0,100", 
-    "", 
-    "", 
-    "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01', 'test_sample_02')
+    "")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01', 'test_sample_02')
  )
 };
 
@@ -68,10 +65,7 @@ declare %unit:test function test:explore-samples-word() {
     "ṯūm,b*tin*",
     "", 
     "", 
-    "", 
-    "", 
-    "", 
-    "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01')
+    "")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01')
   )
 };
 
@@ -81,11 +75,8 @@ declare %unit:test function test:explore-samples-gender-age-only() {
       (), 
       (),
       (), 
-      (), 
       "0,100", 
-      "m,f", 
-      (), 
-      "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('test_sample_01', 'test_sample_02')
+      "m,f")//tei:TEI/@xml:id/data(), ('test_sample_01', 'test_sample_02')
   )
 };
 
@@ -95,12 +86,9 @@ declare %unit:test function test:explore-samples-locations-persons-data() {
     "vicav_samples",
       "Tunis2", 
       (),
-      (), 
       "Test2", 
       "0,100", 
-      (), 
-      (), 
-      "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_02')
+      ())//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_02')
   )
 };
 
@@ -110,12 +98,9 @@ declare %unit:test function test:explore-samples-person-only-data() {
     "vicav_samples",
       (), 
       (),
-      (), 
       "Test1", 
       "0,100", 
-      "m,f", 
-      (), 
-      "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('test_sample_01')
+      "m,f")//tei:TEI/@xml:id/data(), ('test_sample_01')
   )
 };
 
@@ -126,9 +111,17 @@ declare %unit:test function test:explore-lingfeatures-locations-data() {
       (),
       (),
       (), 
+      ())//tei:TEI/@xml:id/data(), ('ling_features_test')
+  )
+};
+
+declare %unit:test function test:explore-lingfeatures-data() {
+  unit:assert-equals(vicav:explore-data(
+    "vicav_lingfeatures",
       (), 
-      (), 
-      (), 
-      "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('ling_features_test')
+      (),
+      (),
+      "0,100", 
+      ())//tei:TEI/@xml:id/data(), ('ling_features_test')
   )
 };

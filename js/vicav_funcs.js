@@ -1230,7 +1230,7 @@ function () {
                 if (queryFunc == 'crossFeaturesResult') {
                     var query = pArgs[1];
                     var pVisiblity = pArgs[2];
-                    createCrossFeaturesFeaturesPanel('', query, pID_, pVisiblity, true);
+                    createCrossFeaturesResultsPanel('', query, pID_, pVisiblity, true);
 //                    (query, pID_, pVisiblity, true);
                 } else
 

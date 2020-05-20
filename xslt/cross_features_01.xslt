@@ -3,7 +3,8 @@
     
     <xsl:param name="explanation"></xsl:param>
     <xsl:include href="sampletexts_common.xslt"/>
-  
+    <xsl:include href="features_common.xslt"/>
+    
     <!-- VERSION 3.1.4 -->
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements=""/>
@@ -36,6 +37,7 @@
                 <table class="tbFeatures">
                     <xsl:for-each select="//item">
                         <xsl:sort select="@city"/>
+                        <xsl:value-of select="@city"/>
                         <tr>
                             <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/></td>
                             <td class="tdFeaturesRightTarget">

@@ -237,7 +237,7 @@ function attachAgeSliderHandler($root) {
 }
 
 function compareQuery(query, success_callback) {
-	var url = 'explore_samples?'+ query + '&xslt=cross_samples_01.xslt';
+	var url = 'explore_samples?'+ query;
 	$.ajax({
 		url: url,
 		dataType: 'html',

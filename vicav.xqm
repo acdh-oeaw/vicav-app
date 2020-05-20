@@ -288,12 +288,9 @@ declare function vicav:explore-data(
     $collection as xs:string,
     $location as xs:string*, 
     $word as xs:string*,
-    $sentences as xs:string*, 
     $person as xs:string*, 
     $age as xs:string*, 
-    $sex as xs:string*, 
-    $highlight as xs:string*, 
-    $xsltfn as xs:string
+    $sex as xs:string*
 ) as element() {
    
 
@@ -352,13 +349,18 @@ declare function vicav:explore-data(
 
     let $full_tei_query := vicav:or(($person_q, $loc_word_age_sex_q))
 
-    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || $collection ||'")//tei:TEI[' 
-        || $full_tei_query || ']'
+    let $full_tei_query := if (not($full_tei_query = '')) then
+        '[' || $full_tei_query || ']'
+        else 
+        $full_tei_query
+
+    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || $collection ||'")//tei:TEI' 
+        || $full_tei_query
     let $results := xquery:eval($query)
 
     let $ress := 
       for $item in $results
-        let $city := $item//tei:body/tei:head/tei:name
+        let $city := $item//tei:body/tei:head/tei:name[1]
         let $informant := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/text()
         let $age := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/@age
         let $sex := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/@sex
@@ -410,12 +412,9 @@ function vicav:explore_samples(
         'vicav_' || $resourcetype,
         $location, 
         $word,
-        $sentences, 
         $person, 
         $age, 
-        $sex, 
-        $highlight, 
-        $xsltfn
+        $sex
     )//item
 
     let $ress := <items>{$ress1}</items>
