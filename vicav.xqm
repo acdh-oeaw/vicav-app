@@ -850,12 +850,14 @@ function vicav:get_profile_markers() {
 };
 
 declare
-%rest:path("vicav/sample_locations")
+%rest:path("vicav/data_locations")
 %rest:GET
+%rest:query-param("type", "{$type}")
 %output:method("xml")
-function vicav:get_sample_locations() {
-    let $entries := collection('vicav_samples')//tei:TEI/(.//tei:name[1], .//tei:place/tei:region[1], .//tei:place/tei:country[1])
+function vicav:data_locations($type as xs:string*) {
+    let $type := if ($type = () or $type = '') then 'samples' else $type
 
+    let $entries := collection('vicav_' || $type)//tei:TEI/(.//tei:name[1], .//tei:place/tei:region[1], .//tei:place/tei:country[1])
 
     let $labels :=
     for $item in $entries

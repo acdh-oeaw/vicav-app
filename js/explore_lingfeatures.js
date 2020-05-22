@@ -15,8 +15,7 @@ function createDisplayCrossFeaturesPanel(query_, pID_ = '', pVisiblity_ = 'open'
                     createCrossFeaturesResultsPanel(result, query)
                 }
             });
-        })
-
+        });
     });    
 }
 

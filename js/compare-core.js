@@ -95,9 +95,11 @@ function loadWords($root) {
 	});
 }
 
-function loadLocations($root) {
+function loadLocations($root, type) {
+	console.log(type)
 	$.ajax({
-		url: "sample_locations",
+		url: "data_locations",
+		data: {type: type},
 		dataType: "xml",
 		success: function( xmlResponse ) {
 			var data = $( "location", xmlResponse ).map(function() {
@@ -134,13 +136,13 @@ function loadLocations($root) {
 
 $(document).on('DOMNodeInserted', "[data-snippetid='compare-samples']", function(event) {
 	loadWords($(event.target))
-	loadLocations($(event.target))
+	loadLocations($(event.target), 'samples')
 	loadPersons($(event.target))
 })
 
 $(document).on('DOMNodeInserted', "[data-snippetid='compare-features']", function(event) {
 	loadWords($(event.target))
-	loadLocations($(event.target))
+	loadLocations($(event.target), 'lingfeatures')
 	loadPersons($(event.target))
 	loadFeatures($(event.target))
 })
