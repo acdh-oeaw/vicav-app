@@ -18,9 +18,10 @@
         <xsl:variable name="results" >
             <xsl:for-each select="$features-shown">
                 <xsl:variable name="ana" select="."/>
-                <xsl:sequence select="$root/items//item/tei:cit[@type='featureSample' and (.//tei:w[contains-token(@ana,$ana)][1] or .//tei:phr[contains-token(@ana,$ana)][1])]"></xsl:sequence>
+                <xsl:sequence select="$root/items/item//tei:cit[@type='featureSample' and (.//tei:w[contains-token(@ana,$ana)][1] or .//tei:phr[contains-token(@ana,$ana)][1])]"></xsl:sequence>
             </xsl:for-each>
         </xsl:variable>
+        
         
         <xsl:variable name="filtered-by-word">
             <xsl:choose>
@@ -34,7 +35,7 @@
                      </xsl:for-each>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:sequence select="$root/items//item//tei:cit[@type = 'featureSample']"/>
+                    <xsl:sequence select="$results"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
@@ -55,8 +56,8 @@
                 <xsl:for-each select="$features-shown">
                     <xsl:variable name="ana" select="."/>
                     <xsl:if test="count($results) > 0">
-                        <xsl:if test="count($selected-features) > 1 or not($filter-features)">
-                            <h3><xsl:value-of select="$root/items//item/tei:cit[@type='featureSample' and @ana = $ana]/lbl/text()"/></h3>
+                        <xsl:if test="count($selected-features) > 1 or $filter-features = ''">
+                            <h3><xsl:value-of select="$results/tei:cit[@ana = $ana][1]//tei:lbl"/></h3>
                         </xsl:if>
 
                         <xsl:for-each-group select="$root/items//item" group-by="(.//tei:region[1], 'unknown')[1]">
@@ -66,22 +67,46 @@
                                 <table class="tbFeatures">
                                     <xsl:for-each select="current-group()">
                                         <xsl:sort select="@city"/>
-                                        <xsl:if test="count(.//tei:cit[@type='featureSample' and (.//tei:w[contains-token(@ana,$ana)][1] or .//tei:phr[contains-token(@ana,$ana)][1]) and index-of($filtered-by-word/tei:cit, .) > 0]) > 0">
-                                        <tr>
-                                            <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/>
-                                            <small xml:space="preserve"><xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)</xsl:if></small>
-                                        </td>
-                                            <td class="tdFeaturesRightTarget">
-                                                <a class="show-sentence" title="Show full sample text" href="#">
-                                                    <xsl:attribute name="data-sampletext">
-                                                        <xsl:value-of select=".//tei:TEI/@xml:id" />
-                                                    </xsl:attribute>
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                                </a>
-
-                                                <xsl:apply-templates select=".//tei:cit[@type='featureSample' and (.//tei:w[contains-token(@ana,$ana)][1] or .//tei:phr[contains-token(@ana,$ana)][1]) and index-of($filtered-by-word/tei:cit, .) > 0]"/>filter-
-                                            </td>
-                                        </tr>   
+                                        <xsl:variable name="item" select="."/>
+                                        <xsl:variable name="city-results" select=".//tei:cit[@type='featureSample' and (.//tei:w[contains-token(@ana,$ana)][1] or .//tei:phr[contains-token(@ana,$ana)][1]) and index-of($filtered-by-word/tei:cit, .) > 0]"/>
+                                        <xsl:if test="count($city-results) > 0">
+                                        
+                                        <xsl:for-each select="$city-results">
+                                            <xsl:if test="./tei:note">
+                                                <tr>
+                                                    <td class="tdFeaturesHeadRight" rowspan="3">
+                                                        <xsl:value-of select="$item/@city"/>
+                                                        <small xml:space="preserve"><xsl:if test="$item/@informant != ''"> (<xsl:value-of 
+                                                               select="$item/@informant"/><xsl:if test="$item/@sex != ''">/<xsl:value-of 
+                                                               select="$item/@sex"/></xsl:if><xsl:if test="$item/@age != ''">/<xsl:value-of 
+                                                               select="$item/@age"/></xsl:if>)</xsl:if></small>
+                                                    </td>
+                                                    <td class="tdFeaturesCom">
+                                                        <xsl:apply-templates select="./tei:note"/>
+                                                    </td>
+                                                </tr>
+                                            </xsl:if>
+                                            
+                                            <tr>
+                                                <xsl:if test="not(./tei:note)">
+                                                    <td class="tdFeaturesHeadRight" rowspan="2">
+                                                        <xsl:value-of select="$item/@city"/>
+                                                        <small xml:space="preserve"><xsl:if test="$item/@informant != ''"> (<xsl:value-of 
+                                                               select="$item/@informant"/><xsl:if test="$item/@sex != ''">/<xsl:value-of 
+                                                               select="$item/@sex"/></xsl:if><xsl:if test="$item/@age != ''">/<xsl:value-of 
+                                                               select="$item/@age"/></xsl:if>)</xsl:if></small>
+                                                    </td>                                    
+                                                </xsl:if>
+                                                <td class="tdFeaturesRightSource">
+                                                    <xsl:apply-templates select=".//tei:quote[@xml:lang = 'en']"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdFeaturesRightTarget">
+                                                    <xsl:apply-templates select=".//tei:quote[@xml:lang = 'ar']"/><xsl:text> </xsl:text>
+                                                </td>                                                
+                                            </tr>
+                                        </xsl:for-each>
                                         </xsl:if>                    
                                     </xsl:for-each>
                                 </table>
@@ -92,6 +117,7 @@
             </div>         
         </div>
     </xsl:template>
+ 
     
     <xsl:template match="tei:fs"><xsl:value-of select="."/></xsl:template>
     <xsl:template match="tei:head"></xsl:template>
