@@ -292,8 +292,6 @@ declare function vicav:explore-data(
     $age as xs:string*, 
     $sex as xs:string*
 ) as element() {
-   
-
     let $ps := for $p in tokenize($person, ',')
             return "'" || $p || "'" 
 
