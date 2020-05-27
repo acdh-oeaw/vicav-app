@@ -59,9 +59,10 @@ var unique = function(array) {
 	return newArray;
 }
 
-function loadWords($root) {
+function loadWords($root, type) {
 	$.ajax({
-		url: "sample_words",
+		url: "data_words",
+		data: {type: type},
 		dataType: "xml",
 		success: function( xmlResponse ) {
 			var data = $( "word", xmlResponse ).map(function() {
@@ -135,22 +136,23 @@ function loadLocations($root, type) {
 // Init person widges
 
 $(document).on('DOMNodeInserted', "[data-snippetid='compare-samples']", function(event) {
-	loadWords($(event.target))
+	loadWords($(event.target), 'samples')
 	loadLocations($(event.target), 'samples')
-	loadPersons($(event.target))
+	loadPersons($(event.target), 'samples')
 })
 
 $(document).on('DOMNodeInserted', "[data-snippetid='compare-features']", function(event) {
-	loadWords($(event.target))
+	loadWords($(event.target), 'lingfeatures')
 	loadLocations($(event.target), 'lingfeatures')
-	loadPersons($(event.target))
+	loadPersons($(event.target), 'lingfeatures')
 	loadFeatures($(event.target))
 })
 
 
-function loadPersons($root) {
+function loadPersons($root, type) {
 	$.ajax({
-		url: "sample_persons",
+		url: "data_persons",
+		data: {type: type},
 		dataType: "xml",
 		success: function( xmlResponse ) {
 			var data = $( "person", xmlResponse ).map(function() {

@@ -929,12 +929,15 @@ function vicav:get_feature_labels() {
 
 
 declare
-%rest:path("vicav/sample_persons")
+%rest:path("vicav/data_persons")
 %rest:GET
+%rest:query-param("type", "{$type}")
 %output:method("xml")
 
-function vicav:get_sample_persons() {
-    let $persons := collection('vicav_samples')//tei:TEI//tei:person
+function vicav:get_sample_persons($type as xs:string*) {
+    let $type := if ($type = () or $type = '') then 'samples' else $type
+
+    let $persons := collection('vicav_' || $type)//tei:TEI//tei:person
     let $out :=
     for $person in $persons
         order by $person/text()
@@ -950,12 +953,15 @@ function vicav:get_sample_persons() {
 
 
 declare
-%rest:path("vicav/sample_words")
+%rest:path("vicav/data_words")
+%rest:query-param("type", "{$type}")
 %rest:GET
 %output:method("xml")
 
-function vicav:get_sample_words() {
-    let $persons := for $w in collection('vicav_samples')//tei:TEI//tei:w//tei:f[@name="wordform"]/text()
+function vicav:get_sample_words($type as xs:string*) {
+    let $type := if ($type = () or $type = '') then 'samples' else $type
+
+    let $persons := for $w in collection('vicav_' || $type)//tei:TEI//tei:w//tei:f[@name="wordform"]/text()
        return replace(normalize-space($w), '[\s&#160;]', '')
 
     let $out :=
