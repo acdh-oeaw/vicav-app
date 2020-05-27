@@ -215,7 +215,6 @@ declare
 %rest:GET
 
 function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:string) {
-    
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $q := 'collection("' || $coll || '")//tei:TEI[@xml:id="' || $id || '"]'
     let $query := $ns || $q
@@ -982,8 +981,8 @@ function vicav:get_feature_markers() {
     let $out :=
         for $item in $entries
             order by $item/@xml:id
-            let $loc := replace($item/tei:text/tei:body//tei:geo[1]/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
-            let $alt := $item//tei:text[1]/tei:body[1]//tei:head[1]/tei:name[1]/text()
+            let $loc := replace($item//tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
+            let $alt := if ($item//tei:person) then $item//tei:person/text() else $item//tei:name[1]/text()
             return
                 if ($item/@xml:id and $loc) then
                 <r

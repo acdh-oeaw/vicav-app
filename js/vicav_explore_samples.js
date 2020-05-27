@@ -60,7 +60,7 @@ function createCrossSamplesResultsPanel(contents_ = '', query_ = '', pID_ = '', 
             var word = $(e.target).closest('[data-wordform]').attr('data-wordform');
             console.log($(e.target))
 
-            compareQuery('word=' + word, function(result) {
+            compareQuery('word=' + word + '&xslt=cross_samples_01.xslt', function(result) {
                 createCrossSamplesResultsPanel(result, 'word=' + word);
             })
         })

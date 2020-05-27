@@ -41,7 +41,7 @@
                         <tr>
                             <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/></td>
                             <td class="tdFeaturesRightTarget">
-                                <xsl:apply-templates select=".//tei:quote[@xml:lang='ar']"/>
+                                <xsl:apply-templates select=".//[@type='featureSample']/tei:quote"/>
                                 <i class="iFeaturesTrans" xml:space="preserve"><xsl:text> </xsl:text>(<xsl:value-of select=".//tei:quote[@xml:lang = 'en']"/>)</i>
                             </td>
                         </tr>                       

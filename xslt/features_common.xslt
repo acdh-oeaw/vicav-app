@@ -28,7 +28,15 @@ version="2.0">
         </tr>
         <tr>
             <td class="tdFeaturesRightTarget">
-                <xsl:apply-templates select=".//tei:quote[@xml:lang = 'ar']"/><xsl:text> </xsl:text>
+                <xsl:if test=".//tei:cit[@type='translation']/tei:quote[@xml:lang='ar']">
+                    <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
+                        <xsl:attribute name="title">
+                            <xsl:value-of select=".//tei:cit[@type='translation']/tei:quote[@xml:lang='ar']"/>
+                        </xsl:attribute>
+                        <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                    </span>
+                </xsl:if>
+                <xsl:apply-templates select="./tei:quote"/><xsl:text> </xsl:text>
             </td>
         </tr>
     </xsl:template>

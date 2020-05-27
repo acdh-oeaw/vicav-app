@@ -35,7 +35,7 @@ version="2.0">
     </span>
 </xsl:template>
 
-<xsl:template match="tei:quote[@xml:lang = 'ar']">
+<xsl:template match="*[@type='featureSample']/tei:quote">
     <xsl:for-each select="./(tei:w | tei:c | tei:pc | tei:choice)">
         <xsl:variable name="position" select="position()"/>
         <xsl:choose>

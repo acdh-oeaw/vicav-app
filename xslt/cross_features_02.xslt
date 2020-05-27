@@ -103,7 +103,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="tdFeaturesRightTarget">
-                                                    <xsl:apply-templates select=".//tei:quote[@xml:lang = 'ar']"/><xsl:text> </xsl:text>
+                                                    <xsl:apply-templates select="./tei:quote"/><xsl:text> </xsl:text>
                                                 </td>                                                
                                             </tr>
                                         </xsl:for-each>
