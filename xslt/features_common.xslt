@@ -43,18 +43,21 @@ version="2.0">
 
     <xsl:function name="acdh:current-feature-ana">
         <xsl:param name="feature"></xsl:param>      
-        <xsl:param name="ana"></xsl:param>  
-        <xsl:choose>
-            <xsl:when test="not($highlight = ()) or not($highlight = '')"><xsl:value-of select="$highlight"/></xsl:when>
-            <xsl:when test="$ana"><xsl:value-of select="$ana"/></xsl:when>
-            <xsl:when test="$feature/@ana != ''">
-                <xsl:value-of select="$feature/@ana"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:variable name="calculated-semlib" select="lower-case(replace(replace($feature/tei:lbl, '\s+', '_'), '[^\w_]', ''))"/>
-                <xsl:value-of select="concat('semlib:', $calculated-semlib)"/>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:param name="ana"></xsl:param>
+        <xsl:variable name="hasHighlight" select="not(empty($highlight)) and not($highlight = '')"/>
+
+        <xsl:if test="$hasHighlight"><xsl:value-of select="$highlight"/></xsl:if>
+
+        <xsl:if test="not($hasHighlight) and not(empty($ana))">
+            <xsl:value-of select="$ana"/>
+        </xsl:if>
+
+        <xsl:if test="not($hasHighlight) and empty($ana) and not($feature/@ana = '')"><xsl:value-of select="$feature/@ana"/></xsl:if>
+
+        <xsl:if test="not($hasHighlight) and empty($ana) and $feature/@ana = ''">
+            <xsl:variable name="calculated-semlib" select="lower-case(replace(replace($feature/tei:lbl, '\s+', '_'), '[^\w_]', ''))"/>
+            <xsl:value-of select="concat('semlib:', $calculated-semlib)"/>
+        </xsl:if>
     </xsl:function>    
 
     <xsl:template match="tei:lbl"><xsl:apply-templates /></xsl:template>

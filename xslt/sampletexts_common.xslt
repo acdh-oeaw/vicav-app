@@ -63,7 +63,7 @@ version="2.0">
     <xsl:param name="highLightIdentifier"></xsl:param>
     <xsl:variable name="wordform" select="acdh:get-wordform($w)"/>
     <xsl:variable name="matchesHighlights" select="acdh:matches-highlight($wordform)"/>
-    <xsl:variable name="matchesHighlightId" select="not(empty($highLightIdentifier)) and not(empty(($w/@ana))) and (contains($w/@ana,$highLightIdentifier) or contains($w/parent::tei:phr/@ana, $highLightIdentifier))"/>    
+    <xsl:variable name="matchesHighlightId" select="not($highLightIdentifier = '') and not(empty($w/@ana)) and (contains($w/@ana,$highLightIdentifier) or contains($w/parent::tei:phr/@ana, $highLightIdentifier))"/>    
     <span class="w" data-html="true" data-placement="top">
         <xsl:if test="$matchesHighlightId = true() or $matchesHighlights = true()">
             <xsl:attribute name="style">color: red</xsl:attribute>
@@ -195,7 +195,7 @@ version="2.0">
                 <xsl:attribute name="data-wordform">
                     <xsl:value-of select="$wordform" />
                 </xsl:attribute>
-                <xsl:sequence select="acdh:word-span($w, $highLightIdentifier)"></xsl:sequence>
+                <xsl:sequence select="acdh:word-span($w, '')"></xsl:sequence>
             </a>       
         </xsl:otherwise>
     </xsl:choose>
