@@ -36,10 +36,26 @@ version="2.0">
                         <i class="fa fa-commenting-o" aria-hidden="true"></i>
                     </span>
                 </xsl:if>
-                <xsl:apply-templates select="./tei:quote"/><xsl:text> </xsl:text>
+                <xsl:sequence select="acdh:feature-sentence(./tei:quote, acdh:current-feature-ana(., ()))"/><xsl:text> </xsl:text>
             </td>
         </tr>
     </xsl:template>
+
+    <xsl:function name="acdh:current-feature-ana">
+        <xsl:param name="feature"></xsl:param>      
+        <xsl:param name="ana"></xsl:param>  
+        <xsl:choose>
+            <xsl:when test="not($highlight = ()) or not($highlight = '')"><xsl:value-of select="$highlight"/></xsl:when>
+            <xsl:when test="$ana"><xsl:value-of select="$ana"/></xsl:when>
+            <xsl:when test="$feature/@ana != ''">
+                <xsl:value-of select="$feature/@ana"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="calculated-semlib" select="lower-case(replace(replace($feature/tei:lbl, '\s+', '_'), '[^\w_]', ''))"/>
+                <xsl:value-of select="concat('semlib:', $calculated-semlib)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>    
 
     <xsl:template match="tei:lbl"><xsl:apply-templates /></xsl:template>
     <xsl:template match="tei:fs"></xsl:template>

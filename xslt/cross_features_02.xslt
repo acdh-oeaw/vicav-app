@@ -1,6 +1,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:acdh="http://acdh.oeaw.ac.at"
+    xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
     <xsl:include href="sampletexts_common.xslt"/>
+    <xsl:include href="features_common.xslt"/>
     <!-- VERSION 3.1.4 -->
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements=""/>
@@ -104,7 +107,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="tdFeaturesRightTarget">
-                                                        <xsl:apply-templates select="./tei:quote"/><xsl:text> </xsl:text>
+                                                        <xsl:sequence select="acdh:feature-sentence(./tei:quote, acdh:current-feature-ana(., $ana))" /><xsl:text> </xsl:text>
                                                     </td>                                                
                                                 </tr>
                                             </xsl:for-each>
