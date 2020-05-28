@@ -6,11 +6,11 @@
     <xsl:preserve-space elements=""/>
 
     <xsl:param name="filter-words"></xsl:param>
-    <xsl:param name="filter-sentences"></xsl:param>
+    <xsl:param name="filter-features"></xsl:param>
 
     <xsl:template match="/">
         <xsl:variable name="all-sentences" select="distinct-values(/items//tei:s/@n)" />
-        <xsl:variable name="selected-sentences" select="tokenize($filter-sentences, ',')" />
+        <xsl:variable name="selected-sentences" select="tokenize($filter-features, ',')" />
         <xsl:variable name="prev_sentence">
             <xsl:if test="count($selected-sentences) = 1 and number($selected-sentences[1]) > 1">
                 <xsl:value-of select="number($selected-sentences[1]) - 1"/>
@@ -22,7 +22,7 @@
             </xsl:if>
         </xsl:variable>
 
-        <xsl:variable name="sentences-shown" select="if ($filter-sentences = 'any' or $filter-sentences = '') then $all-sentences else $selected-sentences"/>
+        <xsl:variable name="sentences-shown" select="if ($filter-features = 'any' or $filter-features = '') then $all-sentences else $selected-sentences"/>
         <xsl:variable name="root" select="."/>
         
         <xsl:variable name="filtered-by-word">
@@ -55,7 +55,7 @@
 
                 <p xml:space="preserve"><xsl:value-of select="count($filtered-by-word/tei:s)"/> sentences found.</p>
                 
-                <xsl:if test="$filter-sentences">
+                <xsl:if test="$filter-features">
                     <div class="sentences-nav">
                         <xsl:if test="not($prev_sentence = '')">
                             <a href="#" data-sentence="{$prev_sentence}" class="prev-link"><i class="fa fa-chevron-left"/> Previous</a>
@@ -73,7 +73,7 @@
                 <xsl:for-each select="$sentences-shown">
                     <xsl:variable name="sentence" select="."/>
                     <xsl:if test="count($root/items//item//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .) > 0]) > 0">
-                        <xsl:if test="count($selected-sentences) > 1 or not($filter-sentences)">
+                        <xsl:if test="count($selected-sentences) > 1 or not($filter-features)">
                             <h3><xsl:value-of select="$sentence"/></h3>
                         </xsl:if>
 

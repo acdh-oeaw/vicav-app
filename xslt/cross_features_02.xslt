@@ -9,13 +9,13 @@
     <xsl:preserve-space elements=""/>
 
     <xsl:param name="filter-words"></xsl:param>
-    <xsl:param name="filter-features" select="''"></xsl:param>
+    <xsl:param name="filter-features"></xsl:param>
 
     <xsl:template match="/">
         <xsl:variable name="all-features" select="distinct-values(/items//*[./name() = 'w' or @type= 'featureSample']/@ana)" />
         <xsl:variable name="selected-features" select="tokenize($filter-features, ',')" />
 
-        <xsl:variable name="features-shown" select="if ($filter-features = '') then $all-features else $selected-features"/>
+        <xsl:variable name="features-shown" select="if (empty($selected-features)) then $all-features else $selected-features"/>
         <xsl:variable name="root" select="."/>
         
         <xsl:variable name="results" >
@@ -60,9 +60,7 @@
                     <xsl:variable name="ana" select="."/>
                     <xsl:if test="count($results) > 0">
                         <xsl:if test="count($filtered-by-word/tei:cit[.//tei:w[contains-token(@ana,$ana)][1] or .//tei:phr[contains-token(@ana,$ana)][1]]) > 0">
-                            <xsl:if test="count($selected-features) > 1 or $filter-features = ''">
-                                <h3><xsl:value-of select="$results/tei:cit[@ana = $ana][1]//tei:lbl"/></h3>
-                            </xsl:if>
+                            <h3><xsl:value-of select="$results/tei:cit[@ana = $ana][1]//tei:lbl"/></h3>
 
                             <xsl:for-each-group select="$root/items//item" group-by="(.//tei:region[1], 'unknown')[1]">
                                 <xsl:if test="count(current-group()//tei:cit[@type='featureSample' and (.//tei:w[contains-token(@ana,$ana)][1] or .//tei:phr[contains-token(@ana,$ana)][1]) and index-of($filtered-by-word/tei:cit, .) > 0]) > 0">

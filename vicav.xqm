@@ -375,7 +375,7 @@ declare
 %rest:query-param("location", "{$location}")
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:query-param("word", "{$word}")
-%rest:query-param("sentences", "{$sentences}")
+%rest:query-param("features", "{$features}")
 %rest:query-param("highlight", "{$highlight}")
 %rest:query-param("person", "{$person}")
 %rest:query-param("age", "{$age}")
@@ -388,21 +388,24 @@ function vicav:explore_samples(
     $type as xs:string*, 
     $location as xs:string*, 
     $word as xs:string*,
-    $sentences as xs:string*, 
+    $features as xs:string*, 
     $person as xs:string*, 
     $age as xs:string*, 
     $sex as xs:string*, 
     $highlight as xs:string*, 
     $xsltfn as xs:string) {
-    let $ss := if ((empty($word) or $word = '') and (empty($sentences) or $sentences = '')) then 
-            "1"
-        else 
-            if (empty($word) or $word = '') then replace($sentences, '[^\d,]+', '') else ""
 
     let $resourcetype := if (empty($type) or $type = '') then 
             "samples"
         else 
             $type
+
+    let $filter_features := if ((empty($word) or $word = '') and (empty($features) or $features = '')) then 
+            if ($type = 'samples') then "1" else ''
+        else 
+            if (empty($word) or $word = '') then 
+                if ($type = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,\-]+', '')
+            else ""
 
 
     let $ress1 := vicav:explore-data(
@@ -419,7 +422,7 @@ function vicav:explore_samples(
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
     
-    let $sHTML := xslt:transform-text($ress, $style, map {"highlight":string($word),"filter-words": string($word), "filter-sentences":$ss})
+    let $sHTML := xslt:transform-text($ress, $style, map {"highlight":string($word),"filter-words": string($word), "filter-features":$filter_features})
 
     return
         (:<div type="lingFeatures">{$sHTML}</div>:)

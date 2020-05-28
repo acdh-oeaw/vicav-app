@@ -24,26 +24,26 @@ function createCrossSamplesResultsPanel(contents_ = '', query_ = '', pID_ = '', 
     var attachPagingHandlers = function(pID, query) {
         var $root = $('[data-pid=' + pID + ']');
 
-        function changeSentence(sentence) {
+        function changeFeature(feature) {
             var query = $root.attr('data-query').replace(/\+/g, '&').replace(/\|/g, '=')
-            if (query.match(/sentences=/)) {
-                query = query.replace(/sentences=[0-9]*/, 'sentences=' + encodeURIComponent(sentence));
+            if (query.match(/features=/)) {
+                query = query.replace(/features=[0-9]*/, 'features=' + encodeURIComponent(feature));
             } else {
-                query = query + 'sentences=' + encodeURIComponent(sentence)
+                query = query + 'features=' + encodeURIComponent(feature)
             }
             compareQuery(query, function(result) {
                 $('.grid-wrap > div', $root).html(result);
                 var currentURL = decodeURI(window.location.toString());
-                var re = new RegExp("^(.*&" + pID + "=\\[.*?\\,.*)sentences|[0-9]*(.*\\])$")
-                var newUrl = currentURL.replace(re, '$1sentences|' + sentence + '$2')
+                var re = new RegExp("^(.*&" + pID + "=\\[.*?\\,.*)features|[0-9]*(.*\\])$")
+                var newUrl = currentURL.replace(re, '$1features|' + feature + '$2')
                 window.history.replaceState({ }, "", newUrl);
             })
         }
 
-        $root.on('change', '[name=sentences]', function(e) {
-            var sentence = $(e.target)[0].value.split(/,\s*/).join(',');
+        $root.on('change', '[name=features]', function(e) {
+            var feature = $(e.target)[0].value.split(/,\s*/).join(',');
             e.preventDefault();
-            changeSentence(sentence);
+            changeFeature(feature);
         })
 
         $root.on('click', 'a[data-sampletext]', function(e) {    
@@ -65,10 +65,10 @@ function createCrossSamplesResultsPanel(contents_ = '', query_ = '', pID_ = '', 
             })
         })
 
-        $root.on('click', 'a[data-sentence]', function(e) {
+        $root.on('click', 'a[data-feature]', function(e) {
             e.preventDefault();
-            var sentence = $(e.target).attr('data-sentence');
-            changeSentence(sentence);
+            var feature = $(e.target).attr('data-feature');
+            changeFeature(feature);
         })        
     }
         query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
