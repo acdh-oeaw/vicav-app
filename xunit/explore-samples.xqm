@@ -106,12 +106,12 @@ declare %unit:test function test:explore-samples-person-only-data() {
 
 declare %unit:test function test:explore-lingfeatures-locations-data() {
   unit:assert-equals(vicav:explore-data(
-    "vicav_lingfeatures",
+      "vicav_lingfeatures",
       "Test", 
       (),
       (),
       (), 
-      ())//tei:TEI/@xml:id/data(), ('ling_features_test')
+      ())//tei:TEI/@xml:id/data(), ('vicav_lingfeatures_test')
   )
 };
 
@@ -122,6 +122,6 @@ declare %unit:test function test:explore-lingfeatures-data() {
       (),
       (),
       "0,100", 
-      ())//tei:TEI/@xml:id/data(), ('ling_features_test')
+      ())//tei:TEI/@xml:id/data(), ('vicav_lingfeatures_test', 'vicav_lingfeatures_tunis2')
   )
 };
