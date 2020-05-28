@@ -2,9 +2,9 @@ describe('Features', function() {
     it('should show clickable markers', function() {
 	    cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,_features_,]')
 	    cy.get('img.leaflet-marker-icon').then(function() {
-		    cy.get('img[alt^="Tunis"]').click({force: true}).then(function() {
-		    	cy.get('img[alt^="Tunis"]').click({force: true}).then(function() {
-				    cy.get('[data-snippetid="ling_features_tunis"]').contains('h2', 'A List of Linguistic Features of Tunis Arabic')
+		    cy.get('img[alt^="Tunis2"]').click({force: true}).then(function() {
+		    	cy.get('img[alt^="Tunis2"]').click({force: true}).then(function() {
+				    cy.get('[data-snippetid="vicav_lingfeatures_tunis2"]').contains('h2', 'A List of Linguistic Features of Tunis Arabic')
 				});    
 		    })	    	
 	    }) // Wait until the initial markers appear.
