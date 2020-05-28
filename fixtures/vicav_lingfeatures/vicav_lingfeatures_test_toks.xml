@@ -3,7 +3,7 @@
    <teiHeader>
       <fileDesc>
          <titleStmt>
-            <title>A List of Linguistic Features of Test Arabic</title>
+            <title>A List of Linguistic Features of Tunis2 Arabic</title>
             <author>Test</author>
          </titleStmt>
          <publicationStmt>
@@ -27,26 +27,32 @@
             <prefixDef matchPattern="(.+)" replacementPattern="../vocabs/fLib.xml#$1" ident="fvlib" />
          </listPrefixDef>
       </encodingDesc>
+      <profileDesc>
+         <particDesc>
+            <person sex="f" age="45+AinDraham34">AinDraham32</person>
+         </particDesc>
+         <settingDesc>
+            <place>
+               <settlement>Tunis2</settlement>
+               <region></region>
+               <country>Tunisia</country>
+               <location>
+                  <geo>36.9, 10.18</geo>
+               </location>
+            </place>
+         </settingDesc>
+      </profileDesc>
    </teiHeader>
 
    <text>
       <body>
-         <head>
-            <name xml:lang="eng" type="city">Test</name>
-            <name xml:lang="eng" type="country">Tunisia</name>
-         </head>
-         <div type="positioning">
-            <p xml:id="id_p_24">
-               <geo>36.9, 10.18</geo>
-            </p>
-         </div>
          <div type="featureGroup">
             <head>Interrogatives</head>
             <cit ana="semlib:who" type="featureSample">
                <lbl xml:space="preserve">who?</lbl>
                <note xml:space="preserve">Most commonly dialects show reflexes of CA <hi rend="italic">man</hi>.</note>
                <cit type="translation"><quote xml:lang="en">Who is this man? – He is my friend</quote></cit>
-              <quote xml:lang="ar">
+               <quote xml:lang="ar">
                   <w ana="semlib:who" xml:id="wid_00000">škūn</w>
                   <w xml:id="wid_00001" join="right">hā</w>
                   <pc type="ws" xml:id="id_pc_46" join="right">-</pc>

@@ -8,7 +8,9 @@
     <xsl:param name="filter-words"></xsl:param>
     <xsl:param name="filter-features"></xsl:param>
 
+
     <xsl:template match="/">
+    <xsl:value-of select="filter-features"/>
         <xsl:variable name="all-sentences" select="distinct-values(/items//tei:s/@n)" />
         <xsl:variable name="selected-sentences" select="tokenize($filter-features, ',')" />
         <xsl:variable name="prev_sentence">

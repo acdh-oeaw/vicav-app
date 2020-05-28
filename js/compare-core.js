@@ -60,6 +60,12 @@ var unique = function(array) {
 }
 
 function loadWords($root, type) {
+	if ('wordsLoading' in window) {
+		return;
+	} else {
+		wordsLoading = true;
+	}
+
 	$.ajax({
 		url: "data_words",
 		data: {type: type},
@@ -92,12 +98,18 @@ function loadWords($root, type) {
 				allowSpaces: true,
 				placeholderText: 'Search words...'
 			});
+
+			delete window.wordsLoading
 		}
 	});
 }
 
 function loadLocations($root, type) {
-	console.log(type)
+	if ('locationsLoading' in window) {
+		return;
+	} else {
+		locationsLoading = true;
+	}
 	$.ajax({
 		url: "data_locations",
 		data: {type: type},
@@ -130,6 +142,8 @@ function loadLocations($root, type) {
 				allowSpaces: true,
 				placeholderText: 'Seach place names...'
 			});
+
+			delete window.locationsLoading
 		}
 	});
 }
@@ -148,8 +162,12 @@ $(document).on('DOMNodeInserted', "[data-snippetid='compare-features']", functio
 	loadFeatures($(event.target))
 })
 
-
 function loadPersons($root, type) {
+	if ('personsLoading' in window) {
+		return;
+	} else {
+		personsLoading = true;
+	}
 	$.ajax({
 		url: "data_persons",
 		data: {type: type},
@@ -182,12 +200,19 @@ function loadPersons($root, type) {
         	allowSpaces: true,
         	placeholderText: 'Search speaker IDs like Beja1...'
         });
+
+        delete window.personsLoading
     }
 });
 }
 
 
 function loadFeatures($root) {
+	if ('featuresLoading' in window) {
+		return;
+	} else {
+		featuresLoading = true;
+	}
 	$.ajax({
 		url: "feature_labels",
 		dataType: "xml",
@@ -217,8 +242,10 @@ function loadFeatures($root) {
         		}
         	},
         	allowSpaces: true,
-        	placeholderText: 'Search features like "who?"...'
+        	placeholderText: 'Search features like "whose?"...'
         });
+
+        delete window.featuresLoading
     }
 });
 }

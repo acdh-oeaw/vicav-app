@@ -334,8 +334,8 @@ declare function vicav:explore-data(
 
     let $location_q := if(not(empty($loc_qs))) then 
         vicav:or((
-            './/tei:name/text() = [' || string-join($loc_qs, ',') || ']',  
             './/tei:settlement/text() = [' || string-join($loc_qs, ',') || ']', 
+            './/tei:name/text() = [' || string-join($loc_qs, ',') || ']',  
             './/tei:region/text() = [' || string-join($loc_qs, ',') || ']',        
             './/tei:country/text() = [' || string-join($loc_qs, ',') || ']'
         ))
@@ -357,7 +357,7 @@ declare function vicav:explore-data(
 
     let $ress := 
       for $item in $results
-        let $city := $item//tei:body/tei:head/tei:name[1]
+        let $city := $item//tei:teiHeader//tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/text()
         let $informant := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/text()
         let $age := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/@age
         let $sex := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/@sex
@@ -401,12 +401,11 @@ function vicav:explore_samples(
             $type
 
     let $filter_features := if ((empty($word) or $word = '') and (empty($features) or $features = '')) then 
-            if ($type = 'samples') then "1" else ''
+            if ($resourcetype = 'samples') then "1" else ''
         else 
             if (empty($word) or $word = '') then 
-                if ($type = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,\-]+', '')
+                if ($resourcetype = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,\-]+', '')
             else ""
-
 
     let $ress1 := vicav:explore-data(
         'vicav_' || $resourcetype,
@@ -859,7 +858,7 @@ declare
 function vicav:data_locations($type as xs:string*) {
     let $type := if ($type = () or $type = '') then 'samples' else $type
 
-    let $entries := collection('vicav_' || $type)//tei:TEI/(.//tei:name[1], .//tei:place/tei:region[1], .//tei:place/tei:country[1])
+    let $entries := collection('vicav_' || $type)//tei:TEI/(.//tei:name[1], .//tei:settlement[1], .//tei:place/tei:region[1], .//tei:place/tei:country[1])
 
     let $labels :=
     for $item in $entries
