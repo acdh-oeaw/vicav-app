@@ -1,4 +1,21 @@
-var accentMap = {
+const exploreDataStrings = {
+    feature: {
+        class: 'Features',
+        db: 'lingfeatures',
+        xslt: 'cross_features_02.xslt',
+        xslt_single: 'features_01.xslt',
+        single_selector: 'data-featurelist'
+    },
+    sample: {
+        class: 'Samples',
+        db: 'samples',
+        xslt: 'cross_samples_01.xslt',
+        xslt_single: 'sampletext_01.xslt',
+        single_selector: 'data-sampletext'
+    }
+}
+
+const accentMap = {
 	"â": "a",
 	"æ": "a",
 	"ç": "c",
@@ -162,6 +179,17 @@ $(document).on('DOMNodeInserted', "[data-snippetid='compare-features']", functio
 	loadFeatures($(event.target))
 })
 
+$(document).on('click', 'a[data-wordform]', function(e) {    
+    e.preventDefault();
+
+    var word = $(e.target).closest('[data-wordform]').attr('data-wordform');
+    var dataType = $(e.target).closest('[data-type]').attr('data-type');
+
+    compareQuery('type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt, function(result) {
+        createExploreDataResultsPanel(dataType, result, 'type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt);
+    })
+})
+
 function loadPersons($root, type) {
 	if ('personsLoading' in window) {
 		return;
@@ -298,23 +326,6 @@ function compareFormSubmit($root, success_callback) {
   compareQuery(query, success_callback)
 }
 
-const exploreDataStrings = {
-    feature: {
-        class: 'Features',
-        db: 'lingfeatures',
-        xslt: 'cross_features_02.xslt',
-        xslt_single: 'features_01.xslt',
-        single_selector: 'data-featurelist'
-    },
-    sample: {
-        class: 'Samples',
-        db: 'samples',
-        xslt: 'cross_samples_01.xslt',
-        xslt_single: 'sampletext_01.xslt',
-        single_selector: 'data-sampletext'
-    }
-}
-
 function createDisplayExploreDataPanel(type, query_, pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
     $( '<div>' ).load( "compare-" + type + "s.html form" , function(event) {
         var pID = appendPanel(this.innerHTML, "cross" + exploreDataStrings[type].class + "Form", "", "grid-wrap", '', 'hasTeiLink', '', 'compare-' + type + 's', pID_, pVisiblity_, pURL_);
@@ -340,27 +351,34 @@ function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ =
     var attachPagingHandlers = function(pID, query) {
         var $root = $('[data-pid=' + pID + ']');
 
-        function changeFeature(feature) {
-            var query = $root.attr('data-query').replace(/\+/g, '&').replace(/\|/g, '=')
-            if (query.match(/features=/)) {
-                query = query.replace(/features=[0-9]*/, 'features=' + encodeURIComponent(feature));
-            } else {
-                query = query + 'features=' + encodeURIComponent(feature)
+        if (type == 'sample') {
+            function changeFeature(feature) {
+                var query = $root.attr('data-query').replace(/\+/g, '&').replace(/\|/g, '=')
+                if (query.match(/features=/)) {
+                    query = query.replace(/features=[0-9]*/, 'features=' + encodeURIComponent(feature));
+                } else {
+                    query = query + 'features=' + encodeURIComponent(feature)
+                }
+                compareQuery(query, function(result) {
+                    $('.grid-wrap > div', $root).html(result);
+                    var currentURL = decodeURI(window.location.toString());
+                    var re = new RegExp("^(.*&" + pID + "=\\[.*?\\,.*)features|[0-9]*(.*\\])$")
+                    var newUrl = currentURL.replace(re, '$1features|' + feature + '$2')
+                    window.history.replaceState({ }, "", newUrl);
+                })
             }
-            compareQuery(query, function(result) {
-                $('.grid-wrap > div', $root).html(result);
-                var currentURL = decodeURI(window.location.toString());
-                var re = new RegExp("^(.*&" + pID + "=\\[.*?\\,.*)features|[0-9]*(.*\\])$")
-                var newUrl = currentURL.replace(re, '$1features|' + feature + '$2')
-                window.history.replaceState({ }, "", newUrl);
+    
+            $root.on('change', '[name=features]', function(e) {
+                var feature = $(e.target)[0].value.split(/,\s*/).join(',');
+                e.preventDefault();
+                changeFeature(feature);
             })
-        }
-
-        $root.on('change', '[name=features]', function(e) {
-            var feature = $(e.target)[0].value.split(/,\s*/).join(',');
-            e.preventDefault();
-            changeFeature(feature);
-        })
+            $root.on('click', 'a[data-feature]', function(e) {
+                e.preventDefault();
+                var feature = $(e.target).attr('data-feature');
+                changeFeature(feature);
+            })  
+        }      
 
         $root.on('click', 'a[' + exploreDataStrings[type].single_selector + ']', function(e) {    
             e.preventDefault();
@@ -369,22 +387,6 @@ function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ =
                 getFeatureOfLocation('', item, xslt_single);
             }
         })
-
-        $root.on('click', 'a[data-wordform]', function(e) {    
-            e.preventDefault();
-
-            var word = $(e.target).closest('[data-wordform]').attr('data-wordform');
-
-            compareQuery('word=' + word + '&xslt=' + exploreDataStrings[type].xslt, function(result) {
-                createCrossFeaturesResultsPanel(result, 'word=' + word + '&xslt=' + exploreDataStrings[type].xslt);
-            })
-        })
-
-        $root.on('click', 'a[data-feature]', function(e) {
-            e.preventDefault();
-            var feature = $(e.target).attr('data-feature');
-            changeFeature(feature);
-        })        
     }
         query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
 

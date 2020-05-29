@@ -186,19 +186,16 @@ version="2.0">
         not($w/following-sibling::*[1]/name() = 'pc') and
         not(matches($w/following-sibling::tei:w[1]/tei:fs/tei:f[@name='wordform'], '^\W+$')) and
         (not($w/ancestor::tei:choice) or $position != count($w/parent::*/*))"/>
-    <xsl:choose>
-        <xsl:when test="$type='feature'">
-            <xsl:sequence select="acdh:word-span($w, $highLightIdentifier)"></xsl:sequence>            
-        </xsl:when>
-        <xsl:otherwise>
-            <a class="word-search" href="#">
-                <xsl:attribute name="data-wordform">
-                    <xsl:value-of select="$wordform" />
-                </xsl:attribute>
-                <xsl:sequence select="acdh:word-span($w, '')"></xsl:sequence>
-            </a>       
-        </xsl:otherwise>
-    </xsl:choose>
+    <a class="word-search" href="#">
+        <xsl:attribute name="data-wordform">
+            <xsl:value-of select="$wordform" />
+        </xsl:attribute>
+        <xsl:attribute name="data-type">
+            <xsl:value-of select="$type" />
+        </xsl:attribute>
+        <xsl:sequence select="acdh:word-span($w, '')"></xsl:sequence>
+    </a>       
+
     <xsl:if test="not($wordform = '') and $add-space">
         <xsl:value-of select="' '" />
     </xsl:if>
