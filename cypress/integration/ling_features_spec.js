@@ -47,7 +47,6 @@ describe('VICAV Compare features window', function() {
 							    	cy.url().should('contain', '[crossFeaturesResult,type|lingfeatures+xslt|cross_features_02.xslt+location|Tunis2+age|0%2C100+person|Test1+features|semlib%3Awho+word|+sex|m%2Cf,open]')	
 							    	cy.get(el).contains('2 feature sentences found.')
 							    	cy.get('.tdFeaturesRightTarget').then((td) => {
-							    		console.log(td)
 							    		assert.equal(td[0].innerText, 'škūn hā -ṛ -ṛāžil?– hūwa ṣāḥbi.')
 							    		assert.equal(td[1].innerText, 'škūn iṛ-ṛāžil hǟḏa? – hūwa ṣāḥbi.')
 							    	})

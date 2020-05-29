@@ -63,6 +63,7 @@
                             <h3><xsl:value-of select="$results/tei:cit[@ana = $ana][1]//tei:lbl"/></h3>
 
                             <xsl:for-each-group select="$root/items//item" group-by="(.//tei:region[1], 'unknown')[1]">
+                                <xsl:sort select="current-grouping-key()"/>
                                 <xsl:if test="count(current-group()//tei:cit[@type='featureSample' and (.//tei:w[contains-token(@ana,$ana)][1] or .//tei:phr[contains-token(@ana,$ana)][1]) and index-of($filtered-by-word/tei:cit, .) > 0]) > 0">
                                     <h4><xsl:value-of select="current-grouping-key()"/></h4>
                                     
