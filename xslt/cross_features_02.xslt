@@ -5,8 +5,7 @@
     <xsl:include href="sampletexts_common.xslt"/>
     <xsl:include href="features_common.xslt"/>
     <!-- VERSION 3.1.4 -->
-    <xsl:strip-space elements="*"/>
-    <xsl:preserve-space elements=""/>
+    <xsl:preserve-space elements="*"/>
 
     <xsl:param name="filter-words"></xsl:param>
     <xsl:param name="filter-features"></xsl:param>
@@ -122,10 +121,4 @@
         </div>
     </xsl:template>
  
-    
-    <xsl:template match="tei:fs"><xsl:value-of select="."/></xsl:template>
-    <xsl:template match="tei:head"></xsl:template>
-    <xsl:template match="tei:hi[@rend = 'italic']"><i><xsl:apply-templates/></i></xsl:template>
-    <xsl:template match="tei:hi[@rend = 'bold']"><b><xsl:apply-templates/></b></xsl:template>
-    <xsl:template match="tei:p"></xsl:template>
-</xsl:stylesheet>
+ </xsl:stylesheet>

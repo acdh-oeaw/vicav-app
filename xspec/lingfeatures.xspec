@@ -3,7 +3,7 @@
     xmlns:tei="http://www.tei-c.org/ns/1.0"
     stylesheet="../xslt/features_01.xslt"
     xmlns="http://www.w3.org/1999/xhtml">    
-    <x:scenario label="explore-samples view by word">
+    <x:scenario label="simple lingfeatures">
         <x:variable name="result" href="../fixtures/lingfeatures-output.xml" as="document-node()?"></x:variable>
         <x:context href="../fixtures/vicav_lingfeatures/vicav_lingfeatures_test_toks.xml" select="/"></x:context>
         <x:expect label="to match output" select="$result/*">

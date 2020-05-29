@@ -7,19 +7,16 @@ declare %updating %unit:before-module function test:before-all-tests() {
 };
 
 declare %updating %unit:before-module function test:before-all-test() {
-  (: Gererate new fixtures with this
   file:write-text(
-    file:parent(static-base-uri()) ||'../fixtures/explore-samples-location-person-data.xml', 
+    file:parent(static-base-uri()) ||'../fixtures/explore-features-data.xml', 
     serialize(vicav:explore-data(
+      'vicav_lingfeatures',
       "Tunis2", 
-      (),
-      (), 
+      '', 
       "Test1", 
       "0,100", 
-      (), 
-      (), 
-      "cross_samples_01.xslt"))
-  ):)
+      ())
+  ))
 };
   
 (:~ Initializing function, which is called once after all tests. :)
