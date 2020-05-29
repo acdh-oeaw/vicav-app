@@ -193,7 +193,7 @@ version="2.0">
         <xsl:attribute name="data-type">
             <xsl:value-of select="$type" />
         </xsl:attribute>
-        <xsl:sequence select="acdh:word-span($w, '')"></xsl:sequence>
+        <xsl:sequence select="acdh:word-span($w, $highLightIdentifier)"></xsl:sequence>
     </a>       
 
     <xsl:if test="not($wordform = '') and $add-space">

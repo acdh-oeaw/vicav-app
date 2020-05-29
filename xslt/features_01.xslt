@@ -3,7 +3,6 @@
     xmlns:tei="http://www.tei-c.org/ns/1.0" 
     xmlns:acdh="http://acdh.oeaw.ac.at"
     version="2.0">
-    <xsl:include href="sampletexts_common.xslt"/>
     <xsl:include href="features_common.xslt"/>
 
     <xsl:preserve-space elements="*"/>
