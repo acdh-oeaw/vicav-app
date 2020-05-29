@@ -7,16 +7,16 @@ declare %updating %unit:before-module function test:before-all-tests() {
 };
 
 declare %updating %unit:before-module function test:before-all-test() {
-  file:write-text(
-    file:parent(static-base-uri()) ||'../fixtures/explore-features-data.xml', 
+  (:file:write-text(
+    file:parent(static-base-uri()) ||'../fixtures/explore-samples-word-data.xml', 
     serialize(vicav:explore-data(
-      'vicav_lingfeatures',
-      "Tunis2", 
-      '', 
-      "Test1", 
-      "0,100", 
+      'vicav_samples',
+      (), 
+      'ṯūm,b*tin*', 
+      (), 
+      (), 
       ())
-  ))
+  )):)
 };
   
 (:~ Initializing function, which is called once after all tests. :)
@@ -62,7 +62,7 @@ declare %unit:test function test:explore-samples-word() {
     "ṯūm,b*tin*",
     "", 
     "", 
-    "")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01')
+    "")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01', 'test_sample_02')
   )
 };
 

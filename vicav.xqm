@@ -298,7 +298,7 @@ declare function vicav:explore-data(
         '(.//tei:person/text() = ['|| string-join($ps, ',') ||'])'
         else ''
 
-    let $word_q := for $w in tokenize($word, ',')
+    let $words_q := for $w in tokenize($word, ',')
             let $match_str := if (contains($w, '*')) then
                 '[matches(.,"(^|\W)' || replace($w, '\*', '.*') || '($|\W)")][1]'
                 else 
@@ -306,7 +306,8 @@ declare function vicav:explore-data(
             return 
                 vicav:or(('.//tei:w' || $match_str, './/tei:f' || $match_str, './/tei:phr' || $match_str))
 
-    
+    let $word_q := if (empty($words_q)) then '' else vicav:or($words_q)
+
     let $age_bounds := if ($age) then
             for $a in tokenize($age, ',')
             order by number($a)
