@@ -297,3 +297,121 @@ function compareFormSubmit($root, success_callback) {
   //var sentencesUri = (Array.isArray(sentences) && sentences.indexOf('any') != -1) ? 'any' : sentences.replace(/\s+/g, '')
   compareQuery(query, success_callback)
 }
+
+const exploreDataStrings = {
+    feature: {
+        class: 'Features',
+        db: 'lingfeatures',
+        xslt: 'cross_features_02.xslt',
+        xslt_single: 'features_01.xslt',
+        single_selector: 'data-featurelist'
+    },
+    sample: {
+        class: 'Samples',
+        db: 'samples',
+        xslt: 'cross_samples_01.xslt',
+        xslt_single: 'sampletext_01.xslt',
+        single_selector: 'data-sampletext'
+    }
+}
+
+function createDisplayExploreDataPanel(type, query_, pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
+    $( '<div>' ).load( "compare-" + type + "s.html form" , function(event) {
+        var pID = appendPanel(this.innerHTML, "cross" + exploreDataStrings[type].class + "Form", "", "grid-wrap", '', 'hasTeiLink', '', 'compare-' + type + 's', pID_, pVisiblity_, pURL_);
+
+        var $root = $('[data-pid=' + pID + ']');
+        attachAgeSliderHandler($root)
+
+        $('form.compare-' + type + 's', $root).submit(function(event) {
+            event.preventDefault();
+            compareFormSubmit($root, function (result, query) {
+                if (result.includes('error type="user authentication"')) {
+                    alert('Error: authentication did not work');
+                } 
+                else {
+                    createExploreDataResultsPanel(type, result, query)
+                }
+            });
+        });
+    });    
+}
+
+function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
+    var attachPagingHandlers = function(pID, query) {
+        var $root = $('[data-pid=' + pID + ']');
+
+        function changeFeature(feature) {
+            var query = $root.attr('data-query').replace(/\+/g, '&').replace(/\|/g, '=')
+            if (query.match(/features=/)) {
+                query = query.replace(/features=[0-9]*/, 'features=' + encodeURIComponent(feature));
+            } else {
+                query = query + 'features=' + encodeURIComponent(feature)
+            }
+            compareQuery(query, function(result) {
+                $('.grid-wrap > div', $root).html(result);
+                var currentURL = decodeURI(window.location.toString());
+                var re = new RegExp("^(.*&" + pID + "=\\[.*?\\,.*)features|[0-9]*(.*\\])$")
+                var newUrl = currentURL.replace(re, '$1features|' + feature + '$2')
+                window.history.replaceState({ }, "", newUrl);
+            })
+        }
+
+        $root.on('change', '[name=features]', function(e) {
+            var feature = $(e.target)[0].value.split(/,\s*/).join(',');
+            e.preventDefault();
+            changeFeature(feature);
+        })
+
+        $root.on('click', 'a[' + exploreDataStrings[type].single_selector + ']', function(e) {    
+            e.preventDefault();
+            var item = $(e.target).closest('['+ exploreDataStrings[type].single_selector +']').attr(exploreDataStrings[type].single_selector);
+            if (item) {
+                getFeatureOfLocation('', item, xslt_single);
+            }
+        })
+
+        $root.on('click', 'a[data-wordform]', function(e) {    
+            e.preventDefault();
+
+            var word = $(e.target).closest('[data-wordform]').attr('data-wordform');
+
+            compareQuery('word=' + word + '&xslt=' + exploreDataStrings[type].xslt, function(result) {
+                createCrossFeaturesResultsPanel(result, 'word=' + word + '&xslt=' + exploreDataStrings[type].xslt);
+            })
+        })
+
+        $root.on('click', 'a[data-feature]', function(e) {
+            e.preventDefault();
+            var feature = $(e.target).attr('data-feature');
+            changeFeature(feature);
+        })        
+    }
+        query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
+
+    if (contents_ == '' && query != '') {
+        compareQuery(query, function(result) {
+            var pID = appendPanel(result, "cross" + exploreDataStrings[type].class + "Result", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-' +type + 's-result', '', pVisiblity_, pURL_);
+            attachPagingHandlers(pID, query)
+        })
+    } else if (contents_ !== '') {
+        var pID = appendPanel(contents_, "cross"+ exploreDataStrings[type].class + "Result", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-' + type + 's-result', '', pVisiblity_, pURL_);
+            attachPagingHandlers(pID, query)
+    }
+}
+
+// Navigation entry
+$("#liVicavCrossFeatureQuery").mousedown (function (event) {
+    clearMarkerLayers();
+    insertFeatureMarkers();
+    adjustNav(this.id, "#subNavFeaturesGeoRegMarkers");
+	createDisplayExploreDataPanel('feature', '','', 'open', false);
+});
+
+
+// Navigation entry
+$("#liExploreSamples").mousedown (function (event) {
+    clearMarkerLayers();
+    insertSampleMarkers();
+    adjustNav(this.id, "#subNavSamplesGeoRegMarkers");
+    createDisplayExploreDataPanel('sample', '','', 'open', false);
+});

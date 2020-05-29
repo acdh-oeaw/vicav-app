@@ -1224,26 +1224,26 @@ function () {
                 if (queryFunc == 'crossFeaturesForm') {
                     var query = pArgs[1];
                     var pVisiblity = pArgs[2];
-                    createDisplayCrossFeaturesPanel(query, pID_, pVisiblity, true);
+                    createDisplayExploreDataPanel('feature', query, pID_, pVisiblity, true);
 //                    (query, pID_, pVisiblity, true);
                 } else
                 if (queryFunc == 'crossFeaturesResult') {
                     var query = pArgs[1];
                     var pVisiblity = pArgs[2];
-                    createCrossFeaturesResultsPanel('', query, pID_, pVisiblity, true);
+                    createExploreDataResultsPanel('feature', '', query, pID_, pVisiblity, true);
 //                    (query, pID_, pVisiblity, true);
                 } else
 
                 if (queryFunc == 'crossSamplesForm') {
                     var query = pArgs[1];
                     var pVisiblity = pArgs[2];
-                    createDisplayCrossSamplesPanel(query, pID_, pVisiblity, true);
+                    createDisplayExploreDataPanel('sample', query, pID_, pVisiblity, true);
 //                    (query, pID_, pVisiblity, true);
                 } else
                 if (queryFunc == 'crossSamplesResult') {
                     var query = pArgs[1];
                     var pVisiblity = pArgs[2];
-                    createCrossSamplesResultsPanel('', query, pID_, pVisiblity, true);
+                    createExploreDataResultsPanel('sample', '', query, pID_, pVisiblity, true);
 //                    (query, pID_, pVisiblity, true);
                 } else
 
