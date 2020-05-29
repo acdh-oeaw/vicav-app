@@ -3,7 +3,7 @@ describe('Features', function() {
 	    cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,_features_,]')
 	    cy.get('img.leaflet-marker-icon').then(function() {
 		    cy.get('img[alt^="Tunis2"]').click({force: true}).then(function() {
-			    cy.get('[data-snippetid="vicav_lingfeatures_tunis2"]').contains('h2', 'A List of Linguistic Features of Tunis Arabic')
+			    cy.get('[data-snippetid="vicav_lingfeatures_tunis2"]').contains('h2', 'A List of Linguistic Features of Tunis2 Arabic')
 		    })	    	
 	    }) // Wait until the initial markers appear.
     });
@@ -46,8 +46,11 @@ describe('VICAV Compare features window', function() {
 							    cy.get('[data-snippetID=compare-features-result]').then((el) => {
 							    	cy.url().should('contain', '[crossFeaturesResult,type|lingfeatures+xslt|cross_features_02.xslt+location|Tunis2+age|0%2C100+person|Test1+features|semlib%3Awho+word|+sex|m%2Cf,open]')	
 							    	cy.get(el).contains('2 feature sentences found.')
-							    	cy.get(el).contains('škūn hā -ṛ -ṛāžil?– hūwa ṣāḥbi. ')
-							    	cy.get(el).contains('škūn iṛ-ṛāžil hǟḏa? – hūwa ṣāḥbi. ')
+							    	cy.get('.tdFeaturesRightTarget').then((td) => {
+							    		console.log(td)
+							    		assert.equal(td[0].innerText, 'škūn hā -ṛ -ṛāžil?– hūwa ṣāḥbi.')
+							    		assert.equal(td[1].innerText, 'škūn iṛ-ṛāžil hǟḏa? – hūwa ṣāḥbi.')
+							    	})
 							    	cy.get(el).contains('Jendouba')
 							    })
 						    })
