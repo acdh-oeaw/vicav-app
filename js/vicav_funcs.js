@@ -822,6 +822,25 @@ function execBiblQuery(query_, pID_, pVisiblity_, pURL_) {
     }
 }
 
+function getDataList(type, pID_, pVisiblity_, pURL_) {
+    $.ajax({
+        url: 'data_list',
+        query: 'type=' + type,
+        type: 'GET',
+        dataType: 'html',
+        cache: false,
+        crossDomain: true,
+        contentType: 'application/html; ',
+        success: function (result) {
+            //console.log(result);
+            appendPanel(result, "dataList", type, "grid-wrap", '', 'hasTeiLink', '', type, pID_, pVisiblity_, pURL_);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(errorThrown);
+        }
+    });
+}
+
 function getSample(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
     id_ = snippetID_.replace(/sampleText:/, '');
     qs = './sample?coll=vicav_samples&id=' + snippetID_ + '&xslt=' + style_;
@@ -1357,6 +1376,13 @@ function () {
 //                    (query, pID_, pVisiblity, true);
                 } else
 
+                if (queryFunc == 'dataList') {
+                    var query = pArgs[1];
+                    var pVisiblity = pArgs[2];
+                    var pVisiblity = pArgs[3];
+                    getDataList(query, pID_, pVisiblity, true);
+                } else
+
                 if (queryFunc == 'biblQuery') {
                     var query = pArgs[1];
                     var pVisiblity = pArgs[2];
@@ -1759,6 +1785,10 @@ function () {
     });
     $(document).on('mousedown', "#liSampleMSA", function (event) {
         getSample('Modern Standard Arabic', 'msa_sample_01', 'sampletext_01.xslt');
+    });
+
+    $("#liFeaturesList").mousedown (function (event) {
+        getDataList('lingfeatures')
     });
 
 
