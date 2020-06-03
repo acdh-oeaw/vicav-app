@@ -1057,11 +1057,11 @@ function vicav:get_data_list($type as xs:string*) {
                         attribute {$typestring} {$item/@xml:id},
                         text {$item//tei:person[1]/text()},
                         text { string-join((' (Revision: ', replace($item//tei:revisionDesc/tei:change[1]/@when, 'T.*', ''), ')')) }
-                    }
+                    }, element br {}
                 }
 
             return
-                $sts    
+                <div><h4>{$city} ({count($items[.//tei:settlement = $city])})</h4>{$sts}</div> 
     return
-        <div>{$out}</div>
+        <div>Total: {count($items)}<br/>{$out}</div>
 };
