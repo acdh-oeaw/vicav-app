@@ -825,7 +825,7 @@ function execBiblQuery(query_, pID_, pVisiblity_, pURL_) {
 function getDataList(type, pID_, pVisiblity_, pURL_) {
     $.ajax({
         url: 'data_list',
-        query: 'type=' + type,
+        data: {'type':  type },
         type: 'GET',
         dataType: 'html',
         cache: false,
@@ -1791,6 +1791,9 @@ function () {
         getDataList('lingfeatures')
     });
 
+    $("#liSamplesList").mousedown (function (event) {
+        getDataList('samples')
+    });
 
     /* ******************************** */
     /* ****  CORPUS ******************* */
