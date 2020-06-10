@@ -37,11 +37,16 @@ version="2.0">
 <xsl:function name="acdh:feature-sentence">
     <xsl:param name="sentence"/>
     <xsl:param name="ana"/>
-    <xsl:for-each select="$sentence/(tei:w | tei:c | tei:pc | tei:choice)">
+    <xsl:for-each select="$sentence/(tei:w | tei:c | tei:pc | tei:phr | tei:choice)">
         <xsl:variable name="position" select="position()"/>
         <xsl:choose>
             <xsl:when test="./name() = 'w'">
                 <xsl:sequence select="acdh:word-block(., 'feature', $position, $ana)" />
+            </xsl:when>
+            <xsl:when test="./name() = 'phr'">
+                <xsl:for-each select="./*">
+                    <xsl:sequence select="acdh:word-block(., 'feature', $position, $ana)" />                    
+                </xsl:for-each>
             </xsl:when>
             <xsl:when test="./name() = 'choice'">
                 <xsl:sequence select="acdh:choice-block(., 'feature', $ana)" />
@@ -63,7 +68,7 @@ version="2.0">
     <xsl:param name="highLightIdentifier"></xsl:param>
     <xsl:variable name="wordform" select="acdh:get-wordform($w)"/>
     <xsl:variable name="matchesHighlights" select="acdh:matches-highlight($wordform)"/>
-    <xsl:variable name="matchesHighlightId" select="not($highLightIdentifier = '') and not(empty($w/@ana)) and (contains($w/@ana,$highLightIdentifier) or contains($w/parent::tei:phr/@ana, $highLightIdentifier))"/>    
+    <xsl:variable name="matchesHighlightId" select="not($highLightIdentifier = '') and (not(empty($w/@ana)) and (contains($w/@ana,$highLightIdentifier)) or contains($w/parent::tei:phr/@ana, $highLightIdentifier))"/>    
     <span class="w" data-html="true" data-placement="top">
         <xsl:if test="$matchesHighlightId = true() or $matchesHighlights = true()">
             <xsl:attribute name="style">color: red</xsl:attribute>
