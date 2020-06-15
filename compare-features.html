@@ -1,13 +1,14 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Compare samples</title>
+		<title>Compare feature lists</title>
 	</head>
 	<body class="compare-samples-window">
-		<div class="" data-snippetid="compare-samples" data-filled="true" data-pid="1">
-			<form class="compare-samples container-fluid">
-				<h2>Search samples</h2>
-				<input type="hidden" name="xslt" value="cross_samples_01.xslt">
+		<div class="" data-snippetid="compare-features" data-filled="true" data-pid="1">
+			<form class="compare-features container-fluid">
+				<h2>Search features</h2>
+				<input type="hidden" value="lingfeatures" name="type"/>
+				<input type="hidden" name="xslt" value="cross_features_02.xslt">
 				<div class="row">
 					<fieldset class="col-sm">
 						<fieldset class="location-wrapper">
@@ -32,7 +33,6 @@
 							<div class="age-slider"></div>
 						</fieldset>
 					</fieldset>
-
 					<fieldset class="col-sm">
 						<fieldset class="person-wrapper">
 							<label for="person">Person(s):</label>
@@ -40,29 +40,26 @@
 							<div><input class="person" id="person" name="person"/></div>
 						</fieldset>
 
-						<fieldset class="features-wrapper">
+ 						<fieldset class="features-wrapper">
 							<fieldset>
-								<label for="sentences_page">Sentences:</label>
-								<small>List sentence numbers like 2,3,4 )</small>
-								<input class="features" name="features" type="text" id="sentences_page" /><label for="sentences_any"></label>
+								<label for="features">Features:</label>
+								<small>List feature labels like "whose?".</small>
+								<input class="features" name="features" type="text" id="features" />
 							</fieldset>
-							<fieldset>
-								<input class="features" name="features" type="checkbox" id="sentences_any" value="any" type="" />
-								<label for="sentences_any">All</label>
-							</fieldset>					
 						</fieldset>
 
 						<fieldset class="word-wrapper">
 							<label for="word">Word(s):</label>
 							<small>You can use * as a wildcard representing any characters in-between. Eg. ġud* will show ġudwa and ġudd as well. b*tnj* returns bētinjāl, bītinjāl or bītinjān. Make sure to enter the transliteration characters properly.</small>
 							<input class="word" id="word" name="word"/>
-						</fieldset>					
+						</fieldset>
+			
 					</fieldset>
-				</div>
+					</div>
 				<div class="row">
 					<div class="col-sm">
 					<fieldset class="actions">
-						<input class="green" type="submit" value="Compare texts"></input>					
+						<input class="green" type="submit" value="Compare features"></input>					
 					</fieldset>
 					</div>
 				</div>

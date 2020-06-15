@@ -1,4 +1,21 @@
-var accentMap = {
+const exploreDataStrings = {
+    feature: {
+        class: 'Features',
+        db: 'lingfeatures',
+        xslt: 'cross_features_02.xslt',
+        xslt_single: 'features_01.xslt',
+        single_selector: 'data-featurelist'
+    },
+    sample: {
+        class: 'Samples',
+        db: 'samples',
+        xslt: 'cross_samples_01.xslt',
+        xslt_single: 'sampletext_01.xslt',
+        single_selector: 'data-sampletext'
+    }
+}
+
+const accentMap = {
 	"â": "a",
 	"æ": "a",
 	"ç": "c",
@@ -59,9 +76,16 @@ var unique = function(array) {
 	return newArray;
 }
 
-function loadWords($root) {
+function loadWords($root, type) {
+	if ('wordsLoading' in window) {
+		return;
+	} else {
+		wordsLoading = true;
+	}
+
 	$.ajax({
-		url: "sample_words",
+		url: "data_words",
+		data: {type: type},
 		dataType: "xml",
 		success: function( xmlResponse ) {
 			var data = $( "word", xmlResponse ).map(function() {
@@ -91,13 +115,21 @@ function loadWords($root) {
 				allowSpaces: true,
 				placeholderText: 'Search words...'
 			});
+
+			delete window.wordsLoading
 		}
 	});
 }
 
-function loadLocations($root) {
+function loadLocations($root, type) {
+	if ('locationsLoading' in window) {
+		return;
+	} else {
+		locationsLoading = true;
+	}
 	$.ajax({
-		url: "sample_locations",
+		url: "data_locations",
+		data: {type: type},
 		dataType: "xml",
 		success: function( xmlResponse ) {
 			var data = $( "location", xmlResponse ).map(function() {
@@ -127,21 +159,46 @@ function loadLocations($root) {
 				allowSpaces: true,
 				placeholderText: 'Seach place names...'
 			});
+
+			delete window.locationsLoading
 		}
 	});
 }
 // Init person widges
 
 $(document).on('DOMNodeInserted', "[data-snippetid='compare-samples']", function(event) {
-	loadWords($(event.target))
-	loadLocations($(event.target))
-	loadPersons($(event.target))
+	loadWords($(event.target), 'samples')
+	loadLocations($(event.target), 'samples')
+	loadPersons($(event.target), 'samples')
 })
 
+$(document).on('DOMNodeInserted', "[data-snippetid='compare-features']", function(event) {
+	loadWords($(event.target), 'lingfeatures')
+	loadLocations($(event.target), 'lingfeatures')
+	loadPersons($(event.target), 'lingfeatures')
+	loadFeatures($(event.target))
+})
 
-function loadPersons($root) {
+$(document).on('click', 'a[data-wordform]', function(e) {    
+    e.preventDefault();
+
+    var word = $(e.target).closest('[data-wordform]').attr('data-wordform');
+    var dataType = $(e.target).closest('[data-type]').attr('data-type');
+
+    compareQuery('type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt, function(result) {
+        createExploreDataResultsPanel(dataType, result, 'type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt);
+    })
+})
+
+function loadPersons($root, type) {
+	if ('personsLoading' in window) {
+		return;
+	} else {
+		personsLoading = true;
+	}
 	$.ajax({
-		url: "sample_persons",
+		url: "data_persons",
+		data: {type: type},
 		dataType: "xml",
 		success: function( xmlResponse ) {
 			var data = $( "person", xmlResponse ).map(function() {
@@ -171,12 +228,57 @@ function loadPersons($root) {
         	allowSpaces: true,
         	placeholderText: 'Search speaker IDs like Beja1...'
         });
+
+        delete window.personsLoading
+    }
+});
+}
+
+
+function loadFeatures($root) {
+	if ('featuresLoading' in window) {
+		return;
+	} else {
+		featuresLoading = true;
+	}
+	$.ajax({
+		url: "feature_labels",
+		dataType: "xml",
+		success: function( xmlResponse ) {
+			var data = $( "feature", xmlResponse ).map(function() {
+				if( $( this ).text() !== "") {
+					return {
+						value: $( this ).attr('ana'),
+						label: $( this ).text() 
+					};
+				}
+			}).get();
+
+        // Uniques.
+        data = Array.from(new Set(data.map(JSON.stringify))).map(JSON.parse);
+
+        $(".features", $root).tagit({
+        	autocomplete: {
+        		delay: 200, 
+        		minLength: 1,       
+        		source: function( request, response ) {
+        			var matcher = new RegExp( $.ui.autocomplete.escapeRegex( request.term ), "i" );
+        			response( $.grep( data, function( value ) {
+        				value = value.label || value.value || value;
+        				return matcher.test( value );
+        			}) );
+        		}
+        	},
+        	allowSpaces: true,
+        	placeholderText: 'Search features like "whose?"...'
+        });
+
+        delete window.featuresLoading
     }
 });
 }
 
 function attachAgeSliderHandler($root) {
-
 	$( ".age-slider", $root ).slider({
 		range: true,
 		min: 0,
@@ -193,8 +295,8 @@ function attachAgeSliderHandler($root) {
 	$('[name="age"]', $root).hide();
 }
 
-function crossSamplesQuery(query, success_callback) {
-	var url = 'explore_samples?'+ query + '&xslt=cross_samples_01.xslt';
+function compareQuery(query, success_callback) {
+	var url = 'explore_samples?'+ query;
 	$.ajax({
 		url: url,
 		dataType: 'html',
@@ -207,8 +309,8 @@ function crossSamplesQuery(query, success_callback) {
 	});
 }
 
-function crossSamplesFormSubmit($root, success_callback) {
-	var $form = $('form.compare-samples', $root); 
+function compareFormSubmit($root, success_callback) {
+	var $form = $('form[class^=compare]', $root); 
 
 	var sex = []
 	if ($('[name="sex"][value=m]', $root).prop('checked')) {
@@ -221,5 +323,97 @@ function crossSamplesFormSubmit($root, success_callback) {
 	query = $form.serialize().replace(/(&sex=[a-z])/g, '') + ('&sex=' + encodeURIComponent(sex.join(',')));
 
   //var sentencesUri = (Array.isArray(sentences) && sentences.indexOf('any') != -1) ? 'any' : sentences.replace(/\s+/g, '')
-  crossSamplesQuery(query, success_callback)
+  compareQuery(query, success_callback)
 }
+
+function createDisplayExploreDataPanel(type, query_, pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
+    $( '<div>' ).load( "compare-" + type + "s.html form" , function(event) {
+        var pID = appendPanel(this.innerHTML, "cross" + exploreDataStrings[type].class + "Form", "", "grid-wrap", '', 'hasTeiLink', '', 'compare-' + type + 's', pID_, pVisiblity_, pURL_);
+
+        var $root = $('[data-pid=' + pID + ']');
+        attachAgeSliderHandler($root)
+
+        $('form.compare-' + type + 's', $root).submit(function(event) {
+            event.preventDefault();
+            compareFormSubmit($root, function (result, query) {
+                if (result.includes('error type="user authentication"')) {
+                    alert('Error: authentication did not work');
+                } 
+                else {
+                    createExploreDataResultsPanel(type, result, query)
+                }
+            });
+        });
+    });    
+}
+
+function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
+    var attachPagingHandlers = function(pID, query) {
+        var $root = $('[data-pid=' + pID + ']');
+
+        if (type == 'sample') {
+            function changeFeature(feature) {
+                var query = $root.attr('data-query').replace(/\+/g, '&').replace(/\|/g, '=')
+                if (query.match(/features=/)) {
+                    query = query.replace(/features=[0-9]*/, 'features=' + encodeURIComponent(feature));
+                } else {
+                    query = query + 'features=' + encodeURIComponent(feature)
+                }
+                compareQuery(query, function(result) {
+                    $('.grid-wrap > div', $root).html(result);
+                    var currentURL = decodeURI(window.location.toString());
+                    var re = new RegExp("^(.*&" + pID + "=\\[.*?\\,.*)features|[0-9]*(.*\\])$")
+                    var newUrl = currentURL.replace(re, '$1features|' + feature + '$2')
+                    window.history.replaceState({ }, "", newUrl);
+                })
+            }
+    
+            $root.on('change', '[name=features]', function(e) {
+                var feature = $(e.target)[0].value.split(/,\s*/).join(',');
+                e.preventDefault();
+                changeFeature(feature);
+            })
+            $root.on('click', 'a[data-feature]', function(e) {
+                e.preventDefault();
+                var feature = $(e.target).attr('data-feature');
+                changeFeature(feature);
+            })  
+        }      
+
+        $root.on('click', 'a[' + exploreDataStrings[type].single_selector + ']', function(e) {    
+            e.preventDefault();
+            var item = $(e.target).closest('['+ exploreDataStrings[type].single_selector +']').attr(exploreDataStrings[type].single_selector);
+            if (item) {
+                getFeatureOfLocation('', item, xslt_single);
+            }
+        })
+    }
+        query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
+
+    if (contents_ == '' && query != '') {
+        compareQuery(query, function(result) {
+            var pID = appendPanel(result, "cross" + exploreDataStrings[type].class + "Result", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-' +type + 's-result', '', pVisiblity_, pURL_);
+            attachPagingHandlers(pID, query)
+        })
+    } else if (contents_ !== '') {
+        var pID = appendPanel(contents_, "cross"+ exploreDataStrings[type].class + "Result", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-' + type + 's-result', '', pVisiblity_, pURL_);
+            attachPagingHandlers(pID, query)
+    }
+}
+
+// Navigation entry
+$("#liVicavCrossFeatureQuery").mousedown (function (event) {
+    clearMarkerLayers();
+    insertFeatureMarkers();
+    adjustNav(this.id, "#subNavFeaturesGeoRegMarkers");
+	createDisplayExploreDataPanel('feature', '','', 'open', false);
+});
+
+
+// Navigation entry
+$("#liExploreSamples").mousedown (function (event) {
+    clearMarkerLayers();
+    insertSampleMarkers();
+    adjustNav(this.id, "#subNavSamplesGeoRegMarkers");
+    createDisplayExploreDataPanel('sample', '','', 'open', false);
+});

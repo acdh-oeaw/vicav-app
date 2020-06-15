@@ -3,7 +3,8 @@
     
     <xsl:param name="explanation"></xsl:param>
     <xsl:include href="sampletexts_common.xslt"/>
-  
+    <xsl:include href="features_common.xslt"/>
+    
     <!-- VERSION 3.1.4 -->
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements=""/>
@@ -36,10 +37,11 @@
                 <table class="tbFeatures">
                     <xsl:for-each select="//item">
                         <xsl:sort select="@city"/>
+                        <xsl:value-of select="@city"/>
                         <tr>
                             <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/></td>
                             <td class="tdFeaturesRightTarget">
-                                <xsl:apply-templates select=".//tei:quote[@xml:lang='ar']"/>
+                                <xsl:apply-templates select=".//[@type='featureSample']/tei:quote"/>
                                 <i class="iFeaturesTrans" xml:space="preserve"><xsl:text> </xsl:text>(<xsl:value-of select=".//tei:quote[@xml:lang = 'en']"/>)</i>
                             </td>
                         </tr>                       

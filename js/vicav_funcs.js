@@ -392,6 +392,8 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
             var currentURL = window.location.toString();
 
             switch (panelType_) {
+                case 'crossFeaturesForm':
+                case 'crossFeaturesResult':
                 case 'crossSamplesForm':
                 case 'crossSamplesResult':
                 case 'biblQuery':
@@ -1219,17 +1221,29 @@ function () {
                     var pVisiblity = pArgs[1];
                     createNewQueryBiblioPanel(pID_, pVisiblity, true);
                 } else
+                if (queryFunc == 'crossFeaturesForm') {
+                    var query = pArgs[1];
+                    var pVisiblity = pArgs[2];
+                    createDisplayExploreDataPanel('feature', query, pID_, pVisiblity, true);
+//                    (query, pID_, pVisiblity, true);
+                } else
+                if (queryFunc == 'crossFeaturesResult') {
+                    var query = pArgs[1];
+                    var pVisiblity = pArgs[2];
+                    createExploreDataResultsPanel('feature', '', query, pID_, pVisiblity, true);
+//                    (query, pID_, pVisiblity, true);
+                } else
 
                 if (queryFunc == 'crossSamplesForm') {
                     var query = pArgs[1];
                     var pVisiblity = pArgs[2];
-                    createDisplayCrossSamplesPanel(query, pID_, pVisiblity, true);
+                    createDisplayExploreDataPanel('sample', query, pID_, pVisiblity, true);
 //                    (query, pID_, pVisiblity, true);
                 } else
                 if (queryFunc == 'crossSamplesResult') {
                     var query = pArgs[1];
                     var pVisiblity = pArgs[2];
-                    createCrossSamplesResultsPanel('', query, pID_, pVisiblity, true);
+                    createExploreDataResultsPanel('sample', '', query, pID_, pVisiblity, true);
 //                    (query, pID_, pVisiblity, true);
                 } else
 
@@ -1428,9 +1442,9 @@ function () {
     $("#liVicavCrossDictQuery").mousedown (function (event) {
         createNewCrossDictQueryPanel();
     });
-    $("#liVicavCrossFeatureQuery").mousedown (function (event) {
-        getText('EXPLORE FEATURES', 'vicav_explore_features', 'vicavTexts.xslt');
-    });
+    // $("#liVicavCrossFeatureQuery").mousedown (function (event) {
+    //     getText('EXPLORE FEATURES', 'vicav_explore_features', 'vicavTexts.xslt');
+//    });
 
 
     /* ********************************** */

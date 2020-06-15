@@ -7,19 +7,16 @@ declare %updating %unit:before-module function test:before-all-tests() {
 };
 
 declare %updating %unit:before-module function test:before-all-test() {
-  (: Gererate new fixtures with this
-  file:write-text(
-    file:parent(static-base-uri()) ||'../fixtures/explore-samples-location-person-data.xml', 
-    serialize(vicav:explore-samples-data(
-      "Tunis2", 
-      (),
+  (:file:write-text(
+    file:parent(static-base-uri()) ||'../fixtures/explore-samples-word-data.xml', 
+    serialize(vicav:explore-data(
+      'vicav_samples',
       (), 
-      "Test1", 
-      "0,100", 
+      'ṯūm,b*tin*', 
       (), 
       (), 
-      "cross_samples_01.xslt"))
-  ):)
+      ())
+  )):)
 };
   
 (:~ Initializing function, which is called once after all tests. :)
@@ -48,68 +45,80 @@ declare %unit:test function test:or() {
 };
 
 declare %unit:test function test:explore-samples-locations() {
- unit:assert-equals(vicav:explore-samples-data(
+ unit:assert-equals(vicav:explore-data(
+    "vicav_samples",
     "Tunis2,Test", 
     "",
     "", 
-    "", 
     "0,100", 
-    "", 
-    "", 
-    "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01', 'test_sample_02')
+    "")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01', 'test_sample_02')
  )
 };
 
 declare %unit:test function test:explore-samples-word() {
-  unit:assert-equals(vicav:explore-samples-data(
+  unit:assert-equals(vicav:explore-data(
+    "vicav_samples",
     "", 
     "ṯūm,b*tin*",
     "", 
     "", 
-    "", 
-    "", 
-    "", 
-    "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01')
+    "")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01', 'test_sample_02')
   )
 };
 
 declare %unit:test function test:explore-samples-gender-age-only() {
-  unit:assert-equals(vicav:explore-samples-data(
+  unit:assert-equals(vicav:explore-data(
+    "vicav_samples",
       (), 
       (),
       (), 
-      (), 
       "0,100", 
-      "m,f", 
-      (), 
-      "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('test_sample_01', 'test_sample_02')
+      "m,f")//tei:TEI/@xml:id/data(), ('test_sample_01', 'test_sample_02')
   )
 };
 
 
 declare %unit:test function test:explore-samples-locations-persons-data() {
-  unit:assert-equals(vicav:explore-samples-data(
+  unit:assert-equals(vicav:explore-data(
+    "vicav_samples",
       "Tunis2", 
       (),
-      (), 
       "Test2", 
       "0,100", 
-      (), 
-      (), 
-      "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_02')
+      ())//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_02')
   )
 };
 
 
 declare %unit:test function test:explore-samples-person-only-data() {
-  unit:assert-equals(vicav:explore-samples-data(
+  unit:assert-equals(vicav:explore-data(
+    "vicav_samples",
       (), 
       (),
-      (), 
       "Test1", 
       "0,100", 
-      "m,f", 
+      "m,f")//tei:TEI/@xml:id/data(), ('test_sample_01')
+  )
+};
+
+declare %unit:test function test:explore-lingfeatures-locations-data() {
+  unit:assert-equals(vicav:explore-data(
+      "vicav_lingfeatures",
+      "Test", 
+      (),
+      (),
       (), 
-      "cross_samples_01.xslt")//tei:TEI/@xml:id/data(), ('test_sample_01')
+      ())//tei:TEI/@xml:id/data(), ('vicav_lingfeatures_test')
+  )
+};
+
+declare %unit:test function test:explore-lingfeatures-data() {
+  unit:assert-equals(vicav:explore-data(
+    "vicav_lingfeatures",
+      (), 
+      (),
+      (),
+      "0,100", 
+      ())//tei:TEI/@xml:id/data(), ('vicav_lingfeatures_test', 'vicav_lingfeatures_tunis2')
   )
 };
