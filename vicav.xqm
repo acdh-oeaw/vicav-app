@@ -235,7 +235,6 @@ declare
 %rest:GET
 
 function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn as xs:string) {
-    
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $q := 'collection("vicav_lingfeatures'  || vicav:get_project() ||'")//tei:cit[@type="featureSample" and (.//tei:w[contains-token(@ana,"' || $ana || '")][1] or .//tei:phr[contains-token(@ana,"' || $ana || '")][1])]'
     let $query := $ns || $q    
