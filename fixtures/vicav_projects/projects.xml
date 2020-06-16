@@ -1,0 +1,4 @@
+<projects>
+	<project regex="^tunocent.*\.acdh.*\.oeaw\.ac\.at$">tunocent</project>
+	<project regex="^vicav.*\.acdh.*\.oeaw\.ac\.at$">vicav</project>
+</projects>
