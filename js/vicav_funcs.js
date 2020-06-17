@@ -1161,10 +1161,10 @@ function () {
         url: "project",
         dataType: "xml",
         success: function( xmlResponse ) {
-            $( "projectConfig", xmlResponse ).map(function() {
-                $('head > title').text( $( "title", this ).text() )
-                $('#navbarsExampleDefault').html( $( "menu main", this ).html() )  
-                $('.sub-nav-map-items').html($("menu subnav", this).html())
+            $( "project", xmlResponse ).map(function() {
+                $('head > title').text( $( "projectConfig > title", this ).text() )
+                $('#navbarsExampleDefault').html( $( "renderedMenu menu > main", this ).html() )  
+                $('.sub-nav-map-items').html($("renderedMenu menu subnav", this).html())
             })
         }
     });
