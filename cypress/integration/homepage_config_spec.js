@@ -2,6 +2,7 @@ describe('Home page', function() {
     it('should show Tunisia with different config', function() {
     	cy.fixture('../../fixtures/vicav_projects/map.xml').then((fixture) => {
     	cy.writeFile('vicav_projects/vicav.xml', fixture);
+    	cy.exec(Cypress.env('BASEX_ROOT') + '/bin/basexclient -Uadmin -Padmin -c "DROP DATABASE vicav_projects;CREATE DATABASE vicav_projects $(pwd)/vicav_projects"')
 
 	    cy.visit('http://localhost:8984/vicav/')
 	    cy.get('img.leaflet-marker-icon') // Wait until the initial markers appear.
@@ -15,6 +16,7 @@ describe('Home page', function() {
 	    cy.get('img.leaflet-marker-icon') // Wait until the initial markers appear.
     	cy.fixture('../../fixtures/vicav_projects/vicav.xml').then((fixture) => {
 	    	cy.writeFile('vicav_projects/vicav.xml', fixture);
+	    	cy.exec(Cypress.env('BASEX_ROOT') + '/bin/basexclient -Uadmin -Padmin -c "DROP DATABASE vicav_projects;CREATE DATABASE vicav_projects $(pwd)/vicav_projects"')
 		   	cy.visit('http://localhost:8984/vicav/')
 	    	cy.get('img.leaflet-marker-icon') // Wait until the initial markers appear.
 			cy.get('img[alt^="Khorasan"]').should('be.visible');
