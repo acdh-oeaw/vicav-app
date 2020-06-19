@@ -1163,6 +1163,12 @@ function () {
         success: function( xmlResponse ) {
             $( "project", xmlResponse ).map(function() {
                 $('head > title').text( $( "projectConfig > title", this ).text() )
+                let zoom = $( "projectConfig > map > zoom", this ).text();
+                let center = [$( "projectConfig > map > center > lat", this ).text(), $( "projectConfig > map > center > lng", this ).text()];
+                
+                if (zoom !== '' && center[0] !== '' && center[1] !== '')
+                mainMap.setView(center, zoom);
+
                 $('#navbarsExampleDefault').html( $( "renderedMenu menu > main", this ).html() )  
                 $('.sub-nav-map-items').html($("renderedMenu menu subnav", this).html())
             })

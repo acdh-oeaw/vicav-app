@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectConfig id="vicav_config_vicav">
+	<title>Map test</title>
+	<map>
+		<zoom>7</zoom>
+		<center><lat>35</lat><lng>9</lng></center>
+	</map>
+	<menu></menu>
+</projectConfig>
