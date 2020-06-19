@@ -1171,6 +1171,10 @@ function () {
 
                 $('#navbarsExampleDefault').html( $( "renderedMenu menu > main", this ).html() )  
                 $('.sub-nav-map-items').html($("renderedMenu menu subnav", this).html())
+                if ($( "projectConfig > style", this ).text()) {
+                    let style = $("<style>").append($( "projectConfig > style", this ).text())
+                    style.appendTo('head')
+                }
             })
         }
     });
