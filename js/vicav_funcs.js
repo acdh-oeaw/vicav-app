@@ -1155,6 +1155,11 @@ function openDict_MSA() {
     createNewDictQueryPanel('dc_ar_en_publ', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa, MSAFields);
 }
 
+// Load cached skin.
+if (window.localStorage.vicavStyle) {
+    $("<style>").append(window.localStorage.vicavStyle).appendTo('head')
+}
+
 $(document).ready(
 function () {
     $.ajax({
@@ -1163,6 +1168,7 @@ function () {
         success: function( xmlResponse ) {
             $( "project", xmlResponse ).map(function() {
                 $('head > title').text( $( "projectConfig > title", this ).text() )
+                $('a.navbar-brand').html( $( "projectConfig > logo", this ).html() )
                 let zoom = $( "projectConfig > map > zoom", this ).text();
                 let center = [$( "projectConfig > map > center > lat", this ).text(), $( "projectConfig > map > center > lng", this ).text()];
                 
@@ -1171,10 +1177,13 @@ function () {
 
                 $('#navbarsExampleDefault').html( $( "renderedMenu menu > main", this ).html() )  
                 $('.sub-nav-map-items').html($("renderedMenu menu subnav", this).html())
+
                 if ($( "projectConfig > style", this ).text()) {
-                    let style = $("<style>").append($( "projectConfig > style", this ).text())
+                    window.localStorage.vicavStyle = $( "projectConfig > style", this ).text()
+                    let style = $("<style>").append(window.localStorage.vicavStyle)
                     style.appendTo('head')
                 }
+
             })
         }
     });
