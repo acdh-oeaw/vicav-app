@@ -1000,10 +1000,10 @@ function updateUrl_biblMarker(query_, scope_) {
     console.log('updateUrl_biblMarker');
     console.log('query: ' + query_ + ' scope_: ' + scope_);
     currentURL = window.location.toString();
-    if (currentURL.includes('#')) {
+//    if (currentURL.includes('#')) {
         console.log('replaceState (4a): ' + query_ + ':' + scope_);
         var args_01 = currentURL.split('#');
-        var args_02 = args_01[1].split('&');
+        var args_02 = (args_01[1] || '').split('&');
         var sOut = '';
         for (var i = 0; i < args_02.length; i++) {
             if (i == 0) {
@@ -1017,7 +1017,7 @@ function updateUrl_biblMarker(query_, scope_) {
         //console.log(currentURL);
         console.log('replaceState (4)');
         window.history.replaceState({ }, "", newUrl);
-    }
+//    }
 }
 
 function updateUrl_dictQuery(idSuffix_, query_, collname_) {
@@ -1155,6 +1155,8 @@ function openDict_MSA() {
     createNewDictQueryPanel('dc_ar_en_publ', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa, MSAFields);
 }
 
+
+
 // Load cached skin.
 if (window.localStorage.vicavStyle) {
     $("<style>").append(window.localStorage.vicavStyle).appendTo('head')
@@ -1162,6 +1164,13 @@ if (window.localStorage.vicavStyle) {
 
 $(document).ready(
 function () {
+    $("#dvMainMapCont").show();
+    //insertGeoRegMarkers('', 'geo');
+
+    // Parse the given url parameters for views
+    var currentURL = decodeURI(window.location.toString());
+    console.log('reload: currentUrl: ' + currentURL);
+
     $.ajax({
         url: "project",
         dataType: "xml",
@@ -1175,6 +1184,7 @@ function () {
                 if (zoom !== '' && center[0] !== '' && center[1] !== '')
                 mainMap.setView(center, zoom);
 
+
                 $('#navbarsExampleDefault').html( $( "renderedMenu menu > main", this ).html() )  
                 $('.sub-nav-map-items').html($("renderedMenu menu subnav", this).html())
 
@@ -1183,18 +1193,31 @@ function () {
                     let style = $("<style>").append(window.localStorage.vicavStyle)
                     style.appendTo('head')
                 }
+                if (!currentURL.includes('#')) {
+                     let params = $( "projectConfig > frontpage > param", this).map((i, item) => {
+                        return $(item).text()
+                    })
+                    switch($( "projectConfig > frontpage", this).attr('method')) {
+                        case 'geo': 
+                            insertGeoRegMarkers(params[0], params[1]);
+                            updateUrl_biblMarker(params[0], params[1])
+                            break
+                        case 'samples': 
+                            insertSampleMarkers();
+                    }
 
+                    $( "projectConfig > frontpage panel", this).each((i, item) => {
+                        getText($(item).text(), $(item).attr('target'), 'vicavTexts.xslt');                        
+                    })
+
+
+        // console.log('replaceState (6)');
+        // &1=[textQuery,vicavMission,MISSION,open]&2=[textQuery,vicavNews,NEWS,open]");
+
+                }
             })
         }
     });
-
-
-    $("#dvMainMapCont").show();
-    //insertGeoRegMarkers('', 'geo');
-
-    // Parse the given url parameters for views
-    var currentURL = decodeURI(window.location.toString());
-    console.log('reload: currentUrl: ' + currentURL);
 
     if (currentURL.includes('#')) {
         var args = currentURL.split('#');
@@ -1335,11 +1358,6 @@ function () {
             200 * i, i);
         }
     } else {
-        insertGeoRegMarkers('.*', 'geo');
-        console.log('replaceState (6)');
-        window.history.replaceState({ }, "", currentURL + "#map=[biblMarkers,,geo]&1=[textQuery,vicavMission,MISSION,open]&2=[textQuery,vicavNews,NEWS,open]");
-        getText('MISSION', 'vicavMission', 'vicavTexts.xslt', 1, 'open', true);
-        getText('NEWS', 'vicavNews', 'vicavTexts.xslt', 2, 'open', true);
     }
 
     $(document).on('mousedown', "button", function (event) {

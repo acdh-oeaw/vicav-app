@@ -70,7 +70,7 @@ declare
 
 function vicav:project_config() {
     let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
-    let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig></projectConfig>
+    let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
     let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
     return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
 };
