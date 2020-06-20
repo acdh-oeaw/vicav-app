@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectConfig id="vicav_config_vicav">
-	<title>VICAV - Vienna Corpus of Arabic Varieties</title>
-	<menu>
+  <title>VICAV2 - Vienna Corpus of Arabic Varieties</title>
+  <logo><img src="images/vicav_logo.svg"/></logo>
+  <frontpage method="geo">
+    <param>.*</param>
+    <param>geo</param>
+    <panel type="text" target="vicavMission">MISSION</panel>
+    <panel type="text" target="vicavNews">NEWS</panel>
+  </frontpage>
+  <menu>
     <main>
       <dropdown xml:id="dropdown00" title="Project">
         <item xml:id="liVicavMission">Mission</item>
@@ -95,5 +102,5 @@
       <item xml:id="subNavSamplesGeoRegMarkers">Samples</item>
       <item xml:id="subNavVicavDictMarkers">VICAV Dictionaries</item>
     </subnav>
-	</menu>
+  </menu>
 </projectConfig>

@@ -1198,12 +1198,15 @@ function () {
                         return $(item).text()
                     })
                     switch($( "projectConfig > frontpage", this).attr('method')) {
-                        case 'geo': 
-                            insertGeoRegMarkers(params[0], params[1]);
-                            updateUrl_biblMarker(params[0], params[1])
-                            break
                         case 'samples': 
                             insertSampleMarkers();
+                            break;
+                        case 'geo':
+                        default:
+                         if (params.length == 0) params = ['.*', 'geo']
+                            insertGeoRegMarkers(params[0], params[1]);
+                            updateUrl_biblMarker(params[0], params[1])
+                            break 
                     }
 
                     $( "projectConfig > frontpage panel", this).each((i, item) => {
