@@ -174,7 +174,7 @@ function insertProfileMarkers() {
                 sTooltip = sAlt;
                 
                 sQuery = 'profile:' + sAlt + '';
-                fgProfileMarkers.addLayer(L.marker([v1, v2], { alt: sAlt, id: sID }).bindTooltip(sTooltip));
+                fgProfileMarkers.addLayer(L.marker([v1, v2], { alt: sAlt, id: sID, type: 'profile' }).bindTooltip(sTooltip));
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {

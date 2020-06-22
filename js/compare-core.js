@@ -12,6 +12,11 @@ const exploreDataStrings = {
         xslt: 'cross_samples_01.xslt',
         xslt_single: 'sampletext_01.xslt',
         single_selector: 'data-sampletext'
+    },
+    profile: {
+    	db: 'profiles',
+        xslt_single: 'profile_01.xslt',
+    	single_selector: 'data-profile'
     }
 }
 
@@ -205,6 +210,15 @@ $(document).on('click', 'a[data-sampletext]', function(e) {
         getSample('', item, 'sampletext_01.xslt');
     }
 });
+
+$(document).on('click', 'a[data-profile]', function(e) {    
+    e.preventDefault();
+    var item = $(e.target).closest('[data-profile]').attr('data-profile');
+    if (item) {
+        getProfile('', item, 'profile_01.xslt');
+    }
+});
+
 
 function loadPersons($root, type) {
 	if ('personsLoading' in window) {
