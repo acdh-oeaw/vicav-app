@@ -763,7 +763,6 @@ h4::after{
 
 [data-toggle = "tooltip"]{
     cursor: pointer;
-    background-color: rgba(255,255,0,0.3);
 }
 
 div.imgProfile{
@@ -1465,11 +1464,6 @@ form.compare-samples .sentences-wrapper > fieldset {
     z-index: 99999 !important;
 }
 
-[data-toggle = "tooltip"].sample-text-variant {
-    background-color: rgba(165, 129, 3,0.5);
-    color: white;
-    padding: 0 2px;
-}
 .sentences-nav {
     text-align: center;
 }
