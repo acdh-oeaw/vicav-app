@@ -190,6 +190,22 @@ $(document).on('click', 'a[data-wordform]', function(e) {
     })
 })
 
+$(document).on('click', 'a[data-featurelist]', function(e) {    
+    e.preventDefault();
+    var item = $(e.target).closest('[data-featurelist]').attr('data-featurelist');
+    if (item) {
+        getFeatureOfLocation('', item, 'features_01.xslt');
+    }
+});
+
+$(document).on('click', 'a[data-sampletext]', function(e) {    
+    e.preventDefault();
+    var item = $(e.target).closest('[data-sampletext]').attr('data-sampletext');
+    if (item) {
+        getSample('', item, 'sampletext_01.xslt');
+    }
+});
+
 function loadPersons($root, type) {
 	if ('personsLoading' in window) {
 		return;
@@ -378,15 +394,7 @@ function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ =
                 var feature = $(e.target).attr('data-feature');
                 changeFeature(feature);
             })  
-        }      
-
-        $root.on('click', 'a[' + exploreDataStrings[type].single_selector + ']', function(e) {    
-            e.preventDefault();
-            var item = $(e.target).closest('['+ exploreDataStrings[type].single_selector +']').attr(exploreDataStrings[type].single_selector);
-            if (item) {
-                getFeatureOfLocation('', item, xslt_single);
-            }
-        })
+        }
     }
         query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
 
