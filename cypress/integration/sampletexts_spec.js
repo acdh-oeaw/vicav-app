@@ -6,9 +6,15 @@ let checksampleTexts = function(fixture, label) {
     cy.get('#cookie-overlay').should('not.be.visible')
     cy.get('img.leaflet-marker-icon').should('be.visible') // Wait until the initial markers appear.
 
-    for (let l = 0; l < fixture.labels.length; l++) {
-        cy.get('img[alt="'+ fixture.labels[l] + '"]').click({force: true});
-    }
+    cy.get('img[alt="'+ fixture.labels[0] + '"]').click({force: true}).then(() => {
+        if (fixture.labels.length > 1) {
+            cy.get('ul.overlapping-markers').contains(fixture.labels[1]).click({force: true})
+        }
+    });
+
+    // for (let l = 0; l < fixture.labels.length; l++) {
+    //     cy.get('img[alt="'+ fixture.labels[l] + '"]').click({force: true});
+    // }
 
     if (fixture.person !== undefined) {
         cy.get('[data-snippetid=' + fixture.snippetid + '] i').as('snippet')
