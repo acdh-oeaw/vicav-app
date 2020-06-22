@@ -180,17 +180,68 @@ var fgFeatureMarkers = L.featureGroup().addTo(mainMap);
 var fgGeoDictMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
 var fgDictMarkers = L.featureGroup().addTo(mainMap).on("click", onDictMapClick);
 
-var oms = new OverlappingMarkerSpiderfier(mainMap, {nearbyDistance: 2});
+// var oms = new OverlappingMarkerSpiderfier(mainMap, {nearbyDistance: 2});
 
-oms.addListener('click', function(marker) {
-    switch (marker.options.type) {
-        case 'sample':
-            getSample(marker.options.alt, marker.options.id, 'sampletext_01.xslt');
-            break;
-        case 'feature':
-            getFeatureOfLocation(marker.options.alt, marker.options.id, 'features_01.xslt');
-            break;
-    }
+function ptDistanceSq(pt1, pt2) {
+    let dx = pt1.x - pt2.x
+    let dy = pt1.y - pt2.y
+    return dx * dx + dy * dy
+}
+
+mainMap.on('zoomend', () => {
+    this.closePopup();
+})
+
+fgFeatureMarkers.on('click', function(e) {
+    console.log(fgFeatureMarkers)
+    let marker = e.layer
+    let distance = 10
+
+    mainMap.closePopup();
+
+      nearbyMarkerData = []
+      nonNearbyMarkers = []
+      pxSq = distance * distance
+      markerPt = mainMap.latLngToLayerPoint(marker.getLatLng())
+      Object.values(fgFeatureMarkers._layers).forEach(m => {
+            if (mainMap.hasLayer(m)){
+                mPt = mainMap.latLngToLayerPoint(m.getLatLng())
+                if (ptDistanceSq(mPt, markerPt) < pxSq){
+                  nearbyMarkerData.push({marker: m, markerPt: mPt})
+                }
+                else {
+                  nonNearbyMarkers.push(m)
+                }
+                
+            }
+      })
+
+      if (nearbyMarkerData.length == 1) { // 1 => the one clicked => none nearby
+        switch (marker.options.type) {
+            case 'sample':
+                getSample(marker.options.alt, marker.options.id, 'sampletext_01.xslt');
+                break;
+            case 'feature':
+                getFeatureOfLocation(marker.options.alt, marker.options.id, 'features_01.xslt');
+                break;
+
+        }
+        }
+      else {
+        let popupContent = '<ul class="overlapping-markers">'
+
+        nearbyMarkerData.forEach(data => {
+            let typeLink = exploreDataStrings[data.marker.options.type].single_selector
+            popupContent += '<li class="overlapping-marker-label"><a href="#" ' + typeLink +'="'+data.marker.options.id + '">' + data.marker.options.alt + '</a></li>'
+          
+        })
+
+        popupContent = popupContent + '</ul>'
+          marker.bindPopup(popupContent).openPopup()
+
+        console.log('spiderify')
+//              @spiderfy(nearbyMarkerData, nonNearbyMarkers)
+      }
 });
 
 /* ************************************************************************* */

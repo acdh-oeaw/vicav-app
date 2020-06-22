@@ -69,10 +69,9 @@ function insertFeatureMarkers() {
                                 
 
                 sQuery = 'profile:' + sTooltip + '';
-
                 marker = L.marker([v1, v2], { alt: sAlt, id: sID, type: 'feature' }).bindTooltip(sTooltip);
                 fgFeatureMarkers.addLayer(marker);
-                oms.addMarker(marker);
+                //oms.addMarker(marker);
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -122,7 +121,7 @@ function insertSampleMarkers() {
                                 sQuery = 'profile:' + sAlt + '';
                                 marker = L.marker([v1, v2], { alt: sAlt, id: sID, type: 'sample' }).bindTooltip(sTooltip);
                                 fgSampleMarkers.addLayer(marker);
-                                oms.addMarker(marker); 
+                         //       oms.addMarker(marker); 
                             }
             });
         },
