@@ -1787,11 +1787,11 @@ function () {
         getSample('Modern Standard Arabic', 'msa_sample_01', 'sampletext_01.xslt');
     });
 
-    $("#liFeaturesList").mousedown (function (event) {
+    $(document).on('mousedown', "#liFeaturesList", function (event) {
         getDataList('lingfeatures')
     });
 
-    $("#liSamplesList").mousedown (function (event) {
+    $(document).on('mousedown', "#liSamplesList", function (event) {
         getDataList('samples')
     });
 
