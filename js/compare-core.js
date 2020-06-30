@@ -206,9 +206,15 @@ $(document).on('click', 'a[data-featurelist]', function(e) {
 $(document).on('click', 'a[data-sampletext]', function(e) {    
     e.preventDefault();
     var item = $(e.target).closest('[data-sampletext]').attr('data-sampletext');
+    var print = $(e.target).closest('[data-sampletext]').attr('data-print');
     if (item) {
-        getSample('', item, 'sampletext_01.xslt');
-    }
+    	if (!print) {
+	        getSample('', item, 'sampletext_01.xslt');
+    	}
+    	else {
+    		window.open('./sample?coll=vicav_samples&id=' + item + '&print=true&xslt=' + 'sampletext_01.xslt')
+    	}
+    } 
 });
 
 $(document).on('click', 'a[data-profile]', function(e) {    

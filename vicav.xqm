@@ -212,24 +212,32 @@ function vicav:query_biblio_id($query as xs:string*, $xsltfn as xs:string) {
         $sHTML
 };
 
+declare function vicav:transform($doc as element(), $xsltfn as xs:string, $print as xs:string*) {
+    let $stylePath := file:base-dir() || 'xslt/'
+    let $style := doc($stylePath || $xsltfn)
+
+    let $xslt := if (empty($print)) then $style else xslt:transform-text(doc($stylePath || 'printable.xslt'), doc($stylePath || 'printable_path.xslt'), map {'xslt': $stylePath || $xsltfn})
+
+    let $sHTML := xslt:transform-text($doc, $xslt)
+    return
+        $sHTML
+};
+
 declare
 %rest:path("vicav/profile")
 %rest:query-param("coll", "{$coll}")
 %rest:query-param("id", "{$id}")
 %rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("print", "{$print}")
 
 %rest:GET
 
-function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:string) {
+function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:string, $print as xs:string*) {
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $q := 'collection("' || $coll || vicav:get_project_db() || '")//tei:TEI[@xml:id="' || $id || '"]'
     let $query := $ns || $q
     let $results := xquery:eval($query)
-    let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
-    let $style := doc($stylePath)
-    let $sHTML := xslt:transform-text($results, $style)
-    return
-        $sHTML
+    return vicav:transform($results, $xsltfn, $print)
 };
 
 declare
@@ -237,19 +245,16 @@ declare
 %rest:query-param("coll", "{$coll}")
 %rest:query-param("id", "{$id}")
 %rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("print", "{$print}")
 
 %rest:GET
 
-function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:string) {
+function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:string, $print as xs:string*) {
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $q := 'collection("' || $coll || vicav:get_project_db() || '")//tei:TEI[@xml:id="' || $id || '"]'
     let $query := $ns || $q
     let $results := xquery:eval($query)
-    let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
-    let $style := doc($stylePath)
-    let $sHTML := xslt:transform-text($results, $style)
-    return
-        $sHTML
+    return vicav:transform($results, $xsltfn, $print)
 };
 
 
