@@ -198,8 +198,14 @@ $(document).on('click', 'a[data-wordform]', function(e) {
 $(document).on('click', 'a[data-featurelist]', function(e) {    
     e.preventDefault();
     var item = $(e.target).closest('[data-featurelist]').attr('data-featurelist');
+    var print = $(e.target).closest('[data-featurelist]').attr('data-print');
     if (item) {
-        getFeatureOfLocation('', item, 'features_01.xslt');
+    	if (!print) {
+	        getFeatureOfLocation('', item, 'features_01.xslt');
+	    } else {
+	    	window.open('./profile?coll=vicav_lingfeatures&id=' + item + '&print=true&xslt=features_01.xslt');
+	    }
+
     }
 });
 

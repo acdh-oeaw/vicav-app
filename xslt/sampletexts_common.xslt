@@ -69,22 +69,30 @@ version="2.0">
     <xsl:variable name="wordform" select="acdh:get-wordform($w)"/>
     <xsl:variable name="matchesHighlights" select="acdh:matches-highlight($wordform)"/>
     <xsl:variable name="matchesHighlightId" select="not($highLightIdentifier = '') and (not(empty($w/@ana)) and (contains($w/@ana,$highLightIdentifier)) or contains($w/parent::tei:phr/@ana, $highLightIdentifier))"/>    
-    <span class="w" data-html="true" data-placement="top">
-        <xsl:if test="$matchesHighlightId = true() or $matchesHighlights = true()">
-            <xsl:attribute name="style">color: red</xsl:attribute>
-        </xsl:if>
+    <span data-html="true" data-placement="top">
+        <xsl:variable name="title">
+            <xsl:if test="string-length($w/tei:fs/tei:f[@name='pos'])&gt;0">&lt;span class="spPos"&gt;POS:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='pos']"/>&lt;br/&gt;</xsl:if>
+            <xsl:if test="string-length($w/tei:fs/tei:f[@name='lemma'])&gt;0">&lt;span class="spLemma"&gt;Lemma:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='lemma']"/>&lt;br/&gt;</xsl:if>                            
+            <xsl:if test="string-length($w/tei:fs/tei:f[@name='translation'])&gt;0">&lt;span class="spTrans"&gt;English:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='translation']"/>&lt;br/&gt;</xsl:if>
+            <xsl:if test="count($w//tei:f[@name='informant'])&gt;0">&lt;span class="spTrans"&gt;Informant:&lt;/span&gt;&#160;<xsl:value-of select="string-join(distinct-values($w//tei:f[@name='informant']), ', ')"/>&lt;br/&gt;</xsl:if>
+            <xsl:if test="string-length($w/tei:fs/tei:f[@name='comment'])&gt;0">&lt;span class="spTrans"&gt;Note:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='comment']"/>&lt;br/&gt;</xsl:if>      
+        </xsl:variable>
+        <xsl:attribute name="class">
+            <xsl:value-of select="'w'"/>
+            <xsl:if test="$matchesHighlightId = true() or $matchesHighlights = true()">
+                <xsl:value-of select="' highlight'" />
+            </xsl:if>
+            <xsl:if test="$w/tei:fs and not($title = '')">
+                <xsl:value-of select="' sample-text-tooltip'" />
+            </xsl:if>
+        </xsl:attribute>
+
         <xsl:if test="$w/tei:fs">
-            <xsl:attribute name="class">
-                <xsl:value-of select="$w/@class" />
-                <xsl:value-of select="'sample-text-tooltip'" />
-            </xsl:attribute>
-            <xsl:attribute name="title">
-                <xsl:if test="string-length($w/tei:fs/tei:f[@name='pos'])&gt;0">&lt;span class="spPos"&gt;POS:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='pos']"/>&lt;br/&gt;</xsl:if>
-                <xsl:if test="string-length($w/tei:fs/tei:f[@name='lemma'])&gt;0">&lt;span class="spLemma"&gt;Lemma:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='lemma']"/>&lt;br/&gt;</xsl:if>                            
-                <xsl:if test="string-length($w/tei:fs/tei:f[@name='translation'])&gt;0">&lt;span class="spTrans"&gt;English:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='translation']"/>&lt;br/&gt;</xsl:if>
-                <xsl:if test="count($w//tei:f[@name='informant'])&gt;0">&lt;span class="spTrans"&gt;Informant:&lt;/span&gt;&#160;<xsl:value-of select="string-join(distinct-values($w//tei:f[@name='informant']), ', ')"/>&lt;br/&gt;</xsl:if>
-                <xsl:if test="string-length($w/tei:fs/tei:f[@name='comment'])&gt;0">&lt;span class="spTrans"&gt;Note:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='comment']"/>&lt;br/&gt;</xsl:if>                                                        
-            </xsl:attribute>
+            <xsl:if test="not($title = '')">
+                <xsl:attribute name="title">
+                    <xsl:value-of select="$title"/>
+                </xsl:attribute>
+            </xsl:if>
             
             <xsl:choose>
                 <xsl:when test="string-length($w/tei:fs/tei:f[@name='pos'])>0 or string-length($w/tei:fs/tei:f[@name='lemma'])>0 or string-length($w/tei:fs/tei:f[@name='translation'])>0 or string-length($w/tei:fs/tei:f[@name='variant'])>0 or string-length($w/tei:fs/tei:f[@name='comment'])>0">
@@ -211,7 +219,7 @@ version="2.0">
         <xsl:sequence select="acdh:word-span($w, $highLightIdentifier)"></xsl:sequence>
     </a>       
 
-    <xsl:if test="not($wordform = '') and $add-space">
+    <xsl:if test="not($wordform = '') and not($w/@join = 'right') and $add-space">
         <xsl:value-of select="' '" />
     </xsl:if>
 </xsl:function>

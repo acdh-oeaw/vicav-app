@@ -46,6 +46,20 @@
                     p {
                         margin-top: 0px;
                     }
+
+                    .tdFeaturesLeft {
+                        vertical-align: top;
+                    }
+                    .tdFeaturesRightSource, .tdFeaturesHead, .tdFeaturesLeft {
+                        padding-top: 0.4em;
+                        border-top: solid 1px silver;
+                    }
+                    .tdFeaturesRightSource {
+                        font-size: 0.8em;
+                    }
+                    .tdFeaturesHead {
+                        font-weight: bold;
+                    }
                 </style>
             </head>
             <body><xsl:apply-templates/></body>

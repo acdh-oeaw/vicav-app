@@ -6,7 +6,7 @@
     <xsl:include href="features_common.xslt"/>
 
     <xsl:preserve-space elements="*"/>
-    <xsl:template match="/">
+    <xsl:template match="/tei:TEI">
         <div>
             <!-- ********************************************* -->
             <!-- ***  **************************************** -->
@@ -14,10 +14,12 @@
             
             <div>
                 <table class="tbHeader">
-                    <tr><td><h2><xsl:value-of select="//tei:title"/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
+                    <tr><td><h2><xsl:value-of select="//tei:title"/></h2></td><td class="tdTeiLink">{teiLink}</td><td class="tdPrintLink">
+                <a href="#" data-print="true" class="aTEIButton"><xsl:attribute name="data-featurelist"><xsl:value-of 
+                    select="./@xml:id"/></xsl:attribute>Print</a></td></tr>
                 </table>    
 
-                <p xml:space="preserve">By <i><xsl:value-of select="//tei:author"/> (<xsl:value-of select="//tei:date"/>)</i></p>
+                <p xml:space="preserve">By <i><xsl:value-of select="//tei:author"/><xsl:if test=".//tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="replace(.//tei:revisionDesc/tei:change[1]/@when, 'T.*', '')" />)</xsl:if></i></p>
                 
                 <xsl:if test="//tei:profileDesc/tei:particDesc/tei:person/text()"><p xml:space="preserve">Informant ID: <i><xsl:value-of 
                     select="//tei:profileDesc/tei:particDesc/tei:person"/></i><xsl:if 
