@@ -5,14 +5,22 @@
     version="2.0">
     <xsl:include/>
 
-    <xsl:preserve-space elements="*"/>
     <xsl:template match="/">
         <html>
             <head>
                 <style type="text/css">
                     body {
                         font-family: "Junicode";
-                        font-size: 18pt;
+                    }
+                    @media screen {
+                        body {
+                            font-size: 18pt;
+                        }
+                    }
+                    @media print {
+                        body {
+                            font-size: 12pt;
+                        }
                     }
                     a:link, a:hover, a:active, a:visited {
                         text-decoration: none;
@@ -22,7 +30,7 @@
                     .spSentence {
                         display: block;
                     }
-                    .tdTeiLink, .tdPrintLink {
+                    .tdTeiLink, .tdPrintLink, .sentences-nav {
                         display: none;
                     }
 
@@ -47,17 +55,23 @@
                         margin-top: 0px;
                     }
 
-                    .tdFeaturesLeft {
+                    .tdFeaturesLeft, .tdFeaturesHeadRight, .tdFeaturesRightTarget {
                         vertical-align: top;
                     }
-                    .tdFeaturesRightSource, .tdFeaturesHead, .tdFeaturesLeft {
+                    .tdFeaturesHeadRight {
+                        min-width: 200px;
+                    }
+                    .tdFeaturesHeadRight small {
+                        display: block;
+                    }
+                    .tdFeaturesHeadRight, .tdFeaturesRightSource, .tdFeaturesHead, .tdFeaturesLeft, .explore-samples .tdFeaturesRightTarget {
                         padding-top: 0.4em;
                         border-top: solid 1px silver;
                     }
                     .tdFeaturesRightSource {
                         font-size: 0.8em;
                     }
-                    .tdFeaturesHead {
+                    .tdFeaturesHead, .highlight {
                         font-weight: bold;
                     }
                 </style>

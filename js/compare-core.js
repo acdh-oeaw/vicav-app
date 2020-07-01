@@ -231,7 +231,6 @@ $(document).on('click', 'a[data-profile]', function(e) {
     }
 });
 
-
 function loadPersons($root, type) {
 	if ('personsLoading' in window) {
 		return;
@@ -420,9 +419,17 @@ function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ =
                 var feature = $(e.target).attr('data-feature');
                 changeFeature(feature);
             })  
-        }
+        }      
+
+        $root.on('click', '.tdPrintLink a', function(e) {    
+		    e.preventDefault();
+		    var query = $root.attr('data-query').replace(/\+/g, '&').replace(/\|/g, '=') 
+		    if (query) {
+		        window.open('explore_samples?' + query + '&print=true')
+		    }
+		});
     }
-        query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
+	var query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
 
     if (contents_ == '' && query != '') {
         compareQuery(query, function(result) {

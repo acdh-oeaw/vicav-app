@@ -212,13 +212,13 @@ function vicav:query_biblio_id($query as xs:string*, $xsltfn as xs:string) {
         $sHTML
 };
 
-declare function vicav:transform($doc as element(), $xsltfn as xs:string, $print as xs:string*) {
+declare function vicav:transform($doc as element(), $xsltfn as xs:string, $print as xs:string?, $options as map(*)?) {
     let $stylePath := file:base-dir() || 'xslt/'
     let $style := doc($stylePath || $xsltfn)
 
     let $xslt := if (empty($print)) then $style else xslt:transform-text(doc($stylePath || 'printable.xslt'), doc($stylePath || 'printable_path.xslt'), map {'xslt': $stylePath || $xsltfn})
 
-    let $sHTML := xslt:transform-text($doc, $xslt)
+    let $sHTML := xslt:transform-text($doc, $xslt, $options)
     return
         $sHTML
 };
@@ -237,7 +237,7 @@ function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:
     let $q := 'collection("' || $coll || vicav:get_project_db() || '")//tei:TEI[@xml:id="' || $id || '"]'
     let $query := $ns || $q
     let $results := xquery:eval($query)
-    return vicav:transform($results, $xsltfn, $print)
+    return vicav:transform($results, $xsltfn, $print, ())
 };
 
 declare
@@ -254,7 +254,7 @@ function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:
     let $q := 'collection("' || $coll || vicav:get_project_db() || '")//tei:TEI[@xml:id="' || $id || '"]'
     let $query := $ns || $q
     let $results := xquery:eval($query)
-    return vicav:transform($results, $xsltfn, $print)
+    return vicav:transform($results, $xsltfn, $print, ())
 };
 
 
@@ -411,6 +411,7 @@ declare
 %rest:query-param("person", "{$person}")
 %rest:query-param("age", "{$age}")
 %rest:query-param("sex", "{$sex}")
+%rest:query-param("print", "{$print}")
 %rest:GET
 
 function vicav:explore_samples(
@@ -422,7 +423,8 @@ function vicav:explore_samples(
     $age as xs:string*, 
     $sex as xs:string*, 
     $highlight as xs:string*, 
-    $xsltfn as xs:string
+    $xsltfn as xs:string,    
+    $print as xs:string*
     ) {
 
     let $resourcetype := if (empty($type) or $type = '') then 
@@ -448,10 +450,7 @@ function vicav:explore_samples(
 
     let $ress := <items>{$ress1}</items>
 
-    let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
-    let $style := doc($stylePath)
-    
-    let $sHTML := xslt:transform-text($ress, $style, map {"highlight":string($word),"filter-words": string($word), "filter-features":$filter_features})
+    let $sHTML := vicav:transform($ress, $xsltfn, $print, map {"highlight":string($word),"filter-words": string($word), "filter-features":$filter_features})
 
     return
         (:<div type="lingFeatures">{$sHTML}</div>:)

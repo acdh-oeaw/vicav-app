@@ -1434,6 +1434,18 @@ a.word-search {
     color: inherit;
 }
 
+.w {
+    font-style: normal;
+    color: inherit;
+}
+
+
+.w.highlight {
+    padding: 0;
+    color: red;
+    background: 0;
+}
+
 .show-sentence {
     display: block;
     float: left;
