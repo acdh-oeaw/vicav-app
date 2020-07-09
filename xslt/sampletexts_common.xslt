@@ -87,7 +87,17 @@ version="2.0">
                 <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
         </xsl:if>
-        <xsl:value-of select="$wordform"/>
+
+        <xsl:choose>
+            <xsl:when test="contains($wordform, 'ᶴ')">
+                <xsl:value-of select="substring-before($wordform, 'ᶴ')"/>
+                <sup>š</sup>
+                <xsl:value-of select="substring-after($wordform, 'ᶴ')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="$wordform"/>        
+            </xsl:otherwise>
+        </xsl:choose>
     </span>    
 </xsl:function>
     
