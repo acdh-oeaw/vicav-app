@@ -60,10 +60,10 @@
                 <xsl:if test="$filter-features">
                     <div class="sentences-nav">
                         <xsl:if test="not($prev_sentence = '')">
-                            <a href="#" data-sentence="{$prev_sentence}" class="prev-link"><i class="fa fa-chevron-left"/> Previous</a>
+                            <a href="#" data-feature="{$prev_sentence}" class="prev-link"><i class="fa fa-chevron-left"/> Previous</a>
                         </xsl:if>
                         <xsl:if test="not($next_sentence = '')">
-                            <a href="#" data-sentence="{$next_sentence}" class="next-link">Next <i class="fa fa-chevron-right"></i></a>
+                            <a href="#" data-feature="{$next_sentence}" class="next-link">Next <i class="fa fa-chevron-right"></i></a>
                         </xsl:if>
                         <input name="sentences">
                             <xsl:attribute name="value"><xsl:value-of select="string-join($selected-sentences, ',')"/></xsl:attribute>
@@ -89,7 +89,7 @@
                                         <xsl:if test="count(.//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .) > 0]) > 0">
                                         <tr>
                                             <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/>
-                                            <small xml:space="preserve"><xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)</xsl:if></small>
+                                            <small xml:space="preserve"><xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)<xsl:if test=".//tei:revisionDesc/tei:change"><br/></xsl:if></xsl:if><xsl:value-of select="replace(.//tei:revisionDesc/tei:change[1]/@when, 'T.*', '')" /></small>
                                         </td>
                                             <td class="tdFeaturesRightTarget">
                                                 <a class="show-sentence" title="Show full sample text" href="#">

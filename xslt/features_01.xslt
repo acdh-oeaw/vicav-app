@@ -19,6 +19,14 @@
 
                 <p xml:space="preserve">By <i><xsl:value-of select="//tei:author"/> (<xsl:value-of select="//tei:date"/>)</i></p>
                 
+                <xsl:if test="//tei:profileDesc/tei:particDesc/tei:person/text()"><p xml:space="preserve">Informant ID: <i><xsl:value-of 
+                    select="//tei:profileDesc/tei:particDesc/tei:person"/></i><xsl:if 
+                    test="//tei:profileDesc/tei:particDesc/tei:person/@sex">, Sex: <i><xsl:value-of 
+                    select="//tei:profileDesc/tei:particDesc/tei:person/@sex"/></i></xsl:if><xsl:if 
+                    test="//tei:profileDesc/tei:particDesc/tei:person/@age">, Age: <i><xsl:value-of 
+                    select="//tei:profileDesc/tei:particDesc/tei:person/@age"/></i></xsl:if></p>
+                </xsl:if>
+                
                 <table class="tbFeatures">
                     <xsl:for-each select="//tei:div[@type='featureGroup']">
                         <tr>

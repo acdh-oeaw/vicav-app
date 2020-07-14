@@ -1028,3 +1028,40 @@ function vicav:get_feature_markers() {
     return
         <rs>{$out}</rs>
 };
+
+
+declare
+%rest:path("vicav/data_list")
+%rest:query-param("type", "{$type}")
+%rest:GET
+%output:method("xml")
+function vicav:get_data_list($type as xs:string*) {
+    let $type := if (empty($type) or $type = '') then 'samples' else $type
+
+    let $items := collection('vicav_' || $type)//tei:TEI
+
+    let $typestring := switch($type)
+      case 'lingfeatures' return
+        'data-featurelist'
+      default return
+        'data-sampletext'
+
+    let $out :=
+        for $city in distinct-values($items//tei:settlement)
+            order by $city
+            let $sts := for $item in $items[.//tei:settlement = $city]
+                order by $item//tei:person[1]/text()
+                return element p {
+                    element a {
+                        attribute href { '#' },
+                        attribute {$typestring} {$item/@xml:id},
+                        text {$item//tei:person[1]/text()},
+                        text { string-join((' (Revision: ', replace($item//tei:revisionDesc/tei:change[1]/@when, 'T.*', ''), ')')) }
+                    }, element br {}
+                }
+
+            return
+                <div><h4>{$city} ({count($items[.//tei:settlement = $city])})</h4>{$sts}</div> 
+    return
+        <div>Total: {count($items)}<br/>{$out}</div>
+};

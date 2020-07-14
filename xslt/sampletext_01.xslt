@@ -14,7 +14,7 @@
             <!-- </div> -->
             
             <p>By&#160;<i><xsl:value-of select="//tei:author"/>
-                <xsl:if test="//tei:publicationStmt/tei:date">&#160;(<xsl:value-of select="//tei:publicationStmt/tei:date"/>)</xsl:if>
+                <xsl:if test="//tei:publicationStmt/tei:date">&#160;(<xsl:value-of select="//tei:publicationStmt/tei:date"/>, revision: <xsl:value-of select="replace(.//tei:revisionDesc/tei:change[1]/@when, 'T.*', '')" />)</xsl:if>
             </i></p>
             <xsl:if test="//tei:profileDesc/tei:particDesc/tei:person/text()">
                 <p xml:space="preserve">Informant ID: 
