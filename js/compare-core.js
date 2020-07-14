@@ -198,17 +198,29 @@ $(document).on('click', 'a[data-wordform]', function(e) {
 $(document).on('click', 'a[data-featurelist]', function(e) {    
     e.preventDefault();
     var item = $(e.target).closest('[data-featurelist]').attr('data-featurelist');
+    var print = $(e.target).closest('[data-featurelist]').attr('data-print');
     if (item) {
-        getFeatureOfLocation('', item, 'features_01.xslt');
+    	if (!print) {
+	        getFeatureOfLocation('', item, 'features_01.xslt');
+	    } else {
+	    	window.open('./profile?coll=vicav_lingfeatures&id=' + item + '&print=true&xslt=features_01.xslt');
+	    }
+
     }
 });
 
 $(document).on('click', 'a[data-sampletext]', function(e) {    
     e.preventDefault();
     var item = $(e.target).closest('[data-sampletext]').attr('data-sampletext');
+    var print = $(e.target).closest('[data-sampletext]').attr('data-print');
     if (item) {
-        getSample('', item, 'sampletext_01.xslt');
-    }
+    	if (!print) {
+	        getSample('', item, 'sampletext_01.xslt');
+    	}
+    	else {
+    		window.open('./sample?coll=vicav_samples&id=' + item + '&print=true&xslt=' + 'sampletext_01.xslt')
+    	}
+    } 
 });
 
 $(document).on('click', 'a[data-profile]', function(e) {    
@@ -218,7 +230,6 @@ $(document).on('click', 'a[data-profile]', function(e) {
         getProfile('', item, 'profile_01.xslt');
     }
 });
-
 
 function loadPersons($root, type) {
 	if ('personsLoading' in window) {
@@ -408,9 +419,17 @@ function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ =
                 var feature = $(e.target).attr('data-feature');
                 changeFeature(feature);
             })  
-        }
+        }      
+
+        $root.on('click', '.tdPrintLink a', function(e) {    
+		    e.preventDefault();
+		    var query = $root.attr('data-query').replace(/\+/g, '&').replace(/\|/g, '=') 
+		    if (query) {
+		        window.open('explore_samples?' + query + '&print=true')
+		    }
+		});
     }
-        query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
+	var query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
 
     if (contents_ == '' && query != '') {
         compareQuery(query, function(result) {

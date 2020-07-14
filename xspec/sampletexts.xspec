@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:tei="http://www.tei-c.org/ns/1.0"
+    stylesheet="../xslt/sampletext_01.xslt"
+    xmlns="http://www.w3.org/1999/xhtml">    
+    <x:scenario label="simple lingfeatures">
+        <x:variable name="result" href="../fixtures/sampletext-output.xml" as="document-node()?"></x:variable>
+        <x:context href="../fixtures/explore-samples-person-only-data.xml" select="//tei:TEI"></x:context>
+        <x:expect label="to match output" select="$result/*">
+        </x:expect>
+    </x:scenario>
+</x:description>
