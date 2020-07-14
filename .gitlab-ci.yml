@@ -51,6 +51,7 @@ run_tests:
      GIT_STRATEGY: clone
      GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
      SAXON_CP: $CI_BUILDS_DIR/../lib/custom/saxon9he.jar
+     CYPRESS_BASEX_ROOT: $CI_BUILDS_DIR/../
      HOME: /home/gitlab-runner
   script:
     - mkdir -p $GIT_CLONE_PATH/artifacts

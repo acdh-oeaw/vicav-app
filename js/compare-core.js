@@ -402,7 +402,7 @@ function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ =
 }
 
 // Navigation entry
-$("#liVicavCrossFeatureQuery").mousedown (function (event) {
+$(document).on('mousedown', "#liVicavCrossFeatureQuery", function (event) {
     clearMarkerLayers();
     insertFeatureMarkers();
     adjustNav(this.id, "#subNavFeaturesGeoRegMarkers");
@@ -411,7 +411,7 @@ $("#liVicavCrossFeatureQuery").mousedown (function (event) {
 
 
 // Navigation entry
-$("#liExploreSamples").mousedown (function (event) {
+$(document).on('mousedown', "#liExploreSamples", function (event) {
     clearMarkerLayers();
     insertSampleMarkers();
     adjustNav(this.id, "#subNavSamplesGeoRegMarkers");
