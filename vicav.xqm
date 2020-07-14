@@ -436,7 +436,7 @@ function vicav:explore_samples(
             if ($resourcetype = 'samples') then "1" else ''
         else 
             if (empty($word) or $word = '') then 
-                if ($resourcetype = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,\-]+', '')
+                if ($resourcetype = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,_]+', '')
             else ""
 
     let $ress1 := vicav:explore-data(
