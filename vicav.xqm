@@ -1041,10 +1041,12 @@ function vicav:get_data_list($type as xs:string*) {
     let $items := collection('vicav_' || $type)//tei:TEI
 
     let $typestring := switch($type)
-      case 'lingfeatures' return
-        'data-featurelist'
-      default return
-        'data-sampletext'
+        case 'lingfeatures' return
+            'data-featurelist'
+        case 'profiles' return
+            'data-profile'
+        default return
+            'data-sampletext'
 
     let $out :=
         for $city in distinct-values($items//tei:settlement)

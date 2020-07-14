@@ -1795,6 +1795,10 @@ function () {
         getDataList('samples')
     });
 
+    $(document).on('mousedown', "#liProfilesList", function (event) {
+        getDataList('profiles')
+    });
+
     /* ******************************** */
     /* ****  CORPUS ******************* */
     /* ******************************** */
