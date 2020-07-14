@@ -1248,6 +1248,12 @@ function () {
         success: function( xmlResponse ) {
             $( "project", xmlResponse ).map(function() {
                 $('head > title').text( $( "projectConfig > title", this ).text() )
+
+                let icon = $( "projectConfig > icon", this ).text()
+                if (icon != '') {
+                    L.Icon.Default.prototype.options.iconUrl = icon;
+                }
+
                 $('a.navbar-brand').html( $( "projectConfig > logo", this ).html() )
                 let zoom = $( "projectConfig > map > zoom", this ).text();
                 let center = [$( "projectConfig > map > center > lat", this ).text(), $( "projectConfig > map > center > lng", this ).text()];

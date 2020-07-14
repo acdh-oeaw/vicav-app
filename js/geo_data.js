@@ -97,7 +97,6 @@ function insertSampleMarkers() {
                 //console.log(sUrl);
                 let loc = $(this).find('loc').text();
                 if (loc){
-
                                 loc = loc.replace(/°/g, ".");
                                 loc = loc.replace(/′N/g, ",");
                                 loc = loc.replace(/′E/g, "");
@@ -108,11 +107,7 @@ function insertSampleMarkers() {
                                 
                                 sAlt = $(this).find('alt').text();
                                 sID = $(this).attr('xml:id');
-
-                                let sCnt = sID.replace(/^\w+_0?/, '')
-                                if (sCnt && parseInt(sCnt) > 1) {
-                                    sAlt = sAlt + ' (' + sCnt + ')'
-                                }
+                                
                                 values = loc.split(",");
                                 v1 = parseFloat(values[0]);
                                 v2 = parseFloat(values[1]);
