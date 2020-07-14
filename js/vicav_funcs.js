@@ -173,25 +173,77 @@ L.tileLayer('https://api.mapbox.com/styles/v1/acetin/cjb22mkrf16qf2spyl3u1vee3/t
 
 mainMap.scrollWheelZoom.disable();
 
+
+let overlapHandler = function(e) {
+    function ptDistanceSq(pt1, pt2) {
+        let dx = pt1.x - pt2.x
+        let dy = pt1.y - pt2.y
+        return dx * dx + dy * dy
+    }
+
+    let marker = e.layer
+    let featureGroup = Object.values(marker._eventParents)[0]
+    let distance = Math.floor(1.5 * mainMap.getZoom())
+
+    mainMap.closePopup();
+
+    nearbyMarkerData = []
+    nonNearbyMarkers = []
+    pxSq = distance * distance
+    markerPt = mainMap.latLngToLayerPoint(marker.getLatLng())
+    Object.values(featureGroup._layers).forEach(m => {
+        if (mainMap.hasLayer(m)){
+            mPt = mainMap.latLngToLayerPoint(m.getLatLng())
+            if (ptDistanceSq(mPt, markerPt) < pxSq){
+              nearbyMarkerData.push({marker: m, markerPt: mPt})
+            }
+            else {
+              nonNearbyMarkers.push(m)
+            }   
+        }
+    })
+
+    console.log(nearbyMarkerData)
+
+    if (nearbyMarkerData.length == 1) { // 1 => the one clicked => none nearby
+        switch (marker.options.type) {
+            case 'profile': 
+                onProfilesMapClick(e);
+                break;
+            case 'sample':
+                getSample(marker.options.alt, marker.options.id, 'sampletext_01.xslt');
+                break;
+            case 'feature':
+                getFeatureOfLocation(marker.options.alt, marker.options.id, 'features_01.xslt');
+                break;
+
+        }
+    }
+    else {
+        let popupContent = '<ul class="overlapping-markers">'
+        console.log(nearbyMarkerData)
+        nearbyMarkerData.sort((a,b) => { 
+            return a.marker.options.alt.localeCompare(b.marker.options.alt); }
+        ).forEach(data => {
+            let typeLink = exploreDataStrings[data.marker.options.type].single_selector
+            popupContent += '<li class="overlapping-marker-label"><a href="#" ' + typeLink +'="'+data.marker.options.id + '">' + data.marker.options.alt + '</a></li>'
+        })
+
+        popupContent = popupContent + '</ul>'
+          marker.bindPopup(popupContent).openPopup()
+      }
+}
+
 var fgBiblMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
-var fgProfileMarkers = L.featureGroup().addTo(mainMap).on("click", onProfilesMapClick);
-var fgSampleMarkers = L.featureGroup().addTo(mainMap); // Click event is now handled through OverlappingMarkerSpiderifier
-var fgFeatureMarkers = L.featureGroup().addTo(mainMap);
+var fgProfileMarkers = L.featureGroup().addTo(mainMap).on('click', overlapHandler);
+var fgSampleMarkers = L.featureGroup().addTo(mainMap).on('click', overlapHandler); // Click event is now handled through OverlappingMarkerSpiderifier
+var fgFeatureMarkers = L.featureGroup().addTo(mainMap).on('click', overlapHandler);
 var fgGeoDictMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
 var fgDictMarkers = L.featureGroup().addTo(mainMap).on("click", onDictMapClick);
 
-var oms = new OverlappingMarkerSpiderfier(mainMap, {nearbyDistance: 2});
-
-oms.addListener('click', function(marker) {
-    switch (marker.options.type) {
-        case 'sample':
-            getSample(marker.options.alt, marker.options.id, 'sampletext_01.xslt');
-            break;
-        case 'feature':
-            getFeatureOfLocation(marker.options.alt, marker.options.id, 'features_01.xslt');
-            break;
-    }
-});
+mainMap.on('zoomend', (e) => {
+    e.target.closePopup();
+})
 
 /* ************************************************************************* */
 /* ************************************************************************* */

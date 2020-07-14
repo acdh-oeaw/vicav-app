@@ -12,6 +12,11 @@ const exploreDataStrings = {
         xslt: 'cross_samples_01.xslt',
         xslt_single: 'sampletext_01.xslt',
         single_selector: 'data-sampletext'
+    },
+    profile: {
+    	db: 'profiles',
+        xslt_single: 'profile_01.xslt',
+    	single_selector: 'data-profile'
     }
 }
 
@@ -189,6 +194,31 @@ $(document).on('click', 'a[data-wordform]', function(e) {
         createExploreDataResultsPanel(dataType, result, 'type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt);
     })
 })
+
+$(document).on('click', 'a[data-featurelist]', function(e) {    
+    e.preventDefault();
+    var item = $(e.target).closest('[data-featurelist]').attr('data-featurelist');
+    if (item) {
+        getFeatureOfLocation('', item, 'features_01.xslt');
+    }
+});
+
+$(document).on('click', 'a[data-sampletext]', function(e) {    
+    e.preventDefault();
+    var item = $(e.target).closest('[data-sampletext]').attr('data-sampletext');
+    if (item) {
+        getSample('', item, 'sampletext_01.xslt');
+    }
+});
+
+$(document).on('click', 'a[data-profile]', function(e) {    
+    e.preventDefault();
+    var item = $(e.target).closest('[data-profile]').attr('data-profile');
+    if (item) {
+        getProfile('', item, 'profile_01.xslt');
+    }
+});
+
 
 function loadPersons($root, type) {
 	if ('personsLoading' in window) {
@@ -378,15 +408,7 @@ function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ =
                 var feature = $(e.target).attr('data-feature');
                 changeFeature(feature);
             })  
-        }      
-
-        $root.on('click', 'a[' + exploreDataStrings[type].single_selector + ']', function(e) {    
-            e.preventDefault();
-            var item = $(e.target).closest('['+ exploreDataStrings[type].single_selector +']').attr(exploreDataStrings[type].single_selector);
-            if (item) {
-                getFeatureOfLocation('', item, xslt_single);
-            }
-        })
+        }
     }
         query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
 

@@ -1477,3 +1477,8 @@ form.compare-samples .sentences-wrapper > fieldset {
 .sentences-nav input {
     width: 50px;
 }
+ul.overlapping-markers {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
