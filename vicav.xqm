@@ -436,7 +436,7 @@ function vicav:explore_samples(
             if ($resourcetype = 'samples') then "1" else ''
         else 
             if (empty($word) or $word = '') then 
-                if ($resourcetype = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,\-]+', '')
+                if ($resourcetype = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,_]+', '')
             else ""
 
     let $ress1 := vicav:explore-data(
@@ -919,23 +919,18 @@ function vicav:get_sample_markers() {
     let $out :=
     for $item in $entries
         order by $item/@xml:id
-        let $loc := $item/tei:text/tei:body//tei:geo[1]/text()
-        let $alt := $item//tei:text[1]/tei:body[1]//tei:head[1]/tei:name[1]/text()
 
-        let $same_loc := $entries[.//tei:text/tei:body//tei:geo[1]/text() = $loc]/@xml:id
-        let $index := if ($same_loc) then 
-                        index-of($same_loc, $item/@xml:id)
-                        else (0) 
-(:
-        let $alt := if ($index > 1) then
-                        concat($alt, ' ', $index)
-                    else ($alt) :)
+
+
+        let $loc := replace($item//tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
+        let $alt := if ($item//tei:person) then string-join(($item//tei:person[1]/text(), $item//tei:person[1]/@sex, $item//tei:person[1]/@age), '/') else $item//tei:name[1]/text()
         
         return
             <r
                 type='geo'>{$item/@xml:id}
-                <loc>{$loc}</loc>
-                <alt>{$alt}</alt>
+                <loc>{$loc[1]}</loc>
+                <locName>{$item//tei:settlement[1]/text()}</locName>
+                <alt>{$alt[1]}</alt>
                 <freq>1</freq>
             </r>
     
@@ -1018,12 +1013,13 @@ function vicav:get_feature_markers() {
         for $item in $entries
             order by $item/@xml:id
             let $loc := replace($item//tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
-            let $alt := if ($item//tei:person) then $item//tei:person/text() else $item//tei:name[1]/text()
+            let $alt := if ($item//tei:person) then $item//tei:person[1]/text() || '/' || $item//tei:person[1]/@sex || '/' || $item//tei:person[1]/@age else $item//tei:name[1]/text()
             return
                 if ($item/@xml:id and $loc) then
                 <r
                     type='geo'>{$item/@xml:id}
                     <loc>{$loc}</loc>
+                    <locName>{$item//tei:settlement[1]/text()}</locName>
                     <alt>{$alt}</alt>
                     <freq>1</freq>
                 </r>

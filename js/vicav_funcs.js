@@ -226,7 +226,7 @@ let overlapHandler = function(e) {
             return a.marker.options.alt.localeCompare(b.marker.options.alt); }
         ).forEach(data => {
             let typeLink = exploreDataStrings[data.marker.options.type].single_selector
-            popupContent += '<li class="overlapping-marker-label"><a href="#" ' + typeLink +'="'+data.marker.options.id + '">' + data.marker.options.alt + '</a></li>'
+            popupContent += '<li class="overlapping-marker-label"><a href="#" ' + typeLink +'="'+data.marker.options.id + '">' + data.marker.options.title + '</a></li>'
         })
 
         popupContent = popupContent + '</ul>'
@@ -1248,6 +1248,12 @@ function () {
         success: function( xmlResponse ) {
             $( "project", xmlResponse ).map(function() {
                 $('head > title').text( $( "projectConfig > title", this ).text() )
+
+                let icon = $( "projectConfig > icon", this ).text()
+                if (icon != '') {
+                    L.Icon.Default.prototype.options.iconUrl = icon;
+                }
+
                 $('a.navbar-brand').html( $( "projectConfig > logo", this ).html() )
                 let zoom = $( "projectConfig > map > zoom", this ).text();
                 let center = [$( "projectConfig > map > center > lat", this ).text(), $( "projectConfig > map > center > lng", this ).text()];

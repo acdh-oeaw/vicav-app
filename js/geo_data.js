@@ -56,6 +56,7 @@ function insertFeatureMarkers() {
                 }
                 
                 sAlt = $(this).find('alt').text();
+                sLocName = $(this).find('locName').text();
                 sID = $(this).attr('xml:id');
 
                 let sCnt = sID.replace(/^[\w-]+_?0?/, '')
@@ -65,11 +66,11 @@ function insertFeatureMarkers() {
                 values = loc.split(",");
                 v1 = parseFloat(values[0]);
                 v2 = parseFloat(values[1]);
-                sTooltip = sAlt;
+                sTooltip = sLocName;
                                 
 
                 sQuery = 'profile:' + sTooltip + '';
-                marker = L.marker([v1, v2], { alt: sAlt, id: sID, type: 'feature' }).bindTooltip(sTooltip);
+                marker = L.marker([v1, v2], { alt: sLocName, title: sAlt, id: sID, type: 'feature' }).bindTooltip(sTooltip);
                 fgFeatureMarkers.addLayer(marker);
                 //oms.addMarker(marker);
             });
@@ -97,30 +98,26 @@ function insertSampleMarkers() {
                 //console.log(sUrl);
                 let loc = $(this).find('loc').text();
                 if (loc){
+                    loc = loc.replace(/°/g, ".");
+                    loc = loc.replace(/′N/g, ",");
+                    loc = loc.replace(/′E/g, "");
+                    if (loc.indexOf('′W') !== -1) {
+                        loc = loc.replace(/ /g, " -");
+                        loc = loc.replace(/′W/g, "");
+                    }
+                    
+                    sAlt = $(this).find('alt').text();
+                    sID = $(this).attr('xml:id');
+                    sLocName = $(this).find('locName').text();
 
-                                loc = loc.replace(/°/g, ".");
-                                loc = loc.replace(/′N/g, ",");
-                                loc = loc.replace(/′E/g, "");
-                                if (loc.indexOf('′W') !== -1) {
-                                    loc = loc.replace(/ /g, " -");
-                                    loc = loc.replace(/′W/g, "");
-                                }
-                                
-                                sAlt = $(this).find('alt').text();
-                                sID = $(this).attr('xml:id');
-
-                                let sCnt = sID.replace(/^\w+_0?/, '')
-                                if (sCnt && parseInt(sCnt) > 1) {
-                                    sAlt = sAlt + ' (' + sCnt + ')'
-                                }
-                                values = loc.split(",");
-                                v1 = parseFloat(values[0]);
-                                v2 = parseFloat(values[1]);
-                                sTooltip = sAlt;
-                                
-                                sQuery = 'profile:' + sAlt + '';
-                                marker = L.marker([v1, v2], { alt: sAlt, id: sID, type: 'sample' }).bindTooltip(sTooltip);
-                                fgSampleMarkers.addLayer(marker);
+                    values = loc.split(",");
+                    v1 = parseFloat(values[0]);
+                    v2 = parseFloat(values[1]);
+                    sTooltip = sLocName;
+                    
+                    sQuery = 'profile:' + sAlt + '';
+                    marker = L.marker([v1, v2], { alt: sLocName, title: sAlt, id: sID, type: 'sample' }).bindTooltip(sTooltip);
+                    fgSampleMarkers.addLayer(marker);
                          //       oms.addMarker(marker); 
                             }
             });
