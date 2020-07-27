@@ -40,6 +40,16 @@
             <sourceDesc>
                <p>This is an original digital text</p>
             </sourceDesc>
+            <settingDesc>
+               <place>
+                  <settlement>Tunis2</settlement>
+                  <region>Tunis</region>
+                  <country>Tunisia</country>
+                  <location>
+                     <geo>36.81, 10.19</geo>
+                  </location>
+               </place>
+            </settingDesc>
          </fileDesc>
       </teiHeader>
       <text>
@@ -1730,7 +1740,7 @@
          </particDesc>
          <settingDesc>
             <place>
-               <settlement>Sīdi Ḥmǟda</settlement>
+               <settlement>Test</settlement>
                <region>Siliana</region>
                <country>Tunisia</country>
                <location>
