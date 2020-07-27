@@ -226,7 +226,7 @@ let overlapHandler = function(e) {
             return a.marker.options.alt.localeCompare(b.marker.options.alt); }
         ).forEach(data => {
             let typeLink = exploreDataStrings[data.marker.options.type].single_selector
-            popupContent += '<li class="overlapping-marker-label"><a href="#" ' + typeLink +'="'+data.marker.options.id + '">' + data.marker.options.alt + '</a></li>'
+            popupContent += '<li class="overlapping-marker-label"><a href="#" ' + typeLink +'="'+data.marker.options.id + '">' + data.marker.options.title + '</a></li>'
         })
 
         popupContent = popupContent + '</ul>'

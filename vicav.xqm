@@ -923,12 +923,13 @@ function vicav:get_sample_markers() {
 
 
         let $loc := replace($item//tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
-        let $alt := if ($item//tei:person) then $item//tei:person[1]/text() || '/' || $item//tei:person[1]/@sex || '/' || $item//tei:person[1]/@age else $item//tei:name[1]/text()
+        let $alt := if ($item//tei:person) then string-join(($item//tei:person[1]/text(), $item//tei:person[1]/@sex, $item//tei:person[1]/@age), '/') else $item//tei:name[1]/text()
         
         return
             <r
                 type='geo'>{$item/@xml:id}
                 <loc>{$loc[1]}</loc>
+                <locName>{$item//tei:settlement[1]/text()}</locName>
                 <alt>{$alt[1]}</alt>
                 <freq>1</freq>
             </r>
@@ -1018,6 +1019,7 @@ function vicav:get_feature_markers() {
                 <r
                     type='geo'>{$item/@xml:id}
                     <loc>{$loc}</loc>
+                    <locName>{$item//tei:settlement[1]/text()}</locName>
                     <alt>{$alt}</alt>
                     <freq>1</freq>
                 </r>
