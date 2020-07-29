@@ -407,6 +407,7 @@ declare
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:query-param("word", "{$word}")
 %rest:query-param("features", "{$features}")
+%rest:query-param("translation", "{$translation}")
 %rest:query-param("highlight", "{$highlight}")
 %rest:query-param("person", "{$person}")
 %rest:query-param("age", "{$age}")
@@ -418,7 +419,8 @@ function vicav:explore_samples(
     $type as xs:string*, 
     $location as xs:string*, 
     $word as xs:string*,
-    $features as xs:string*, 
+    $features as xs:string*,
+    $translation as xs:string*, 
     $person as xs:string*, 
     $age as xs:string*, 
     $sex as xs:string*, 
@@ -450,7 +452,12 @@ function vicav:explore_samples(
 
     let $ress := <items>{$ress1}</items>
 
-    let $sHTML := vicav:transform($ress, $xsltfn, $print, map {"highlight":string($word),"filter-words": string($word), "filter-features":$filter_features})
+    let $sHTML := vicav:transform($ress, $xsltfn, $print, map {
+        "highlight":string($word),
+        "filter-words": string($word), 
+        "filter-features":$filter_features, 
+        "filter-translations": $translation
+    })
 
     return
         (:<div type="lingFeatures">{$sHTML}</div>:)
