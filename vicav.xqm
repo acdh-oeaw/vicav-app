@@ -365,7 +365,7 @@ declare function vicav:explore-data(
 
     let $location_q := if(not(empty($loc_qs))) then 
         vicav:or((
-            './/tei:settlement/text() = [' || string-join($loc_qs, ',') || ']', 
+            './/tei:settlement/tei:name/text() = [' || string-join($loc_qs, ',') || ']', 
             './/tei:name/text() = [' || string-join($loc_qs, ',') || ']',  
             './/tei:region/text() = [' || string-join($loc_qs, ',') || ']',        
             './/tei:country/text() = [' || string-join($loc_qs, ',') || ']'
@@ -388,7 +388,7 @@ declare function vicav:explore-data(
 
     let $ress := 
       for $item in $results
-        let $city := $item//tei:teiHeader//tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/text()
+        let $city := $item//tei:teiHeader//tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"]/text()
         let $informant := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/text()
         let $age := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/@age
         let $sex := $item//tei:teiHeader//tei:profileDesc/tei:particDesc/tei:person[1]/@sex
@@ -407,6 +407,7 @@ declare
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:query-param("word", "{$word}")
 %rest:query-param("features", "{$features}")
+%rest:query-param("translation", "{$translation}")
 %rest:query-param("highlight", "{$highlight}")
 %rest:query-param("person", "{$person}")
 %rest:query-param("age", "{$age}")
@@ -418,7 +419,8 @@ function vicav:explore_samples(
     $type as xs:string*, 
     $location as xs:string*, 
     $word as xs:string*,
-    $features as xs:string*, 
+    $features as xs:string*,
+    $translation as xs:string*, 
     $person as xs:string*, 
     $age as xs:string*, 
     $sex as xs:string*, 
@@ -439,6 +441,8 @@ function vicav:explore_samples(
                 if ($resourcetype = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,_]+', '')
             else ""
 
+    let $trans_filter := if (empty($translation)) then '' else $translation
+
     let $ress1 := vicav:explore-data(
         'vicav_' || $resourcetype || vicav:get_project_db(),
         $location, 
@@ -450,7 +454,12 @@ function vicav:explore_samples(
 
     let $ress := <items>{$ress1}</items>
 
-    let $sHTML := vicav:transform($ress, $xsltfn, $print, map {"highlight":string($word),"filter-words": string($word), "filter-features":$filter_features})
+    let $sHTML := vicav:transform($ress, $xsltfn, $print, map {
+        "highlight":string($word),
+        "filter-words": string($word), 
+        "filter-features":$filter_features, 
+        "filter-translations": $trans_filter
+    })
 
     return
         (:<div type="lingFeatures">{$sHTML}</div>:)
@@ -886,7 +895,7 @@ declare
 function vicav:data_locations($type as xs:string*) {
     let $type := if ($type = () or $type = '') then 'samples' else $type
 
-    let $entries := collection('vicav_' || $type || vicav:get_project_db())//tei:TEI/(.//tei:name[1], .//tei:settlement[1], .//tei:place/tei:region[1], .//tei:place/tei:country[1])
+    let $entries := collection('vicav_' || $type || vicav:get_project_db())//tei:TEI/(.//tei:name[1], .//tei:settlement[1]/tei:name[@xml:lang="en"], .//tei:place/tei:region[1], .//tei:place/tei:country[1])
 
     let $labels :=
     for $item in $entries
@@ -929,7 +938,7 @@ function vicav:get_sample_markers() {
             <r
                 type='geo'>{$item/@xml:id}
                 <loc>{$loc[1]}</loc>
-                <locName>{$item//tei:settlement[1]/text()}</locName>
+                <locName>{$item//tei:settlement[1]/tei:name[@xml:lang="en"]/text()}</locName>
                 <alt>{$alt[1]}</alt>
                 <freq>1</freq>
             </r>
@@ -1019,7 +1028,7 @@ function vicav:get_feature_markers() {
                 <r
                     type='geo'>{$item/@xml:id}
                     <loc>{$loc}</loc>
-                    <locName>{$item//tei:settlement[1]/text()}</locName>
+                    <locName>{$item//tei:settlement[1]/tei:name[@xml:lang="en"]/text()}</locName>
                     <alt>{$alt}</alt>
                     <freq>1</freq>
                 </r>
@@ -1049,9 +1058,9 @@ function vicav:get_data_list($type as xs:string*) {
             'data-sampletext'
 
     let $out :=
-        for $city in distinct-values($items//tei:settlement)
+        for $city in distinct-values($items//tei:settlement/tei:name[@xml:lang="en"])
             order by $city
-            let $sts := for $item in $items[.//tei:settlement = $city]
+            let $sts := for $item in $items[.//tei:settlement/tei:name[@xml:lang="en"] = $city]
                 order by $item//tei:person[1]/text()
                 return element p {
                     element a {
@@ -1063,7 +1072,7 @@ function vicav:get_data_list($type as xs:string*) {
                 }
 
             return
-                <div><h4>{$city} ({count($items[.//tei:settlement = $city])})</h4>{$sts}</div> 
+                <div><h4>{$city} ({count($items[.//tei:settlement/tei:name[@xml:lang="en"] = $city])})</h4>{$sts}</div> 
     return
         <div>Total: {count($items)}<br/>{$out}</div>
 };

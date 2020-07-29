@@ -6,7 +6,7 @@ let checksampleTexts = function(fixture, label) {
     cy.get('#cookie-overlay').should('not.be.visible')
     cy.get('img.leaflet-marker-icon').should('be.visible') // Wait until the initial markers appear.
 
-    cy.get('img[alt="'+ fixture.labels[0] + '"]').click({force: true}).then(() => {
+    cy.get('img[alt="'+ fixture.labels[0] + '"]').first().click({force: true}).then(() => {
         if (fixture.labels.length > 1) {
             cy.get('ul.overlapping-markers').contains(fixture.labels[1]).click({force: true})
         }

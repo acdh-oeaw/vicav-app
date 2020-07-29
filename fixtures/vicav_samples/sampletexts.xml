@@ -42,7 +42,7 @@
             </sourceDesc>
             <settingDesc>
                <place>
-                  <settlement>Tunis2</settlement>
+                  <settlement><name xml:lang="en">Tunis2</name></settlement>
                   <region>Tunis</region>
                   <country>Tunisia</country>
                   <location>
@@ -1740,7 +1740,7 @@
          </particDesc>
          <settingDesc>
             <place>
-               <settlement>Test</settlement>
+               <settlement><name xml:lang="en">Test</name></settlement>
                <region>Siliana</region>
                <country>Tunisia</country>
                <location>
@@ -3192,7 +3192,7 @@
          </particDesc>
          <settingDesc>
             <place>
-               <settlement>Sīdi Ḥmǟda</settlement>
+               <settlement><name xml:lang="en">Test</name></settlement>
                <region>Siliana</region>
                <country>Tunisia</country>
                <location>

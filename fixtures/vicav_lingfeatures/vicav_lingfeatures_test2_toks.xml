@@ -40,7 +40,7 @@
          </particDesc>
          <settingDesc>
             <place>
-               <settlement>Test</settlement>
+               <settlement><name xml:lang="en">Test</name></settlement>
                <region>Jendouba</region>
                <country/>
                <location>
