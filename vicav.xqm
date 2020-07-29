@@ -441,6 +441,8 @@ function vicav:explore_samples(
                 if ($resourcetype = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,_]+', '')
             else ""
 
+    let $trans_filter := if (empty($translation)) then '' else $translation
+
     let $ress1 := vicav:explore-data(
         'vicav_' || $resourcetype || vicav:get_project_db(),
         $location, 
@@ -456,7 +458,7 @@ function vicav:explore_samples(
         "highlight":string($word),
         "filter-words": string($word), 
         "filter-features":$filter_features, 
-        "filter-translations": $translation
+        "filter-translations": $trans_filter
     })
 
     return
