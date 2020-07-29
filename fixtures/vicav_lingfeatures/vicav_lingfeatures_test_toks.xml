@@ -33,7 +33,7 @@
          </particDesc>
          <settingDesc>
             <place>
-               <settlement>Tunis2</settlement>
+               <settlement><name xml:lang="en">Tunis2</name></settlement>
                <region></region>
                <country>Tunisia</country>
                <location>
