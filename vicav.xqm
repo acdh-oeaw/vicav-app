@@ -130,19 +130,11 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
     let $qs :=
     for $query in $queries
     return
-        if (contains($query, 'geo:')) then
+        if (contains($query, 'geo:') or contains($query, 'reg:') or contains($query, 'vt:') or contains($query, 'prj:')) then
             '[tei:note/tei:note[@type="tag"]
                                           [text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
         else
-            if (contains($query, 'reg:')) then
-                '[tei:note/tei:note[@type="tag"]
-                                          [text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
-            else
-                if (contains($query, 'vt:')) then
-                    '[tei:note/tei:note[@type="tag"]
-                                         [text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
-                else
-                    '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
+            '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
     
     
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
