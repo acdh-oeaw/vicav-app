@@ -84,6 +84,7 @@ function api:vendor-file($file as xs:string) as item()+ {
   api:file('vendor/'||$file)
 };
 
+
 declare
   %rest:path("vicav/images/{$file=.+}")
 function api:images-file($file as xs:string) as item()+ {
