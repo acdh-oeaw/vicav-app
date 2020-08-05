@@ -1479,104 +1479,12 @@ function () {
         })
     })
 
-
-    /* *************************** */
-    /* ****  Paratexts     ******* */
-    /* *************************** */
-    $(document).on('mousedown', "#liVicavContributors", function (event) {
-        getText('CONTRIBUTORS', 'vicavContributors', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavLinguistics", function (event) {
-        getText('LINGUISTICS', 'vicavLinguistics', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavDictionariesTechnicalities", function (event) {
-        getText('DICTIONARIES (TECHNICALITIES)', 'vicavDictionariesTechnicalities', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavTypesOfText", function (event) {
-        getText('TYPES OF TEXT/DATA', 'vicavTypesOfText', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavDictionaryEncoding", function (event) {
-        getText('DICTIONARY ENCODING', 'vicavDictionaryEncoding', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavVLE", function (event) {
-        getText('DICTIONARY ENCODING', 'vicavVLE', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavLearningTextbookDamascus", function (event) {
-        getText('LEHRBUCH des SYRISCH-Arabischen', 'vicavLearning_tb_damascus', 'vicavTexts.xslt');
-    });
-
-    $(document).on('mousedown', "#liVicavLearning", function (event) {
-        getText('LEARNING MATERIALS', 'vicavLearning', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavLearningSmartphone", function (event) {
-        getText('SMARTPHONE VOCABULARIES', 'vicavLearningSmartphone', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavLearningPrograms", function (event) {
-        getText('PROGRAMS', 'vicavLearningPrograms', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavLearningData", function (event) {
-        getText('VOCABULARIES (DATA)', 'vicavLearningData', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavKeyboards", function (event) {
-        getText('KEYBOARD LAYOUTS', 'vicavKeyboards', 'vicavTexts.xslt');
-    });
-
-
-    $(document).on('mousedown', "#liVicavArabicTools", function (event) {
-        getText('ARABIC TOOLS', 'vicavArabicTools', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavOverview_corpora_spoken", function (event) {
-        getText('ARABIC TOOLS (Corpora - Spoken Varieties)', 'vicavOverview_corpora_spoken', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavOverview_corpora_msa", function (event) {
-        getText('ARABIC TOOLS (Corpora - MSA)', 'vicavOverview_corpora_msa', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavOverview_special_corpora", function (event) {
-        getText('ARABIC TOOLS (Special Corpora)', 'vicavOverview_special_corpora', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavOverview_corpora_historical_varieties", function (event) {
-        getText('ARABIC TOOLS (Corpora - Historical Varieties)', 'vicavOverview_corpora_historical_varieties', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavOverview_dictionaries", function (event) {
-        getText('ARABIC TOOLS (Dictionaries)', 'vicavOverview_dictionaries', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavOverview_nlp", function (event) {
-        getText('ARABIC TOOLS (Language Processing)', 'vicavOverview_nlp', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavOverview_otherStuff", function (event) {
-        getText('Other Websites &amp; Projects', 'vicavOverview_otherStuff', 'vicavTexts.xslt');
-    });
-
-
     /* *************************** */
     /* ****  Explanations  ******* */
     /* *************************** */
     $(document).on('mousedown', "#liBibliographyExplanation", function (event) {
         createBiblExplanationPanel();
     });
-    $(document).on('mousedown', "#liCorpusTextsExplanation", function (event) {
-        getText('TEXTS: Explanation', 'vicavExplanationCorpusTexts', 'vicavTexts.xslt');
-    });
-
-    /* *************************** */
-    /* ****  CONTRIBUTIONS ******* */
-    /* *************************** */
-    $(document).on('mousedown', "#liVicavContributeBibliography", function (event) {
-        getText('BIBLIOGRAPHY: Contributing', 'vicavContributionBibliography', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavContributeProfile", function (event) {
-        getText('PROFILES: Contributing', 'vicavContributeProfile', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavContributeFeature", function (event) {
-        getText('FEATURES: Contributing', 'vicavContributeFeature', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavContributeSampleText", function (event) {
-        getText('SAMPLE TEXTS: Contributing', 'vicavContributeSampleText', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavContributeDictionary", function (event) {
-        getText('DICTIONARY/GLOSSARY: Contributing', 'vicavContributeDictionary', 'vicavTexts.xslt');
-    });
-
 
     /* This is needed to collapse the menu after click in small screens */
     $('.navbar-nav li a').on('click', function () {
@@ -1591,9 +1499,6 @@ function () {
     $(document).on('mousedown', "#liVicavCrossDictQuery", function (event) {
         createNewCrossDictQueryPanel();
     });
-    // $(document).on('mousedown', "#liVicavCrossFeatureQuery", function (event) {
-    //     getText('EXPLORE FEATURES', 'vicav_explore_features', 'vicavTexts.xslt');
-//    });
 
 
     /* ********************************** */
