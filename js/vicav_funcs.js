@@ -1483,12 +1483,6 @@ function () {
     /* *************************** */
     /* ****  Paratexts     ******* */
     /* *************************** */
-    $(document).on('mousedown', "#liVicavMission", function (event) {
-        getText('MISSION', 'vicavMission', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavNews", function (event) {
-        getText('VICAV-NEWS', 'vicavNews', 'vicavTexts.xslt');
-    });
     $(document).on('mousedown', "#liVicavContributors", function (event) {
         getText('CONTRIBUTORS', 'vicavContributors', 'vicavTexts.xslt');
     });
@@ -1557,18 +1551,9 @@ function () {
     /* *************************** */
     /* ****  Explanations  ******* */
     /* *************************** */
-    // $(document).on('mousedown', "#liProfilesExplanation", function (event) {
-    //     getText('BIBLIOGRAPHY: Explanation', 'vicavExplanationProfiles', 'vicavTexts.xslt');
-    // });
     $(document).on('mousedown', "#liBibliographyExplanation", function (event) {
         createBiblExplanationPanel();
     });
-    // $(document).on('mousedown', "#liFeaturesExplanation", function (event) {
-    //     getText('LING. FEATURES: Explanation', 'vicavExplanationFeatures', 'vicavTexts.xslt');
-    // });
-    // $(document).on('mousedown', "#liSamplesExplanation", function (event) {
-    //     getText('SAMPLE TEXTS: Explanation', 'vicavExplanationSampleTexts', 'vicavTexts.xslt');
-    // });
     $(document).on('mousedown', "#liCorpusTextsExplanation", function (event) {
         getText('TEXTS: Explanation', 'vicavExplanationCorpusTexts', 'vicavTexts.xslt');
     });
