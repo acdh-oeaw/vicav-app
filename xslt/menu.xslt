@@ -45,7 +45,13 @@
 </xsl:template>
 
 <xsl:template match="item">
-	<a class="dropdown-item"><xsl:attribute name="id" select="./@xml:id"/><xsl:value-of select="."/></a>
+	<a class="dropdown-item">
+		<xsl:attribute name="id" select="./@xml:id"/>
+		<xsl:if test="not(empty(./@target)) and not(empty(./@type))">
+			<xsl:attribute name="data-target" select="./@target"/>
+			<xsl:attribute name="data-type" select="./@type"/>
+		</xsl:if>
+		<xsl:value-of select="."/></a>
 </xsl:template>
 
 <xsl:template match="separator">
