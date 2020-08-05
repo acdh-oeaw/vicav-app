@@ -1500,26 +1500,6 @@ function () {
         createNewCrossDictQueryPanel();
     });
 
-
-    /* ********************************** */
-    /* ****  DICTIONARY FRONTPAGE ******* */
-    /* ********************************** */
-    $(document).on('mousedown', "#liVicavDict_Tunis", function (event) {
-        getText('TUNICO DICTIONARY', 'dictFrontPage_Tunis', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavDict_Damascus", function (event) {
-        getText('DAMASCUS DICTIONARY', 'dictFrontPage_Damascus', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavDict_Cairo", function (event) {
-        getText('CAIRO DICTIONARY', 'dictFrontPage_Cairo', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavDict_Baghdad", function (event) {
-        getText('BAGHDAD DICTIONARY', 'dictFrontPage_Baghdad', 'vicavTexts.xslt');
-    });
-    $(document).on('mousedown', "#liVicavDict_MSA", function (event) {
-        getText('MSA DICTIONARY', 'dictFrontPage_MSA', 'vicavTexts.xslt');
-    });
-
     /* ******************************** */
     /* ****  DICTIONARY QUERIES ******* */
     /* ******************************** */
