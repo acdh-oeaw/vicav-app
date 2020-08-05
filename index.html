@@ -24,6 +24,7 @@
     <link href="vendor/jquery-ui.structure.min.css?v=00002" rel="stylesheet"></link>
     <link href="vendor/jquery-ui.theme.min.css?v=00002" rel="stylesheet"></link>
     <link href="vendor/jquery.tagit.css?v=00002" rel="stylesheet"></link>
+    <link href="vendor/blueimp-gallery.min.css?v=00002" rel="stylesheet"></link>
 
     <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png"/>
     <link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png"/>
@@ -34,6 +35,45 @@
   </head>
   
   <body>
+<!-- The Gallery as lightbox dialog, should be a document body child element -->
+  <div
+    id="blueimp-gallery"
+    class="blueimp-gallery"
+    aria-label="image gallery"
+    aria-modal="true"
+    role="dialog"
+  >
+    <div class="slides" aria-live="polite"></div>
+    <h3 class="title"></h3>
+    <a
+      class="prev"
+      aria-controls="blueimp-gallery"
+      aria-label="previous slide"
+      aria-keyshortcuts="ArrowLeft"
+    ></a>
+    <a
+      class="next"
+      aria-controls="blueimp-gallery"
+      aria-label="next slide"
+      aria-keyshortcuts="ArrowRight"
+    ></a>
+    <a
+      class="close"
+      aria-controls="blueimp-gallery"
+      aria-label="close"
+      aria-keyshortcuts="Escape"
+    ></a>
+    <a
+      class="play-pause"
+      aria-controls="blueimp-gallery"
+      aria-label="play slideshow"
+      aria-keyshortcuts="Space"
+      aria-pressed="false"
+      role="button"
+    ></a>
+    <ol class="indicator"></ol>
+  </div>
+
     <div id="cookie-overlay" style="display: none;">
       <div class="container">
         <div class="cookie-message">This website uses cookies to ensure you get the best experience on our website. <a target="_blank" href="https://www.oeaw.ac.at/oeaw/impressum/">More info</a></div>
@@ -207,12 +247,11 @@
       <script src="js/popper.min.js"></script>
       <script src="js/fundament.min.js"></script>
       <script src="js/leaflet.js"></script>
-      <script src="js/leaflet.markercluster.js"></script>
-      <script src="js/leaflet.markercluster.list.js"></script>
       <script src="js/ch_globals.js?v=00004"></script>
       <script src="js/tag-it.min.js"  type="text/javascript"></script>
       <script src="js/compare-core.js?v=00008"></script>
       <script src="js/geo_data.js"></script>
+      <script src="js/jquery.blueimp-gallery.min.js"></script>
       <script src="js/vicav_funcs.js?v=00008"></script>
 
       <!-- Matomo -->

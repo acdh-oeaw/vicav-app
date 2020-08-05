@@ -1494,3 +1494,20 @@ ul.overlapping-markers {
     margin: 0;
     padding: 0;
 }
+
+.gallery-item {
+    display: inline-block;
+    width: 180px;
+    height: 180px;
+    overflow: hidden;
+}
+
+.gallery-item img.portrait {
+    max-width: 100%;
+    max-height: inherit;
+}
+
+.gallery-item img.landscape {
+    max-width: inherit;
+    max-height: 100%;
+}
