@@ -7,8 +7,7 @@
       <xsl:output-character character="&amp;" string="&amp;"/>
     </xsl:character-map>
 
-    <xsl:output method="xhtml" encoding="UTF-8" use-character-maps="a"/>
-
+    <xsl:output method="xhtml" encoding="UTF-8" use-character-maps="a" />
   <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
   <xsl:param name="param-images-base-path">images</xsl:param>
   <!-- we make sure that $images-base-path always has a trailing slash -->

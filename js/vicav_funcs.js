@@ -1456,17 +1456,13 @@ function () {
         alert('');
     });
 
-    $(document).on('click', '.gallery', function (event) {
+    $(document).on('click', 'a[href*=".jpg"]', function (event) {
         event.preventDefault();
         event.stopPropagation();
-
-        event = event || window.event
-        var target = event.target || event.srcElement
-        var link = target.src ? target.parentNode : target
-        var options = { index: link, event: event }
-        var links = target.parentNode.parentNode.getElementsByTagName('a')
+        var options = { index: event.target, event: event }
+        var links = $(event.target).parent().parent().children('a[href*=".jpg"]')
         blueimp.Gallery(links, options)
-    })
+    });
 
     $(document).on('DOMNodeInserted', ".content-panel", function(event) {
         $('.gallery-item img', event.target).each((_i, i) => {
