@@ -144,6 +144,7 @@
 
 
   <xsl:template match="tei:div[@type='html-content']">
+    <div class="html-content">
     <xsl:analyze-string select="." regex="&lt;div id=&quot;bwg_container1_0&quot;(.+)bwg_main_ready\(\);      }}\);    &lt;/script&gt;">
       <xsl:matching-substring>
         <div class="gallery">
@@ -175,6 +176,7 @@
         </xsl:analyze-string>
       </xsl:non-matching-substring>
     </xsl:analyze-string>
+  </div>
   </xsl:template>
 
   <xsl:template match="tei:p">
