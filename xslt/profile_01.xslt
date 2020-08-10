@@ -25,7 +25,7 @@
                         </div>                                           
                     </xsl:if> 
                     
-                </xsl:if>                
+                </xsl:if>      
                 <!-- 
                 <xsl:choose>
                     <xsl:when test="//tei:head/tei:figure/tei:graphic">
@@ -208,6 +208,19 @@
             <xsl:apply-templates/>          
         </a>
     </xsl:template>
+
+    <xsl:template match="//tei:div[@type='gallery']">
+        <div class="gallery">
+            <xsl:for-each select="//tei:div[@type='gallery']/tei:link">
+                <div class="gallery-item">
+                    <a href="{./@target}">
+                        <img><xsl:attribute name="src"><xsl:value-of select="./tei:graphic/@url"/></xsl:attribute></img>
+                    </a>
+                </div>
+            </xsl:for-each>
+        </div>
+    </xsl:template>      
+
 <!-- 
     <xsl:template match="tei:ref">
         <xsl:choose>

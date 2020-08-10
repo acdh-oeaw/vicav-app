@@ -147,11 +147,11 @@
     <xsl:analyze-string select="." regex="&lt;div id=&quot;bwg_container1_0&quot;(.+)bwg_main_ready\(\);      }}\);    &lt;/script&gt;">
       <xsl:matching-substring>
         <div class="gallery">
-          <xsl:analyze-string select="." regex="src=&quot;(http.*?\.jpe?g)\?.*?&quot;.*? alt=&quot;(.*?)&quot;">
+          <xsl:analyze-string select="." regex="href=&quot;(http.*?\.jpe?g).*?&quot;.*?src=&quot;(http.*?\.jpe?g).*?&quot;.*? alt=&quot;(.*?)&quot;">
           <xsl:matching-substring>
             <div class="gallery-item">
-            <a href="{replace(regex-group(1), 'thumb/?', '')}" title="{regex-group(2)}">
-              <img src="{regex-group(1)}"/>
+            <a href="{replace(regex-group(1), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}" title="{regex-group(3)}">
+              <img src="{replace(regex-group(2), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}"/>
             </a>
             </div>
           </xsl:matching-substring>
@@ -159,7 +159,20 @@
         </div>
        </xsl:matching-substring>
       <xsl:non-matching-substring>    
-        <xsl:value-of select="replace(., '&amp;nbsp;', '&amp;#160;')"/>
+        <xsl:analyze-string select="." regex="&lt;a.*?href=&quot;(http.*?\.jpe?g).*?&quot;.*?class=&quot;(.*?)&quot;.*?src=&quot;(http.*?\.jpe?g).*?&quot;.*? alt=&quot;(.*?)&quot;.*?&lt;/a&gt;">
+          <xsl:matching-substring>
+            <div class="gallery {regex-group(2)}">
+            <div class="gallery-item">
+              <a href="{replace(regex-group(1), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}" title="{regex-group(4)}">
+                <img src="{replace(regex-group(3), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}"/>
+              </a>
+              </div>
+            </div>
+            </xsl:matching-substring>
+          <xsl:non-matching-substring>    
+            <xsl:value-of select="replace(., '&amp;nbsp;', '&amp;#160;')"/>
+          </xsl:non-matching-substring>
+        </xsl:analyze-string>
       </xsl:non-matching-substring>
     </xsl:analyze-string>
   </xsl:template>
