@@ -11,7 +11,7 @@
     <xsl:param name="filter-translations"></xsl:param>
 
     <xsl:template match="/items">
-        <xsl:variable name="all-features" select="distinct-values(//*[./name() = 'w' or @type= 'featureSample']/@ana)" />
+        <xsl:variable name="all-features" select="distinct-values(//*[@type= 'featureSample']/@ana)" />
         <xsl:variable name="selected-features" select="tokenize($filter-features, ',')" />
 
         <xsl:variable name="features-shown" select="if (empty($selected-features)) then $all-features else $selected-features"/>
@@ -20,7 +20,7 @@
         <xsl:variable name="results" >
             <xsl:for-each select="$features-shown">
                 <xsl:variable name="ana" select="."/>
-                <xsl:sequence select="$root/item//tei:cit[@type='featureSample' and (.//tei:w[contains-token(@ana,$ana)][1] or .//tei:phr[contains-token(@ana,$ana)][1]) and (.//*[@type='translation' and contains(., $filter-translations)])]">
+                <xsl:sequence select="$root/item//tei:cit[@type='featureSample' and contains-token(@ana,$ana) and (.//*[@type='translation' and contains(., $filter-translations)])]">
                     
                 </xsl:sequence>
             </xsl:for-each>
