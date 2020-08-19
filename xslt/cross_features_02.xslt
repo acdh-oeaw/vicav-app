@@ -60,19 +60,19 @@
                 <xsl:for-each select="$features-shown">
                     <xsl:variable name="ana" select="."/>
                     <xsl:if test="count($results) > 0">
-                        <xsl:if test="count($filtered-by-word/tei:cit[.//tei:w[contains-token(@ana,$ana)][1] or .//tei:phr[contains-token(@ana,$ana)][1]]) > 0">
+                        <xsl:if test="count($filtered-by-word/tei:cit[contains-token(@ana,$ana)]) > 0">
                             <h3><xsl:value-of select="$results/tei:cit[@ana = $ana][1]//tei:lbl"/></h3>
 
                             <xsl:for-each-group select="$root//item" group-by="(.//tei:region[1], 'unknown')[1]">
                                 <xsl:sort select="current-grouping-key()"/>
-                                <xsl:if test="count(current-group()//tei:cit[@type='featureSample' and (.//tei:w[contains-token(@ana,$ana)][1] or .//tei:phr[contains-token(@ana,$ana)][1]) and index-of($filtered-by-word/tei:cit, .) > 0]) > 0">
+                                <xsl:if test="count(current-group()//tei:cit[@type='featureSample' and contains-token(@ana,$ana) and index-of($filtered-by-word/tei:cit, .) > 0]) > 0">
                                     <h4><xsl:value-of select="current-grouping-key()"/></h4>
                                     
                                     <table class="tbFeatures">
                                         <xsl:for-each select="current-group()">
                                             <xsl:sort select="@city"/>
                                             <xsl:variable name="item" select="."/>
-                                            <xsl:variable name="city-results" select=".//tei:cit[@type='featureSample' and (.//tei:w[contains-token(@ana,$ana)][1] or .//tei:phr[contains-token(@ana,$ana)][1]) and index-of($filtered-by-word/tei:cit, .) > 0]"/>
+                                            <xsl:variable name="city-results" select=".//tei:cit[@type='featureSample' and contains-token(@ana,$ana) and index-of($filtered-by-word/tei:cit, .) > 0]"/>
                                             <xsl:if test="count($city-results) > 0">
                                             
                                             <xsl:for-each select="$city-results">
