@@ -16,11 +16,13 @@
             </table>
             
             <p xml:space="preserve">By <i><xsl:value-of select="//tei:author"/><xsl:if test=".//tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="replace(.//tei:revisionDesc/tei:change[1]/@when, 'T.*', '')" />)</xsl:if></i></p>
-            <xsl:if test="//tei:profileDesc/tei:particDesc/tei:person/text()">
-                <p xml:space="preserve">Informant ID: 
-                    <i><xsl:value-of select="//tei:profileDesc/tei:particDesc/tei:person"/></i><xsl:if test="//tei:profileDesc/tei:particDesc/tei:person/@sex">, Sex: <i><xsl:value-of select="//tei:profileDesc/tei:particDesc/tei:person/@sex"/></i></xsl:if><xsl:if test="//tei:profileDesc/tei:particDesc/tei:person/@age">, Age: <i><xsl:value-of select="//tei:profileDesc/tei:particDesc/tei:person/@age"/></i></xsl:if>
-                </p>
-            </xsl:if>
+            <ul id="informants">
+            <xsl:for-each select="//tei:profileDesc/tei:particDesc/tei:person">
+                <li xml:space="preserve">Informant ID: 
+                    <i><xsl:value-of select="."/></i><xsl:if test="@sex">, Sex: <i><xsl:value-of select="@sex"/></i></xsl:if><xsl:if test="@age">, Age: <i><xsl:value-of select="@age"/></i></xsl:if>
+                </li>
+            </xsl:for-each>
+            </ul>
             
             <xsl:if test="string-length(//tei:teiHeader/tei:profileDesc/tei:particDesc/tei:p[1])&gt;0">
                 <xsl:for-each select="//tei:teiHeader/tei:profileDesc/tei:particDesc/tei:p">
