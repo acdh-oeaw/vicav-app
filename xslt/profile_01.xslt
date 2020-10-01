@@ -213,7 +213,7 @@
         <div class="gallery">
             <xsl:for-each select="//tei:div[@type='gallery']/tei:link">
                 <div class="gallery-item">
-                    <a href="{./@target}">
+                    <a href="{./@target}" title="{./tei:head}">
                         <img><xsl:attribute name="src"><xsl:value-of select="./tei:graphic/@url"/></xsl:attribute></img>
                     </a>
                 </div>
