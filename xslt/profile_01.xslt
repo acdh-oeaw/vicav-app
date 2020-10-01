@@ -221,6 +221,25 @@
         </div>
     </xsl:template>      
 
+    <xsl:template match="tei:figure">
+        <div>
+            <xsl:if test="@rendition = '#right'">
+                <xsl:attribute name="style">float: right; margin: 10px 10px 0px 10px</xsl:attribute>
+            </xsl:if>
+            <div  class="gallery-item">
+                <a href="images/{./tei:link/@target}" title="{./tei:head}">
+                    <img>
+                        <xsl:attribute name="src">images/<xsl:value-of select="tei:graphic/@url"/></xsl:attribute>
+                    </img>
+                </a>
+            </div>
+            <xsl:if test="tei:head">
+                <div class="imgCaption">
+                    <xsl:apply-templates select="tei:head"/>
+                </div>                                           
+            </xsl:if>           
+        </div>
+    </xsl:template>
 <!-- 
     <xsl:template match="tei:ref">
         <xsl:choose>
