@@ -137,6 +137,10 @@
                 <div class="h3Profile">Audio Data</div>
                 <xsl:apply-templates/>
             </xsl:when>
+            <xsl:when test="@type='gallery'">
+                <div class="h3Profile">Gallery</div>
+                <xsl:apply-templates/>
+            </xsl:when>
         </xsl:choose>
     </xsl:template>
     
@@ -157,6 +161,13 @@
     
     <xsl:template match="tei:teiHead[@type='imgCaption']"><xsl:apply-templates/></xsl:template>
     <xsl:template match="tei:teiHeader"></xsl:template>
+
+    <xsl:template match="tei:p[./tei:figure]">
+        <div class="pFigure">
+            <xsl:apply-templates/>
+        </div>
+    </xsl:template>
+
     
     <xsl:template match="tei:p">
         <div class="pNorm">

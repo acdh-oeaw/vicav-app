@@ -1511,3 +1511,8 @@ ul.overlapping-markers {
     max-width: inherit;
     max-height: 100%;
 }
+
+.pFigure {
+    display: flex;
+    justify-content: center;
+}
