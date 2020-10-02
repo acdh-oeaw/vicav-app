@@ -11,6 +11,27 @@
 </r>
  */
 
+function convertDMSToDD(degrees, minutes, seconds, direction) {
+    var dd = parseInt(degrees) + parseInt(minutes)/60 + parseInt(seconds)/(60*60);
+
+    if (direction == "S" || direction == "W") {
+        dd = dd * -1;
+    } // Don't do anything for N or E
+    return dd;
+}
+
+function coordToDD(co_) {
+    sdir = '';
+    if (co_.indexOf('W') !== -1) { sdir = 'W'; co_ = co_.replace(/′W/g, ""); }
+    if (co_.indexOf('N') !== -1) { sdir = 'N'; co_ = co_.replace(/′N/g, ""); }
+    if (co_.indexOf('S') !== -1) { sdir = 'S'; co_ = co_.replace(/′S/g, ""); }
+    if (co_.indexOf('E') !== -1) { sdir = 'E'; co_ = co_.replace(/′E/g, ""); }
+    s1 = co_.split("°");
+    //console.log(s);
+    //console.log("   " + s1[0] + ' # ' + s1[1] + ' # ' + sdir);
+    return convertDMSToDD(s1[0], s1[1], 0, sdir);
+}
+
 function insertVicavDictMarkers() {
     setExplanation('Dictionaries');
     
@@ -139,7 +160,7 @@ function insertProfileMarkers() {
     m2 = L.marker([34.02, -6.83], {alt:'Salé', id: 'sale_01'});
     fg5.addLayer(m2);
      */
-    //console.log('getProfileMarkers');
+    console.log('getProfileMarkers');
     clearMarkerLayers();
     $.ajax({
         url: 'profile_markers',
@@ -153,6 +174,7 @@ function insertProfileMarkers() {
                 cnt = cnt + 1;
                 //console.log(sUrl);
                 loc = $(this).find('loc').text();
+                
                 loc = loc.replace(/°/g, ".");
                 loc = loc.replace(/′N/g, ",");
                 loc = loc.replace(/′E/g, "");
@@ -163,14 +185,34 @@ function insertProfileMarkers() {
                 
                 sAlt = $(this).find('alt').text();
                 sID = $(this).attr('xml:id');
-                //console.log(loc + ' ' + sAlt);
-                values = loc.split(",");
-                v1 = parseFloat(values[0]);
-                v2 = parseFloat(values[1]);
-                sTooltip = sAlt;
+                //console.log(loc + '# ' + sAlt);
+                //values = loc.split(",");
+                //v1 = parseFloat(values[0]);
+                //v2 = parseFloat(values[1]);                
                 
+                loc = $(this).find('loc').text();
+                //console.log(loc + ' # ' + sAlt);
+                //console.log(v1 + ' # ' + v2 + ' # ' + sAlt);
+                  //s1 = values[0].split(".");
+                  //s2 = values[1].split(".");
+                //console.log(s1[0] + ' # ' + s1[1] + ' # ' + s2[0] + ' ' + s2[1] + ' # ' + sAlt);
+                s = loc.split(" ");
+                //console.log('==> ' + s[0] + ' # ' + s[1]);
+                dd1 = coordToDD(s[0])
+                dd2 = coordToDD(s[1]);
+                r1 = dd1.toFixed(2);
+                r2 = dd2.toFixed(2);
+                //console.log(r1 + ' # ' + r2 + ' # ' + s + ' :: ' + s[0] + ' # ' + s[1] +' # ' + sAlt);
+                //console.log(s + ' # ' + sAlt);
+                //console.log(s[0] + ' # ' + s[1] + ' # ' + sAlt);
+                //console.log(dd1 + ' # ' + dd2 + ' # ' + sAlt);
+                console.log(r1 + ' # ' + r2 + ' # ' + sAlt + ' : ' + sID);
+
+                sTooltip = sAlt;
                 sQuery = 'profile:' + sAlt + '';
-                fgProfileMarkers.addLayer(L.marker([v1, v2], { alt: sAlt, id: sID }).bindTooltip(sTooltip));
+                //fgProfileMarkers.addLayer(L.marker([v1, v2], { alt: sAlt, id: sID }).bindTooltip(sTooltip));
+                fgProfileMarkers.addLayer(L.marker([r1, r2], { alt: sAlt, id: sID }).bindTooltip(sTooltip));
+
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {

@@ -669,9 +669,9 @@ function vicav:get_profile_markers() {
     let $out :=
     for $item in $entries
     return
-        <r
-            type='geo'>{$item/@xml:id}
-            <loc>{$item/tei:text/tei:body/tei:div/tei:div/tei:p/tei:geo/text()}</loc>
+        <r type='geo'>{$item/@xml:id}
+            <loc>{$item/tei:text/tei:body/tei:div/tei:div/tei:p/tei:geo[1]/text()}</loc>
+            <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc>
             <alt>{$item//tei:text[1]/tei:body[1]/tei:div[1]/tei:head[1]/tei:name[1]/text()}</alt>
             <freq>1</freq>
         </r>
@@ -728,6 +728,7 @@ function vicav:get_feature_markers() {
                 <r
                     type='geo'>{$item/@xml:id}
                     <loc>{$item//tei:geo/text()}</loc>
+                    <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc>
                     <alt>{$item//tei:head[1]/tei:name[1]/text()}</alt>
                     <freq>1</freq>
                 </r>

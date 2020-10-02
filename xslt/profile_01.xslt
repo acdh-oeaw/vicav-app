@@ -78,7 +78,7 @@
                 
                 <tr>
                     <td class="tdHead">Geo location</td>
-                    <td class="tdProfileTableRight"><i><xsl:value-of select="//tei:div[@type='positioning']/tei:p/tei:geo"/></i></td>
+                    <td class="tdProfileTableRight"><i><xsl:value-of select="//tei:div[@type='positioning']/tei:p"/></i></td>
                 </tr>
                 <tr>
                     <td class="tdHead">Contributed by</td>
@@ -159,11 +159,16 @@
     <xsl:template match="tei:teiHeader"></xsl:template>
     
     <xsl:template match="tei:p">
-        <div class="pNorm">
-            <xsl:apply-templates/>
-        </div>
+        <div class="pNorm"><xsl:apply-templates/></div>
     </xsl:template>
         
+    <xsl:template match="tei:list">
+        <ul><xsl:apply-templates/></ul>
+    </xsl:template>
+    <xsl:template match="tei:item">
+        <li><xsl:apply-templates/></li>
+    </xsl:template>
+    
     <xsl:template match="tei:ptr">
         <a class="aVicText">
             <xsl:attribute name="href">#</xsl:attribute>
