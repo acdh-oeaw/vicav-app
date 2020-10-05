@@ -11,6 +11,29 @@
 </r>
  */
 
+
+function dmsToDeg(coorsString) {
+    let loc = coorsString
+    if (loc.indexOf("°") > -1) {
+        loc = loc.replace(/°/g, ".");
+        loc = loc.replace(/(′|')N/g, ",");
+        loc = loc.replace(/(′|')E/g, "");
+
+        if (loc.indexOf('W') !== -1) {
+            loc = loc.replace(/ /g, " -");
+            loc = loc.replace(/(′|')W/g, "");
+        }
+        loc = loc.replace(/(\d+)\.(\d+)/g, function(m) {
+            console.log(m)
+            numbers = m.split('\.')
+            console.log(numbers)
+            let decimal = Math.floor(parseInt(numbers[1]) / 60 * 100)
+            return numbers[0] + '.' + decimal
+        })        
+    }
+    return loc
+}
+
 function insertVicavDictMarkers() {
     setExplanation('Dictionaries');
     
@@ -47,13 +70,7 @@ function insertFeatureMarkers() {
             $(result).find('r').each(function (index) {
                 cnt = cnt + 1;
                 let loc = $(this).find('loc').text();
-                loc = loc.replace(/°/g, ".");
-                loc = loc.replace(/′N/g, ",");
-                loc = loc.replace(/′E/g, "");
-                if (loc.indexOf('′W') !== -1) {
-                    loc = loc.replace(/ /g, " -");
-                    loc = loc.replace(/′W/g, "");
-                }
+                loc = dmsToDeg(loc)
                 
                 sAlt = $(this).find('alt').text();
                 sLocName = $(this).find('locName').text();
@@ -98,13 +115,7 @@ function insertSampleMarkers() {
                 //console.log(sUrl);
                 let loc = $(this).find('loc').text();
                 if (loc){
-                    loc = loc.replace(/°/g, ".");
-                    loc = loc.replace(/′N/g, ",");
-                    loc = loc.replace(/′E/g, "");
-                    if (loc.indexOf('′W') !== -1) {
-                        loc = loc.replace(/ /g, " -");
-                        loc = loc.replace(/′W/g, "");
-                    }
+                    loc = dmsToDeg(loc)
                     
                     sAlt = $(this).find('alt').text();
                     sID = $(this).attr('xml:id');
@@ -131,6 +142,7 @@ function insertSampleMarkers() {
     updateUrl_biblMarker('_samples_', '');
 }
 
+
 function insertProfileMarkers() {
     //setExplanation('Profiles');
     /*
@@ -154,13 +166,8 @@ function insertProfileMarkers() {
                 cnt = cnt + 1;
                 //console.log(sUrl);
                 loc = $(this).find('loc').text();
-                loc = loc.replace(/°/g, ".");
-                loc = loc.replace(/′N/g, ",");
-                loc = loc.replace(/′E/g, "");
-                if (loc.indexOf('′W') !== -1) {
-                    loc = loc.replace(/ /g, " -");
-                    loc = loc.replace(/′W/g, "");
-                }
+
+                loc = dmsToDeg(loc)
                 
                 sAlt = $(this).find('alt').text();
                 sID = $(this).attr('xml:id');
