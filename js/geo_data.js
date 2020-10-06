@@ -16,17 +16,15 @@ function dmsToDeg(coorsString) {
     let loc = coorsString
     if (loc.indexOf("°") > -1) {
         loc = loc.replace(/°/g, ".");
-        loc = loc.replace(/(′|')N/g, ",");
-        loc = loc.replace(/(′|')E/g, "");
+        loc = loc.replace(/(’|′|')N/g, ",");
+        loc = loc.replace(/(’|′|')E/g, "");
 
         if (loc.indexOf('W') !== -1) {
             loc = loc.replace(/ /g, " -");
             loc = loc.replace(/(′|')W/g, "");
         }
         loc = loc.replace(/(\d+)\.(\d+)/g, function(m) {
-            console.log(m)
             numbers = m.split('\.')
-            console.log(numbers)
             let decimal = Math.floor(parseInt(numbers[1]) / 60 * 100)
             return numbers[0] + '.' + decimal
         })        
@@ -166,9 +164,8 @@ function insertProfileMarkers() {
                 cnt = cnt + 1;
                 //console.log(sUrl);
                 loc = $(this).find('loc').text();
-
-                loc = dmsToDeg(loc)
                 
+                loc = dmsToDeg(loc)
                 sAlt = $(this).find('alt').text();
                 sID = $(this).attr('xml:id');
                 //console.log(loc + ' ' + sAlt);
