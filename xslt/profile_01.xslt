@@ -220,9 +220,10 @@
         </a>
     </xsl:template>
 
-    <xsl:template match="//tei:div[@type='gallery']/tei:link">
+    <xsl:template match="//tei:div[@type='gallery']">
         <div class="gallery">
-            <xsl:for-each select="//tei:div[@type='gallery']">
+            <div class="h3Profile"><xsl:value-of select="./tei:head"/></div>
+            <xsl:for-each select="//tei:div[@type='gallery']/tei:link">
                 <div class="gallery-item">
                     <a href="{./@target}" title="{./tei:head}">
                         <img><xsl:attribute name="src"><xsl:value-of select="./tei:graphic/@url"/></xsl:attribute></img>
