@@ -1516,3 +1516,7 @@ ul.overlapping-markers {
     display: flex;
     justify-content: center;
 }
+
+.figure {
+    max-width: 180px;
+}

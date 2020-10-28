@@ -235,6 +235,7 @@
 
     <xsl:template match="tei:figure">
         <div>
+            <xsl:attribute name="class" select="'figure'"/>
             <xsl:if test="@rendition = '#right'">
                 <xsl:attribute name="style">float: right; margin: 10px 10px 0px 10px</xsl:attribute>
             </xsl:if>
