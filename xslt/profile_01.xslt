@@ -238,6 +238,9 @@
             <xsl:if test="@rendition = '#right'">
                 <xsl:attribute name="style">float: right; margin: 10px 10px 0px 10px</xsl:attribute>
             </xsl:if>
+            <xsl:if test="@rendition = '#left'">
+                <xsl:attribute name="style">float: left; margin: 10px 10px 0px 10px</xsl:attribute>
+            </xsl:if>
             <div  class="gallery-item">
                 <a href="images/{./tei:link/@target}" title="{./tei:head}">
                     <img>
