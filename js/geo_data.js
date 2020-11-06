@@ -67,27 +67,27 @@ function insertFeatureMarkers() {
             cnt = 0;
             $(result).find('r').each(function (index) {
                 cnt = cnt + 1;
-                //console.log(sUrl);
-                loc = $(this).find('loc').text();
-                loc = loc.replace(/°/g, ".");
-                loc = loc.replace(/′N/g, ",");
-                loc = loc.replace(/′E/g, "");
-                if (loc.indexOf('′W') !== -1) {
-                    loc = loc.replace(/ /g, " -");
-                    loc = loc.replace(/′W/g, "");
-                }
+                let loc = $(this).find('loc').text();
+                loc = dmsToDeg(loc)
                 
-
-                sTooltip = $(this).find('alt').text();
+                sAlt = $(this).find('alt').text();
+                sLocName = $(this).find('locName').text();
                 sID = $(this).attr('xml:id');
-                //console.log(loc + ' ' + sAlt);
+
+                let sCnt = sID.replace(/^[\w-]+_?0?/, '')
+                if (sCnt && parseInt(sCnt) > 1) {
+                    sAlt = sAlt + ' (' + sCnt + ')'
+                }
                 values = loc.split(",");
                 v1 = parseFloat(values[0]);
                 v2 = parseFloat(values[1]);
-                
+                sTooltip = sLocName;
+                                
+
                 sQuery = 'profile:' + sTooltip + '';
-                fgFeatureMarkers.addLayer(L.marker([v1, v2], { alt: sTooltip, id: sID }).bindTooltip(sTooltip));
-                //fgFeatureMarkers.addLayer(L.marker([33.51, 36.29], {  alt: 'Damascus', id: 'ling_features_damascus' }).bindTooltip('Damascus'));
+                marker = L.marker([v1, v2], { alt: sLocName, title: sAlt, id: sID, type: 'feature' }).bindTooltip(sTooltip);
+                fgFeatureMarkers.addLayer(marker);
+                //oms.addMarker(marker);
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -111,34 +111,23 @@ function insertSampleMarkers() {
             let results = $(result).find('r')
             results.each(function (index) {
                 //console.log(sUrl);
-                loc = $(this).find('loc').text();
+                let loc = $(this).find('loc').text();
                 if (loc){
+                    loc = dmsToDeg(loc)
+                    
+                    sAlt = $(this).find('alt').text();
+                    sID = $(this).attr('xml:id');
+                    sLocName = $(this).find('locName').text();
 
-                                loc = loc.replace(/°/g, ".");
-                                loc = loc.replace(/′N/g, ",");
-                                loc = loc.replace(/′E/g, "");
-                                if (loc.indexOf('′W') !== -1) {
-                                    loc = loc.replace(/ /g, " -");
-                                    loc = loc.replace(/′W/g, "");
-                                }
-                                
-                                sAlt = $(this).find('alt').text();
-                                sID = $(this).attr('xml:id');
-
-                                let sCnt = sID.replace(/^\w+_0?/, '')
-                                console.log(sCnt)
-                                if (sCnt && parseInt(sCnt) > 1) {
-                                    sAlt = sAlt + ' (' + sCnt + ')'
-                                }
-                                values = loc.split(",");
-                                v1 = parseFloat(values[0]);
-                                v2 = parseFloat(values[1]);
-                                sTooltip = sAlt;
-                                
-                                sQuery = 'profile:' + sAlt + '';
-                                marker = L.marker([v1, v2], { alt: sAlt, id: sID }).bindTooltip(sTooltip);
-                                fgSampleMarkers.addLayer(marker);
-                                oms.addMarker(marker); 
+                    values = loc.split(",");
+                    v1 = parseFloat(values[0]);
+                    v2 = parseFloat(values[1]);
+                    sTooltip = sLocName;
+                    
+                    sQuery = 'profile:' + sAlt + '';
+                    marker = L.marker([v1, v2], { alt: sLocName, title: sAlt, id: sID, type: 'sample' }).bindTooltip(sTooltip);
+                    fgSampleMarkers.addLayer(marker);
+                         //       oms.addMarker(marker); 
                             }
             });
         },
@@ -150,6 +139,7 @@ function insertSampleMarkers() {
     
     updateUrl_biblMarker('_samples_', '');
 }
+
 
 function insertProfileMarkers() {
     //setExplanation('Profiles');
@@ -183,6 +173,7 @@ function insertProfileMarkers() {
                     loc = loc.replace(/′W/g, "");
                 }
                 
+                loc = dmsToDeg(loc)
                 sAlt = $(this).find('alt').text();
                 sID = $(this).attr('xml:id');
                 //console.log(loc + '# ' + sAlt);

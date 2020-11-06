@@ -1,4 +1,4 @@
-const sampletexts = require('../fixtures/sampletexts')
+const sampletexts = require('../../fixtures/sampletexts')
 let checksampleTexts = function(fixture, label) {
     cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,_samples_,]')
     cy.get('#cookie-overlay').should('be.visible')
@@ -6,9 +6,15 @@ let checksampleTexts = function(fixture, label) {
     cy.get('#cookie-overlay').should('not.be.visible')
     cy.get('img.leaflet-marker-icon').should('be.visible') // Wait until the initial markers appear.
 
-    for (let l = 0; l < fixture.labels.length; l++) {
-        cy.get('img[alt="'+ fixture.labels[l] + '"]').click({force: true});
-    }
+    cy.get('img[alt="'+ fixture.labels[0] + '"]').first().click({force: true}).then(() => {
+        if (fixture.labels.length > 1) {
+            cy.get('ul.overlapping-markers').contains(fixture.labels[1]).click({force: true})
+        }
+    });
+
+    // for (let l = 0; l < fixture.labels.length; l++) {
+    //     cy.get('img[alt="'+ fixture.labels[l] + '"]').click({force: true});
+    // }
 
     if (fixture.person !== undefined) {
         cy.get('[data-snippetid=' + fixture.snippetid + '] i').as('snippet')
@@ -29,8 +35,13 @@ let checksampleTexts = function(fixture, label) {
 
     for (let variant in fixture.variants) {
         cy.contains(variant).scrollIntoView().trigger('mouseover').then(($el) => {
-            const toolTipID = $el.attr('aria-describedBy')
-
+            let toolTipID = $el.attr('aria-describedBy')
+            if (toolTipID === undefined) {
+                toolTipID = $el.find('span').attr('aria-describedBy')
+            }
+            if (toolTipID === undefined) {
+                toolTipID = $el.closest('span').attr('aria-describedBy')
+            }
             cy.get('#'+toolTipID).contains(fixture.variants[variant])
             // At the end of this test we have to move the virtual mouse away.
             // We can just pretend we have a lot of mouse cursors and not move away.

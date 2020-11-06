@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+  xmlns:tei="http://www.tei-c.org/ns/1.0"
+  stylesheet="../xslt/cross_samples_01.xslt"
+  xmlns="http://www.w3.org/1999/xhtml">
+  <x:param name="filter-features" select="'1'"></x:param>
+  <x:scenario label="explore-samples output">
+    <x:scenario label="locations only">
+       <x:variable name="result" href="../fixtures/explore-samples-location-output.xml" as="document-node()?"></x:variable>
+      <x:context href="../fixtures/explore-samples-location-data.xml" select="/"></x:context>
+      <x:expect label="to match output" select="$result/*">
+      </x:expect>
+    </x:scenario>
+  </x:scenario>
+</x:description>

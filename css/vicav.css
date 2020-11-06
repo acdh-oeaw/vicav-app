@@ -1428,3 +1428,86 @@ img.footer-acdh-logo{
 
 .cookie-accept-btn:hover {
   background-color: #d2b33d; }
+
+/* Compare samples window */
+a.word-search {
+    color: inherit;
+}
+
+.w {
+    font-style: normal;
+    color: inherit;
+}
+
+
+.w.highlight {
+    padding: 0;
+    color: red;
+    background: 0;
+}
+
+.show-sentence {
+    display: block;
+    float: left;
+    margin: 0 4px 0 2px;
+}
+
+form.compare-samples > fieldset.column {
+    border: silver 1px solid;
+    padding: 5px;
+    min-width: 45%;
+    float: left;
+    margin-right: 10px;
+}
+form.compare-samples > fieldset.actions {
+    text-align: center;
+    clear: both;
+    padding: 10px 0;
+}
+form.compare-samples fieldset > fieldset {
+    border: none;
+}
+
+form.compare-samples .sentences-wrapper > fieldset {
+    display: inline-block;
+}
+.tagit-autocomplete,
+.ui-menu-item-wrapper {
+    z-index: 99999 !important;
+}
+
+.sentences-nav {
+    text-align: center;
+}
+
+.sentences-nav .prev-link {
+    float: left;
+}
+.sentences-nav .next-link {
+    float: right;
+}
+.sentences-nav input {
+    width: 50px;
+}
+ul.overlapping-markers {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.gallery-item {
+    display: inline-block;
+    max-width: 180px;
+    max-height: 180px;
+    overflow: hidden;
+}
+
+.gallery-item img.portrait {
+    max-width: 100%;
+    max-height: inherit;
+}
+
+.gallery-item img.landscape {
+    max-width: inherit;
+    max-height: 100%;
+}

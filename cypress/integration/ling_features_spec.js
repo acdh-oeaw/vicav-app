@@ -1,54 +1,62 @@
 describe('Features', function() {
     it('should show clickable markers', function() {
 	    cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,_features_,]')
-	    cy.get('img.leaflet-marker-icon') // Wait until the initial markers appear.
-
-	    cy.get('img[alt^="Tunis"]').click({force: true})
-	    cy.get('[data-snippetid="ling_features_tunis"]').contains('h2', 'A List of Linguistic Features of Tunis Arabic')
+	    cy.get('img.leaflet-marker-icon').then(function() {
+		    cy.get('img[alt^="Tunis2"]').click({force: true}).then(function() {
+			    cy.get('[data-snippetid="vicav_lingfeatures_tunis2"]').contains('h2', 'A List of Linguistic Features of Tunis2 Arabic')
+		    })	    	
+	    }) // Wait until the initial markers appear.
     });
 })
 
-describe('Features XSLT', function() {
-    it('should output the table', function() {
-    	cy.fixture('api/lingfeatures_Test_body.xml').then(tunisBody => {
-		    cy.request('http://localhost:8984/vicav/profile?coll=vicav_lingfeatures&id=ling_features_test&xslt=features_01.xslt').as('ling_features_test')
-		    cy.get('@ling_features_test').then(response => {
-		    	expect(response.body.replace(/\s*(\r\n|\n|\r)\s*/gm, '')).to.eq(tunisBody.replace(/\s*(\r\n|\n|\r)\s*/gm, ''))
-		    })
-    	})
-    });
-})
+describe('VICAV Compare features window', function() {
+	it ('shows form with the right behavior', function() {
+		cy.server()
+		cy.route('vicav/data_locations*').as('resources')
+		cy.route('vicav/explore_samples*').as('results')
 
-describe('Features Comparison', function() {
-    it('should output the comparison table', function() {
-		cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,_features_,]')
+	    cy.visit('http://localhost:8984/vicav/')
+
 		cy.get('button.navbar-toggler').click().then(() => {
 			cy.contains('Feature Lists').click().then(() => {
-				cy.contains('Cross-examine the VICAV Feature Lists').scrollIntoView().click().then(() => {
-					cy.contains('who?').click().then(() => {
-						cy.contains('Ahwaz')
-						cy.contains('Baghdad')
-						cy.contains('hāḏa r-rayyāl yāhu? / yāhu hāḏa r-rayyāl? / zəlma– əhwa ṣāḥbi.')
-						cy.contains('(Who is this man? – He is my friend)')								
-					});
-				});
-			});
-		})
-    });
+				cy.contains('Cross-examine the VICAV Feature Lists').click().then(() => {
+					cy.wait('@resources').then((xhrs) => {
+				    	cy.get('.location-wrapper .tagit input').scrollIntoView().type('Tun', {force: true})
+					    cy.get('.tagit-autocomplete .ui-menu-item').then(() => {
+							    cy.contains('Tunis2').click()
+						    })
 
-    it('should support phrases', function() {
-		cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,_features_,]')
-		cy.get('button.navbar-toggler').click().then(() => {
-			cy.contains('Feature Lists').click().then(() => {
-				cy.contains('Cross-examine the VICAV Feature Lists').scrollIntoView().click().then(() => {
-					cy.contains('how?').click().then(() => {
-						cy.contains('Ahwaz')
-						cy.contains('Baghdad')
-						cy.contains('šlōn ək? / šlōnəč? (f.) – zīən. / zīəna.')
-						cy.contains('(How are you (m./f.)? – I’m fine.)')								
-					});
+						    // cy.get('.word-wrapper .tagit input').scrollIntoView().type('sk', {force: true})
+						    // cy.get('.tagit-autocomplete .ui-menu-item').then(() => {
+							   //  cy.contains('škūn').click()
+						    // })
+
+						    cy.get('.person-wrapper .tagit input').scrollIntoView().type('Tes', {force: true})
+						    cy.get('.tagit-autocomplete .ui-menu-item').then(() => {
+							    cy.contains('Test1/f/45').click()
+						    })
+
+						    cy.get('.features-wrapper .tagit input').scrollIntoView().type('who', {force: true})
+						    cy.get('.tagit-autocomplete .ui-menu-item').then(() => {
+						    	cy.contains('who?').click()	
+						    })
+
+						    cy.contains('Compare features').click()
+						    cy.wait('@results', {responseTimeout: 10000}).then(() => {
+							    cy.get('[data-snippetID=compare-features-result]').then((el) => {
+							    	cy.url().should('contain', '[crossFeaturesResult,type|lingfeatures+xslt|cross_features_02.xslt+location|Tunis2+age|0%2C100+person|Test1+features|semlib%3Awho+translation|+word|+sex|m%2Cf,open]')	
+							    	cy.get(el).contains('2 feature sentences found.')
+							    	cy.get('.tdFeaturesRightTarget').then((td) => {
+							    		assert.equal(td[0].innerText, 'škūn hā -ṛ -ṛāžil?– hūwa ṣāḥbi.')
+							    		assert.equal(td[1].innerText, 'škūn iṛ-ṛāžil hǟḏa? – hūwa ṣāḥbi.')
+							    	})
+							    	cy.get(el).contains('Jendouba')
+							    })
+						    })
+					})			    	
 				});
 			});
-		})
-    });
+		});
+	}) 
 })
+

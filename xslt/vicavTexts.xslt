@@ -1,5 +1,11 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
+  
+    <xsl:character-map name="a">
+       <xsl:output-character character="&lt;" string="&lt;"/>
+       <xsl:output-character character="&gt;" string="&gt;"/>
+      <xsl:output-character character="&amp;" string="&amp;"/>
+    </xsl:character-map>
 
     <xsl:output method="html" encoding="UTF-8"/>
   <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
@@ -134,6 +140,43 @@
         </xsl:choose>        
       </span>
     </p>
+  </xsl:template>
+
+
+  <xsl:template match="tei:div[@type='html-content']">
+    <div class="html-content">
+    <xsl:analyze-string select="." regex="&lt;div id=&quot;bwg_container1_0&quot;(.+)bwg_main_ready\(\);      }}\);    &lt;/script&gt;">
+      <xsl:matching-substring>
+        <div class="gallery">
+          <xsl:analyze-string select="." regex="href=&quot;(http.*?\.jpe?g).*?&quot;.*?src=&quot;(http.*?\.jpe?g).*?&quot;.*? alt=&quot;(.*?)&quot;">
+          <xsl:matching-substring>
+            <div class="gallery-item">
+            <a href="{replace(regex-group(1), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}" title="{regex-group(3)}">
+              <img src="{replace(regex-group(2), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}"/>
+            </a>
+            </div>
+          </xsl:matching-substring>
+        </xsl:analyze-string>
+        </div>
+       </xsl:matching-substring>
+      <xsl:non-matching-substring>    
+        <xsl:analyze-string select="." regex="&lt;a.*?href=&quot;(http.*?\.jpe?g).*?&quot;.*?class=&quot;(.*?)&quot;.*?src=&quot;(http.*?\.jpe?g).*?&quot;.*? alt=&quot;(.*?)&quot;.*?&lt;/a&gt;">
+          <xsl:matching-substring>
+            <div class="gallery {regex-group(2)}">
+            <div class="gallery-item">
+              <a href="{replace(regex-group(1), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}" title="{regex-group(4)}">
+                <img src="{replace(regex-group(3), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}"/>
+              </a>
+              </div>
+            </div>
+            </xsl:matching-substring>
+          <xsl:non-matching-substring>    
+            <xsl:value-of select="replace(., '&amp;nbsp;', '&amp;#160;')"/>
+          </xsl:non-matching-substring>
+        </xsl:analyze-string>
+      </xsl:non-matching-substring>
+    </xsl:analyze-string>
+  </div>
   </xsl:template>
 
   <xsl:template match="tei:p">

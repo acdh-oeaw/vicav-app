@@ -22,6 +22,7 @@ build-develop:
   stage: build
   tags:
       - BaseX-9.2
+      - vicav
   variables:
      GIT_STRATEGY: clone
      GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
@@ -38,8 +39,6 @@ build-develop:
     - $(npm bin)/cypress verify
     - cd $CI_BUILDS_DIR
     - ./vicav_webapp/scripts/gitlab-runner-setup.sh
-    - mkdir -p $CI_BUILDS_DIR/vicav_webapp/artifacts
-    - rm -rf $CI_BUILDS_DIR/vicav_webapp/artifacts/*  2>/dev/null
     
 run_tests:
   except:
@@ -47,11 +46,19 @@ run_tests:
   stage: test
   tags:
       - BaseX-9.2
+      - vicav 
   variables:
      GIT_STRATEGY: clone
      GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
+     SAXON_CP: $CI_BUILDS_DIR/../lib/custom/saxon9he.jar
+     CYPRESS_BASEX_ROOT: $CI_BUILDS_DIR/../
      HOME: /home/gitlab-runner
   script:
+    - mkdir -p $GIT_CLONE_PATH/artifacts
+    - rm -rf $GIT_CLONE_PATH/artifacts/*  2>/dev/null
+    - mkdir -p $GIT_CLONE_PATH/artifacts/xspec
+    - $GIT_CLONE_PATH/scripts/run-unit-tests.sh > $GIT_CLONE_PATH/artifacts/XUNIT_OUTPUT.txt
+    - $GIT_CLONE_PATH/scripts/run-xspecs.sh
     - $(npm bin)/cypress run
 
   artifacts:
@@ -59,15 +66,20 @@ run_tests:
     expire_in: 1 day
     paths:
       - $GIT_CLONE_PATH/cypress
+      - $GIT_CLONE_PATH/artifacts
+      - $GIT_CLONE_PATH/xspec/xspec
 
 clean-testbench:
   stage: cleanup
   tags:
       - BaseX-9.2
+      - vicav
   variables:
      GIT_CLONE_PATH: $CI_BUILDS_DIR/vicav_webapp
   script:
     - rm -rf $GIT_CLONE_PATH 2>/dev/null
     - mkdir -p $GIT_CLONE_PATH 2>/dev/null
     - rm -rf $CI_BUILDS_DIR/vicav_content 2>/dev/null
+    - cd /opt/basex/bin/
+    - ./basexclient -Uadmin -Padmin -c "DROP DATABASE vicav_biblio; DROP DATABASE vicav_profiles; DROP DATABASE vicav_corpus; DROP DATABASE vicav_texts; DROP DATABASE vicav_samples; DROP DATABASE vicav_lingfeatures"
   when: always
