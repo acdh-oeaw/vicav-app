@@ -1464,22 +1464,6 @@ function () {
         blueimp.Gallery(links, options)
     });
 
-
-    $(document).ready(function() {
-        setTimeout(10000, function() {
-        console.log("A")            
-    $('.gallery-item img').each((_i, i) => {
-        if (i.naturalWidth > i.naturalHeight) {
-            $(i).addClass('landscape');
-            $(i).attr('style', $(i).attr('style') + 'margin-left: -' + i.width / 4 + 'px;');
-        }
-        if (i.naturalWidth < i.naturalHeight) {
-            $(i).addClass('portrait');
-        }
-    })        
-        })
-    })
-
     $(document).on('DOMNodeInserted', ".content-panel .grid-wrap", function(event) {
         console.log(event.target, $('.gallery-item img', event.target))
         $('.gallery-item img', event.target).each((_i, i) => {
