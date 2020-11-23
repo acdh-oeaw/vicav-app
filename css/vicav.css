@@ -1495,6 +1495,10 @@ ul.overlapping-markers {
     padding: 0;
 }
 
+.gallery {
+    clear: both;
+}
+
 .gallery-item {
     display: inline-block;
     max-width: 180px;
@@ -1519,4 +1523,9 @@ ul.overlapping-markers {
 
 .figure {
     max-width: 180px;
+}
+
+.figure.full-width, .figure.full-width .gallery-item {
+    max-width: inherit;
+    max-height: inherit;
 }
