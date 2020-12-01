@@ -126,15 +126,16 @@ declare
 %rest:GET
 
 function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
-    let $queries := tokenize($query, ',')
+    let $queries := tokenize($query, ',')    
     let $qs :=
-    for $query in $queries
-    return
+    for $query in $queries 
+    
+    return        
         if (contains($query, 'geo:') or contains($query, 'reg:') or contains($query, 'vt:') or contains($query, 'prj:')) then
-            '[tei:note/tei:note[@type="tag"]
-                                          [text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
+        
+            '[tei:note/tei:note[@type="tag"][tei:name contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else
-            '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
+            '[.//node()[tei:name contains text "' || $query || '" using wildcards using diacritics sensitive]]'
     
     
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
@@ -154,8 +155,8 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
                 $art/tei:monogr[1]/tei:editor[1]/tei:name[1]) ' ||
     'let $date := $art/tei:monogr[1]/tei:imprint[1]/tei:date[1] ' ||
     'order by $author[1],$date[1] return $art'
-    let $query := $ns || $q
-    let $results := xquery:eval($query)
+    let $query2 := $ns || $q
+    let $results := xquery:eval($query2)
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
     let $num := count($results)
@@ -767,7 +768,8 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
     let $queries := tokenize($query, ',')
     let $qs :=
         for $query in $queries
-            return '[tei:note/tei:note[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
+            (:return '[tei:note/tei:note[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]':)
+            return '[tei:note/tei:note[tei:name contains text "' || $query || '" using wildcards using diacritics sensitive]]'
   
     let $q := 'let $arts := collection("vicav_biblio' || vicav:get_project_db() ||'")//tei:biblStruct' || string-join($qs) || 
               'for $art in $arts ' ||
@@ -790,11 +792,13 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
             let $geos :=
                 switch ($scope)
                     case 'geo_reg'
-                        return $subj/tei:note/tei:note[contains(., 'reg:') or contains(., 'geo:')]
+                        return $subj/tei:note/tei:note[(tei:name/@type = 'reg') or (tei:name/@type = 'geo') or (tei:name/@type = 'diaGroup')]
                     case 'geo'
-                        return $subj/tei:note/tei:note[contains(., 'geo:')]
+                        return $subj/tei:note/tei:note[tei:name/@type = 'geo']
+                    case 'diaGroup'
+                        return $subj/tei:note/tei:note[tei:name/@type = 'diaGroup']
                     case 'reg'
-                        return $subj/tei:note/tei:note[contains(., 'reg:')]
+                        return $subj/tei:note/tei:note[tei:name/@type = 'reg']
             default return ()
     
     for $geo in $geos
@@ -802,32 +806,36 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
         let $id := $subj/@corresp
         
         return
-            if (string-length($geo) > 0)
+            if (string-length($geo/tei:name) > 0)
             then
                 (
-                let $type := fn:substring-before($geo, ':')
+               (: let $type := fn:substring-before($geo, ':')
                 let $altItem := replace($geo, 'geo:|reg:', '')
                 let $locname := fn:substring-before($altItem, '[')
                 let $locname := fn:normalize-space($locname)
                 let $locname := fn:replace($locname, '''', '&#180;')
                 let $sa := fn:substring-after($altItem, '[')
                 let $geodata := fn:substring-before($sa, ']')
+                :)
+                let $type := $geo/tei:name/@type
+                let $altItem := $geo/tei:name/text()
+                let $locname := $geo/tei:name/text()
+                let $geodata := $geo/tei:geo/text()
                 
                 return
-                    if (string-length($locname) = 0) then
+(:                    if (string-length($locname) = 0) then
                         (
-                        <item><type>{$type}</type><geo></geo><loc>{$altItem}</loc><id>{$id}</id></item>
+                        <item>{$type}<geo></geo><loc>{$altItem}</loc><id>{$id}</id></item>
                         )
                     else
-                        (
-                        <item><type>{$type}</type><geo>{$geodata}</geo><loc>{$locname}</loc><id>{$id}</id></item>
-                        )
-                
+                        ( :)
+                        <item>{$type}<geo>{$geodata}</geo><loc>{$locname}</loc><id>{$id}</id></item>
+                       (: )                :)
                 )
             else ()
 
     let $out1 := <r>{$out}</r>
-    let $out :=
+    let $out2 :=
     for $item at $icnt in $out1/item
     let $loc := $item/loc/string(),
     $geo := $item/geo
@@ -839,25 +847,51 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
     return $i/text() || ","
 
     return
-    if (string-length($geo[1]/text()) > 0) then
-        (
+    (:if (string-length($geo[1]/loc) > 0) then:)
+        <r>{$item[1]/@type}{$geo[1]}<alt>{$loc}</alt><freq>{count($id)}</freq></r>
        
-        if ($item/type = 'geo') then
+       (:
+        (if ($item/type = 'geo') then
             (
             <r
-                type='geo'><loc>{$geo[1]/text()}</loc><alt>{$loc}</alt><freq>{count($id)}</freq></r>
+                type='geo'><loc>{$geo[1]}</loc><alt>{$loc}</alt><freq>{count($id)}</freq></r>
             )
         else
             (
             <r
-                type='reg'><loc>{$geo[1]/text()}</loc><alt>{$loc}</alt><freq>{count($id)}</freq></r>
+                type='reg'><loc>{$geo[1]}</loc><alt>{$loc}</alt><freq>{count($id)}</freq></r>
             )
         )
-    else  ()
+        :)
+    (:else  ():)
         
-    return <rs type="{count($out)}">{$out}</rs>
+    return <rs type="{count($out2)}">{$out2}</rs>
 };
 
+declare
+%rest:path("vicav/profiles")
+%rest:GET
+
+function vicav:get_profiles_overview() {
+    (:let $entries := collection('vicav_profiles' || vicav:get_project_db())//tei:TEI:)
+    let $entries := collection('vicav_profiles')//tei:TEI
+    let $items :=
+      for $item at $icnt in $entries
+      return <item n="{$icnt}">{$item/@xml:id}<country>{$item//tei:country/text()}</country>{$item/.//tei:author}{$item/.//tei:head[1]/tei:name[1]}</item>
+      
+    let $stylePath := file:base-dir() || 'xslt/profiles_overview.xslt'
+    let $style := doc($stylePath)
+    let $num := count($items)
+    let $results := <results num="{$num}">{$items}</results>
+    let $sOut := xslt:transform-text($results, $style)
+    
+    let $stylePath2 := file:base-dir() || 'xslt/vicavTexts.xslt'
+    let $style1 := doc($stylePath2)
+    let $sOut1 := xslt:transform-text($sOut, $style1)
+        return $sOut1
+};
+  
+ 
 declare
 %rest:path("vicav/profile_markers")
 %rest:GET
@@ -868,12 +902,22 @@ function vicav:get_profile_markers() {
     let $out :=
     for $item in $entries
     return
-        <r type='geo'>{$item/@xml:id}
-            <loc>{$item/tei:text/tei:body/tei:div/tei:div/tei:p/tei:geo[1]/text()}</loc>
-            <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc>
-            <alt>{$item//tei:text[1]/tei:body[1]/tei:div[1]/tei:head[1]/tei:name[1]/text()}</alt>
-            <freq>1</freq>
-        </r>
+        if ($item/tei:text[1]/tei:body[1]/tei:div[1]/tei:head[1]/tei:name[1]/@type) then (
+          <r type='{$item/tei:text[1]/tei:body[1]/tei:div[1]/tei:head[1]/tei:name[1]/@type}'>{$item/@xml:id}
+              <loc>{$item/tei:text/tei:body/tei:div/tei:div/tei:p/tei:geo[1]/text()}</loc>
+              <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc>
+              <alt>{$item//tei:text[1]/tei:body[1]/tei:div[1]/tei:head[1]/tei:name[1]/text()}</alt>
+              <freq>1</freq>
+          </r>
+        ) else
+        (
+          <r type='geo'>{$item/@xml:id}
+              <loc>{$item/tei:text/tei:body/tei:div/tei:div/tei:p/tei:geo[1]/text()}</loc>
+              <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc>
+              <alt>{$item//tei:text[1]/tei:body[1]/tei:div[1]/tei:head[1]/tei:name[1]/text()}</alt>
+              <freq>1</freq>
+          </r>
+        )
     
     return
         <rs>{$out}</rs>
@@ -920,17 +964,15 @@ function vicav:get_sample_markers() {
     let $out :=
     for $item in $entries
         order by $item/@xml:id
-
-
-
-        let $loc := replace($item//tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
+        let $loc := replace($item//tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
         let $alt := if ($item//tei:person) then string-join(($item//tei:person[1]/text(), $item//tei:person[1]/@sex, $item//tei:person[1]/@age), '/') else $item//tei:name[1]/text()
         
         return
+            if (string-length($loc[1])>0) then
             <r
                 type='geo'>{$item/@xml:id}
                 <loc>{$loc[1]}</loc>
-                <locName>{$item//tei:settlement[1]/tei:name[@xml:lang="en"]/text()}</locName>
+                <locName></locName>
                 <alt>{$alt[1]}</alt>
                 <freq>1</freq>
             </r>
@@ -976,8 +1018,6 @@ function vicav:get_sample_persons($type as xs:string*) {
         <persons>{$out}</persons>
 };
 
-
-
 declare
 %rest:path("vicav/data_words")
 %rest:query-param("type", "{$type}")
@@ -1017,8 +1057,7 @@ function vicav:get_feature_markers() {
             let $alt := if ($item//tei:person) then $item//tei:person[1]/text() || '/' || $item//tei:person[1]/@sex || '/' || $item//tei:person[1]/@age else $item//tei:name[1]/text()
             return
                 if ($item/@xml:id and $loc) then
-                <r
-                    type='geo'>{$item/@xml:id}
+                <r type='geo'>    {$item/@xml:id}
                     <loc>{$item//tei:geo/text()}</loc>
                     <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc>
                     <alt>{$item//tei:head[1]/tei:name[1]/text()}</alt>
