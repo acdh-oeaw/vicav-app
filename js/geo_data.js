@@ -32,6 +32,93 @@ function coordToDD(co_) {
     return convertDMSToDD(s1[0], s1[1], 0, sdir);
 }
 
+function splitCoords(s_, loc_) {
+   var mem = s_;
+   if (s_.indexOf("N ") == 0) { s_ = "N" + s_.substring(2); }
+   if (s_.indexOf("S ") == 0) { s_ = "S" + s_.substring(2); }
+   s_ = s_.replace(/"/g, '″');
+   s_ = s_.replace(/'/g, '′');
+   s_ = s_.replace(/′/g, '′');
+   s_ = s_.replace(/′ /g, '′');
+   s_ = s_.replace(/″ /g, '″');
+   s_ = s_.replace(/° /g, '°');
+   s_ = s_.replace(/E/g, ' E');
+   s_ = s_.replace(/W/g, ' W');
+   s_ = s_.replace(/,/g, ', ');
+   s_ = s_.replace(/  /g, ' ');
+   s_ = s_.replace(/  /g, ' ');
+   s_ = s_.replace(/E /g, 'E');
+   s_ = s_.replace(/W /g, 'W');
+   s_ = s_.replace(/′ W$/g, '′W');
+   s_ = s_.replace(/′ E$/g, '′E');
+   s_ = s_.replace(/″ W$/g, '″W');
+   s_ = s_.replace(/″ E$/g, '″E');
+   s_ = s_.replace(/ ,/g, ',');
+
+   var latlng = s_.split(' ');
+   if (latlng.length !== 2) {
+     //console.log(s_);
+     console.log('Can not deal with ' + mem + ', ' + loc_ + '   (pos: splitCoords)');
+   } else {
+     latlng[0] = latlng[0].replace(/,/g, "");
+     latlng[1] = latlng[1].replace(/,/g, "");
+   }
+   //return rs;
+
+   let lat = latlng[0];
+   let lng = latlng[1];
+   return { lat, lng };
+}
+
+function parseStringToDMS(s_) {
+   let deg = -1;
+   let min = -1;
+   let sec = -1;
+   let dir = 'noDir';
+
+   s_ = s_.replace(/°/g, ' ');
+   s_ = s_.replace(/′/g, ' ');
+   s_ = s_.replace(/″/g, ' ');
+   if (s_.indexOf('N') !== -1) { dir = 'N' }
+   if (s_.indexOf('S') !== -1) { dir = 'S' }
+   if (s_.indexOf('W') !== -1) { dir = 'W' }
+   if (s_.indexOf('E') !== -1) { dir = 'E' }
+
+   s_ = s_.replace(/S/, '');
+   s_ = s_.replace(/N/, '');
+   s_ = s_.replace(/W/, '');
+   s_ = s_.replace(/E/, '');
+   s_ = s_.trim();
+
+   dms = s_.split(' ');
+   if (dms.length > 0) { deg = dms[0] }
+   if (dms.length > 1) { min = dms[1] }
+   if (dms.length > 2) { sec = dms[2] }
+
+   return { deg, min, sec, dir };
+}
+
+function normalizeLocCoord(s_) {
+    //              
+    s_ = s_.replace(/°/g, ".");
+    s_ = s_.replace(/′N/g, ",");
+    s_ = s_.replace(/′E/g, "");
+    if (s_.indexOf('′W') !== -1) {
+        s_ = s_.replace(/ /g, " -");
+        s_ = s_.replace(/′W/g, "");
+    }
+
+    return s_;
+}
+
+function parseCoords(coords_) {
+    if (coords_.indexOf(',') !== -1) {
+        return coords_.split(",");
+    } else {
+        return coords_.split(" ");
+    }
+}
+
 function insertVicavDictMarkers() {
     setExplanation('Dictionaries');
     
@@ -67,25 +154,43 @@ function insertFeatureMarkers() {
             cnt = 0;
             $(result).find('r').each(function (index) {
                 cnt = cnt + 1;
-                let loc = $(this).find('loc').text();
-                loc = dmsToDeg(loc)
-                
+                sLoc = $(this).find('loc').text();
                 sAlt = $(this).find('alt').text();
-                sLocName = $(this).find('locName').text();
+                //sLocName = $(this).find('locName').text();
                 sID = $(this).attr('xml:id');
+                
+                /*
+                console.log(sLoc);
 
                 let sCnt = sID.replace(/^[\w-]+_?0?/, '')
                 if (sCnt && parseInt(sCnt) > 1) {
                     sAlt = sAlt + ' (' + sCnt + ')'
                 }
-                values = loc.split(",");
-                v1 = parseFloat(values[0]);
-                v2 = parseFloat(values[1]);
-                sTooltip = sLocName;
-                                
 
-                sQuery = 'profile:' + sTooltip + '';
-                marker = L.marker([v1, v2], { alt: sLocName, title: sAlt, id: sID, type: 'feature' }).bindTooltip(sTooltip);
+                sCoords = parseCoords(sLoc)
+                sCoordNS = trim(normalizeLocCoord(sCoords[0]));
+                console.log(sCoordNS);
+                sCoordWE = trim(normalizeLocCoord(sCoords[1]));
+                console.log(sCoordWE);
+                dd1 = coordToDD(sCoordNS)
+                dd2 = coordToDD(sCoordWE);
+                r1 = dd1.toFixed(2);
+                r2 = dd2.toFixed(2);                             
+                */
+
+
+                //sQuery = 'profile:' + sTooltip + '';
+                //marker = L.marker([v1, v2], { alt: sAlt, title: sAlt, id: sID, type: 'feature' }).bindTooltip(sTooltip);
+                var coord = splitCoords(sLoc, sAlt);
+                //console.log('(' + coord.lat + ') (' + coord.lng + ')');
+
+                var dmslat = parseStringToDMS(coord.lat);
+                var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
+
+                var dmslng = parseStringToDMS(coord.lng);
+                var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
+
+                marker = L.marker([declat, declng], { alt: sAlt, id: sID, type: 'feature' }).bindTooltip(sAlt);
                 fgFeatureMarkers.addLayer(marker);
                 //oms.addMarker(marker);
             });
@@ -94,7 +199,6 @@ function insertFeatureMarkers() {
             alert(errorThrown);
         }
     });
-    
     
     updateUrl_biblMarker('_features_', '');
 }
@@ -107,36 +211,38 @@ function insertSampleMarkers() {
         dataType: 'xml',
         contentType: 'application/html; charset=utf-8',
         success: function (result) {
-            s = '';
-            let results = $(result).find('r')
-            results.each(function (index) {
-                //console.log(sUrl);
-                let loc = $(this).find('loc').text();
-                if (loc){
-                    loc = dmsToDeg(loc)
-                    
-                    sAlt = $(this).find('alt').text();
-                    sID = $(this).attr('xml:id');
-                    sLocName = $(this).find('locName').text();
+            $(result).find('r').each(function (index) {
+                sLoc = $(this).find('loc').text();
+                sAlt = $(this).find('alt').text();
+                sID = $(this).attr('xml:id');
 
-                    values = loc.split(",");
-                    v1 = parseFloat(values[0]);
-                    v2 = parseFloat(values[1]);
-                    sTooltip = sLocName;
-                    
-                    sQuery = 'profile:' + sAlt + '';
-                    marker = L.marker([v1, v2], { alt: sLocName, title: sAlt, id: sID, type: 'sample' }).bindTooltip(sTooltip);
-                    fgSampleMarkers.addLayer(marker);
-                         //       oms.addMarker(marker); 
-                            }
+                /*
+                sCoords = loc.split(" ");
+                sCoordNS = sCoords[0];
+                sCoordWE = sCoords[1];
+                dd1 = coordToDD(sCoordNS)
+                dd2 = coordToDD(sCoordWE);
+                r1 = dd1.toFixed(2);
+                r2 = dd2.toFixed(2);
+                */
+                var coord = splitCoords(sLoc, sAlt);
+                //console.log('(' + coord.lat + ') (' + coord.lng + ')');
+
+                var dmslat = parseStringToDMS(coord.lat);
+                var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
+
+                var dmslng = parseStringToDMS(coord.lng);
+                var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
+
+                marker = L.marker([declat, declng], { alt: sAlt, id: sID, type: 'sample' }).bindTooltip(sAlt);
+                fgSampleMarkers.addLayer(marker);                
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert(errorThrown);
         }
     });
-    
-    
+        
     updateUrl_biblMarker('_samples_', '');
 }
 
@@ -150,7 +256,7 @@ function insertProfileMarkers() {
     m2 = L.marker([34.02, -6.83], {alt:'Salé', id: 'sale_01'});
     fg5.addLayer(m2);
      */
-    console.log('getProfileMarkers');
+    //console.log('getProfileMarkers');
     clearMarkerLayers();
     $.ajax({
         url: 'profile_markers',
@@ -158,52 +264,57 @@ function insertProfileMarkers() {
         dataType: 'xml',
         contentType: 'application/html; charset=utf-8',
         success: function (result) {
-            s = '';
             cnt = 0;
             $(result).find('r').each(function (index) {
                 cnt = cnt + 1;
                 //console.log(sUrl);
-                loc = $(this).find('loc').text();
-                
-                loc = loc.replace(/°/g, ".");
-                loc = loc.replace(/′N/g, ",");
-                loc = loc.replace(/′E/g, "");
-                if (loc.indexOf('′W') !== -1) {
-                    loc = loc.replace(/ /g, " -");
-                    loc = loc.replace(/′W/g, "");
-                }
-                
-                loc = dmsToDeg(loc)
+                sLoc = $(this).find('loc').text();
+                sType = $(this).attr('type');
                 sAlt = $(this).find('alt').text();
                 sID = $(this).attr('xml:id');
-                //console.log(loc + '# ' + sAlt);
-                //values = loc.split(",");
-                //v1 = parseFloat(values[0]);
-                //v2 = parseFloat(values[1]);                
-                
-                loc = $(this).find('loc').text();
-                //console.log(loc + ' # ' + sAlt);
-                //console.log(v1 + ' # ' + v2 + ' # ' + sAlt);
-                  //s1 = values[0].split(".");
-                  //s2 = values[1].split(".");
-                //console.log(s1[0] + ' # ' + s1[1] + ' # ' + s2[0] + ' ' + s2[1] + ' # ' + sAlt);
-                s = loc.split(" ");
-                //console.log('==> ' + s[0] + ' # ' + s[1]);
-                dd1 = coordToDD(s[0])
-                dd2 = coordToDD(s[1]);
+
+                /*
+                sCoords = sLoc.split(" ");
+                sCoordNS = trim(sCoords[0]);
+                sCoordWE = trim(sCoords[1]);
+                console.log(sCoordNS + ' ' + sCoordWE);
+                dd1 = coordToDD(sCoordNS);
+                dd2 = coordToDD(sCoordWE);
+                console.log(dd1 + ' ' + dd2);
                 r1 = dd1.toFixed(2);
-                r2 = dd2.toFixed(2);
-                //console.log(r1 + ' # ' + r2 + ' # ' + s + ' :: ' + s[0] + ' # ' + s[1] +' # ' + sAlt);
+                r2 = dd2.toFixed(2); 
+
+                console.log(r1 + ' # ' + r2 + ' # ' + sLoc + ' :: ' + sCoordNS + ' # ' + sCoordWE +' # ' + sAlt + ' (' + sID +')');
                 //console.log(s + ' # ' + sAlt);
                 //console.log(s[0] + ' # ' + s[1] + ' # ' + sAlt);
-                //console.log(dd1 + ' # ' + dd2 + ' # ' + sAlt);
-                console.log(r1 + ' # ' + r2 + ' # ' + sAlt + ' : ' + sID);
+                //console.log(dd1 + '  ' + sAlt);
+                //console.log(cnt + ':  ' + r1 + '  ' + sAlt + ' : ' + sID);
 
-                sTooltip = sAlt;
-                sQuery = 'profile:' + sAlt + '';
+                //sTooltip = sAlt;
+                //sQuery = 'profile:' + sAlt + '';
                 //fgProfileMarkers.addLayer(L.marker([v1, v2], { alt: sAlt, id: sID }).bindTooltip(sTooltip));
-                fgProfileMarkers.addLayer(L.marker([r1, r2], { alt: sAlt, id: sID }).bindTooltip(sTooltip));
+                */
 
+                /******************************************************/
+                /** NEW ***********************************************/
+                /******************************************************/
+                var coord = splitCoords(sLoc, sAlt);
+                //console.log('(' + coord.lat + ') (' + coord.lng + ')');
+
+                var dmslat = parseStringToDMS(coord.lat);
+                var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
+
+                var dmslng = parseStringToDMS(coord.lng);
+                var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
+
+                console.log('(' + declat + ') (' + declng + ')' + sAlt + ': ' + sType);
+                if ((sType == 'tribe')||(sType == 'region')) {
+                   marker = L.circle([declat, declng], { color: 'rgb(168, 93, 143)', weight: 1, fillColor: 'rgb(168, 93, 143)', radius: 90000, alt: sAlt, id: sID, type:'profile'  }).bindTooltip(sAlt);                  
+                } else {
+                   marker = L.marker([declat, declng], { alt: sAlt, id: sID, type:'profile' }).bindTooltip(sAlt);
+                }
+                fgProfileMarkers.addLayer(marker);
+                
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -319,10 +430,12 @@ function insertGeoRegMarkers(query_, scope_) {
             
             $(result).find('r').each(function (index) {
                 cnt = cnt + 1;
-                loc = $(this).find('loc').text();
+                //console.log(cnt);
+
+                loc = $(this).find('geo').text();
                 sAlt = $(this).find('alt').text();
                 sFreq = $(this).find('freq').text();
-                values = loc.split(",");
+                values = loc.split(" ");
                 v1 = parseFloat(values[0]);
                 v2 = parseFloat(values[1]);
                 sTooltip = sAlt + ' (' + sFreq + ')';
@@ -339,7 +452,20 @@ function insertGeoRegMarkers(query_, scope_) {
                     fgBiblMarkers.addLayer(circle);
                     $(circle._path).attr('data-testid', 'reg_'+sAlt);
                 }
-            });
+                if ($(this).attr('type') == 'diaGroup') {
+                    sQuery = 'reg:' + sAlt + sQuerySecPart;
+                    var circle = L.circle([v1, v2], { color: 'rgb(22, 93, 143)', weight: 2, fillColor: 'rgb(22, 93, 143)', radius: 190000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip);
+
+                    var bounds = [[v1 - 5, v2 - 5], [v1 + 5, v2 + 5]];
+                    var rect = L.rectangle(bounds, {color: "#ff7800", weight: 1, alt: sAlt, biblQuery: sQuery}).bindTooltip(sTooltip);
+
+                    fgBiblMarkers.addLayer(rect);
+                    $(circle._path).attr('data-testid', 'reg_'+sAlt);
+                }
+
+            }
+            );
+
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert(errorThrown);

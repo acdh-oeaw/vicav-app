@@ -33,7 +33,7 @@ map=[geoMarkers,vt:bedouin dialect,geo_reg]
 2=[biblQuery,reg:Egypt,open]
 
 //the four volumes written by Abdelmassih
-3=[biblQuery,zotID:IEMVQUR6 zotID:XB97YPPN zotID:LGYKDLM3 zotID:26MPUVYC,open]
+3=[biblQuery,zotid:IEMVQUR6 zotid:XB97YPPN zotid:LGYKDLM3 zotid:26MPUVYC,open]
 3=[biblQuery,vt:Dictionary+reg:Egypt,open]   
 
 4=[dictQuery,any=ktb,dc_tunico,open]
@@ -172,7 +172,11 @@ L.tileLayer('https://api.mapbox.com/styles/v1/acetin/cjb22mkrf16qf2spyl3u1vee3/t
 }).addTo(mainMap);
 
 mainMap.scrollWheelZoom.disable();
-
+window.addEventListener('hashchange', function(e){
+    console.log('hash changed1');
+    var currentURL = window.location.toString();
+    parseCurrentUrl(currentURL);
+});
 
 let overlapHandler = function(e) {
     function ptDistanceSq(pt1, pt2) {
@@ -304,6 +308,7 @@ function makeAudioVisible(obj_) {
 
 function changeURLMapParameter(newParameter) {
     var currentURL = window.location.toString();
+    console.log(currentURL);
     if (currentURL.includes('#')) {
         var args = currentURL.split('#');
         var baseUrl = args[0];
@@ -314,7 +319,7 @@ function changeURLMapParameter(newParameter) {
             args[0] = 'map=' + newParameter;
         }
         args = args.join("&");
-        //console.log('replaceState changeURLMapParameter');
+        console.log('replaceState changeURLMapParameter');
         //window.history.replaceState( {} , "", baseUrl + "#" + args);
     }
 }
@@ -748,7 +753,7 @@ function getDBSnippet(s_) {
 	        	getText(secLabel, snippetID, 'vicavTexts.xslt', '', '', '');
 	        	break;
 	
-	        case 'zotID':
+	        case 'zotid':
 	          //console.log('sTail: ' + sTail);
 	        	execBiblQuery_zotID(sTail);
 	        	break;
@@ -787,7 +792,7 @@ function execBiblQuery_zotID(query_, pID_, pVisiblity_, pURL_) {
     //console.log('   query_: ' + query_);
     //console.log('   pID: ' + pID_);
 
-    query_ = query_.replace(/zotID:/g, '');
+    query_ = query_.replace(/zotid:/g, '');
     qs = './biblio_id?query=' + query_ + '&xslt=biblio_tei_01.xslt'
 
     $.ajax({
@@ -801,7 +806,7 @@ function execBiblQuery_zotID(query_, pID_, pVisiblity_, pURL_) {
             if (result.includes('error type="user authentication"')) {
                 alert('Error: authentication did not work');
             } else {
-                appendPanel(result, "biblQuery", "", "grid-wrap", 'zotID:' + query_, 'noTeiLink', '', pID_, '', pVisiblity_, pURL_);
+                appendPanel(result, "biblQuery", "", "grid-wrap", 'zotid:' + query_, 'noTeiLink', '', pID_, '', pVisiblity_, pURL_);
                 //appendPanel(result, "profileQuery", caption_, "grid-wrap", '',     'hasTeiLink', '', snippetID_, pID_, pVisiblity_, pURL_);
             }
         },
@@ -815,7 +820,7 @@ function execBiblQuery(query_, pID_, pVisiblity_, pURL_) {
 	//console.log('query: ' + query_);
     if (sss('reg:', query_) || sss('geo:', query_) || sss('vt:', query_)) {
     	execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_);
-    } else if (sss('zotID:', query_)) {
+    } else if (sss('zotid:', query_)) {
     	execBiblQuery_zotID(query_, pID_, pVisiblity_, pURL_);
     } else {
     	execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_);
@@ -956,7 +961,7 @@ function getFeatureOfLocation(caption_, snippetID_, style_, pID_, pVisiblity_, p
 function getProfile(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
     qs = './profile?coll=vicav_profiles&id=' + snippetID_ + '&xslt=' + style_;
     caption_ = caption_.replace("%20", " ");
-    //console.log('getProfile: ' + caption_ + " : " + snippetID_ + " : " + style_ + " : " + pID_ + " : " + pVisiblity_ + " : " + pURL_);
+    console.log('getProfile: ' + caption_ + " : " + snippetID_ + " : " + style_ + " : " + pID_ + " : " + pVisiblity_ + " : " + pURL_);
 
     $.ajax({
         url: qs,
@@ -1237,80 +1242,15 @@ $(document).on('mousedown', '[data-type="vicavTexts"]', function(event) {
     getText($(event.target).text(), $(event.target).attr('data-target'), 'vicavTexts.xslt');    
 })
 
-$(document).ready(
-function () {
-    $("#dvMainMapCont").show();
-    //insertGeoRegMarkers('', 'geo');
-
-    // Parse the given url parameters for views
-    var currentURL = decodeURI(window.location.toString());
-    console.log('reload: currentUrl: ' + currentURL);
-
-    $.ajax({
-        url: "project",
-        dataType: "xml",
-        success: function( xmlResponse ) {
-            $( "project", xmlResponse ).map(function() {
-                $('head > title').text( $( "projectConfig > title", this ).text() )
-
-                let icon = $( "projectConfig > icon", this ).text()
-                if (icon != '') {
-                    L.Icon.Default.prototype.options.iconUrl = icon;
-                }
-
-                $('a.navbar-brand').html( $( "projectConfig > logo", this ).html() )
-                let zoom = $( "projectConfig > map > zoom", this ).text();
-                let center = [$( "projectConfig > map > center > lat", this ).text(), $( "projectConfig > map > center > lng", this ).text()];
-                
-                if (zoom !== '' && center[0] !== '' && center[1] !== '')
-                mainMap.setView(center, zoom);
-
-
-                $('#navbarsExampleDefault').html( $( "renderedMenu menu > main", this ).html() )  
-                $('.sub-nav-map-items').html($("renderedMenu menu subnav", this).html())
-
-                if ($( "projectConfig > style", this ).text()) {
-                    window.localStorage.vicavStyle = $( "projectConfig > style", this ).text()
-                    let style = $("<style>").append(window.localStorage.vicavStyle)
-                    style.appendTo('head')
-                }
-                if (!currentURL.includes('#')) {
-                     let params = $( "projectConfig > frontpage > param", this).map((i, item) => {
-                        return $(item).text()
-                    })
-                    switch($( "projectConfig > frontpage", this).attr('method')) {
-                        case 'samples': 
-                            insertSampleMarkers();
-                            break;
-                        case 'geo':
-                        default:
-                         if (params.length == 0) params = ['.*', 'geo']
-                            insertGeoRegMarkers(params[0], params[1]);
-                            updateUrl_biblMarker(params[0], params[1])
-                            break 
-                    }
-
-                    $( "projectConfig > frontpage panel", this).each((i, item) => {
-                        getText($(item).text(), $(item).attr('target'), 'vicavTexts.xslt');                        
-                    })
-
-
-        // console.log('replaceState (6)');
-        // &1=[textQuery,vicavMission,MISSION,open]&2=[textQuery,vicavNews,NEWS,open]");
-
-                }
-            })
-        }
-    });
-
-    if (currentURL.includes('#')) {
-        var args = currentURL.split('#');
+function parseCurrentUrl(curUrl) {
+    if (curUrl.includes('#')) {
+        var args = curUrl.split('#');
 
         var args = args[1].split('&');
         // Parse the map
         var mapArg = args[0].split('=');
         if (mapArg[0] == 'map') {
-            //console.log('mapArg: ' + mapArg);
+            console.log('mapArg: ' + mapArg);
 
             //window["insert" + mapArg[1]]();
             $(".sub-nav-map-items .active").removeClass("active");
@@ -1329,9 +1269,9 @@ function () {
                 break;
 
                 case '_profiles_':
-             	//clearMarkerLayers();	
-                    insertProfileMarkers();
-                    break;
+                //clearMarkerLayers();  
+                insertProfileMarkers();
+                break;
 
                 case '_samples_':
                 insertSampleMarkers();
@@ -1418,7 +1358,7 @@ function () {
                     var snippetID = pArgs[1];
                     var caption = pArgs[2];
                     var pVisiblity = pArgs[3];
-                    getFeatureOfLocation(caption, snippetID, 'features_01.xslt', pID_, pVisiblity, true);
+                    getFeatureOfLocation(caption, snippetID, 'features_common.xslt', pID_, pVisiblity, true);
                 } else
 
                 if (queryFunc == 'sampleQuery') {
@@ -1449,7 +1389,76 @@ function () {
             200 * i, i);
         }
     } else {
-    }
+    }   
+}
+
+$(document).ready(
+function () {
+    $("#dvMainMapCont").show();
+    //insertGeoRegMarkers('', 'geo');
+
+    // Parse the given url parameters for views
+    var currentURL = decodeURI(window.location.toString());
+    console.log('reload: currentUrl: ' + currentURL);
+
+    $.ajax({
+        url: "project",
+        dataType: "xml",
+        success: function( xmlResponse ) {
+            $( "project", xmlResponse ).map(function() {
+                $('head > title').text( $( "projectConfig > title", this ).text() )
+
+                let icon = $( "projectConfig > icon", this ).text()
+                if (icon != '') {
+                    L.Icon.Default.prototype.options.iconUrl = icon;
+                }
+
+                $('a.navbar-brand').html( $( "projectConfig > logo", this ).html() )
+                let zoom = $( "projectConfig > map > zoom", this ).text();
+                let center = [$( "projectConfig > map > center > lat", this ).text(), $( "projectConfig > map > center > lng", this ).text()];
+                
+                if (zoom !== '' && center[0] !== '' && center[1] !== '')
+                mainMap.setView(center, zoom);
+
+                $('#navbarsExampleDefault').html( $( "renderedMenu menu > main", this ).html() )  
+                $('.sub-nav-map-items').html($("renderedMenu menu subnav", this).html())
+
+                if ($( "projectConfig > style", this ).text()) {
+                    window.localStorage.vicavStyle = $( "projectConfig > style", this ).text()
+                    let style = $("<style>").append(window.localStorage.vicavStyle)
+                    style.appendTo('head')
+                }
+                if (!currentURL.includes('#')) {
+                     let params = $( "projectConfig > frontpage > param", this).map((i, item) => {
+                        return $(item).text()
+                    })
+                    switch($( "projectConfig > frontpage", this).attr('method')) {
+                        case 'samples': 
+                            insertSampleMarkers();
+                            break;
+                        case 'geo':
+                        default:
+                         if (params.length == 0) params = ['.*', 'geo']
+                            insertGeoRegMarkers(params[0], params[1]);
+                            updateUrl_biblMarker(params[0], params[1])
+                            break 
+                    }
+
+                    $( "projectConfig > frontpage panel", this).each((i, item) => {
+                        getText($(item).text(), $(item).attr('target'), 'vicavTexts.xslt');                        
+                    })
+
+
+        // console.log('replaceState (6)');
+        // &1=[textQuery,vicavMission,MISSION,open]&2=[textQuery,vicavNews,NEWS,open]");
+
+                }
+            })
+        }
+    });
+
+    parseCurrentUrl(currentURL);
+
 
     $(document).on('mousedown', "button", function (event) {
         //console.log('Click');
@@ -1527,6 +1536,15 @@ function () {
     /* ******************************** */
     /* ****  PROFILES ***************** */
     /* ******************************** */
+
+    $(document).on('mousedown', "[id^=li_]", function (event) {
+        var sid = $(this).attr('id');
+        sid = sid.substring(3);
+        //getText('ARABIC TOOLS (Corpora - Spoken Varieties)', 'vicavOverview_corpora_spoken', 'vicavTexts.xslt');
+        getText('ARABIC TOOLS (Corpora - Spoken Varieties)', sid, 'vicavTexts.xslt');
+    });
+    
+
     $(document).on('mousedown', "#liProfileAbudhabi", function (event) {
         getProfile('Abu Dhabi', 'profile_abu_dhabi_01', 'profile_01.xslt');
     });
