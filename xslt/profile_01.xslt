@@ -189,7 +189,7 @@
         starts-with(@ref,'feature:') or
         starts-with(@ref,'corpus:') or
         starts-with(@ref,'bibl:') or
-        starts-with(@ref,'zotID:') or
+        starts-with(@ref,'zotid:') or
         starts-with(@ref,'flashcards:') or
         starts-with(@ref,'text:') or
         starts-with(@ref,'sample:')]">
@@ -202,7 +202,7 @@
     <xsl:template match="tei:ref[
         starts-with(@target,'profile:') or
         starts-with(@target,'feature:') or
-        starts-with(@target,'zotID:') or
+        starts-with(@target,'zotid:') or
         starts-with(@target,'corpus:') or
         starts-with(@target,'bibl:') or
         starts-with(@target,'flashcards:') or

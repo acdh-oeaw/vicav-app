@@ -28,7 +28,7 @@
     </xsl:variable>
   
   <xsl:template match="/">
-    <div><xsl:apply-templates/></div>
+    <!--  <div><xsl:apply-templates/></div>-->
   </xsl:template>
 
   <xsl:template match="tei:cell">
