@@ -1,5 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
+  xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
   
     <xsl:character-map name="a">
        <xsl:output-character character="&lt;" string="&lt;"/>
@@ -28,7 +28,7 @@
     </xsl:variable>
   
   <xsl:template match="/">
-    <!--  <div><xsl:apply-templates/></div>-->
+    <div><xsl:apply-templates/></div>
   </xsl:template>
 
   <xsl:template match="tei:cell">
