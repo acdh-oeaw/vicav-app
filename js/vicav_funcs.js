@@ -370,9 +370,9 @@ function changePanelVisibility(panel, type, expand)   {
             }
         }
         args = args.join("&");
-        console.log('replaceState (changePanelVisibility 3)');
+        //console.log('replaceState (changePanelVisibility 3)');
         //console.log('baseUrl + args: ' + baseUrl+"#"+args);
-        console.log('replaceState (9)');
+        //console.log('replaceState (9)');
         window.history.replaceState({}, "", baseUrl + "#" + args);
         panel.remove();
     }
@@ -381,7 +381,9 @@ function changePanelVisibility(panel, type, expand)   {
 function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLink_, locType_, snippetID_, pID_, pVisiblity_, pURL_) {
     var openPans = 0;
     var toBeClosed = -1;
+    console.log('appendPanel (secLabel): ' + secLabel_);
     secLabel_ = secLabel_.replace(/%20/, ' ');
+    secLabel_ = secLabel_.replace(/_/, ' ');
     contents_ = contents_.replace(/{query}/, query_);
 
     $('.content-panel').each(function () {
@@ -493,9 +495,14 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
     /* ******************************************************/
     var resCont = "<div class='" + contClass_ + "'>" + contents_ + "</div>";
     if (secLabel_.length == 0) {
-        var htmlCont = panelType_;
+       var htmlCont = panelType_;
     } else {
-        var htmlCont = panelType_ + ": " + secLabel_;
+        if (panelType_.length == 0) {
+           var htmlCont = secLabel_;
+        } else {
+           var htmlCont = panelType_ + ": " + secLabel_;    
+        }
+        
     }
     $(".initial-closed-panel").clone().removeClass('closed-panel initial-closed-panel').addClass(cssClass).attr("data-pid", pID).addClass(cssClass).attr("data-query", query_).attr("data-snippetID", snippetID_).appendTo(".panels-wrap").append(resCont).find(".chrome-title").html(htmlCont);
     return pID
@@ -507,6 +514,49 @@ function setExplanation(s_) {
 
 function createBiblExplanationPanel() {
     getText('BIBLIOGRAPHY: Explanation', 'vicavExplanationBibliography', 'vicavTexts.xslt');
+}
+
+function getCaptionFromMenuID(id_) {
+   /*********************************/
+   /** Put _ instead of blank ******/
+   /*********************************/
+   var sRes = '';
+   if (id_ == 'vicavArabicTools') { sRes = 'ARABIC_TOOLS'} else
+   if (id_ == 'vicavContributeProfile') { sRes = 'CONTRIBUTE A PROFILE'} else
+   if (id_ == 'vicavContributeBibliography') { sRes = 'CONTRIBUTE TO BIBLIOGRAPHY'} else
+   if (id_ == 'vicavContributeDictionary') { sRes = 'CONTRIBUTE A DICTIONARY'} else
+
+   if (id_ == 'vicavContributors') { sRes = 'CONTRIBUTORS'} else
+   if (id_ == 'vicavDictionaryEncoding') { sRes = 'DICTIONARIES_(ENCODING)'} else
+   if (id_ == 'vicavDictionariesTechnicalities') { sRes = 'DICTIONARIES_(TECHNICALITIES)'} else
+   if (id_ == 'vicavVLE') { sRes = 'DICTIONARY_EDITOR (VLE)'} else
+   if (id_ == 'vicavOverview_corpora_spoken') { sRes = 'CORPORA_OF_SPOKEN_ARABIC'} else
+   if (id_ == 'vicavOverview_corpora_msa') { sRes = 'MSA_CORPORA'} else
+   if (id_ == 'vicavOverview_special_corpora') { sRes = 'SPECIAL_CORPORA'} else
+   if (id_ == 'vicavOverview_corpora_historical_varieties') { sRes = 'CORPORA_OF_HISTORICAL_LANGUAGE'} else
+   if (id_ == 'vicavOverview_dictionaries') { sRes = 'DICTIONARY PROJECTS'} else
+   if (id_ == 'vicavOverview_nlp') { sRes = 'ARABIC NLP'} else
+   if (id_ == 'vicavOverview_otherStuff') { sRes = 'OTHER STUFF'} else
+   if (id_ == 'vicavLearning') { sRes = 'LEARNING'} else
+   if (id_ == 'vicavLearningTextbookDamascus') { sRes = 'TEXTBOOK_DAMASCUS'} else
+   if (id_ == 'vicavLearningSmartphone') { sRes = 'VOCABULARIES ON SMARTPHONES'} else
+   if (id_ == 'vicavLearningPrograms') { sRes = 'LEARNING PROGRAMS'} else
+   if (id_ == 'vicavLearningData') { sRes = 'LEARNING DATA'} else
+   if (id_ == 'vicavKeyboards') { sRes = 'KEYBOARDS'} else
+
+  if (id_ == 'vicavExplanationBibliography') { sRes = 'BIBLIOGRAPHY (DETAILS)'} else
+  if (id_ == 'vicavExplanationCorpusTexts') { sRes = 'CORPUS TEXTS (DETAILS)'} else
+  if (id_ == 'vicavExplanationFeatures') { sRes = 'FEATURES (DETAILS)'} else
+  if (id_ == 'vicavExplanationProfiles') { sRes = 'PROFILES_(DETAILS)'} else
+  if (id_ == 'vicavExplanationSamples') { sRes = 'SAMPLES_(DETAILS)'} else
+
+  if (id_ == 'vicavLinguistics') { sRes = 'LINGUISTICS'} else
+  if (id_ == 'vicavMission') { sRes = 'MISSION'} else
+  if (id_ == 'vicavNews') { sRes = 'VICAV NEWS'} else
+  if (id_ == 'vicavTypesOfText') { sRes = 'TYPES OF TEXT'} else 
+  {}
+
+  return sRes;
 }
 
 function createNewQueryBiblioPanel(pID_, pVisiblity_, pURL_) {
@@ -642,12 +692,15 @@ function hideElement(id_) {
 }
 
 function getText(secLabel_, snippetID_, style_, pID_, pVisibility_, pURL_) {
-    //console.log('getText: ' + secLabel_ + " : " + snippetID_ + " : " + style_ + " : " + pID_ + " : " + pVisibility_ + " : " + pURL_);
+   //console.log('getText: ' + secLabel_ + " : #" + snippetID_.substring(0,3) + "# : " + style_ + " : " + pID_ + " : " + pVisibility_ + " : " + pURL_);
+   if (snippetID_.substring(0, 3) == 'li_') {
+      snippetID_ = snippetID_.substring(3);
+   }
 
-    qs = './text?id=' + snippetID_ + '&xslt=' + style_;
-    //console.log(qs);
+   qs = './text?id=' + snippetID_ + '&xslt=' + style_;
+   //console.log('getText: ' + qs);
 
-    $.ajax({
+   $.ajax({
         url: qs,
         type: 'GET',
         dataType: 'html',
@@ -655,30 +708,32 @@ function getText(secLabel_, snippetID_, style_, pID_, pVisibility_, pURL_) {
         crossDomain: true,
         contentType: 'application/html; ',
         success: function (result) {
-            if (result.includes('error type="user authentication"')) {
+           if (result.includes('error type="user authentication"')) {
                 alert('Error: authentication did not work');
-            } else {            	
-            	var doc = new DOMParser().parseFromString(result, "text/html");
-            	if (doc) {
-            		var el = doc.getElementsByTagName("div")[0];
-                	if (el) {
-                		var shortTitle = el.getAttribute("name");	
-                		if (shortTitle) {
-                			secLabel_ = shortTitle;
-                		}
-                		
-                	} else {
-                		//console.log('no el');	
-                	}
-            	} else {
-            		//console.log('doc not ok');	
-            	}
-            	
-                appendPanel(result, "textQuery", secLabel_, "grid-wrap", "", "hasTeiLink", "", snippetID_, pID_, pVisibility_, pURL_);
+           } else {
+              /*
+              var doc = new DOMParser().parseFromString(result, "text/html");
+              if (doc) {
+                 var el = doc.getElementsByTagName("div")[0];
+                 if (el) {
+                    console.log('secLabel_ (1): ' + secLabel_);
+                    var shortTitle = el.getAttribute("n");
+                    if (shortTitle) {
+                       secLabel_ = shortTitle;
+                    }
+                    console.log('secLabel_ (2): ' + secLabel_);
+                 } else {
+                 }
+              } else {
+                 //console.log('doc not ok');
+              }
+              */
+              //appendPanel(result, "textQuery", secLabel_, "grid-wrap", "", "hasTeiLink", "", snippetID_, pID_, pVisibility_, pURL_);*/
+              appendPanel(result, "", secLabel_, "grid-wrap", "", "hasTeiLink", "", snippetID_, pID_, pVisibility_, pURL_);
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 681' + errorThrown);
         }
     });
 }
@@ -688,84 +743,96 @@ function getDBSnippet(s_) {
     /*  This function is being triggered by calls such as those below */
     /*      <rs ref="text:vicavExplanationProfiles">                  */
     /*      <rs ref="func:openDict_Baghdad()">                        */
+    /*  Mind: blank is used to separate queries, make multi word      */
+    /*  safe by _                                                     */
     /******************************************************************/
+    console.log('getDbSnippet: ' + s_);
     var refStrings = s_.split(' ');
     
     for (var i = 0, len = refStrings.length; i < len; i++) {
-        //console.log('refString: ' + refStrings[i]);
+        console.log('refString: ' + i + ': ' + refStrings[i]);
         
+        refStrings[i] = refStrings[i].replace(/_/, ' ');
         splitPoint = refStrings[i].indexOf(":");
         sHead = refStrings[i].substr(0, splitPoint);
         sTail = refStrings[i].substring(splitPoint + 1);       
+        //console.log('sTail: ' + sTail);
+        //console.log('sHead: ' + sHead);
         sh = sTail.split('/');
         snippetID = trim(sh[0]);
         var secLabel = '';
         if (sh[1]) {
             secLabel = trim(sh[1]);
+            secLabel = secLabel.replace(/_/g, ' ');
         }
         
         //console.log('sHead: ' + sHead);
         switch (sHead) {
-	        case 'bibl':
-	        	//console.log(sTail);
-	        	execBiblQuery_tei(sTail);
-	        	break;
-	
-	        case 'func':
-	        	//console.log(sTail);
-	        	eval(trim(sTail));
-	        	break;
-	        	
-	        case 'mapMarkers':
-	        	clearMarkerLayers();
-	        	insertGeoRegMarkers(sTail, 'geo_reg');
-	        	break;
-	
-	        case 'sound':
-	        	break;
-	
-	        case 'flashcards':
-	        	dict = sh[0];
-	        	lesson = sh[1];
-	        	type = sh[2];
-	        	getFlashCards(lesson, dict, type);
-	        	break;
-	
-	        case 'corpus':
-	        	//console.log(snippetID + ' : ' + secLabel);
-	        	getCorpusText(secLabel, snippetID, 'sampletext_01.xslt', '', '', '');
-	        	break;
-	
-	        case 'sample':
-	        	//console.log(snippetID + ' : ' + secLabel);
-	        	getSample(secLabel, snippetID, 'sampletext_01.xslt', '', '', '');
-	        	break;
-	
-	        case 'feature':
-	        	getFeatureOfLocation(secLabel, snippetID, 'features_01.xslt', '', '', '');
-	        	break;
-	
-	        case 'profile':
-	        	getProfile(secLabel, snippetID, 'profile_01.xslt', '', '', '');
-	        	break;
-	
-	        case 'text':
-	        	getText(secLabel, snippetID, 'vicavTexts.xslt', '', '', '');
-	        	break;
-	
-	        case 'zotid':
-	          //console.log('sTail: ' + sTail);
-	        	execBiblQuery_zotID(sTail);
-	        	break;
-	}
+                case 'bibl':
+                        //console.log(sTail);
+                        execBiblQuery_tei(sTail);
+                        break;
+
+                case 'func':
+                        //console.log(sTail);
+                        eval(trim(sTail));
+                        break;
+
+                case 'mapMarkers':
+                        clearMarkerLayers();
+                        insertGeoRegMarkers(sTail, 'geo_reg');
+                        break;
+
+                case 'sound':
+                        break;
+
+                case 'flashcards':
+                        dict = sh[0];
+                        lesson = sh[1];
+                        type = sh[2];
+                        getFlashCards(lesson, dict, type);
+                        break;
+
+                case 'corpus':
+                        //console.log(snippetID + ' : ' + secLabel);
+                        getCorpusText(secLabel, snippetID, 'sampletext_01.xslt', '', '', '');
+                        break;
+
+                case 'sample':
+                        //console.log(snippetID + ' : ' + secLabel);
+                        getSample(secLabel, snippetID, 'sampletext_01.xslt', '', '', '');
+                        break;
+
+                case 'feature':
+                        getFeatureOfLocation(secLabel, snippetID, 'features_01.xslt', '', '', '');
+                        break;
+
+                case 'profile':
+                        getProfile(secLabel, snippetID, 'profile_01.xslt', '', '', '');
+                        break;
+
+                case 'text':
+                        //console.log('seclabel: ' + secLabel + '   snippetID: ' + snippetID);
+
+                        getText(secLabel, snippetID, 'vicavTexts.xslt', '', '', '');
+                        break;
+
+                case 'zotid':
+                        //console.log('sTail: ' + sTail);
+                        execBiblQuery_zotID(sTail);
+                        break;
+        }
     }
 }
 
 function execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_) {
+    console.log('execBiblQuery_tei: ' + query_);
     query1_ = query_.replace(/&/g, ',');
+    //console.log('query1_: ' + query1_);
     query1_ = query1_.replace(/\+/g, ',');
     query1_ = query1_.replace(/bibl:/g, '');
     qs = './biblio_tei?query=' + query1_ + '&xslt=biblio_tei_01.xslt'
+    //console.log('qs: ' + qs);
 
     $.ajax({
         url: qs,
@@ -782,7 +849,7 @@ function execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 785: ' + errorThrown);
         }
     });
 }
@@ -811,7 +878,7 @@ function execBiblQuery_zotID(query_, pID_, pVisiblity_, pURL_) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 814: ' + errorThrown);
         }
     });
 }
@@ -841,7 +908,7 @@ function getDataList(type, pID_, pVisiblity_, pURL_) {
             appendPanel(result, "dataList", type, "grid-wrap", '', 'hasTeiLink', '', type, pID_, pVisiblity_, pURL_);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 844: ' + errorThrown);
         }
     });
 }
@@ -863,7 +930,7 @@ function getSample(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
             appendPanel(result, "sampleQuery", caption_, "grid-wrap", '', 'hasTeiLink', '', snippetID_, pID_, pVisiblity_, pURL_);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 866' + errorThrown);
         }
     });
 }
@@ -885,7 +952,7 @@ function getCorpusText(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
             appendPanel(result, "sampleQuery", caption_, "grid-wrap", '', 'hasTeiLink', '', snippetID_, pID_, pVisiblity_, pURL_);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 888' + errorThrown);
         }
     });
 }
@@ -929,7 +996,7 @@ function showLingFeatures(ana_, expl_, type_) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 932' + errorThrown);
         }
     });
 }
@@ -953,7 +1020,7 @@ function getFeatureOfLocation(caption_, snippetID_, style_, pID_, pVisiblity_, p
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 956' + errorThrown);
         }
     });
 }
@@ -978,7 +1045,7 @@ function getProfile(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 981' + errorThrown);
         }
     });
 }
@@ -1026,7 +1093,7 @@ function execDictQuery_ajax(query_, idSuffix_) {
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert(errorThrown);
+                alert('Line 1029' + errorThrown);
                 $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
                 $("#loading-wrapper" + idSuffix_).css('visibility', 'hidden');
             }
@@ -1060,7 +1127,7 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
             $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 1063' + errorThrown);
             $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
         }
     });
@@ -1238,9 +1305,10 @@ if (window.localStorage.vicavStyle) {
     $("<style>").append(window.localStorage.vicavStyle).appendTo('head')
 }
 
-$(document).on('mousedown', '[data-type="vicavTexts"]', function(event) {
+/*$(document).on('mousedown', '[data-type="vicavTexts"]', function(event) {
     getText($(event.target).text(), $(event.target).attr('data-target'), 'vicavTexts.xslt');    
 })
+*/
 
 function parseCurrentUrl(curUrl) {
     if (curUrl.includes('#')) {
@@ -1428,6 +1496,7 @@ function () {
                     let style = $("<style>").append(window.localStorage.vicavStyle)
                     style.appendTo('head')
                 }
+
                 if (!currentURL.includes('#')) {
                      let params = $( "projectConfig > frontpage > param", this).map((i, item) => {
                         return $(item).text()
@@ -1445,7 +1514,8 @@ function () {
                     }
 
                     $( "projectConfig > frontpage panel", this).each((i, item) => {
-                        getText($(item).text(), $(item).attr('target'), 'vicavTexts.xslt');                        
+                        var menuItem = $(item).text();
+                        getText(menuItem, $(item).attr('target'), 'vicavTexts.xslt');
                     })
 
 
@@ -1462,7 +1532,7 @@ function () {
 
     $(document).on('mousedown', "button", function (event) {
         //console.log('Click');
-        alert('');
+        //alert('Line 1465');
     });
 
     $(document).on('click', 'a[href*=".jpg"]', function (event) {
@@ -1508,11 +1578,11 @@ function () {
     /* ******************************** */
     /* ****  DICTIONARY QUERIES ******* */
     /* ******************************** */
-    $(document).on("click", '#liVicavDictQuery_Tunis', function () { openDict_Tunis(); });
-    $(document).on("click", '#liVicavDictQuery_Damascus', function () { openDict_Damascus(); });
-    $(document).on("click", '#liVicavDictQuery_Baghdad', function () { openDict_Baghdad(); });
-    $(document).on("click", '#liVicavDictQuery_Cairo', function () { openDict_Cairo(); });
-    $(document).on("click", '#liVicavDictQuery_MSA', function () { openDict_MSA(); });
+    $(document).on("click", '#liVicavDict_Tunis', function () { openDict_Tunis(); });
+    $(document).on("click", '#liVicavDict_Damascus', function () { openDict_Damascus(); });
+    $(document).on("click", '#liVicavDict_Baghdad', function () { openDict_Baghdad(); });
+    $(document).on("click", '#liVicavDict_Cairo', function () { openDict_Cairo(); });
+    $(document).on("click", '#liVicavDict_MSA', function () { openDict_MSA(); });
 
     /* ********************************************* */
     /* ****  DICTIONARY Auto Complete Events ******* */
@@ -1540,11 +1610,11 @@ function () {
     $(document).on('mousedown', "[id^=li_]", function (event) {
         var sid = $(this).attr('id');
         sid = sid.substring(3);
-        //getText('ARABIC TOOLS (Corpora - Spoken Varieties)', 'vicavOverview_corpora_spoken', 'vicavTexts.xslt');
-        getText('ARABIC TOOLS (Corpora - Spoken Varieties)', sid, 'vicavTexts.xslt');
+        var sCaption = getCaptionFromMenuID(sid);
+        console.log('mouseDown - sid: ' + sid + '   sCaption: ' + sCaption);
+        getText(sCaption, sid, 'vicavTexts.xslt');
     });
-    
-
+   
     $(document).on('mousedown', "#liProfileAbudhabi", function (event) {
         getProfile('Abu Dhabi', 'profile_abu_dhabi_01', 'profile_01.xslt');
     });
@@ -1875,6 +1945,7 @@ function () {
                 execBiblQuery(query);
             }
             if (document.getElementById("cbAsMap").checked == true) {
+
                 clearMarkerLayers();
                 insertGeoRegMarkers(query, 'geo_reg');
                 //adjustNav(this.id, "#subNavBiblGeoMarkers");

@@ -128,15 +128,16 @@ declare
 function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
     let $queries := tokenize($query, ',')    
     let $qs :=
-    for $query in $queries 
-    
-    return        
-        if (contains($query, 'geo:') or contains($query, 'reg:') or contains($query, 'vt:') or contains($query, 'prj:')) then
-        
-            '[tei:note/tei:note[@type="tag"][tei:name contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+    for $query in $queries     
+    return                
+        if (contains($query, 'geo:') or contains($query, 'reg:')) then
+           '[.//tei:note[@type="tag"]/tei:name[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+        else if (contains($query, 'vt:')) then
+           '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+        else if (contains($query, 'prj:')) then
+           '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else
-            '[.//node()[tei:name contains text "' || $query || '" using wildcards using diacritics sensitive]]'
-    
+           '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'  
     
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $q := 'let $arts := ' ||
@@ -157,13 +158,16 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
     'order by $author[1],$date[1] return $art'
     let $query2 := $ns || $q
     let $results := xquery:eval($query2)
+    
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
     let $num := count($results)
+    
     let $results := <results
         num="{$num}">{$results}</results>
     let $sHTML := xslt:transform-text($results, $style)
     return
+        (: <r>{$sHTML}</r> :)
         $sHTML
 };
 
@@ -478,8 +482,6 @@ function vicav:get_text($id as xs:string*, $xsltfn as xs:string) {
         $sHTML
 };
 
-
-
 declare
 %rest:path("vicav/dict_index")
 %rest:query-param("dict", "{$dict}")
@@ -768,8 +770,19 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
     let $queries := tokenize($query, ',')
     let $qs :=
         for $query in $queries
+        return
+           if (contains($query, 'geo:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
+              '[.//tei:note[@type="tag"]/tei:name[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           else if (contains($query, 'vt:')) then
+              '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           else if (contains($query, 'prj:')) then
+              '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+          else
+              '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'          
+        
             (:return '[tei:note/tei:note[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]':)
-            return '[tei:note/tei:note[tei:name contains text "' || $query || '" using wildcards using diacritics sensitive]]'
+            (: return '[tei:note/tei:note[tei:name contains text "' || $query || '" using wildcards using diacritics sensitive]]' :)
+            (: return '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]' :)
   
     let $q := 'let $arts := collection("vicav_biblio' || vicav:get_project_db() ||'")//tei:biblStruct' || string-join($qs) || 
               'for $art in $arts ' ||
@@ -866,32 +879,9 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
     (:else  ():)
         
     return <rs type="{count($out2)}">{$out2}</rs>
+    (: return <res>{$query}</res> :)
 };
 
-declare
-%rest:path("vicav/profiles")
-%rest:GET
-
-function vicav:get_profiles_overview() {
-    (:let $entries := collection('vicav_profiles' || vicav:get_project_db())//tei:TEI:)
-    let $entries := collection('vicav_profiles')//tei:TEI
-    let $items :=
-      for $item at $icnt in $entries
-      return <item n="{$icnt}">{$item/@xml:id}<country>{$item//tei:country/text()}</country>{$item/.//tei:author}{$item/.//tei:head[1]/tei:name[1]}</item>
-      
-    let $stylePath := file:base-dir() || 'xslt/profiles_overview.xslt'
-    let $style := doc($stylePath)
-    let $num := count($items)
-    let $results := <results num="{$num}">{$items}</results>
-    let $sOut := xslt:transform-text($results, $style)
-    
-    let $stylePath2 := file:base-dir() || 'xslt/vicavTexts.xslt'
-    let $style1 := doc($stylePath2)
-    let $sOut1 := xslt:transform-text($sOut, $style1)
-        return $sOut1
-};
-  
- 
 declare
 %rest:path("vicav/profile_markers")
 %rest:GET
@@ -1107,3 +1097,73 @@ function vicav:get_data_list($type as xs:string*) {
     return
         <div>Total: {count($items)}<br/>{$out}</div>
 };
+
+
+(:****************************************************************************:)
+(:** MANAGEMENT FUNCS ********************************************************:)
+(:****************************************************************************:)
+declare
+%rest:path("vicav/show_docs")
+%rest:query-param("db", "{$db}")
+%rest:GET
+%output:method("html")
+
+function vicav:vicav_show_docs($db as xs:string*) {
+  let $docs := db:list($db)
+  let $out :=
+  for $item in $docs 
+    return <div>{$item}</div>
+  
+  return <p>{$out}</p>
+};
+
+
+declare
+%rest:path("vicav/delete_dbase")
+%rest:query-param("db", "{$db}")
+%rest:GET
+
+updating function vicav:vicav_delete_db($db as xs:string*) {
+   db:delete($db, '')
+};
+
+declare
+%rest:path("vicav/refill_texts")
+%rest:query-param("src", "{$src}")
+%rest:GET
+
+updating function vicav:refill_texts($src as xs:string) {
+  for $file in file:list($src, true())
+  let $path := $src || '\' || $file
+  where not(contains($file, 'backup') or contains($file, '.jpg') or contains($file, '.png'))
+  return db:add('vicav_texts', $path)
+};
+
+declare
+%rest:path("vicav/profiles")
+%rest:GET
+
+function vicav:get_profiles_overview() {
+    (:let $entries := collection('vicav_profiles' || vicav:get_project_db())//tei:TEI:)
+    let $entries := collection('vicav_profiles')//tei:TEI
+    let $items :=
+      for $item at $icnt in $entries
+      return <item n="{$icnt}">{$item/@xml:id}<country>{$item//tei:country/text()}</country><author>{$item/.//tei:author/text()}</author><name>{$item/.//tei:head[1]/tei:name[1]/text()}</name></item>
+      
+    let $stylePath := file:base-dir() || 'xslt/profiles_overview.xslt'
+    let $style := doc($stylePath)
+    let $num := count($items)
+    let $res1 := <results num="{$num}">{$items}</results>
+    let $tei := xslt:transform-text($res1, $style)
+    
+    let $stylePath2 := file:base-dir() || 'xslt/vicavTexts.xslt'
+    let $style1 := doc($stylePath2)    
+    (: let $res4 := '<?xml version="1.0"?>' || $res2 :)
+    (: let $res3 := serialize($res2):)
+    (: let $res3 := parse-xml($res2) :)
+    
+    (: let $out := xslt:transform($tei, $style1) :)
+        return $tei
+};
+  
+ 

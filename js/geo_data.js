@@ -196,7 +196,7 @@ function insertFeatureMarkers() {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 199' + errorThrown);
         }
     });
     
@@ -239,7 +239,7 @@ function insertSampleMarkers() {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 242' + errorThrown);
         }
     });
         
@@ -318,7 +318,7 @@ function insertProfileMarkers() {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 321' + errorThrown);
         }
     });
     
@@ -417,7 +417,7 @@ function insertGeoRegMarkers(query_, scope_) {
     }
     if (query_ == '') { query_ = '.*'; }
     
-    //console.log('sUrl: ' + sUrl);
+    console.log('sUrl: ' + sUrl);
     clearMarkerLayers();
     $.ajax({
         url: sUrl,
@@ -452,15 +452,27 @@ function insertGeoRegMarkers(query_, scope_) {
                     fgBiblMarkers.addLayer(circle);
                     $(circle._path).attr('data-testid', 'reg_'+sAlt);
                 }
+
                 if ($(this).attr('type') == 'diaGroup') {
                     sQuery = 'reg:' + sAlt + sQuerySecPart;
-                    var circle = L.circle([v1, v2], { color: 'rgb(22, 93, 143)', weight: 2, fillColor: 'rgb(22, 93, 143)', radius: 190000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip);
+                    //var circle = L.circle([v1, v2], { color: 'rgb(22, 93, 143)', weight: 2, fillColor: 'rgb(22, 93, 143)', radius: 190000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip);
 
-                    var bounds = [[v1 - 5, v2 - 5], [v1 + 5, v2 + 5]];
+                    var sh = sTooltip.substr(0, sTooltip.indexOf('('));
+                    sh = sh.trim();
+                    console.log('sTooltip: ' + sTooltip + '   sh: ' + sh);
+                    if (sh == 'Maghreb') {
+                       var bounds = [[v1 - 4, v2 - 14], [v1 + 4, v2 + 8]];
+                    } else 
+                    if (sh == 'Egypt-Sudan') {
+                       var bounds = [[v1 - 8, v2 - 5], [v1 + 8, v2 + 5]];
+                    } else {
+                       var bounds = [[v1 - 5, v2 - 5], [v1 + 5, v2 + 5]];    
+                    }
+                    
                     var rect = L.rectangle(bounds, {color: "#ff7800", weight: 1, alt: sAlt, biblQuery: sQuery}).bindTooltip(sTooltip);
 
                     fgBiblMarkers.addLayer(rect);
-                    $(circle._path).attr('data-testid', 'reg_'+sAlt);
+                    //$(circle._path).attr('data-testid', 'reg_'+sAlt);
                 }
 
             }
@@ -468,7 +480,7 @@ function insertGeoRegMarkers(query_, scope_) {
 
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+            alert('Line 471' + errorThrown);
         }
     });
     

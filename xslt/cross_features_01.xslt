@@ -1,10 +1,11 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
-    
+    <xsl:param name="highLightIdentifier"></xsl:param>
     <xsl:param name="explanation"></xsl:param>
-    <xsl:include href="sampletexts_common.xslt"/>
-    <xsl:include href="features_common.xslt"/>
     
+    <!-- <xsl:output method="xml" encoding="utf-8"/> -->
+    <xsl:output method="html" encoding="utf-8"/>
+    <!-- <xsl:strip-space elements="tei:cell"/> -->
     <!-- VERSION 3.1.4 -->
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements=""/>
@@ -37,11 +38,10 @@
                 <table class="tbFeatures">
                     <xsl:for-each select="//item">
                         <xsl:sort select="@city"/>
-                        <xsl:value-of select="@city"/>
                         <tr>
                             <td class="tdFeaturesHeadRight"><xsl:value-of select="@city"/></td>
                             <td class="tdFeaturesRightTarget">
-                                <xsl:apply-templates select=".//[@type='featureSample']/tei:quote"/>
+                                <xsl:apply-templates select=".//tei:quote[@xml:lang='ar']"/>
                                 <i class="iFeaturesTrans" xml:space="preserve"><xsl:text> </xsl:text>(<xsl:value-of select=".//tei:quote[@xml:lang = 'en']"/>)</i>
                             </td>
                         </tr>                       
@@ -52,6 +52,7 @@
         <!--             </body>        </html> -->
     </xsl:template>
     
+    <xsl:template match="tei:fs"></xsl:template>
     <xsl:template match="tei:head"></xsl:template>
     <xsl:template match="tei:hi[@rend = 'italic']"><i><xsl:apply-templates/></i></xsl:template>
     <xsl:template match="tei:hi[@rend = 'bold']"><b><xsl:apply-templates/></b></xsl:template>
