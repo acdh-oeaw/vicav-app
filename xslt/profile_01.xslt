@@ -86,7 +86,7 @@
                 </tr>
             </table>
         
-            <xsl:apply-templates select="//tei:div"/>        
+            <xsl:apply-templates select="//tei:body/tei:div/tei:div"/>        
             <br/>
             <br/>
             <br/>
@@ -137,6 +137,10 @@
                 <div class="h3Profile">Audio Data</div>
                 <xsl:apply-templates/>
             </xsl:when>
+            <xsl:when test="@type='gallery'">
+                <div class="h3Profile">Gallery</div>
+                <xsl:apply-templates/>
+            </xsl:when>
         </xsl:choose>
     </xsl:template>
     
@@ -157,6 +161,13 @@
     
     <xsl:template match="tei:teiHead[@type='imgCaption']"><xsl:apply-templates/></xsl:template>
     <xsl:template match="tei:teiHeader"></xsl:template>
+
+    <xsl:template match="tei:p[./tei:figure]">
+        <div class="pFigure">
+            <xsl:apply-templates/>
+        </div>
+    </xsl:template>
+
     
     <xsl:template match="tei:p">
         <div class="pNorm">
@@ -211,9 +222,10 @@
 
     <xsl:template match="//tei:div[@type='gallery']">
         <div class="gallery">
-            <xsl:for-each select="//tei:div[@type='gallery']/tei:link">
+            <div class="h3Profile"><xsl:value-of select="./tei:head"/></div>
+            <xsl:for-each select="./tei:link">
                 <div class="gallery-item">
-                    <a href="{./@target}">
+                    <a href="{./@target}" title="{./tei:head}">
                         <img><xsl:attribute name="src"><xsl:value-of select="./tei:graphic/@url"/></xsl:attribute></img>
                     </a>
                 </div>
@@ -221,6 +233,35 @@
         </div>
     </xsl:template>      
 
+    <xsl:template match="tei:figure">
+        <div>
+            <xsl:attribute name="class" select="'figure'"/>
+            <xsl:if test="@rendition = '#right'">
+                <xsl:attribute name="style">float: right; margin: 10px 10px 0px 10px</xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@rendition = '#left'">
+                <xsl:attribute name="style">float: left; margin: 10px 10px 0px 10px</xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@rendition = '#full-width'">
+                <xsl:attribute name="class" select="'figure full-width'"></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@rendition = '#small'">
+                <xsl:attribute name="class" select="'figure small'"></xsl:attribute>
+            </xsl:if>
+            <div  class="gallery-item">
+                <a href="images/{./tei:link/@target}" title="{./tei:head}">
+                    <img>
+                        <xsl:attribute name="src">images/<xsl:value-of select="tei:graphic/@url"/></xsl:attribute>
+                    </img>
+                </a>
+            </div>
+            <xsl:if test="tei:head">
+                <div class="imgCaption">
+                    <xsl:apply-templates select="tei:head"/>
+                </div>                                           
+            </xsl:if>           
+        </div>
+    </xsl:template>
 <!-- 
     <xsl:template match="tei:ref">
         <xsl:choose>

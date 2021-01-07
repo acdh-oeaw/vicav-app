@@ -1495,6 +1495,10 @@ ul.overlapping-markers {
     padding: 0;
 }
 
+.gallery {
+    clear: both;
+}
+
 .gallery-item {
     display: inline-block;
     max-width: 180px;
@@ -1509,5 +1513,28 @@ ul.overlapping-markers {
 
 .gallery-item img.landscape {
     max-width: inherit;
-    max-height: 100%;
+    max-height: 180px;
+}
+
+.pFigure {
+    display: flex;
+    justify-content: center;
+}
+
+.figure {
+    max-width: 180px;
+}
+
+.figure.small {
+    max-width: 90px;
+}
+
+.figure.full-width, .figure.full-width .gallery-item {
+    max-width: inherit;
+    max-height: inherit;
+}
+
+.figure.small .gallery-item {
+    max-width: 90px;
+    max-height: 90px;
 }
