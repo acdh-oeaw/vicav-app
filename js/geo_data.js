@@ -15,19 +15,23 @@
 function dmsToDeg(coorsString) {
     let loc = coorsString
     if (loc.indexOf("°") > -1) {
-        loc = loc.replace(/°/g, ".");
-        loc = loc.replace(/(’|′|')N/g, ",");
-        loc = loc.replace(/(’|′|')E/g, "");
+        let coords = loc.split(' ')
 
-        if (loc.indexOf('W') !== -1) {
-            loc = loc.replace(/ /g, " -");
-            loc = loc.replace(/(′|')W/g, "");
-        }
-        loc = loc.replace(/(\d+)\.(\d+)/g, function(m) {
-            numbers = m.split('\.')
-            let decimal = Math.floor(parseInt(numbers[1]) / 60 * 100)
-            return numbers[0] + '.' + decimal
-        })        
+        let newCoords = coords.map(function(c) {
+            console.log(c)
+            let matches = c.match(/(\d+)°\s*(\d+)(’|′|\')?((\d+)\s*("|”)?)?\s*(\w)/)
+            let deg = parseInt(matches[1])
+            let min = matches[2]
+            let sec = matches[5]
+            let direction = matches[7]
+            let decmin = parseInt(min) / 60
+            let decsec = parseInt(sec) / 3600
+
+            if (isNaN(decsec)) decsec = 0 
+
+            return (direction.toUpperCase() == 'S' || direction.toUpperCase() == 'W') ? deg+decmin+decsec * -1 : deg+decmin+decsec
+        })
+        return newCoords.join(',')      
     }
     return loc
 }
@@ -164,8 +168,9 @@ function insertProfileMarkers() {
                 cnt = cnt + 1;
                 //console.log(sUrl);
                 loc = $(this).find('loc').text();
-                
+                console.log(loc)
                 loc = dmsToDeg(loc)
+                console.log(loc)
                 sAlt = $(this).find('alt').text();
                 sID = $(this).attr('xml:id');
                 //console.log(loc + ' ' + sAlt);
