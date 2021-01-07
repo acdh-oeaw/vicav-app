@@ -245,6 +245,9 @@
             <xsl:if test="@rendition = '#full-width'">
                 <xsl:attribute name="class" select="'figure full-width'"></xsl:attribute>
             </xsl:if>
+            <xsl:if test="@rendition = '#small'">
+                <xsl:attribute name="class" select="'figure small'"></xsl:attribute>
+            </xsl:if>
             <div  class="gallery-item">
                 <a href="images/{./tei:link/@target}" title="{./tei:head}">
                     <img>
