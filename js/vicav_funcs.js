@@ -1465,7 +1465,6 @@ function () {
     });
 
     $(document).on('DOMNodeInserted', ".content-panel .grid-wrap", function(event) {
-        console.log(event.target, $('.gallery-item img', event.target))
         $('.gallery-item img', event.target).each((_i, i) => {
             i.onload = function(){
                 if (this.naturalWidth > this.naturalHeight) {
