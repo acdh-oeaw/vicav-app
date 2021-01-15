@@ -93,6 +93,28 @@ $(document).ready(function(e) {
     $('.slider-container', event.target).each(function(_i, i) {
       showSlides($(i), 1);
     })
+
+    $('.mySlides img', event.target).each((_i, i) => {
+        i.onload = function(){
+            if (this.naturalWidth > this.naturalHeight) {
+                $(this).addClass('landscape');
+                $(this).attr('style', $(this).attr('style') + 'margin-left: -' + this.width / 4 + 'px;');
+            }
+            if (this.naturalWidth < this.naturalHeight) {
+                $(this).addClass('portrait');
+            }
+        }
+    })
+
+    $(document).on('click', '.mySlides a', function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      var options = { index: event.target, event: event }
+      console.log($(event.target).parent().parent().parent())
+      var links = $('.mySlides a', $(event.target).parent().parent().parent())
+      blueimp.Gallery(links, options)
+    });
+
   });
 });
 
