@@ -1495,6 +1495,8 @@ ul.overlapping-markers {
     padding: 0;
 }
 
+/** IMAGES **/
+
 .gallery {
     clear: both;
 }
@@ -1537,4 +1539,125 @@ ul.overlapping-markers {
 .figure.small .gallery-item {
     max-width: 90px;
     max-height: 90px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Position the image container (needed to position the left and right arrows) */
+.slider-container {
+  position: relative;
+}
+
+.thumbs-wrapper {
+    overflow: hidden;
+}
+
+.thumbs-wrapper .row {
+    transition: transform 1s;
+    margin-left: 0px;
+}
+
+
+/* Hide the images by default */
+.slider-container .mySlides {
+  display: none;
+}
+
+/* Add a pointer when hovering over the thumbnail images */
+.slider-container .cursor {
+  cursor: pointer;
+}
+
+/* Next & previous buttons */
+.slider-container a.prev,
+.slider-container a.next {
+  cursor: pointer;
+  position: absolute;
+  top: 40%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Position the "next button" to the right */
+ .slider-container .next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.slider-container a.prev:hover,
+.slider-container a.next:hover {
+    color: white;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Number text (1/3 etc) */
+.slider-container .numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* Container for image text */
+.slider-container .caption-container {
+  text-align: center;
+  background-color: #222;
+  padding: 2px 16px;
+  color: white;
+}
+
+/*.slider-container .row {
+    margin-left: 0;
+    margin-left: 0;
+}
+*/
+.slider-container .row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Six columns side by side */
+.slider-container .column {
+  float: left;
+  width: 100px;
+}
+
+/* Add a transparency effect for thumnbail images */
+.slider-container .demo {
+  opacity: 0.6;
+}
+
+.slider-container .active,
+.slider-container .demo:hover {
+  opacity: 1;
+}
+/* Fading animation */
+.slider-container .fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  animation-name: fade;
+  animation-duration: 1.5s;
+  opacity: 100;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
 }
