@@ -171,9 +171,12 @@
                   <!-- Full-width images with number text -->
                   <div class="mySlides fade">
                     <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
-                      <img style="width:100%">
+                      <a>
+                      <xsl:attribute name="href" select="concat('images/', ./tei:link/@target)"/>
+                        <img>
                           <xsl:attribute name="src" select="concat('images/', ./tei:link/@target)"/>
                       </img>
+                    </a>
                   </div>
               </xsl:for-each>
           <!-- Next and previous buttons -->
@@ -274,9 +277,13 @@
                   <!-- Full-width images with number text -->
                   <div class="mySlides fade">
                     <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
-                      <img style="width:100%">
+                    <a>
+                      <xsl:attribute name="href" select="./@target"/>
+
+                      <img>
                           <xsl:attribute name="src" select="./@target"/>
                       </img>
+                    </a>
                   </div>
               </xsl:for-each>
           <!-- Next and previous buttons -->
