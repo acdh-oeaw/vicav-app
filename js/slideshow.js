@@ -2,14 +2,6 @@
 //   showSlides($(e.target), 1);
 // });
 
-$(document).ready(function(e) {
-$(document).on('DOMNodeInserted', '.slider-container', function(e) {
-  showSlides($(e.target), 1);
-});
-
-});
-
-
 $(document).on('click', '.slider-container .next', function(e) {    
     e.preventDefault();
     var item = $(e.target).closest('.slider-container');
@@ -36,10 +28,13 @@ $(document).on('mouseover', '.demo.cursor', function(e) {
     transform = 0
   }
 
-  if (e.target.offsetLeft + transform + 100 <= 0) {
+  let positionRight = e.target.offsetLeft + transform + 100
+  let thumbs = $('.demo.cursor', container)
+
+  if (positionRight < 100 || (positionRight == 100 && e.target.offsetLeft > 0)) {
     $('.row', container)[0].style.transform =  'translateX('+ (transform + 100).toString() +'px)';
   }
-  if (e.target.offsetLeft + 100 + transform > container[0].offsetWidth) {
+  if (positionRight > container[0].offsetWidth || (positionRight == container[0].offsetWidth && parseInt($(e.target).attr('data-showslide')) < thumbs.length)) {
     $('.row', container)[0].style.transform =  'translateX('+ (transform - 100).toString() +'px)';
   }
 })
@@ -48,9 +43,7 @@ $(document).on('click', '.demo.cursor', function(e) {
     e.preventDefault();
     var item = $(e.target).closest('.slider-container');
     var wrapper = $(e.target).closest('.thumbs-wrapper');
-        var n = $(e.target).attr('data-showslide');
-      console.log(e.target)
-      console.log(item)
+    var n = $(e.target).attr('data-showslide');
     showSlides(item, n)
 });
 
@@ -71,11 +64,10 @@ function sideScroll(element, direction, speed, distance, step) {
 
 
 function showSlides(container, n) {
-  console.log(container)
   var slideIndex = container.attr('data-slider') !== undefined ? parseInt(container.attr('data-slider')) : 1
   var i;
   var slides = $('.mySlides', container);
-  if (slides.length){
+  if (slides.length > 0) {
     var dots = $('.demo', container);
     var captionText = $('.caption', container);
   
@@ -93,4 +85,14 @@ function showSlides(container, n) {
     container.attr('data-slider', n)
   }
 }
+
+
+$(document).ready(function(e) {
+    $(document).on('DOMNodeInserted', ".content-panel .grid-wrap", function(event) {
+
+    $('.slider-container', event.target).each(function(_i, i) {
+      showSlides($(i), 1);
+    })
+  });
+});
 

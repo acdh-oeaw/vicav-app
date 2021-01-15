@@ -1556,7 +1556,7 @@ ul.overlapping-markers {
 
 .thumbs-wrapper .row {
     transition: transform 1s;
-    margin-left: 20px;
+    margin-left: 0px;
 }
 
 
@@ -1571,8 +1571,8 @@ ul.overlapping-markers {
 }
 
 /* Next & previous buttons */
-.slider-container .prev,
-.slider-container .next {
+.slider-container a.prev,
+.slider-container a.next {
   cursor: pointer;
   position: absolute;
   top: 40%;
@@ -1594,8 +1594,9 @@ ul.overlapping-markers {
 }
 
 /* On hover, add a black background color with a little bit see-through */
-.slider-container .prev:hover,
-.slider-container .next:hover {
+.slider-container a.prev:hover,
+.slider-container a.next:hover {
+    color: white;
   background-color: rgba(0, 0, 0, 0.8);
 }
 
@@ -1648,6 +1649,7 @@ ul.overlapping-markers {
   -webkit-animation-duration: 1.5s;
   animation-name: fade;
   animation-duration: 1.5s;
+  opacity: 100;
 }
 
 @-webkit-keyframes fade {
