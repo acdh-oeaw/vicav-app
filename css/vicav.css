@@ -1567,13 +1567,15 @@ ul.overlapping-markers {
   height: 425px;
 }
 
+.slider-container .mySlides a {
+    display: block;
+    text-align: center;
+}
 .slider-container .mySlides img.landscape {
     width: 100%;
 }
 .slider-container .mySlides img.portrait {
-    display: block;
     height: 100%;
-    margin: 0 auto;
 }
 
 /* Add a pointer when hovering over the thumbnail images */
