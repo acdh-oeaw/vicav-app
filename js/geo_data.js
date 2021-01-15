@@ -14,6 +14,7 @@
 function convertDMSToDD(degrees, minutes, seconds, direction) {
     var dd = parseInt(degrees) + parseInt(minutes)/60 + parseInt(seconds)/(60*60);
 
+<<<<<<< HEAD
     if (direction == "S" || direction == "W") {
         dd = dd * -1;
     } // Don't do anything for N or E
@@ -116,6 +117,28 @@ function parseCoords(coords_) {
         return coords_.split(",");
     } else {
         return coords_.split(" ");
+=======
+function dmsToDeg(coorsString) {
+    let loc = coorsString
+    if (loc.indexOf("°") > -1) {
+        let coords = loc.split(' ')
+
+        let newCoords = coords.map(function(c) {
+            console.log(c)
+            let matches = c.match(/(\d+)°\s*(\d+)(’|′|\')?((\d+)\s*("|”)?)?\s*(\w)/)
+            let deg = parseInt(matches[1])
+            let min = matches[2]
+            let sec = matches[5]
+            let direction = matches[7]
+            let decmin = parseInt(min) / 60
+            let decsec = parseInt(sec) / 3600
+
+            if (isNaN(decsec)) decsec = 0 
+
+            return (direction.toUpperCase() == 'S' || direction.toUpperCase() == 'W') ? deg+decmin+decsec * -1 : deg+decmin+decsec
+        })
+        return newCoords.join(',')      
+>>>>>>> d426a1095cc83d1720fdbae58ec7179bb84553a2
     }
 }
 
@@ -268,8 +291,15 @@ function insertProfileMarkers() {
             $(result).find('r').each(function (index) {
                 cnt = cnt + 1;
                 //console.log(sUrl);
+<<<<<<< HEAD
                 sLoc = $(this).find('loc').text();
                 sType = $(this).attr('type');
+=======
+                loc = $(this).find('loc').text();
+                console.log(loc)
+                loc = dmsToDeg(loc)
+                console.log(loc)
+>>>>>>> d426a1095cc83d1720fdbae58ec7179bb84553a2
                 sAlt = $(this).find('alt').text();
                 sID = $(this).attr('xml:id');
 
