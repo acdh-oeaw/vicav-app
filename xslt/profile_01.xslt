@@ -192,7 +192,7 @@
                 <xsl:for-each select="./tei:figure">
                     <xsl:variable select="position()" name="pos"/>
                     <div class="column">
-                      <img class="demo cursor" style="width:100%">
+                      <img class="demo cursor" style="width:100px; height: 100px">
                           <xsl:attribute name="src" select="concat('images/', ./tei:graphic/@url)"/>
                           <xsl:attribute name="data-showslide" select="$pos"/>
                           <xsl:attribute name="alt" select="./tei:head"/>
