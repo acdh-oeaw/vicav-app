@@ -299,7 +299,7 @@ function insertProfileMarkers() {
                 /** NEW ***********************************************/
                 /******************************************************/
                 var coord = splitCoords(sLoc, sAlt);
-                //console.log('(' + coord.lat + ') (' + coord.lng + ')');
+                //console.log(sAlt + ' (' + coord.lat + ') (' + coord.lng + ')');
 
                 var dmslat = parseStringToDMS(coord.lat);
                 var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
@@ -409,6 +409,10 @@ function insertGeoRegMarkers(query_, scope_) {
 	//console.log('query_: ' + query_);
 	//console.log('scope_: ' + scope_);
     $(".sub-nav-map-items .active").removeClass("active");
+    query_ = query_.replace(/&/g, '+');
+    query_ = query_.replace(/ \+/g, '+');
+    query_ = query_.replace(/\+ /g, '+');
+    query_ = query_.replace(/\+/g, '%2b');
     sUrl = 'bibl_markers_tei?query=' + query_ + '&scope=' + scope_;
     /*sQuerySecPart = ',vt:textbook';*/
     var sQuerySecPart = '';
@@ -418,6 +422,8 @@ function insertGeoRegMarkers(query_, scope_) {
     if (query_ == '') { query_ = '.*'; }
     
     console.log('sUrl: ' + sUrl);
+    console.log('query_: ' + query_);
+    console.log('sQuerySecPart: ' +  sQuerySecPart);
     clearMarkerLayers();
     $.ajax({
         url: sUrl,
@@ -439,6 +445,7 @@ function insertGeoRegMarkers(query_, scope_) {
                 v1 = parseFloat(values[0]);
                 v2 = parseFloat(values[1]);
                 sTooltip = sAlt + ' (' + sFreq + ')';
+                //console.log(sTooltip);
                 
                 if ($(this).attr('type') == 'geo') {
                     sQuery = 'geo:' + sAlt + sQuerySecPart;
@@ -446,6 +453,7 @@ function insertGeoRegMarkers(query_, scope_) {
                     fgBiblMarkers.addLayer(marker);
                     $(marker._icon).attr('data-testid', 'geo_'+sAlt);
                 }
+
                 if ($(this).attr('type') == 'reg') {
                     sQuery = 'reg:' + sAlt + sQuerySecPart;
                     var circle = L.circle([v1, v2], { color: 'rgb(168, 93, 143)', weight: 1, fillColor: 'rgb(168, 93, 143)', radius: 90000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip);
@@ -462,16 +470,63 @@ function insertGeoRegMarkers(query_, scope_) {
                     console.log('sTooltip: ' + sTooltip + '   sh: ' + sh);
                     if (sh == 'Maghreb') {
                        var bounds = [[v1 - 4, v2 - 14], [v1 + 4, v2 + 8]];
+                       var ico1 = L.divIcon({ className: "labelClass", html: "<div class='labelClassMaghreb1' style='letter-spacing: 0.1em;color:#d5b1c9;font-size:30px'>MAGHREB</div>" });
+                       var ico2 = L.divIcon({ className: "labelClass", html: "<div style='letter-spacing: 0.1em;color:#d5b1c9;font-size:30px'>MAGHREB</div>" });
+                       var l1 = L.marker([32.5, -5.5], {icon:ico1, alt: sAlt, biblQuery: sQuery}).addTo(layerGroupDialectRegions);
+                       var l2 = L.marker([28.5, 8.5], {icon:ico2, alt: sAlt, biblQuery: sQuery}).addTo(layerGroupDialectRegions);
+                       l1.bindTooltip(sTooltip);
+                       l2.bindTooltip(sTooltip);
+                       fgBiblMarkers.addLayer(l1);
+                       fgBiblMarkers.addLayer(l2);
                     } else 
                     if (sh == 'Egypt-Sudan') {
                        var bounds = [[v1 - 8, v2 - 5], [v1 + 8, v2 + 5]];
-                    } else {
-                       var bounds = [[v1 - 5, v2 - 5], [v1 + 5, v2 + 5]];    
-                    }
+                       var ico = L.divIcon({ className: "labelClass", html: "<div style='color:#8485b5;font-size:30px'>EGYPT-<br/>SUDAN</div>" });
+                       var l = L.marker([25.5, 25.5], {icon:ico, alt: sAlt, biblQuery: sQuery}).addTo(layerGroupDialectRegions);
+                       l.bindTooltip(sTooltip);
+                       fgBiblMarkers.addLayer(l);
+                    } else 
+                    if (sh == 'Mesopotamia') {
+                       var ico = L.divIcon({ className: "labelClass", html: "<div class='labelClass45' style='color:#c5a6c8;font-size:20px'>MESOPOTAMIA</div>" });
+                       var l = L.marker([40.5, 39.5], {icon:ico, alt: sAlt, biblQuery: sQuery}).addTo(layerGroupDialectRegions);
+                       l.bindTooltip(sTooltip);
+                       fgBiblMarkers.addLayer(l);
+                    } else
+                    if (sh == 'Syro-Palestine') {
+                       var ico = L.divIcon({ className: "labelClass", html: "<div class='labelClassLevant' style='color:#98a2ca;font-size:25px'>Levant</div>" }); 
+                       var l = L.marker([32.5, 35.5], {icon:ico, alt: sAlt, biblQuery: sQuery}).addTo(layerGroupDialectRegions);
+                       l.bindTooltip(sTooltip);
+                       fgBiblMarkers.addLayer(l);
+                    } else
+                    if (sh == 'Gulf') {
+                       var ico = L.divIcon({ className: "labelClass", html: "<div class='labelClassGulf' style='color:#c8c7e8;font-size:22px'>Gulf</div>" });
+                       var l = L.marker([27.5, 48.5], {icon:ico, alt: sAlt, biblQuery: sQuery}).addTo(layerGroupDialectRegions);
+                       l.bindTooltip(sTooltip);
+                       fgBiblMarkers.addLayer(l);
+                    } 
                     
-                    var rect = L.rectangle(bounds, {color: "#ff7800", weight: 1, alt: sAlt, biblQuery: sQuery}).bindTooltip(sTooltip);
+                    //var rect = L.rectangle(bounds, {color: "#ff7800", weight: 1, alt: sAlt, biblQuery: sQuery}).bindTooltip(sTooltip);
+                    
+                    //var ico_Maghreb_01 = L.divIcon({ className: "labelClass", html: "<div class='labelClass20' style='letter-spacing: 0.1em;color:red;font-size:30px'>MAGHREB</div>" });
+                    //var l = L.marker([32.5, -5.5], {icon:ico, alt: sAlt, biblQuery: sQuery}).addTo(layerGroupDialectRegions);
+                    //l.bindTooltip(sTooltip);
+                    //console.log('tooltip: ' + sTooltip);
+                    /*
+                    var ico_Maghreb_02 = L.divIcon({ className: "labelClass", html: "<div style='color:red;font-size:30px'>MAGHREB</div>" });
+                    var ico_Egypt = L.divIcon({ className: "labelClass", html: "<div style='color:blue;font-size:30px'>EGYPT-<br/>SUDAN</div>" });
+                    var ico_Mesopotamia = L.divIcon({ className: "labelClass", html: "<div class='labelClass45' style='color:green;font-size:20px'>MESOPOTAMIA</div>" });
+                    var ico_Levant = L.divIcon({ className: "labelClass", html: "<div  style='color:yellow;font-size:20px'>Levant</div>" });
+                    var ico_Arabia = L.divIcon({ className: "labelClass", html: "<div class='labelArabia'  style='color:orange;font-size:20px'>ARABIAN PENINSULA</div>" });
+                    var l = L.marker([32.5, -5.5], {icon:ico_Maghreb_01}).addTo(layerGroupDialectRegions);
+                    var l = L.marker([30.5, 16.5], {icon:ico_Maghreb_02}).addTo(layerGroupDialectRegions);
+                    var l = L.marker([25.5, 25.5], {icon:ico_Egypt}).addTo(layerGroupDialectRegions);
+                    var l = L.marker([40.5, 39.5], {icon:ico_Mesopotamia}).addTo(layerGroupDialectRegions);
+                    var l = L.marker([33.5, 35.5], {icon:ico_Levant}).addTo(layerGroupDialectRegions);
+                    var l = L.marker([29.5, 38.5], {icon:ico_Arabia}).addTo(layerGroupDialectRegions);
+                    */
 
-                    fgBiblMarkers.addLayer(rect);
+                    //fgBiblMarkers.addLayer(rect);
+                    //fgBiblMarkers.addLayer(l);
                     //$(circle._path).attr('data-testid', 'reg_'+sAlt);
                 }
 

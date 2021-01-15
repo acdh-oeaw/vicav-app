@@ -126,11 +126,19 @@ declare
 %rest:GET
 
 function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
-    let $queries := tokenize($query, ',')    
+    let $queries := tokenize($query, '\+')
     let $qs :=
     for $query in $queries     
     return                
-        if (contains($query, 'geo:') or contains($query, 'reg:')) then
+        if (contains($query, 'date:')) then
+           '[.//tei:date[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+        else if (contains($query, 'title:')) then
+           '[.//tei:title[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+        else if (contains($query, 'pubPlace:')) then
+           '[.//tei:pubPlace[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+        else if (contains($query, 'author:')) then
+           '[.//tei:author/tei:surname[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+        else if (contains($query, 'geo:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
            '[.//tei:note[@type="tag"]/tei:name[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else if (contains($query, 'vt:')) then
            '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
@@ -169,6 +177,7 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
     return
         (: <r>{$sHTML}</r> :)
         $sHTML
+        (: <r>{$query2}</r> :)
 };
 
 declare
@@ -283,7 +292,7 @@ function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn
     
     return 
         (:<div type="lingFeatures">{$sHTML}</div>:)
-        (:$ress1:)
+        (: <r>{$query}</r> :)
         $sHTML
 };
 
@@ -532,6 +541,76 @@ declare function vicav:createMatchString($in as xs:string) {
 };
 
 declare
+%rest:path("vicav/dicts_api")
+%rest:query-param("query", "{$query}")
+%rest:query-param("dicts", "{$dicts}")
+%rest:query-param("xslt", "{$xsltfn}")
+%rest:GET
+
+function vicav:dicts_query($dicts as xs:string, $query as xs:string*, $xsltfn as xs:string) {
+    let $nsTei := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
+    let $queries := tokenize($query, ',')
+    let $qs :=
+    for $query in $queries
+    let $terms := tokenize(normalize-space($query), '=')
+    return
+        switch (normalize-space($terms[1]))
+            case 'any'
+                return '[.//node()[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'lem'
+                return '[tei:form[@type="lemma"]/tei:orth[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'lemma'
+                return '[tei:form[@type="lemma"]/tei:orth[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'infl'
+                return '[tei:form[@type="inflected"]/tei:orth[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'inflType'
+                return '[tei:form[@type="inflected"][@ana="#' || $terms[2] || '"]]'
+            case 'en'
+                return '[tei:sense/tei:cit[@type="translation"][@xml:lang="en"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'de'
+                return '[tei:sense/tei:cit[@type="translation"][@xml:lang="de"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'fr'
+                return '[tei:sense/tei:cit[@type="translation"][@xml:lang="fr"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'es'
+                return '[tei:sense/tei:cit[@type="translation"][@xml:lang="es"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'etymLang'
+                return '[tei:etym/tei:lang[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'etym' 
+                return '[tei:etym/tei:mentioned[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'root'
+                return '[tei:gramGrp/tei:gram[@type="root"][' || vicav:createMatchString($terms[2]) || ']]'
+            case 'stem'
+                return '[tei:gramGrp/tei:gram[@type="subc"][' || vicav:createMatchString($terms[2]) || ']]'
+            case 'subc'
+                return '[tei:gramGrp/tei:gram[@type="subc"][' || vicav:createMatchString($terms[2]) || ']]'
+            case 'pos' 
+                return '[tei:gramGrp/tei:gram[@type="pos"][' || vicav:createMatchString($terms[2]) || ']]'
+            default return
+                ()
+
+let $dictsTemp := tokenize($dicts, ',')
+
+let $qq :=
+   for $seq in (1 to count($dictsTemp))
+     return 
+       if ($seq = 1) 
+         then
+           'collection("' || $dictsTemp[$seq] || '")//tei:entry' || string-join($qs)
+         else 
+           ',collection("' || $dictsTemp[$seq] || '")//tei:entry' || string-join($qs)
+         
+       
+let $sQuery := $nsTei || string-join($qq)
+let $results := xquery:eval($sQuery)
+
+let $style := doc("xslt/" || $xsltfn)
+let $ress := <results xmlns="http://www.tei-c.org/ns/1.0">{$results}</results>
+let $sReturn := xslt:transform-text($ress, $style)
+return
+  $sReturn
+};
+
+declare
 %rest:path("vicav/dict_api")
 %rest:query-param("query", "{$query}")
 %rest:query-param("dict", "{$dict}")
@@ -543,53 +622,72 @@ function vicav:dict_query($dict as xs:string, $query as xs:string*, $xsltfn as x
   let $pw := substring-after($autho, ':') :)
     
     let $nsTei := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $queries := tokenize($query, ',')
+    let $queries := tokenize($query, ',' )
     let $qs :=
     for $query in $queries
     let $terms := tokenize(normalize-space($query), '=')
     return
         switch (normalize-space($terms[1]))
             case 'any'
-                return
-                    '[.//node()[' || vicav:createMatchString($terms[2]) || ']]'
+                return '[.//node()[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'id'
+                return '[@xml:id="' || $terms[2] || '"]'
             case 'lem'
-                return
-                    '[tei:form[@type="lemma"]/tei:orth[' || vicav:createMatchString($terms[2]) || ']]'
+                return '[tei:form[@type="lemma"]/tei:orth[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'lemma'
+                return '[tei:form[@type="lemma"]/tei:orth[' || vicav:createMatchString($terms[2]) || ']]'
             case 'infl'
-                return
-                    '[tei:form[@type="inflected"]/tei:orth[' || vicav:createMatchString($terms[2]) || ']]'
+                return '[tei:form[@type="inflected"]/tei:orth[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'inflType'
+                return 
+                (
+                  let $s1 := replace($terms[2], '~~eq~~', '=')
+                  let $s2 := replace($s1, '~~pl~~', '+')
+                  let $queryPart := tokenize($s2, '\+')
+                  return 
+                    if ($queryPart[2]) 
+                      then (
+                        let $min := substring-after($queryPart[2], '=')
+                          return '[count(tei:form[@type="inflected"][@ana="#' || $queryPart[1] || '"])>' || $min ||']'
+                          (: return $min || ' - ' || $queryPart[2] :)
+                      ) else 
+                        '[tei:form[@type="inflected"][@ana="#' || $terms[2] || '"]]'                      
+                    
+                       
+                )
             case 'en'
-                return
-                    '[tei:sense/tei:cit[@type="translation"][@xml:lang="en"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
+                return '[tei:sense/tei:cit[@type="translation"][@xml:lang="en"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
             case 'de'
-                return
-                    '[tei:sense/tei:cit[@type="translation"][@xml:lang="de"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
+                return '[tei:sense/tei:cit[@type="translation"][@xml:lang="de"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'etym' 
+                return '[tei:etym/tei:mentioned[' || vicav:createMatchString($terms[2]) || ']]'
             case 'fr'
-                return
-                    '[tei:sense/tei:cit[@type="translation"][@xml:lang="fr"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
+                return '[tei:sense/tei:cit[@type="translation"][@xml:lang="fr"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
             case 'es'
-                return
-                    '[tei:sense/tei:cit[@type="translation"][@xml:lang="es"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
+                return '[tei:sense/tei:cit[@type="translation"][@xml:lang="es"]/tei:quote[' || vicav:createMatchString($terms[2]) || ']]'
             case 'etymLang'
-                return
-                    '[tei:etym/tei:lang[' || vicav:createMatchString($terms[2]) || ']]'
-            case 'etymSrc'
-                return
-                    '[tei:etym/tei:mentioned[' || vicav:createMatchString($terms[2]) || ']]'
+                return '[tei:etym/tei:lang[' || vicav:createMatchString($terms[2]) || ']]'
+            case 'pos' 
+                return '[tei:gramGrp/tei:gram[@type="pos"][' || vicav:createMatchString($terms[2]) || ']]'
             case 'root'
-                return
-                    '[tei:gramGrp/tei:gram[@type="root"][' || vicav:createMatchString($terms[2]) || ']]'
+                return '[tei:gramGrp/tei:gram[@type="root"][' || vicav:createMatchString($terms[2]) || ']]'
+            case 'stem'
+                return '[tei:gramGrp/tei:gram[@type="subc"][' || vicav:createMatchString($terms[2]) || ']]'
             case 'subc'
-                return
-                    '[tei:gramGrp/tei:gram[@type="subc"][' || vicav:createMatchString($terms[2]) || ']]'
-            case 'pos'
-                return
-                    '[tei:gramGrp/tei:gram[@type="pos"][' || vicav:createMatchString($terms[2]) || ']]'
+                return '[tei:gramGrp/tei:gram[@type="subc"][' || vicav:createMatchString($terms[2]) || ']]'
+            case 'q'                 
+                return (
+                  let $s1 := replace($terms[2], '~~eq~~', '=')
+                  let $s2 := replace($s1, '~~ha~~', '#')
+                  let $s3 := replace($s2, '~~qu~~', '"')
+                  return '[' || $s3 || ']'
+                )
             default return
                 ()
 
 let $qq := 'collection("' || $dict || '")//tei:entry' || string-join($qs)
-let $results := xquery:eval($nsTei || $qq)
+let $qs := $nsTei || $qq
+let $results := xquery:eval($qs)
 (: return <answer>{count($res)}||{$res}</answer> :)
 
 (: let $results := xquery:eval($query):)
@@ -601,6 +699,9 @@ for $ed in $eds
 return
     <ed>{$ed}</ed>
 :)
+
+(: q=count(.//node()[@ana~~eq~~'~~ha~~n_pl'])>4 :)
+
 
 let $ress1 :=
    for $entry in $results
@@ -628,11 +729,10 @@ let $sReturn := xslt:transform-text($ress, $style)
 
 return
     $sReturn
+    (: <r>{$qs}</r> :)
     (: if (wde:check-user_($dict, $user, $pw)) :)
     (: then $sReturn :)
     (: else <error type="user authentication" name="{$user}" pw="{$pw}"/> :)
-
-
 };
 
 declare
@@ -767,11 +867,19 @@ declare
 %output:method("xml")
 
 function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
-    let $queries := tokenize($query, ',')
+    let $queries := tokenize($query, '\+')
     let $qs :=
         for $query in $queries
         return
-           if (contains($query, 'geo:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
+           if (contains($query, 'date:')) then
+              '[.//tei:date[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           else if (contains($query, 'title:')) then
+              '[.//tei:title[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           else if (contains($query, 'pubPlace:')) then
+              '[.//tei:pubPlace[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           else if (contains($query, 'author:')) then
+              '[.//tei:author/tei:surname[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           else if (contains($query, 'geo:') or contains($query, 'geo_reg:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
               '[.//tei:note[@type="tag"]/tei:name[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'vt:')) then
               '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
@@ -779,6 +887,7 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
               '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
           else
               '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'          
+                           
         
             (:return '[tei:note/tei:note[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]':)
             (: return '[tei:note/tei:note[tei:name contains text "' || $query || '" using wildcards using diacritics sensitive]]' :)
@@ -879,7 +988,8 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
     (:else  ():)
         
     return <rs type="{count($out2)}">{$out2}</rs>
-    (: return <res>{$query}</res> :)
+    (: return <res>{$out}</res> :)
+    (: return <res>{$query}</res> :) 
 };
 
 declare
@@ -966,6 +1076,7 @@ function vicav:get_sample_markers() {
                 <alt>{$alt[1]}</alt>
                 <freq>1</freq>
             </r>
+            else ()
     
     return
         <rs>{$out}</rs>
@@ -1130,13 +1241,14 @@ updating function vicav:vicav_delete_db($db as xs:string*) {
 declare
 %rest:path("vicav/refill_texts")
 %rest:query-param("src", "{$src}")
+%rest:query-param("db", "{$db}")
 %rest:GET
 
-updating function vicav:refill_texts($src as xs:string) {
+updating function vicav:refill_texts($src as xs:string, $db as xs:string) {
   for $file in file:list($src, true())
   let $path := $src || '\' || $file
   where not(contains($file, 'backup') or contains($file, '.jpg') or contains($file, '.png'))
-  return db:add('vicav_texts', $path)
+  return db:add($db, $path)
 };
 
 declare

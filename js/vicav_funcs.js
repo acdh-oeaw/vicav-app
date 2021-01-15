@@ -126,7 +126,7 @@ if (!String.prototype.includes) {
 function onBiblMapClick(e) {
     /*query = e.latlng.lat.toFixed(2) + '.*' + e.latlng.lng.toFixed(2);*/
     /*execBiblQuery(query, e.layer.options.alt, e.layer.options.biblType, e.layer.options.locType);*/
-
+    
     execBiblQuery(e.layer.options.biblQuery);
 }
 
@@ -171,9 +171,11 @@ L.tileLayer('https://api.mapbox.com/styles/v1/acetin/cjb22mkrf16qf2spyl3u1vee3/t
     'Imagery © <a href="http://mapbox.com">Mapbox</a>'
 }).addTo(mainMap);
 
+var layerGroupDialectRegions = L.layerGroup().addTo(mainMap);
+
 mainMap.scrollWheelZoom.disable();
-window.addEventListener('hashchange', function(e){
-    console.log('hash changed1');
+    window.addEventListener('hashchange', function(e){
+    //console.log('hash changed1');
     var currentURL = window.location.toString();
     parseCurrentUrl(currentURL);
 });
@@ -207,7 +209,7 @@ let overlapHandler = function(e) {
         }
     })
 
-    console.log(nearbyMarkerData)
+    //console.log(nearbyMarkerData)
 
     if (nearbyMarkerData.length == 1) { // 1 => the one clicked => none nearby
         switch (marker.options.type) {
@@ -222,8 +224,7 @@ let overlapHandler = function(e) {
                 break;
 
         }
-    }
-    else {
+    } else {
         let popupContent = '<ul class="overlapping-markers">'
         console.log(nearbyMarkerData)
         nearbyMarkerData.sort((a,b) => { 
@@ -381,9 +382,11 @@ function changePanelVisibility(panel, type, expand)   {
 function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLink_, locType_, snippetID_, pID_, pVisiblity_, pURL_) {
     var openPans = 0;
     var toBeClosed = -1;
-    console.log('appendPanel (secLabel): ' + secLabel_);
+    //console.log('appendPanel (secLabel): ' + secLabel_);
     secLabel_ = secLabel_.replace(/%20/, ' ');
     secLabel_ = secLabel_.replace(/_/, ' ');
+    query_ = query_.replace(/%2b/,' & ');
+    query_ = query_.replace(/,/,' & ');
     contents_ = contents_.replace(/{query}/, query_);
 
     $('.content-panel').each(function () {
@@ -415,18 +418,19 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
     /* ***** Add a button to create TEI view ****************/
     /* ******************************************************/
     var teiLink = '';
+    console.log('appendPanel: ' + teiLink_ + '  panelType_: ' + panelType_);
     if (teiLink_ == 'hasTeiLink') {
         switch (panelType_) {
             case 'profileQuery': teiLink_ = 'getProfile("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xslt")';
-            break;
+                                 break;
             case 'featureQuery': teiLink_ = 'getFeatureOfLocation("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xslt")';
-            break;
+                                 break;
             case 'crossFeaturesResults': teiLink_ = 'showLingFeatures("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xslt")';
-            break;
+                                 break;
             case 'sampleQuery': teiLink_ = 'getSample("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xslt")';
-            break;
+                                 break;
             case 'textQuery': teiLink_ = 'getText("' + secLabel_ + '", "' + snippetID_ + '", "tei_2_html__v004__gen.xslt")';
-            break;
+                                 break;
         }
     } else {
         teiLink_ = '';
@@ -476,8 +480,8 @@ function appendPanel(contents_, panelType_, secLabel_, contClass_, query_, teiLi
                 argList = argList + locType_ + ",";
             }
             argList = argList + "open]";
-            console.log('replaceState (appendPanel): ' + currentURL + "&" + argList);
-            console.log('replaceState (10)');            
+            //console.log('replaceState (appendPanel): ' + currentURL + "&" + argList);
+            //console.log('replaceState (10)');            
             window.history.replaceState({ }, "", currentURL + "&" + argList);
         }
     } else {
@@ -517,19 +521,24 @@ function createBiblExplanationPanel() {
 }
 
 function getCaptionFromMenuID(id_) {
-   /*********************************/
-   /** Put _ instead of blank ******/
-   /*********************************/
+   /***********************************************************************/
+   /** Put _ instead of blank *********************************************/
+   /** These ids are called from the menu: vicav_project/vicav.xml ********/
+   /** There the start with li_ "list item"     ***************************/
+   /** The caption is displayed on the left side of the panels. They are **/
+   /** important when the panels are closed. ******************************/
+   /***********************************************************************/
    var sRes = '';
    if (id_ == 'vicavArabicTools') { sRes = 'ARABIC_TOOLS'} else
-   if (id_ == 'vicavContributeProfile') { sRes = 'CONTRIBUTE A PROFILE'} else
    if (id_ == 'vicavContributeBibliography') { sRes = 'CONTRIBUTE TO BIBLIOGRAPHY'} else
    if (id_ == 'vicavContributeDictionary') { sRes = 'CONTRIBUTE A DICTIONARY'} else
+   if (id_ == 'vicavContributeFeature') { sRes = 'CONTRIBUTE A FEATURE LIST'} else
+   if (id_ == 'vicavContributeProfile') { sRes = 'CONTRIBUTE A PROFILE'} else
+   if (id_ == 'vicavContributeSample') { sRes = 'CONTRIBUTE A SAMPLE'} else
 
    if (id_ == 'vicavContributors') { sRes = 'CONTRIBUTORS'} else
    if (id_ == 'vicavDictionaryEncoding') { sRes = 'DICTIONARIES_(ENCODING)'} else
    if (id_ == 'vicavDictionariesTechnicalities') { sRes = 'DICTIONARIES_(TECHNICALITIES)'} else
-   if (id_ == 'vicavVLE') { sRes = 'DICTIONARY_EDITOR (VLE)'} else
    if (id_ == 'vicavOverview_corpora_spoken') { sRes = 'CORPORA_OF_SPOKEN_ARABIC'} else
    if (id_ == 'vicavOverview_corpora_msa') { sRes = 'MSA_CORPORA'} else
    if (id_ == 'vicavOverview_special_corpora') { sRes = 'SPECIAL_CORPORA'} else
@@ -543,12 +552,15 @@ function getCaptionFromMenuID(id_) {
    if (id_ == 'vicavLearningPrograms') { sRes = 'LEARNING PROGRAMS'} else
    if (id_ == 'vicavLearningData') { sRes = 'LEARNING DATA'} else
    if (id_ == 'vicavKeyboards') { sRes = 'KEYBOARDS'} else
+   if (id_ == 'vicavVLE') { sRes = 'DICTIONARY_EDITOR (VLE)'} else
 
   if (id_ == 'vicavExplanationBibliography') { sRes = 'BIBLIOGRAPHY (DETAILS)'} else
   if (id_ == 'vicavExplanationCorpusTexts') { sRes = 'CORPUS TEXTS (DETAILS)'} else
   if (id_ == 'vicavExplanationFeatures') { sRes = 'FEATURES (DETAILS)'} else
   if (id_ == 'vicavExplanationProfiles') { sRes = 'PROFILES_(DETAILS)'} else
   if (id_ == 'vicavExplanationSamples') { sRes = 'SAMPLES_(DETAILS)'} else
+  if (id_ == 'vicavExploreFeatures') { sRes = 'EXPLORE FEATURES'} else
+
 
   if (id_ == 'vicavLinguistics') { sRes = 'LINGUISTICS'} else
   if (id_ == 'vicavMission') { sRes = 'MISSION'} else
@@ -589,12 +601,13 @@ function createNewCrossDictQueryPanel(pID_, pVisiblity_, pURL_) {
     "    <button class='crossDictQueryBtn'>Query</button><br/>" +
     "</form>" +
     "<div class='selQueryType'>" +
-    "   <input type='checkbox' id='cbCairo' class='checkbox' value='Cairo'><label class='checkboxLabel' for='cbCairo'>Cairo</label>" +
+    "<input type='checkbox' id='cbCairo' class='checkbox' value='Cairo'><label class='checkboxLabel' for='cbCairo'>Cairo</label>" +
     "   <input type='checkbox' id='cbDamascus' class='checkbox' value='Damascus'><label class='checkboxLabel' for='cbDamascus'>Damascus</label>" +
     "   <input type='checkbox' id='cbTunis' class='checkbox' value='Tunis' checked='checked'><label class='checkboxLabel' for='cbTunis'>Tunis</label>" +
     "   <input type='checkbox' id='cbBaghdad' class='checkbox' value='Baghdad' checked='checked'><label class='checkboxLabel' for='cbBaghdad'>Baghdad</label>" +
     "   <input type='checkbox' id='cbMSA' class='checkbox' value='MSA'><label class='checkboxLabel' for='cbMSA'>MSA</label>" +
     "</div>" +
+    "<div class='selQueryType'><input type='checkbox' id='cbIntegratedResult' class='checkbox' value='MSA'><label class='checkboxLabel' for='cbIntegratedResult'>Integrated Results</label></div>" + 
     "<p>For details as to how to formulate meaningful dictionary queries " +
     "consult the <a class='aVicText' href='javascript:" + jsText + "'>examples of the TUNICO dictionary</a>.</p>";
     appendPanel(searchContainer, "crossDictQueryLauncher", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
@@ -655,11 +668,11 @@ function autoDictQuery(suffixes_, query_, field_) {
                 	createNewDictQueryPanel('dc_tunico', 'TUNICO Dictionary', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
                 	break;
                 case '_cairo':
-                	createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
+                	createNewDictQueryPanel('dc_arz_eng_publ', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
                 	break;
 
                 case '_damascus':
-                    createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc, defaultFields);
+                    createNewDictQueryPanel('dc_apc_eng_publ', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc, defaultFields);
                     break;
 
                 case '_baghdad':
@@ -729,7 +742,7 @@ function getText(secLabel_, snippetID_, style_, pID_, pVisibility_, pURL_) {
               }
               */
               //appendPanel(result, "textQuery", secLabel_, "grid-wrap", "", "hasTeiLink", "", snippetID_, pID_, pVisibility_, pURL_);*/
-              appendPanel(result, "", secLabel_, "grid-wrap", "", "hasTeiLink", "", snippetID_, pID_, pVisibility_, pURL_);
+              appendPanel(result, "textQuery", secLabel_, "grid-wrap", "", "hasTeiLink", "", snippetID_, pID_, pVisibility_, pURL_);
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -743,16 +756,14 @@ function getDBSnippet(s_) {
     /*  This function is being triggered by calls such as those below */
     /*      <rs ref="text:vicavExplanationProfiles">                  */
     /*      <rs ref="func:openDict_Baghdad()">                        */
-    /*  Mind: blank is used to separate queries, make multi word      */
-    /*  safe by _                                                     */
     /******************************************************************/
     console.log('getDbSnippet: ' + s_);
-    var refStrings = s_.split(' ');
+    var refStrings = s_.split(';');
     
     for (var i = 0, len = refStrings.length; i < len; i++) {
         console.log('refString: ' + i + ': ' + refStrings[i]);
         
-        refStrings[i] = refStrings[i].replace(/_/, ' ');
+        //refStrings[i] = refStrings[i].replace(/_/, ' ');
         splitPoint = refStrings[i].indexOf(":");
         sHead = refStrings[i].substr(0, splitPoint);
         sTail = refStrings[i].substring(splitPoint + 1);       
@@ -765,7 +776,7 @@ function getDBSnippet(s_) {
             secLabel = trim(sh[1]);
             secLabel = secLabel.replace(/_/g, ' ');
         }
-        
+
         //console.log('sHead: ' + sHead);
         switch (sHead) {
                 case 'bibl':
@@ -827,12 +838,17 @@ function getDBSnippet(s_) {
 
 function execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_) {
     console.log('execBiblQuery_tei: ' + query_);
-    query1_ = query_.replace(/&/g, ',');
+    query1_ = query_.replace(/&/g, '+');
     //console.log('query1_: ' + query1_);
-    query1_ = query1_.replace(/\+/g, ',');
+    query1_ = query1_.replace(/=/g, ':');
+    query1_ = query1_.replace(/,/g, '+');
+    query1_ = query1_.replace(/ \+/g, '+');
+    query1_ = query1_.replace(/\+ /g, '+');
+    query1_ = query1_.replace(/\+/g, '%2b');
+    //query1_ = query1_.replace(/\+/g, ',');
     query1_ = query1_.replace(/bibl:/g, '');
     qs = './biblio_tei?query=' + query1_ + '&xslt=biblio_tei_01.xslt'
-    //console.log('qs: ' + qs);
+    console.log('qs: ' + qs);
 
     $.ajax({
         url: qs,
@@ -845,7 +861,7 @@ function execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_) {
             if (result.includes('error type="user authentication"')) {
                 alert('Error: authentication did not work');
             } else {
-                appendPanel(result, "biblQuery", "", "grid-wrap", query_, "noTeiLink", "", "", pID_, pVisiblity_, pURL_);
+                appendPanel(result, "biblQuery", query1_, "grid-wrap", query_, "noTeiLink", "", "", pID_, pVisiblity_, pURL_);
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -884,7 +900,7 @@ function execBiblQuery_zotID(query_, pID_, pVisiblity_, pURL_) {
 }
 
 function execBiblQuery(query_, pID_, pVisiblity_, pURL_) {
-	//console.log('query: ' + query_);
+	console.log('execBiblQuery:: query: ' + query_);
     if (sss('reg:', query_) || sss('geo:', query_) || sss('vt:', query_)) {
     	execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_);
     } else if (sss('zotid:', query_)) {
@@ -1028,7 +1044,7 @@ function getFeatureOfLocation(caption_, snippetID_, style_, pID_, pVisiblity_, p
 function getProfile(caption_, snippetID_, style_, pID_, pVisiblity_, pURL_) {
     qs = './profile?coll=vicav_profiles&id=' + snippetID_ + '&xslt=' + style_;
     caption_ = caption_.replace("%20", " ");
-    console.log('getProfile: ' + caption_ + " : " + snippetID_ + " : " + style_ + " : " + pID_ + " : " + pVisiblity_ + " : " + pURL_);
+    console.log('getProfile: ' + caption_ + " : #" + snippetID_ + "# : " + style_ + " : " + pID_ + " : " + pVisiblity_ + " : " + pURL_);
 
     $.ajax({
         url: qs,
@@ -1067,6 +1083,7 @@ function clearMarkerLayers() {
 /* **************************************************** */
 function execDictQuery_ajax(query_, idSuffix_) {
     if (query_.length > 0) {
+        console.log("execDictQuery_ajax");
         //console.log("query: " + query_);
         //console.log("idSuffix: " + idSuffix_);
 
@@ -1199,6 +1216,8 @@ function updateUrl_dictQuery(idSuffix_, query_, collname_) {
 }
 
 function execDictQuery(idSuffix_) {
+    //console.log('execDictQuery');
+
     XSLTName = $("#inpDictQuery" + idSuffix_).attr('xslt');
     pathName = $("#inpDictQuery" + idSuffix_).attr('path');
     collName = $("#inpDictQuery" + idSuffix_).attr('dict');
@@ -1213,6 +1232,12 @@ function execDictQuery(idSuffix_) {
             sq = field + '="' + sq + '"';
         }
         sq = sq.replace(/&/g, ',');
+        console.log('execDictQuery: ' + sq);
+        sq = sq.replace(/\+/g, '~~pl~~');
+        console.log('execDictQuery: ' + sq);
+        sq = sq.replace(/min=/g, 'min~~eq~~');
+        console.log('execDictQuery: ' + sq);
+
         sQuery = './dict_api?query=' + encodeURI(sq) + '&dict=' + collName + '&xslt=' + XSLTName;
 
         if (sQuery.length > 0) {
@@ -1279,7 +1304,7 @@ function adjustNav(id_, activateID_) {
 }
 
 function openDict_Damascus() {
-    createNewDictQueryPanel('dc_apc_eng_03', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc, defaultFields);
+    createNewDictQueryPanel('dc_apc_eng_publ', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc, defaultFields);
 }
 
 function openDict_Tunis() {
@@ -1291,7 +1316,7 @@ function openDict_Baghdad() {
 }
 
 function openDict_Cairo() {
-    createNewDictQueryPanel('dc_arz_eng_007', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
+    createNewDictQueryPanel('dc_arz_eng_publ', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
 }
 
 function openDict_MSA() {
@@ -1557,9 +1582,10 @@ function () {
     /* *************************** */
     /* ****  Explanations  ******* */
     /* *************************** */
-    $(document).on('mousedown', "#liBibliographyExplanation", function (event) {
+    /*$(document).on('mousedown', "#liBibliographyExplanation", function (event) {
         createBiblExplanationPanel();
     });
+    */
 
     /* This is needed to collapse the menu after click in small screens */
     $('.navbar-nav li a').on('click', function () {
@@ -1568,12 +1594,8 @@ function () {
         }
     });
 
-    $(document).on('mousedown', "#liBiblNewQuery", function (event) {
-        createNewQueryBiblioPanel();
-    });
-    $(document).on('mousedown', "#liVicavCrossDictQuery", function (event) {
-        createNewCrossDictQueryPanel();
-    });
+    $(document).on('mousedown', "#liBiblNewQuery", function (event) { createNewQueryBiblioPanel();});    
+    $(document).on('mousedown', "#liVicavCrossDictQuery", function (event) { createNewCrossDictQueryPanel(); });
 
     /* ******************************** */
     /* ****  DICTIONARY QUERIES ******* */
@@ -1614,7 +1636,8 @@ function () {
         console.log('mouseDown - sid: ' + sid + '   sCaption: ' + sCaption);
         getText(sCaption, sid, 'vicavTexts.xslt');
     });
-   
+
+   /*
     $(document).on('mousedown', "#liProfileAbudhabi", function (event) {
         getProfile('Abu Dhabi', 'profile_abu_dhabi_01', 'profile_01.xslt');
     });
@@ -1669,6 +1692,7 @@ function () {
     $(document).on('mousedown', "#liProfileUrfa", function (event) {
         getProfile('Şanlıurfa', 'profile_urfa_01', 'profile_01.xslt');
     });
+     */
 
     /* **************************************** */
     /* ****  Show map with locators *********** */
@@ -1727,7 +1751,7 @@ function () {
     /* *********************** */
     /* ****  FEATURES ******** */
     /* *********************** */
-    $(document).on('mousedown', "#liFeatureBaghdad", function (event) {
+    /*$(document).on('mousedown', "#liFeatureBaghdad", function (event) {
         getFeatureOfLocation('Baghdad', 'ling_features_baghdad', 'features_01.xslt');
     });
     $(document).on('mousedown', "#liFeatureCairo", function (event) {
@@ -1745,7 +1769,7 @@ function () {
     $(document).on('mousedown', "#liFeatureUrfa", function (event) {
         getFeatureOfLocation('Urfa', 'ling_features_urfa', 'features_01.xslt');
     });
-
+    */
     /* ********************** */
     /* ****  SAMPLES ******** */
     /* ********************** */
@@ -1944,6 +1968,7 @@ function () {
             if (document.getElementById("cbAsText").checked == true) {
                 execBiblQuery(query);
             }
+
             if (document.getElementById("cbAsMap").checked == true) {
 
                 clearMarkerLayers();
@@ -1964,25 +1989,38 @@ function () {
         if (query.length > 0) {
             sField = 'any';
 
-            if (document.getElementById("cbDamascus").checked == true) {
-                autoDictQuery('_damascus', query, sField);
+            if (document.getElementById("cbIntegratedResult").checked == true) {
+                var sDicts = '';
+                if (document.getElementById("cbDamascus").checked == true) { sDicts = 'dc_apc_eng_publ';}
+                if (document.getElementById("cbTunis").checked == true) { if (sDicts.length > 0) { sDicts = sDicts + ',dc_tunico'; } else { sDicts = 'dc_tunico' }}
+                if (document.getElementById("cbCairo").checked == true) { if (sDicts.length > 0) { sDicts = sDicts + ',dc_arz_eng_publ'; } else { sDicts = 'dc_arz_eng_publ' }}
+                if (document.getElementById("cbBaghdad").checked == true) { if (sDicts.length > 0) { sDicts = sDicts + ',dc_acm_baghdad_eng'; } else { sDicts = 'dc_acm_baghdad_eng' }}
+                if (document.getElementById("cbMSA").checked == true) { if (sDicts.length > 0) { sDicts = sDicts + ',dc_ar_en_publ'; } else { sDicts = 'dc_ar_en_publ' }}
+               
+                
+            } else {
+                if (document.getElementById("cbDamascus").checked == true) {
+                    autoDictQuery('_damascus', query, sField);
+                }
+
+                if (document.getElementById("cbTunis").checked == true) {
+                    autoDictQuery('_tunis', query, sField);
+                }
+
+                if (document.getElementById("cbCairo").checked == true) {
+                    autoDictQuery('_cairo', query, sField);
+                }
+
+                if (document.getElementById("cbBaghdad").checked == true) {
+                    autoDictQuery('_baghdad', query, sField);
+                }
+
+                if (document.getElementById("cbMSA").checked == true) {
+                    autoDictQuery('_MSA', query, sField);
+                }
+
             }
 
-            if (document.getElementById("cbTunis").checked == true) {
-                autoDictQuery('_tunis', query, sField);
-            }
-
-            if (document.getElementById("cbCairo").checked == true) {
-                autoDictQuery('_cairo', query, sField);
-            }
-
-            if (document.getElementById("cbBaghdad").checked == true) {
-                autoDictQuery('_baghdad', query, sField);
-            }
-
-            if (document.getElementById("cbMSA").checked == true) {
-                autoDictQuery('_MSA', query, sField);
-            }
         } else {
             alert('Query string is empty.');
         }

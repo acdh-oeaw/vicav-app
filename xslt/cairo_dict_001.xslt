@@ -119,28 +119,52 @@
                                <xsl:if test="@ana">
                                   <span class="spGramGrp"><xsl:text>&#xA0;</xsl:text>                         
                                      <xsl:choose>
+                                        <xsl:when test="@ana='#activeParticiple'">[act. part.]</xsl:when>
+                                        <xsl:when test="@ana='#adj_elative'">[elative]</xsl:when>
+                                        <xsl:when test="@ana='#adj_elative_f'">[elative, feminine]</xsl:when>
+                                        <xsl:when test="@ana='#adj_f'">[feminine]</xsl:when>
+                                        <xsl:when test="@ana='#adj_pl'">[plural]</xsl:when>
+                                        <xsl:when test="@ana='#adj_sg_f'">[feminine, singular]</xsl:when>
+                                        <xsl:when test="@ana='#ap_m'">[masculine]</xsl:when>
                                         <xsl:when test="@ana='#ap_f'">[feminine]</xsl:when>
                                         <xsl:when test="@ana='#ap_pl'">[plural]</xsl:when>
-                                        <xsl:when test="@ana='#n_pl'">[plural]</xsl:when>
+                                        <xsl:when test="@ana='#ap_sg_f'">[feminine]</xsl:when>
+                                        <xsl:when test="@ana='#n_constructState'">[construct state]</xsl:when>
                                         <xsl:when test="@ana='#n_dual'">[dual]</xsl:when>
-                                        <xsl:when test="@ana='#adj_f'">[feminine]</xsl:when>
                                         <xsl:when test="@ana='#n_f'">[feminine]</xsl:when>
+                                        <xsl:when test="@ana='#n_countpl'">[count plural]</xsl:when>
+                                        <xsl:when test="@ana='#n_countPlural'">[count plural]</xsl:when>
+                                        <xsl:when test="@ana='#n_pl'">[plural]</xsl:when>
                                         <xsl:when test="@ana='#n_unit'">[unit noun]</xsl:when>
                                         <xsl:when test="@ana='#n_unit_pl'">[unit noun plural]</xsl:when>
-                                        <xsl:when test="@ana='#n_constructState'">[construct state]</xsl:when>
-                                        
-                                        
-                                        <xsl:when test="@ana='#adj_pl'">[plural]</xsl:when>
+                                        <xsl:when test="@ana='#n_vn'">[verbal noun]</xsl:when>
                                         <xsl:when test="@ana='#p_f'">[feminine]</xsl:when>
-                                        <xsl:when test="@ana='#passiveParticiple'">[pas. part.]</xsl:when>
-                                        <xsl:when test="@ana='#activeParticiple'">[act. part.]</xsl:when>
-                                        <xsl:when test="@ana='#pp_f'">[feminine]</xsl:when>
                                         <xsl:when test="@ana='#p_pl'">[plural]</xsl:when>
+                                        <xsl:when test="@ana='#passiveParticiple'">[pas. part.]</xsl:when>
+                                        <xsl:when test="@ana='#pp_f'">[feminine]</xsl:when>
                                         <xsl:when test="@ana='#pp_pl'">[plural]</xsl:when>
-                                        <xsl:when test="@ana='#adj_elative'">[elative]</xsl:when>
-                                        <xsl:when test="@ana='#v_pres_sg_p3'">[3.sg.pres.]</xsl:when>                                        
+                                        <xsl:when test="@ana='#pp_sg_f'">[feminine]</xsl:when>
+                                        <xsl:when test="@ana='#pron_f'">[feminine]</xsl:when>
+                                        <xsl:when test="@ana='#pron_pl'">[plural]</xsl:when>
+                                        <xsl:when test="@ana='#v_ap_pl'">[plural]</xsl:when>     
+                                        <xsl:when test="@ana='#v_ap_sg_f'">[feminine]</xsl:when>     
+                                        <xsl:when test="@ana='#v_ap_sg_m'">[masculine]</xsl:when>     
+                                        <xsl:when test="@ana='#v_imp_pl'">[2.pl.imp.]</xsl:when>     
+                                        <xsl:when test="@ana='#v_imp_pl_2'">[2.pl.imp.]</xsl:when>     
+                                        <xsl:when test="@ana='#v_imp_sg_2_m'">[2.sg.m.imp.]</xsl:when>     
+                                        <xsl:when test="@ana='#v_imp_sg_2_f'">[2.sg.f.imp.]</xsl:when>     
+                                        <xsl:when test="@ana='#v_imp_sg_m'">[2.sg.m.imp.]</xsl:when>     
+                                        <xsl:when test="@ana='#v_imp_sg_f'">[2.sg.f.imp.]</xsl:when>     
+                                        <xsl:when test="@ana='#v_past_sg_p2'">[2.sg.past]</xsl:when>     
+                                        <xsl:when test="@ana='#v_pres_sg_p3'">[3.sg.pres.]</xsl:when>     
+                                        <xsl:when test="@ana='#v_pp'">[pas. part.]</xsl:when>     
+                                        <xsl:when test="@ana='#v_ap'">[act. part.]</xsl:when>     
+                                        <xsl:when test="@ana='#v_ap_m'">[masculine]</xsl:when>     
+                                        <xsl:when test="@ana='#v_ap_f'">[feminine]</xsl:when>     
+                                        <xsl:when test="@ana='#v_pp_m'">[masculine]</xsl:when>     
+                                        <xsl:when test="@ana='#v_pp_f'">[feminine]</xsl:when>     
+                                        <xsl:when test="@ana='#v_vn'">[verbal noun]</xsl:when>     
                                         
-                                        <xsl:otherwise>[<xsl:value-of select="@ana"/>]</xsl:otherwise>
                                      </xsl:choose>
                                    </span>
                                </xsl:if>
@@ -207,6 +231,14 @@
                            <xsl:if test="count(tei:sense)&gt;1"><xsl:text>&#xA0;</xsl:text>
                               <xsl:value-of select="position()"/>
                            </xsl:if>
+
+                           <!-- ********************************************* -->
+                           <!-- ** USG ************************************** -->
+                           <!-- ********************************************* -->
+                           <xsl:if test="tei:usg">
+                              <span class="dvUsg">(<xsl:value-of select="tei:usg"/>)</span>   
+                           </xsl:if>
+                           
                         </td>
                         <td class="tdSense">
                            <!-- ********************************************* -->
@@ -218,7 +250,6 @@
                                  <span class="dvArguments"><xsl:value-of select="tei:gramGrp/tei:gram[@type='arguments']"/></span>
                               </div>   
                            </xsl:if>
-
 
                            <div class="dvDef">
                               <xsl:for-each select="tei:cit[@type='translation'][@xml:lang='en']">
@@ -232,12 +263,6 @@
                                     </span>
                                  </xsl:if>
                               </xsl:for-each>
-                              <!-- ********************************************* -->
-                              <!-- ** USG ************************************** -->
-                              <!-- ********************************************* -->
-                              <xsl:if test="tei:usg[@xml:lang='en']">
-                                 <span class="dvUsg">(<xsl:value-of select="tei:usg[@xml:lang='en']"/>)</span>   
-                              </xsl:if>
                               
                               <xsl:if test="count(tei:cit[@type='translation'][@xml:lang='de'])&gt;0">
                                  <div class="dvLangSep">
