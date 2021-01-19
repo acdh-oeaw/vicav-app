@@ -1714,7 +1714,14 @@ function () {
         adjustNav(this.id, "#subNavBiblRegMarkers");
     });
 
-    $(document).on('mousedown', "#navDictGeoRegMarkers,#subNavDictGeoRegMarkers,#navDictGeoRegMarkers1", 
+    $(document).on('mousedown', "#navBiblDiaGroupMarkers,#subNavBiblRegMarkers",
+    function (event) {
+        clearMarkerLayers();
+        insertGeoRegMarkers('.*', 'diaGroup');
+        adjustNav(this.id, "#subNavBiblRegMarkers");
+    });
+
+    $(document).on('mousedown', "#navDictGeoRegMarkers,#subNavDictGeoRegMarkers,#navDictGeoRegMarkers1",
     function (event) {
         clearMarkerLayers();
         insertGeoRegMarkers('vt:dictionary', 'geo_reg');

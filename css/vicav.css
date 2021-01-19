@@ -1622,22 +1622,16 @@ ul.overlapping-markers {
   top: 0;
 }
 
-<<<<<<< HEAD
+
 /****************************************************/
 /** Dialect Groups on Map ***************************/
 /****************************************************/
 .labelClassMaghreb1 {
   transform: rotate(-10deg);
-  /* Legacy vendor prefixes that you probably don't need... */
-  /* Safari */
   -webkit-transform: rotate(-10deg);
-  /* Firefox */
   -moz-transform: rotate(-10deg);
-  /* IE */
   -ms-transform: rotate(-10deg);
-  /* Opera */
   -o-transform: rotate(-10deg);
-  /* Internet Explorer */
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 
@@ -1686,7 +1680,7 @@ ul.overlapping-markers {
     border: 1px solid black;
     padding-left:3px;
     padding-right: 3px;    
-=======
+
 /* Container for image text */
 .slider-container .caption-container {
   text-align: center;
