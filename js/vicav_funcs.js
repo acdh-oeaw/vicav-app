@@ -904,11 +904,11 @@ function execBiblQuery(query_, pID_, pVisiblity_, pURL_) {
     console.log('execBiblQuery:: query: ' + query_);
 
     if (sss('reg:', query_) || sss('geo:', query_) || sss('vt:', query_)) {
-    	execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_);
+       execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_);
     } else if (sss('zotid:', query_)) {
-    	execBiblQuery_zotID(query_, pID_, pVisiblity_, pURL_);
+       execBiblQuery_zotID(query_, pID_, pVisiblity_, pURL_);
     } else {
-    	execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_);
+       execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_);
     }
 }
 

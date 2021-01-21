@@ -423,21 +423,24 @@ function insertGeoRegMarkers(query_, scope_) {
                 //console.log(sTooltip);
                 
                 if ($(this).attr('type') == 'geo') {
-                    sQuery = 'geo:' + sAlt + sQuerySecPart;
+                    //sQuery = 'geo:' + sAlt + sQuerySecPart;
+                    sQuery = 'geo:' + sAlt;
                     var marker = L.marker([v1, v2], { alt: sAlt, locType: 'point', biblQuery: sQuery }).bindTooltip(sTooltip);
                     fgBiblMarkers.addLayer(marker);
                     $(marker._icon).attr('data-testid', 'geo_'+sAlt);
                 }
 
                 if ($(this).attr('type') == 'reg') {
-                    sQuery = 'reg:' + sAlt + sQuerySecPart;
+                    //sQuery = 'reg:' + sAlt + sQuerySecPart;
+                    sQuery = 'reg:' + sAlt;
                     var circle = L.circle([v1, v2], { color: 'rgb(168, 93, 143)', weight: 1, fillColor: 'rgb(168, 93, 143)', radius: 90000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip);
                     fgBiblMarkers.addLayer(circle);
                     $(circle._path).attr('data-testid', 'reg_'+sAlt);
                 }
 
                 if ($(this).attr('type') == 'diaGroup') {
-                    sQuery = 'reg:' + sAlt + sQuerySecPart;
+                    //sQuery = 'reg:' + sAlt + sQuerySecPart;
+                    sQuery = 'reg:' + sAlt;
                     //var circle = L.circle([v1, v2], { color: 'rgb(22, 93, 143)', weight: 2, fillColor: 'rgb(22, 93, 143)', radius: 190000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip);
 
                     var sh = sTooltip.substr(0, sTooltip.indexOf('('));
@@ -518,84 +521,3 @@ function insertGeoRegMarkers(query_, scope_) {
     updateUrl_biblMarker(query_, scope_);
 }
 
-/* function insertGeoTextbookMarkers() {
-setExplanation('Textbooks');
-/* ******************************** */
-/* Create with create_geo_reg_textbooks_markers__001.xq */
-/* ******************************** */
-/*
-fgBiblMarkers.addLayer(L.circle([31.46, -6.39], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Morocco', biblQuery:'reg:Morocco,vt:Textbook'}).bindTooltip('Morocco (31)'));
-fgBiblMarkers.addLayer(L.circle([27.39, 30.26], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Egypt', biblQuery:'reg:Egypt,vt:Textbook'}).bindTooltip('Egypt (21)'));
-fgBiblMarkers.addLayer(L.marker([30.04, 31.23], {alt:'Cairo', locType:'point', biblQuery:'geo:Cairo,vt:Textbook'}).bindTooltip('Cairo (17)'));
-fgBiblMarkers.addLayer(L.circle([22.36, 46.81], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Arabian Peninsula', biblQuery:'reg:Arabian Peninsula,vt:Textbook'}).bindTooltip('Arabian Peninsula (7)'));
-fgBiblMarkers.addLayer(L.circle([16.31, 47.34], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Yemen', biblQuery:'reg:Yemen,vt:Textbook'}).bindTooltip('Yemen (4)'));
-fgBiblMarkers.addLayer(L.marker([15.36, 44.19], {alt:'Sanaa', locType:'point', biblQuery:'geo:Sanaa,vt:Textbook'}).bindTooltip('Sanaa (2)'));
-fgBiblMarkers.addLayer(L.circle([34.54, 3.30], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Algeria', biblQuery:'reg:Algeria,vt:Textbook'}).bindTooltip('Algeria (1)'));
-fgBiblMarkers.addLayer(L.circle([31.89, 35.25], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Palestine', biblQuery:'reg:Palestine,vt:Textbook'}).bindTooltip('Palestine (6)'));
-fgBiblMarkers.addLayer(L.circle([32.93, 36.53], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Syro-Palestine', biblQuery:'reg:Syro-Palestine,vt:Textbook'}).bindTooltip('Syro-Palestine (14)'));
-fgBiblMarkers.addLayer(L.circle([34.61, 38.55], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Syria', biblQuery:'reg:Syria,vt:Textbook'}).bindTooltip('Syria (8)'));
-fgBiblMarkers.addLayer(L.marker([31.76, 35.21], {alt:'Jerusalem', locType:'point', biblQuery:'geo:Jerusalem,vt:Textbook'}).bindTooltip('Jerusalem (3)'));
-fgBiblMarkers.addLayer(L.circle([26.57, 49.55], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Gulf', biblQuery:'reg:Gulf,vt:Textbook'}).bindTooltip('Gulf (3)'));
-fgBiblMarkers.addLayer(L.circle([11.30, 17.86], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Chad', biblQuery:'reg:Chad,vt:Textbook'}).bindTooltip('Chad (1)'));
-fgBiblMarkers.addLayer(L.circle([31.64, 45.33], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Iraq', biblQuery:'reg:Iraq,vt:Textbook'}).bindTooltip('Iraq (2)'));
-fgBiblMarkers.addLayer(L.circle([35.14, 42.48], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Mesopotamia', biblQuery:'reg:Mesopotamia,vt:Textbook'}).bindTooltip('Mesopotamia (2)'));
-fgBiblMarkers.addLayer(L.marker([33.51, 36.27], {alt:'Damascus', locType:'point', biblQuery:'geo:Damascus,vt:Textbook'}).bindTooltip('Damascus (5)'));
-fgBiblMarkers.addLayer(L.circle([22.95, 46.34], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Saudi Arabia', biblQuery:'reg:Saudi Arabia,vt:Textbook'}).bindTooltip('Saudi Arabia (1)'));
-fgBiblMarkers.addLayer(L.circle([31.53, 34.83], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Israel', biblQuery:'reg:Israel,vt:Textbook'}).bindTooltip('Israel (5)'));
-fgBiblMarkers.addLayer(L.marker([12.78, 45.01], {alt:'Aden', locType:'point', biblQuery:'geo:Aden,vt:Textbook'}).bindTooltip('Aden (1)'));
-fgBiblMarkers.addLayer(L.circle([16.14, 30.29], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Sudan', biblQuery:'reg:Sudan,vt:Textbook'}).bindTooltip('Sudan (1)'));
-fgBiblMarkers.addLayer(L.circle([28.79, 18.04], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Libya', biblQuery:'reg:Libya,vt:Textbook'}).bindTooltip('Libya (1)'));
-fgBiblMarkers.addLayer(L.circle([35.87, 14.44], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Malta', biblQuery:'reg:Malta,vt:Textbook'}).bindTooltip('Malta (1)'));
-
-}
- */
-
-/*
-function insertGeoDictMarkers() {
-
-/* *********************************** */
-/* create_geo_reg_dict_markers__004.xq */
-/* ***********************************
-setExplanation('Dictionaries');
-
-/*var myIcon = L.icon({
-iconUrl: 'images/marker-circle.png',
-iconSize: [41, 41],
-iconAnchor: [20, 20],
-popupAnchor: [0, 0],
-shadowUrl: 'images/marker-circle-shadow.png',
-shadowSize: [41, 41],
-shadowAnchor: [10, 10]
-});
- */
-//fgBiblMarkers.addLayer(L.circle([32.04, 34.23], { color: 'red', fillColor: '#f03', fillOpacity: 0.5, radius: 50000})).bindTooltip('Cairo', {permanent:true, direction: "center", className: "labelTooltip", offset: [0, 0]});
-//fgBiblMarkers.addLayer(L.rectangle([[32.04, 34.23], [34.04, 37.23]], { color: 'red', fillColor: '#f03', fillOpacity: 0.5}))
-//fgBiblMarkers.addLayer(L.rectangle([[32.04, 34.23], [34.04, 37.23]], { color: 'red', fillColor: '#f03', fillOpacity: 0.5}).bindTooltip('Cairo', {permanent:false, direction: "center", className: "labelTooltip1", offset: [0, 0]}));
-/*
-fgBiblMarkers.addLayer(L.circle([39.92, -3.02], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Andalusia', biblQuery:'reg:Andalusia,vt:Dictionary'}).bindTooltip('Andalusia (3)'));
-fgBiblMarkers.addLayer(L.marker([33.82, -4.83], {alt:'Sefrou', locType:'point', biblQuery:'geo:Sefrou,vt:Dictionary'}).bindTooltip('Sefrou (1)'));
-fgBiblMarkers.addLayer(L.marker([33.97, -6.84], {alt:'Rabat', locType:'point', biblQuery:'geo:Rabat,vt:Dictionary'}).bindTooltip('Rabat (1)'));
-fgBiblMarkers.addLayer(L.circle([27.39, 30.26], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Egypt', biblQuery:'reg:Egypt,vt:Dictionary'}).bindTooltip('Egypt (6)'));
-fgBiblMarkers.addLayer(L.marker([35.75, -5.83], {alt:'Tanger', locType:'point', biblQuery:'geo:Tanger,vt:Dictionary'}).bindTooltip('Tanger (1)'));
-fgBiblMarkers.addLayer(L.circle([19.45, -13.83], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Mauritania', biblQuery:'reg:Mauritania,vt:Dictionary'}).bindTooltip('Mauritania (1)'));
-fgBiblMarkers.addLayer(L.circle([32.93, 36.53], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Syro-Palestine', biblQuery:'reg:Syro-Palestine,vt:Dictionary'}).bindTooltip('Syro-Palestine (5)'));
-fgBiblMarkers.addLayer(L.marker([33.51, 36.27], {alt:'Damascus', locType:'point', biblQuery:'geo:Damascus,vt:Dictionary'}).bindTooltip('Damascus (4)'));
-fgBiblMarkers.addLayer(L.circle([34.61, 38.55], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Syria', biblQuery:'reg:Syria,vt:Dictionary'}).bindTooltip('Syria (4)'));
-fgBiblMarkers.addLayer(L.marker([36.20, 37.13], {alt:'Aleppo', locType:'point', biblQuery:'geo:Aleppo,vt:Dictionary'}).bindTooltip('Aleppo (3)'));
-fgBiblMarkers.addLayer(L.circle([11.30, 17.86], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Chad', biblQuery:'reg:Chad,vt:Dictionary'}).bindTooltip('Chad (1)'));
-fgBiblMarkers.addLayer(L.circle([22.36, 46.81], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Arabian Peninsula', biblQuery:'reg:Arabian Peninsula,vt:Dictionary'}).bindTooltip('Arabian Peninsula (5)'));
-fgBiblMarkers.addLayer(L.circle([16.31, 47.34], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Yemen', biblQuery:'reg:Yemen,vt:Dictionary'}).bindTooltip('Yemen (4)'));
-fgBiblMarkers.addLayer(L.circle([26.57, 49.55], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Gulf', biblQuery:'reg:Gulf,vt:Dictionary'}).bindTooltip('Gulf (1)'));
-fgBiblMarkers.addLayer(L.circle([33.59, 9.37], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Tunisia', biblQuery:'reg:Tunisia,vt:Dictionary'}).bindTooltip('Tunisia (2)'));
-fgBiblMarkers.addLayer(L.circle([35.87, 14.44], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Malta', biblQuery:'reg:Malta,vt:Dictionary'}).bindTooltip('Malta (2)'));
-fgBiblMarkers.addLayer(L.circle([11.12, 12.24], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Nigeria', biblQuery:'reg:Nigeria,vt:Dictionary'}).bindTooltip('Nigeria (4)'));
-fgBiblMarkers.addLayer(L.marker([31.62, -7.98], {alt:'Marrakesh', locType:'point', biblQuery:'geo:Marrakesh,vt:Dictionary'}).bindTooltip('Marrakesh (1)'));
-fgBiblMarkers.addLayer(L.circle([31.53, 34.83], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Israel', biblQuery:'reg:Israel,vt:Dictionary'}).bindTooltip('Israel (2)'));
-fgBiblMarkers.addLayer(L.circle([31.89, 35.25], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Palestine', biblQuery:'reg:Palestine,vt:Dictionary'}).bindTooltip('Palestine (3)'));
-fgBiblMarkers.addLayer(L.circle([33.71, 35.66], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Lebanon', biblQuery:'reg:Lebanon,vt:Dictionary'}).bindTooltip('Lebanon (2)'));
-fgBiblMarkers.addLayer(L.marker([31.76, 35.21], {alt:'Jerusalem', locType:'point', biblQuery:'geo:Jerusalem,vt:Dictionary'}).bindTooltip('Jerusalem (2)'));
-fgBiblMarkers.addLayer(L.circle([31.64, 45.33], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Iraq', biblQuery:'reg:Iraq,vt:Dictionary'}).bindTooltip('Iraq (3)'));
-fgBiblMarkers.addLayer(L.circle([35.14, 42.48], {color: 'grey', weight:1, fillColor: 'grey', radius:90000, alt:'Mesopotamia', biblQuery:'reg:Mesopotamia,vt:Dictionary'}).bindTooltip('Mesopotamia (3)'));
-fgBiblMarkers.addLayer(L.marker([33.46, 9.02], {alt:'Douz', locType:'point', biblQuery:'geo:Douz,vt:Dictionary'}).bindTooltip('Douz (1)'));
-}
- */
