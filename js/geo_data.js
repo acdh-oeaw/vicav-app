@@ -273,31 +273,6 @@ function insertProfileMarkers() {
                 sAlt = $(this).find('alt').text();
                 sID = $(this).attr('xml:id');
 
-                /*
-                sCoords = sLoc.split(" ");
-                sCoordNS = trim(sCoords[0]);
-                sCoordWE = trim(sCoords[1]);
-                console.log(sCoordNS + ' ' + sCoordWE);
-                dd1 = coordToDD(sCoordNS);
-                dd2 = coordToDD(sCoordWE);
-                console.log(dd1 + ' ' + dd2);
-                r1 = dd1.toFixed(2);
-                r2 = dd2.toFixed(2); 
-
-                console.log(r1 + ' # ' + r2 + ' # ' + sLoc + ' :: ' + sCoordNS + ' # ' + sCoordWE +' # ' + sAlt + ' (' + sID +')');
-                //console.log(s + ' # ' + sAlt);
-                //console.log(s[0] + ' # ' + s[1] + ' # ' + sAlt);
-                //console.log(dd1 + '  ' + sAlt);
-                //console.log(cnt + ':  ' + r1 + '  ' + sAlt + ' : ' + sID);
-
-                //sTooltip = sAlt;
-                //sQuery = 'profile:' + sAlt + '';
-                //fgProfileMarkers.addLayer(L.marker([v1, v2], { alt: sAlt, id: sID }).bindTooltip(sTooltip));
-                */
-
-                /******************************************************/
-                /** NEW ***********************************************/
-                /******************************************************/
                 var coord = splitCoords(sLoc, sAlt);
                 //console.log(sAlt + ' (' + coord.lat + ') (' + coord.lng + ')');
 
@@ -307,9 +282,9 @@ function insertProfileMarkers() {
                 var dmslng = parseStringToDMS(coord.lng);
                 var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
 
-                console.log('(' + declat + ') (' + declng + ')' + sAlt + ': ' + sType);
+                console.log('(' + declat + ') (' + declng + ')' + sAlt + ': ' + sType + ' (' +  sID +')');
                 if ((sType == 'tribe')||(sType == 'region')) {
-                   marker = L.circle([declat, declng], { color: 'rgb(168, 93, 143)', weight: 1, fillColor: 'rgb(168, 93, 143)', radius: 90000, alt: sAlt, id: sID, type:'profile'  }).bindTooltip(sAlt);                  
+                   marker = L.circle([declat, declng], { color: 'rgb(168, 93, 143)', weight: 1, fillColor: 'rgb(168, 93, 143)', radius: 90000, alt: sAlt, id: sID, type:'profile'  }).bindTooltip(sAlt);
                 } else {
                    marker = L.marker([declat, declng], { alt: sAlt, id: sID, type:'profile' }).bindTooltip(sAlt);
                 }

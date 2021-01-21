@@ -203,8 +203,7 @@ function vicav:query_biblio_id($query as xs:string*, $xsltfn as xs:string) {
         ($bibl/tei:monogr[1]/tei:author[1]/tei:surname[1] | $bibl/tei:monogr[1]/tei:author[1]/tei:name[1] | $bibl/tei:monogr[1]/tei:editor[1]/tei:surname[1] | $bibl/tei:monogr[1]/tei:editor[1]/tei:name[1])
     
     let $date := $bibl/tei:monogr[1]/tei:imprint[1]/tei:date[1]
-    order by $author,
-        $date
+    order by $author[1],$author[2],$date
     return
         $bibl
     

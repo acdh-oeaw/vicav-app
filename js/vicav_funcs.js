@@ -225,17 +225,18 @@ let overlapHandler = function(e) {
 
         }
     } else {
-        let popupContent = '<ul class="overlapping-markers">'
-        console.log(nearbyMarkerData)
+        let popupContent = '<h5>Near locations</h5><ul class="overlapping-markers">'
+        console.log('overlapHandler: ' + nearbyMarkerData.length + ': ' + nearbyMarkerData)
         nearbyMarkerData.sort((a,b) => { 
             return a.marker.options.alt.localeCompare(b.marker.options.alt); }
         ).forEach(data => {
             let typeLink = exploreDataStrings[data.marker.options.type].single_selector
-            popupContent += '<li class="overlapping-marker-label"><a href="#" ' + typeLink +'="'+data.marker.options.id + '">' + data.marker.options.title + '</a></li>'
+            popupContent += '<li class="overlapping-marker-label"><a href="#" ' + typeLink +'="'+data.marker.options.id + '">' + data.marker.options.alt + '</a></li>'
         })
 
-        popupContent = popupContent + '</ul>'
-          marker.bindPopup(popupContent).openPopup()
+        popupContent = popupContent + '</ul>';
+        console.log(popupContent);
+        marker.bindPopup(popupContent).openPopup()
       }
 }
 
@@ -767,7 +768,7 @@ function getDBSnippet(s_) {
         splitPoint = refStrings[i].indexOf(":");
         sHead = refStrings[i].substr(0, splitPoint);
         sTail = refStrings[i].substring(splitPoint + 1);       
-        //console.log('sTail: ' + sTail);
+        console.log('sTail: ' + sTail);
         //console.log('sHead: ' + sHead);
         sh = sTail.split('/');
         snippetID = trim(sh[0]);
@@ -777,7 +778,7 @@ function getDBSnippet(s_) {
             secLabel = secLabel.replace(/_/g, ' ');
         }
 
-        //console.log('sHead: ' + sHead);
+        console.log('sHead: ' + sHead);
         switch (sHead) {
                 case 'bibl':
                         //console.log(sTail);
@@ -900,7 +901,8 @@ function execBiblQuery_zotID(query_, pID_, pVisiblity_, pURL_) {
 }
 
 function execBiblQuery(query_, pID_, pVisiblity_, pURL_) {
-	console.log('execBiblQuery:: query: ' + query_);
+    console.log('execBiblQuery:: query: ' + query_);
+
     if (sss('reg:', query_) || sss('geo:', query_) || sss('vt:', query_)) {
     	execBiblQuery_tei(query_, pID_, pVisiblity_, pURL_);
     } else if (sss('zotid:', query_)) {
