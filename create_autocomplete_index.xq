@@ -1,5 +1,14 @@
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
-declare variable $colls external := ('dc_apc_eng_publ');
+declare variable $colls external := ('dc_arz_eng_publ');
+
+declare function local:getTranslations($lang as xs:string) as element(index) {
+<index id="{$lang}">{
+  for $coll in $colls return
+    for $v in distinct-values(collection($coll)//tei:entry[tei:fs/tei:f/tei:symbol/@value="released"]/tei:sense/tei:cit[@xml:lang=$lang]!string-join(.//text(), ' ')) 
+    order by $v
+    return <w>{$v}</w>
+}</index>  
+};
 
 let $lems := <index id="lem">{
   for $coll in $colls return 
@@ -46,33 +55,13 @@ let $subcs := <index id="subc">{
     return <w>{$v}</w>
 }</index>
 
-let $ens := <index id="en">{
-  for $coll in $colls return
-    for $v in distinct-values(collection($coll)//tei:entry[tei:fs/tei:f/tei:symbol/@value="released"]/tei:sense/tei:cit[@xml:lang="en"]/tei:quote//text()) 
-    order by $v
-    return <w>{$v}</w>
-}</index>
+let $ens := local:getTranslations('en')
 
-let $des := <index id="de">{
-  for $coll in $colls return
-    for $v in distinct-values(collection($coll)//tei:entry[tei:fs/tei:f/tei:symbol/@value="released"]/tei:sense/tei:cit[@xml:lang="de"]/tei:quote//text()) 
-    order by $v
-    return <w>{$v}</w>
-}</index>
+let $des := local:getTranslations('de')
 
-let $frs := <index id="fr">{
-  for $coll in $colls return
-    for $v in distinct-values(collection($coll)//tei:entry[tei:fs/tei:f/tei:symbol/@value="released"]/tei:sense/tei:cit[@xml:lang="fr"]/tei:quote//text()) 
-    order by $v
-    return <w>{$v}</w>
-}</index>
+let $frs := local:getTranslations('fr')
 
-let $ess := <index id="es">{
-  for $coll in $colls return
-    for $v in distinct-values(collection($coll)//tei:entry[tei:fs/tei:f/tei:symbol/@value="released"]/tei:sense/tei:cit[@xml:lang="es"]/tei:quote//text()) 
-    order by $v
-    return <w>{$v}</w>
-}</index>
+let $ess := local:getTranslations('es')
 
 let $etymLang := <index id="etymLang">{
   for $coll in $colls return
