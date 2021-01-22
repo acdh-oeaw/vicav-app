@@ -505,19 +505,19 @@ function vicav:query-index___($dict as xs:string, $ind as xs:string, $str as xs:
     switch ($ind)
         case "any"
             return
-                collection($dict)//index/w[starts-with(., $str)]
+                collection($dict)//index/w[text() contains text { $str } using wildcards]
         default return
             if ($str = '*')
             then
                 collection($dict)//index[@id = $ind]/w
             else
-                collection($dict)//index[@id = $ind]/w[starts-with(., $str)]
+                collection($dict)//index[@id = $ind]/w[text() contains text { $str } using wildcards]
 
 let $rs2 := <res>{
         for $r in $rs
         return
             <w
-                index="{$r/../@id}">{$r/text()}</w>
+                index="{$r/../@id}">{ft:mark($r[text() contains text { $str } using wildcards], 'hi')/node()}</w>
     }</res>
 
 let $style := doc('xslt/index_2_html.xslt')

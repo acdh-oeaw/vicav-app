@@ -1862,6 +1862,7 @@ function () {
     /* ********* WORD SELECTOR *******************************/
     /* *******************************************************/
 
+    /* TODO: replace this with jquery-ui autocomplete to use html instead of select */
     $("[id^=id_opt]").click ( function (event) { });
 
     $(document).on("keyup", '[id^=slWordSelect]',
@@ -1870,7 +1871,7 @@ function () {
 
         inpID = '#inpDictQuery_' + suf;
         sh = $("#slWordSelector_" + suf + " option:selected").text();
-        sh = sh.trim();
+        sh = sh.trim().replace(/\|/g, '');
         $(inpID).val(sh);
         console.log('keyup: ' + sh);
     });
@@ -1882,7 +1883,7 @@ function () {
 
         if (event.which == 13) {
             sh = $("#slWordSelector_" + suf + " option:selected").text();
-            sh = sh.trim();
+            sh = sh.trim().replace(/\|/g, '');
             sh = sh.replace(/\[/g, '');
             sh = sh.replace(/\]/g, '');
 
@@ -1904,7 +1905,7 @@ function () {
 
     $(document).on("click", '[id^=slWordSelect]', function () {
         var selectedVal = $(this).val();
-        selectedVal = selectedVal.trim();
+        selectedVal = selectedVal.trim().replace(/\|/g, '');
         var idSuffix = $(this).attr('id').split('_');
         var idSuffix = idSuffix[1];
         $('#inpDictQuery_' + idSuffix).val(selectedVal);
