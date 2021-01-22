@@ -268,7 +268,7 @@ function createCharTable(idSuffix_, chars_) {
 
 function createMatchString(s_) {
     res = "";
-    s_ = trim(s_);
+    s_ = s_.trim();
     if ((s_.indexOf('*') > -1) ||
     (s_.indexOf('.') > -1) ||
     (s_.indexOf('^') > -1) ||
@@ -666,11 +666,11 @@ function autoDictQuery(suffixes_, query_, field_) {
         if (ob == null) {
             switch (suffixes[i]) {
                 case '_tunis':
-                	createNewDictQueryPanel('dc_tunico', 'TUNICO Dictionary', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
-                	break;
+                    createNewDictQueryPanel('dc_tunico', 'TUNICO Dictionary', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
+                    break;
                 case '_cairo':
-                	createNewDictQueryPanel('dc_arz_eng_publ', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
-                	break;
+                    createNewDictQueryPanel('dc_arz_eng_publ', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
+                    break;
 
                 case '_damascus':
                     createNewDictQueryPanel('dc_apc_eng_publ', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc, defaultFields);
@@ -682,14 +682,15 @@ function autoDictQuery(suffixes_, query_, field_) {
                     break;
 
                 case '_MSA':
-                	createNewDictQueryPanel('dc_ar_en_publ', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa, MSAFields);
-                	break;
+                    createNewDictQueryPanel('dc_ar_en_publ', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa, MSAFields);
+                    break;
             }
             dealWithFieldSelectVisibility(query_, suffixes_[i]);
         }
 
         ob = document.getElementById('inpDictQuery' + suffixes[i]);
         if (ob) {
+            query_ = query_.trim();
             $('#' + 'inpDictQuery' + suffixes[i]).val(query_);
             $('#slFieldSelect' + suffixes[i]).val(field_).change();
             execDictQuery(suffixes[i]);
@@ -1230,15 +1231,19 @@ function execDictQuery(idSuffix_) {
     var sq = $("#inpDictQuery" + idSuffix_).val();
     var field = $("#slFieldSelect" + idSuffix_).val();
     if (sq.length > 0) {
+        sq = sq.replace(/\[/g, '');
+        sq = sq.replace(/\]/g, '');
+        sq = sq.trim();
+
         if (sq.indexOf("=") == -1) {
             sq = field + '="' + sq + '"';
         }
         sq = sq.replace(/&/g, ',');
-        console.log('execDictQuery: ' + sq);
+        //console.log('execDictQuery: ' + sq);
         sq = sq.replace(/\+/g, '~~pl~~');
-        console.log('execDictQuery: ' + sq);
+        //console.log('execDictQuery: ' + sq);
         sq = sq.replace(/min=/g, 'min~~eq~~');
-        console.log('execDictQuery: ' + sq);
+        //console.log('execDictQuery1: ' + sq);
 
         sQuery = './dict_api?query=' + encodeURI(sq) + '&dict=' + collName + '&xslt=' + XSLTName;
 
@@ -1864,7 +1869,10 @@ function () {
         suf = getSuffixID($(this).attr('id'));
 
         inpID = '#inpDictQuery_' + suf;
-        $(inpID).val($("#slWordSelector_" + suf + " option:selected").text());
+        sh = $("#slWordSelector_" + suf + " option:selected").text();
+        sh = sh.trim();
+        $(inpID).val(sh);
+        console.log('keyup: ' + sh);
     });
 
     $(document).on("keydown", '[id^=slWordSelect]',
@@ -1873,7 +1881,12 @@ function () {
         inpID = 'inpDictQuery_' + suf;
 
         if (event.which == 13) {
-            $('#' + inpID).val($("#slWordSelector_" + suf + " option:selected").text());
+            sh = $("#slWordSelector_" + suf + " option:selected").text();
+            sh = sh.trim();
+            sh = sh.replace(/\[/g, '');
+            sh = sh.replace(/\]/g, '');
+
+            $('#' + inpID).val(sh);
             $('#' + inpID).focus();
             $('#dvWordSelector_' + suf).hide();
         } else if (event.which == 27) {
@@ -1891,6 +1904,7 @@ function () {
 
     $(document).on("click", '[id^=slWordSelect]', function () {
         var selectedVal = $(this).val();
+        selectedVal = selectedVal.trim();
         var idSuffix = $(this).attr('id').split('_');
         var idSuffix = idSuffix[1];
         $('#inpDictQuery_' + idSuffix).val(selectedVal);
