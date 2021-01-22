@@ -1,66 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectConfig id="vicav_config_vicav">
-  <title>VICAV2 - Vienna Corpus of Arabic Varieties</title>
-  <logo><img src="images/vicav_logo.svg"/></logo>
+	<title>VICAV3.0 - Vienna Corpus of Arabic Varieties</title>
+	<logo><img src="images/vicav_logo.svg"/></logo>
+	
   <frontpage method="geo">
-    <param>.*</param>
-    <param>geo</param>
-    <panel type="text" target="vicavMission">MISSION</panel>
-    <panel type="text" target="vicavNews">NEWS</panel>
-  </frontpage>
-  <menu>
+		<param>.*</param>
+		<param>geo</param>
+		<panel type="text" target="li_vicavMission">MISSION</panel>
+		<panel type="text" target="li_vicavNews">NEWS</panel>
+	</frontpage>
+
+	<menu>
     <main>
       <dropdown xml:id="dropdown00" title="Project">
-        <item xml:id="liVicavMission">Mission</item>
-        <item xml:id="liVicavNews">News</item>
+        <item xml:id="li_vicavMission">Mission</item>
+        <item xml:id="li_vicavNews">News</item>
         <separator/>
-        <item xml:id="liVicavTypesOfText">Types of Text/Data</item>
-        <item xml:id="liVicavContributors">Contributors</item>    
-        <item xml:id="liVicavLinguistics">Linguistics</item>    
+        <item xml:id="li_vicavTypesOfText">Types of Text/Data</item>
+        <item xml:id="li_vicavContributors">Contributors</item>    
+        <item xml:id="li_vicavLinguistics">Linguistics</item>    
       </dropdown>
+
       <dropdown xml:id="dropdown01" title="Bibliographies">
-        <item xml:id="liBibliographyExplanation">Explanation</item>
+        <item xml:id="li_vicavExplanationBibliography">Explanation</item>
         <separator/>
-        <item xml:id="navBiblGeoMarkers">All Bibl. Locations</item>
-        <item xml:id="navBiblRegMarkers">All Bibl. Regions</item>
+        <item xml:id="navBiblGeoMarkers">All Bibl. Locations on Map</item>
+        <item xml:id="navBiblRegMarkers">All Bibl. Regions on Map</item>
         <separator/>
-        <item xml:id="navDictGeoRegMarkers">All Dictionaries (Locations + Regions)</item>
-        <item xml:id="navTextbookGeoRegMarkers">All Textbooks (Locations + Regions)</item>
+        <item xml:id="navDictGeoRegMarkers">All Dictionaries in Bibl. on Map</item>
+        <item xml:id="navTextbookGeoRegMarkers">All Textbooks in Bibl. on Map</item>
         <separator/>
         <item xml:id="liBiblNewQuery">Query Bibliography</item>
         <separator/>
-        <item xml:id="liVicavContributeBibliography">Contribute to the Bibliography</item>
+        <item xml:id="li_vicavContributeBibliography">Contribute to the Bibliography</item>
       </dropdown>
+
       <dropdown xml:id="dropdown02" title="Profiles">
-        <item xml:id="liProfilesExplanation">Explanation + List</item>
+        <item xml:id="li_vicavExplanationProfiles">Explanation + List</item>
         <separator/>
-        <item xml:id="navProfilesGeoRegMarkers">Show All Locations</item>
+        <item xml:id="navProfilesGeoRegMarkers">Show All Profiles on Map</item>
         <separator/>
-        <item xml:id="liVicavContributeProfile">Contribute a Profile</item>
+        <item xml:id="li_vicavContributeProfile">Contribute a Profile</item>
       </dropdown>
+
       <dropdown xml:id="dropdown03" title="Feature Lists">
-        <item xml:id="liFeaturesExplanation">Explanation</item>
-        <item xml:id="liVicavCrossFeatureQuery">Cross-examine the VICAV Feature Lists</item>
+        <item xml:id="li_vicavExplanationFeatures">Explanation</item>
+        <item xml:id="li_vicavExploreFeatures">Cross-examine the VICAV Feature Lists</item>
         <separator></separator>
-        <item xml:id="navFeaturesGeoRegMarkers">Show All Locations</item>
+        <item xml:id="navFeaturesGeoRegMarkers">Show All Feature Lists on Map</item>
         <separator></separator>
-        <item xml:id="liVicavContributeFeature">Contribute a Feature List</item>
+        <item xml:id="li_vicavContributeFeature">Contribute a Feature List</item>
       </dropdown>
+
       <dropdown xml:id="dropdown04" title="Samples">
-        <item xml:id="liSamplesExplanation">Explanation</item>
+        <item xml:id="li_vicavExplanationSamples">Explanation</item>
         <separator></separator>
-        <item xml:id="navSamplesGeoRegMarkers">Show All Locations</item>
-        <item xml:id="liExploreSamples">Compare Locations</item>
+        <item xml:id="navSamplesGeoRegMarkers">Show All Samples on Map</item>
+        <!--<item xml:id="liExploreSamples">Compare Locations</item>-->
         <separator></separator>
-        <item xml:id="liVicavContributeSampleText">Contribute a Sample Text</item>        
+        <item xml:id="li_vicavContributeSampleText">Contribute a Sample Text</item>        
       </dropdown>
+
       <dropdown xml:id="dropdown05" title="Texts">
-        <item xml:id="liCorpusTextsExplanation">Explanation and Overview</item>
+        <item xml:id="li_vicavExplanationCorpusTexts">Explanation and Overview</item>
       </dropdown>
+
       <dropdown xml:id="dropdown06" title="Dictionaries">
-        <item xml:id="navDictGeoRegMarkers1">Bibliography (Dictionaries)</item>
-        <separator/>
-        <item xml:id="navVicavDictMarkers">Show All VICAV Dictionaries</item>
+        <item xml:id="navDictGeoRegMarkers">All Dictionaries in Bibl. on Map</item>
+        <item xml:id="navVicavDictMarkers">All VICAV Dictionaries on Map</item>
         <separator/>
         <item xml:id="liVicavCrossDictQuery">Query the VICAV Dictionaries</item>
         <separator/>
@@ -70,28 +77,30 @@
         <item xml:id="liVicavDict_Baghdad">Baghdad Dictionary</item>
         <item xml:id="liVicavDict_MSA">MSA Dictionary</item>
         <separator/>
-        <item xml:id="liVicavDictionariesTechnicalities">Technicalities</item>
-        <item xml:id="liVicavContributeDictionary">Contribute a Dictionary/Glossary</item>
+        <item xml:id="li_vicavDictionariesTechnicalities">Technicalities</item>
+        <item xml:id="li_vicavContributeDictionary">Contribute a Dictionary/Glossary</item>
       </dropdown>
+
       <dropdown xml:id="dropdown07" title="Tools &amp; Technology">
-        <item xml:id="liVicavDictionaryEncoding">Dictionary Encoding</item>
-        <item xml:id="liVicavVLE">Dictionary Editor (VLE)</item>
-        <item xml:id="liVicavArabicTools">Arabic Research Tools</item>
-        <item xml:id="liVicavOverview_corpora_spoken"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Corpora (Spoken Varieties)]]></item>
-        <item xml:id="liVicavOverview_corpora_msa"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Corpora (MSA)]]></item>
-        <item xml:id="liVicavOverview_special_corpora"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Special Corpora]]></item>
-        <item xml:id="liVicavOverview_corpora_historical_varieties"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Corpora (Historical Varieties)]]></item>
-        <item xml:id="liVicavOverview_dictionaries"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dictionaries]]></item>
-        <item xml:id="liVicavOverview_nlp"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Language Processing Tools]]></item>
-        <item xml:id="liVicavOverview_otherStuff"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other Websites &amp; Projects]]></item>                                
-        <item xml:id="liVicavLearning">Learning Materials</item>
-        <item xml:id="liVicavLearningTextbookDamascus"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Materials for Textbook of Syrian Arabic]]></item>
-        <item xml:id="liVicavLearningSmartphone"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vocabularies on Smartphones]]></item>
-        <item xml:id="liVicavLearningPrograms"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Available Programs]]></item>
-        <item xml:id="liVicavLearningData"><![CDATA[&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Available Data]]></item>
-        <item xml:id="liVicavKeyboards">Keyboard Layouts</item>
+        <item xml:id="li_vicavDictionaryEncoding">Dictionary Encoding</item>
+        <item xml:id="li_vicavVLE">Dictionary Editor (VLE)</item>
+        <item xml:id="li_vicavArabicTools">Arabic Research Tools</item>
+        <item xml:id="li_vicavOverview_corpora_spoken">      Corpora (Spoken Varieties)</item>
+        <item xml:id="li_vicavOverview_corpora_msa">      Corpora (MSA)</item>
+        <item xml:id="li_vicavOverview_special_corpora">      Special Corpora</item>
+        <item xml:id="li_vicavOverview_corpora_historical_varieties">      Corpora (Historical Varieties)</item>
+        <item xml:id="li_vicavOverview_dictionaries">      Dictionaries</item>
+        <item xml:id="li_vicavOverview_nlp">      Language Processing Tools</item>
+        <item xml:id="li_vicavOverview_otherStuff">      Other Websites &amp; Projects</item>                                
+        <item xml:id="li_vicavLearning">Learning Materials</item>
+        <item xml:id="li_vicavLearning_tb_damascus">      Textbook Syrian Arabic (Sound files)</item>
+        <item xml:id="li_vicavLearningSmartphone">      Vocabularies on Smartphones</item>
+        <item xml:id="li_vicavLearningPrograms">      Available Programs</item>
+        <item xml:id="li_vicavLearningData">      Available Data</item>
+        <item xml:id="li_vicavKeyboards">Keyboard Layouts</item>
       </dropdown>
     </main>
+
     <subnav>
       <item xml:id="subNavBiblGeoMarkers" class="active">Bibl. Locations</item>
       <item xml:id="subNavBiblRegMarkers">Bibl. Regions</item>
@@ -102,5 +111,5 @@
       <item xml:id="subNavSamplesGeoRegMarkers">Samples</item>
       <item xml:id="subNavVicavDictMarkers">VICAV Dictionaries</item>
     </subnav>
-  </menu>
+	</menu>
 </projectConfig>
