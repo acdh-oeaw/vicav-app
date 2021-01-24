@@ -1674,10 +1674,29 @@ ul.overlapping-markers {
 
 .tdCrossResultsLocation {
     border: 1px solid black;
-    background: #a85d8f;
     color: white;
     padding-left:3px;
     padding-right: 3px;
+}
+
+.tdCrossResultsLocation_baghdad {
+    background: rgb(113, 55, 93);
+}
+
+.tdCrossResultsLocation_tunis {
+    background: rgb(167, 131, 155);
+}
+
+.tdCrossResultsLocation_cairo {
+    background: rgb(233, 121, 195);
+}
+
+.tdCrossResultsLocation_damascus {
+    background: rgb(118, 79, 165);
+}
+
+.tdCrossResultsLocation_msa {
+    background: rgb(113, 55, 93);
 }
 
 .tdCrossResultsLemma {
