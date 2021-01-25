@@ -1,10 +1,10 @@
 declare namespace tei = "http://www.tei-c.org/ns/1.0";
-declare variable $colls external := ('dc_arz_eng_publ');
+declare variable $colls external := ('dc_apc_eng_publ');
 
 declare function local:getTranslations($lang as xs:string) as element(index) {
 <index id="{$lang}">{
   for $coll in $colls return
-    for $v in distinct-values(collection($coll)//tei:entry[tei:fs/tei:f/tei:symbol/@value="released"]/tei:sense/tei:cit[@xml:lang=$lang]!string-join(.//text(), ' ')) 
+    for $v in distinct-values(collection($coll)//tei:entry[tei:fs/tei:f/tei:symbol/@value="released"]/tei:sense/tei:cit[@xml:lang=$lang]!normalize-space(string-join(.//text(), ' ')))
     order by $v
     return <w>{$v}</w>
 }</index>  
