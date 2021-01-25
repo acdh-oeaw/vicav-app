@@ -505,7 +505,7 @@ function vicav:query-index___($dict as xs:string, $ind as xs:string, $str as xs:
     switch ($ind)
         case "any"
             return
-                collection($dict)//index/w[starts-with(., $str)]
+                collection($dict)//index/w[contains(., $str)]
         default return
             if ($str = '*')
             then
@@ -515,9 +515,10 @@ function vicav:query-index___($dict as xs:string, $ind as xs:string, $str as xs:
 
 let $rs2 := <res>{
         for $r in $rs
-        return
-            <w
-                index="{$r/../@id}">{$r/text()}</w>
+           let $replString := concat("[",$str,"]")
+           let $a := replace($r/text(), $str, $replString)
+           return 
+            <w index="{$r/../@id}">{$a}</w>              
     }</res>
 
 let $style := doc('xslt/index_2_html.xslt')
@@ -607,6 +608,7 @@ let $ress := <results xmlns="http://www.tei-c.org/ns/1.0">{$results}</results>
 let $sReturn := xslt:transform-text($ress, $style)
 return
   $sReturn
+  (: $ress :)
 };
 
 declare
