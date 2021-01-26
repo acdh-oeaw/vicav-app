@@ -614,6 +614,18 @@ function createNewCrossDictQueryPanel(pID_, pVisiblity_, pURL_) {
     appendPanel(searchContainer, "crossDictQueryLauncher", "", "grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
 }
 
+function createNewCrossDictResultsPanel(pID_, pVisiblity_, pURL_) {
+    //console.log('chartable_:' + chartable_);
+
+    //console.log("selectFields_: " + selectFields_);
+    var displayContainer =
+    "<div id='dvDictResults_cross' class='dvDictResults'></div>" +
+    "";
+
+    appendPanel(displayContainer, 'crossDictQueryResult', '', "grid-wrap dict-grid-wrap", '', '', '', '', pID_, pVisiblity_, pURL_);
+
+}
+
 function createNewDictQueryPanel(dict_, dictName_, idSuffix_, xslt_, chartable_, selectFields_, pID_, pVisiblity_, pURL_) {
     //console.log('chartable_:' + chartable_);
     
@@ -789,6 +801,24 @@ function getDBSnippet(s_) {
                 case 'func':
                         //console.log(sTail);
                         eval(trim(sTail));
+                        break;
+
+                case 'dictID':
+                        console.log('sHead2: ' + sHead);
+                        st5 = sTail.split(',');
+                        sid = st5[0];
+                        sDict = st5[1];
+                        console.log('sid: ' + sid);
+                        console.log('dict: ' + sDict);
+                        switch (sDict) {
+                           case 'ar-arz-x-cairo-vicav': autoDictQuery('_cairo', 'id=' + sid, ); break;
+                           case 'ar-aeb-x-tunis-vicav': autoDictQuery('_tunis', 'id=' + sid, ); break;
+                           case 'ar-acm-x-baghdad-vicav': autoDictQuery('_baghdad', 'id=' + sid, ); break;
+                           case 'ar-apc-x-damascus-vicav': autoDictQuery('_damascus', 'id=' + sid, ); break;
+                           case 'ar-x-DMG': autoDictQuery('_MSA', 'id=' + sid, ); break;
+                        }
+                        if (sDict = '')
+
                         break;
 
                 case 'mapMarkers':
@@ -1087,8 +1117,8 @@ function clearMarkerLayers() {
 function execDictQuery_ajax(query_, idSuffix_) {
     if (query_.length > 0) {
         console.log("execDictQuery_ajax");
-        //console.log("query: " + query_);
-        //console.log("idSuffix: " + idSuffix_);
+        console.log("query: " + query_);
+        console.log("idSuffix: " + idSuffix_);
 
         xslt = $("#inpDictQuery" + idSuffix_).attr('xslt');
         teiQuery = query_.replace(xslt, "tei_2_html__v004__gen.xslt");
@@ -1152,6 +1182,24 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
         }
     });
 }
+
+var timeoutFillWordSelector;
+
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+function debounceFillWordSelector(func, wait, immediate, arguments) {
+    var context = this, args = arguments;
+    var later = function() {
+      timeoutFillWordSelector = null;
+      if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !timeoutFillWordSelector;
+    clearTimeout(timeoutFillWordSelector);
+    timeoutFillWordSelector = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+};
 
 function getSuffixID(id_) {
     sid = id_;
@@ -1263,6 +1311,51 @@ function execDictQuery_tei(idSuffix_) {
     execDictQuery_ajax(teiQuery, idSuffix_);
 }
 
+function execCrossDictQuery(dicts_, query_) {
+    //qs = './dicts_api?query=' + query_ + '&dicts=dc_tunico,dc_acm_baghdad_eng_publ&xslt=dicts_cross_query_001.xslt';
+    if (query_.indexOf("=") == -1) {
+            query_ = 'any="' + query_ + '"';
+        }
+
+    qs = './dicts_api?query=' + query_ + '&dicts=' + dicts_ + '&xslt=dicts_cross_query_001.xslt';
+    $.ajax({
+        url: qs,
+        type: 'GET',
+        dataType: 'html',
+        cache: false,
+        crossDomain: true,
+        contentType: 'application/html; ',
+        success: function (result) {
+            if (result.includes('error type="user authentication"')) {
+                alert('Error: authentication did not work');
+            } else {
+                //alert(result);
+                //appendPanel(contents_, panelType_,       secLabel_, contClass_,  query_, teiLink_, locType_,         snippetID_, pID_, pVisiblity_, pURL_) {
+                ob = document.getElementById('dvDictResults_cross');
+                if (ob == null) {
+                  //appendPanel(result,    'crossDictQuery', '',           'grid-wrap', '',     '',       '_crossDictQuery', '',         '',    '',         '');
+                  createNewCrossDictResultsPanel('', '', '');
+                } else {
+                  console.log('');
+                }
+                ob = document.getElementById('dvDictResults_cross');
+                if (ob) {
+                   //ob.innerHtml = result;
+                   $("#dvDictResults_cross").html(result);
+                } else {
+                   alert('on not found');
+                }
+
+
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert('Line 814: ' + errorThrown);
+        }
+    });
+
+};
+
 function dealWithFieldSelectVisibility(query_, suffix_) {
     //console.log(query_ + ':' + suffix_);
     if (query_.indexOf('=') > -1) {
@@ -1286,12 +1379,8 @@ function dealWithDictQueryKeyInput(event_, idSuffix_) {
         var sq = $("#inpDictQuery" + idSuffix_).val();
 
         dealWithFieldSelectVisibility(sq, idSuffix_);
-        if (sq.length > 1) {
-            if (sq.indexOf('=') == -1) {
-                //console.log('fillWordSelector');
-
-                fillWordSelector(sq, collName + '__ind', idSuffix_);
-            }
+        if (sq.indexOf('=') == -1) {
+            debounceFillWordSelector(fillWordSelector, 500, false, [sq, collName + '__ind', idSuffix_]);
         } else {
             $("#dvWordSelector" + idSuffix_).hide();
         }
@@ -1871,7 +1960,7 @@ function () {
 
         inpID = '#inpDictQuery_' + suf;
         sh = $("#slWordSelector_" + suf + " option:selected").text();
-        sh = sh.trim().replace(/\|/g, '');
+        sh = sh.trim().replace(/[\[\]]/g, '');
         $(inpID).val(sh);
         console.log('keyup: ' + sh);
     });
@@ -1883,7 +1972,7 @@ function () {
 
         if (event.which == 13) {
             sh = $("#slWordSelector_" + suf + " option:selected").text();
-            sh = sh.trim().replace(/\|/g, '');
+            sh = sh.trim().replace(/[\[\]]/g, '');
             sh = sh.replace(/\[/g, '');
             sh = sh.replace(/\]/g, '');
 
@@ -1905,7 +1994,7 @@ function () {
 
     $(document).on("click", '[id^=slWordSelect]', function () {
         var selectedVal = $(this).val();
-        selectedVal = selectedVal.trim().replace(/\|/g, '');
+        selectedVal = selectedVal.trim().replace(/[\[\]]/g, '');
         var idSuffix = $(this).attr('id').split('_');
         var idSuffix = idSuffix[1];
         $('#inpDictQuery_' + idSuffix).val(selectedVal);
@@ -1941,7 +2030,7 @@ function () {
         document.getElementById(inpID).selectionEnd = cursorPosition + 1;
         var sq = $("#" + inpID).val();
         collName = $("#" + inpID).attr('dict');
-        fillWordSelector(sq, collName + '__ind', '_' + suf);
+        debounceFillWordSelector(fillWordSelector, 500, false, [sq, collName + '__ind', '_' + suf]);
         setTimeout(function() {
             $("#" + inpID).focus();
         },
@@ -2023,8 +2112,9 @@ function () {
                 if (document.getElementById("cbCairo").checked == true) { if (sDicts.length > 0) { sDicts = sDicts + ',dc_arz_eng_publ'; } else { sDicts = 'dc_arz_eng_publ' }}
                 if (document.getElementById("cbBaghdad").checked == true) { if (sDicts.length > 0) { sDicts = sDicts + ',dc_acm_baghdad_eng_publ'; } else { sDicts = 'dc_acm_baghdad_eng_publ' }}
                 if (document.getElementById("cbMSA").checked == true) { if (sDicts.length > 0) { sDicts = sDicts + ',dc_ar_en_publ'; } else { sDicts = 'dc_ar_en_publ' }}
-               
-                
+
+                execCrossDictQuery(sDicts, query);
+
             } else {
                 if (document.getElementById("cbDamascus").checked == true) {
                     autoDictQuery('_damascus', query, sField);

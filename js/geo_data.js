@@ -377,12 +377,12 @@ function insertGeoRegMarkers(query_, scope_) {
     /* *************************************************** */
     //example: insertGeoRegMarkers('', 'geo_reg');
     //example (rest): sUrl = 'bibl_markers_tei?query=none&scope=geo';
-	//http://localhost:8984/vicav/bibl_markers_tei?query=vt:textbook,reg:Egypt&scope=geo_reg
+    //http://localhost:8984/vicav/bibl_markers_tei?query=vt:textbook,reg:Egypt&scope=geo_reg
     //for experimenting in BaseX Client: vicav_bibl_markers
     
     if (query_ == '') { query_ = '.*'; }
-	//console.log('query_: ' + query_);
-	//console.log('scope_: ' + scope_);
+    //console.log('insertGeoRegMarkers::query_: ' + query_);
+    //console.log('scope_: ' + scope_);
     $(".sub-nav-map-items .active").removeClass("active");
     query_ = query_.replace(/&/g, '+');
     query_ = query_.replace(/ \+/g, '+');
@@ -396,9 +396,9 @@ function insertGeoRegMarkers(query_, scope_) {
     }
     if (query_ == '') { query_ = '.*'; }
     
-    console.log('sUrl: ' + sUrl);
-    console.log('query_: ' + query_);
-    console.log('sQuerySecPart: ' +  sQuerySecPart);
+    //console.log('sUrl: ' + sUrl);
+    //console.log('query_: ' + query_);
+    //console.log('sQuerySecPart: ' +  sQuerySecPart);
     clearMarkerLayers();
     $.ajax({
         url: sUrl,
@@ -423,24 +423,24 @@ function insertGeoRegMarkers(query_, scope_) {
                 //console.log(sTooltip);
                 
                 if ($(this).attr('type') == 'geo') {
-                    //sQuery = 'geo:' + sAlt + sQuerySecPart;
-                    sQuery = 'geo:' + sAlt;
+                    sQuery = 'geo:' + sAlt + sQuerySecPart;
+                    //sQuery = 'geo:' + sAlt + '&' + query_;
                     var marker = L.marker([v1, v2], { alt: sAlt, locType: 'point', biblQuery: sQuery }).bindTooltip(sTooltip);
                     fgBiblMarkers.addLayer(marker);
                     $(marker._icon).attr('data-testid', 'geo_'+sAlt);
                 }
 
                 if ($(this).attr('type') == 'reg') {
-                    //sQuery = 'reg:' + sAlt + sQuerySecPart;
-                    sQuery = 'reg:' + sAlt;
+                    sQuery = 'reg:' + sAlt + sQuerySecPart;
+                    //sQuery = 'reg:' + sAlt;
                     var circle = L.circle([v1, v2], { color: 'rgb(168, 93, 143)', weight: 1, fillColor: 'rgb(168, 93, 143)', radius: 90000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip);
                     fgBiblMarkers.addLayer(circle);
                     $(circle._path).attr('data-testid', 'reg_'+sAlt);
                 }
 
                 if ($(this).attr('type') == 'diaGroup') {
-                    //sQuery = 'reg:' + sAlt + sQuerySecPart;
-                    sQuery = 'reg:' + sAlt;
+                    sQuery = 'reg:' + sAlt + sQuerySecPart;
+                    //sQuery = 'reg:' + sAlt;
                     //var circle = L.circle([v1, v2], { color: 'rgb(22, 93, 143)', weight: 2, fillColor: 'rgb(22, 93, 143)', radius: 190000, alt: sAlt, biblQuery: sQuery }).bindTooltip(sTooltip);
 
                     var sh = sTooltip.substr(0, sTooltip.indexOf('('));
@@ -470,7 +470,7 @@ function insertGeoRegMarkers(query_, scope_) {
                        l.bindTooltip(sTooltip);
                        fgBiblMarkers.addLayer(l);
                     } else
-                    if (sh == 'Syro-Palestine') {
+                    if (sh == 'Levant') {
                        var ico = L.divIcon({ className: "labelClass", html: "<div class='labelClassLevant' style='color:#98a2ca;font-size:25px'>Levant</div>" }); 
                        var l = L.marker([32.5, 35.5], {icon:ico, alt: sAlt, biblQuery: sQuery}).addTo(layerGroupDialectRegions);
                        l.bindTooltip(sTooltip);
