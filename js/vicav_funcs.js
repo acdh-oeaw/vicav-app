@@ -678,7 +678,7 @@ function autoDictQuery(suffixes_, query_, field_) {
 
                 case '_baghdad':
                     //console.log('baghdad dict');
-                    createNewDictQueryPanel('dc_acm_baghdad_eng', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_baghdad, baghdadFields);
+                    createNewDictQueryPanel('dc_acm_baghdad_eng_publ', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_baghdad, baghdadFields);
                     break;
 
                 case '_MSA':
@@ -1319,7 +1319,7 @@ function openDict_Tunis() {
 }
 
 function openDict_Baghdad() {
-    createNewDictQueryPanel('dc_acm_baghdad_eng', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_baghdad, baghdadFields);
+    createNewDictQueryPanel('dc_acm_baghdad_eng_publ', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_baghdad, baghdadFields);
 }
 
 function openDict_Cairo() {
@@ -2021,7 +2021,7 @@ function () {
                 if (document.getElementById("cbDamascus").checked == true) { sDicts = 'dc_apc_eng_publ';}
                 if (document.getElementById("cbTunis").checked == true) { if (sDicts.length > 0) { sDicts = sDicts + ',dc_tunico'; } else { sDicts = 'dc_tunico' }}
                 if (document.getElementById("cbCairo").checked == true) { if (sDicts.length > 0) { sDicts = sDicts + ',dc_arz_eng_publ'; } else { sDicts = 'dc_arz_eng_publ' }}
-                if (document.getElementById("cbBaghdad").checked == true) { if (sDicts.length > 0) { sDicts = sDicts + ',dc_acm_baghdad_eng'; } else { sDicts = 'dc_acm_baghdad_eng' }}
+                if (document.getElementById("cbBaghdad").checked == true) { if (sDicts.length > 0) { sDicts = sDicts + ',dc_acm_baghdad_eng_publ'; } else { sDicts = 'dc_acm_baghdad_eng_publ' }}
                 if (document.getElementById("cbMSA").checked == true) { if (sDicts.length > 0) { sDicts = sDicts + ',dc_ar_en_publ'; } else { sDicts = 'dc_ar_en_publ' }}
                
                 
