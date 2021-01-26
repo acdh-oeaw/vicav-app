@@ -505,11 +505,7 @@ function vicav:query-index___($dict as xs:string, $ind as xs:string, $str as xs:
     switch ($ind)
         case "any"
             return
-<<<<<<< HEAD
-                collection($dict)//index/w[contains(., $str)]
-=======
                 collection($dict)//index/w[text() contains text { $str } using wildcards]
->>>>>>> 34c9e4639847d98ec26e66c3d17c0858a7e28dc0
         default return
             if ($str = '*')
             then
@@ -519,16 +515,14 @@ function vicav:query-index___($dict as xs:string, $ind as xs:string, $str as xs:
 
 let $rs2 := <res>{
         for $r in $rs
-<<<<<<< HEAD
            let $replString := concat("[",$str,"]")
            let $a := replace($r/text(), $str, $replString)
-           return 
-            <w index="{$r/../@id}">{$a}</w>              
-=======
+           (: return :) 
+            (: <w index="{$r/../@id}">{$a}</w> :)              
+
         return
-            <w
-                index="{$r/../@id}">{ft:mark($r[text() contains text { $str } using wildcards], 'hi')/node()}</w>
->>>>>>> 34c9e4639847d98ec26e66c3d17c0858a7e28dc0
+            <w index="{$r/../@id}">{ft:mark($r[text() contains text { $str } using wildcards], 'hi')/node()}</w>
+
     }</res>
 
 let $style := doc('xslt/index_2_html.xslt')
