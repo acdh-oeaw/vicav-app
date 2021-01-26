@@ -499,9 +499,8 @@ declare
 %rest:GET
 %output:method("html")
 
-
 function vicav:query-index___($dict as xs:string, $ind as xs:string, $str as xs:string) {
-    let $rs :=
+    let $rs := (# db:enforceindex #) {
     switch ($ind)
         case "any"
             return
@@ -512,6 +511,7 @@ function vicav:query-index___($dict as xs:string, $ind as xs:string, $str as xs:
                 collection($dict)//index[@id = $ind]/w
             else
                 collection($dict)//index[@id = $ind]/w[text() contains text { $str } using wildcards]
+    }
 
 let $rs2 := <res>{
         for $r in $rs
@@ -522,7 +522,6 @@ let $rs2 := <res>{
 
         return
             <w index="{$r/../@id}">{ft:mark($r[text() contains text { $str } using wildcards], 'hi')/node()}</w>
-
     }</res>
 
 let $style := doc('xslt/index_2_html.xslt')

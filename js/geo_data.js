@@ -471,7 +471,6 @@ function insertGeoRegMarkers(query_, scope_) {
                        fgBiblMarkers.addLayer(l);
                     } else
                     if (sh == 'Levant') {
-                      
                        var ico = L.divIcon({ className: "labelClass", html: "<div class='labelClassLevant' style='color:#98a2ca;font-size:25px'>Levant</div>" }); 
                        var l = L.marker([32.5, 35.5], {icon:ico, alt: sAlt, biblQuery: sQuery}).addTo(layerGroupDialectRegions);
                        l.bindTooltip(sTooltip);

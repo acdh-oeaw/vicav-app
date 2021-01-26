@@ -1183,6 +1183,24 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
     });
 }
 
+var timeoutFillWordSelector;
+
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+function debounceFillWordSelector(func, wait, immediate, arguments) {
+    var context = this, args = arguments;
+    var later = function() {
+      timeoutFillWordSelector = null;
+      if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !timeoutFillWordSelector;
+    clearTimeout(timeoutFillWordSelector);
+    timeoutFillWordSelector = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+};
+
 function getSuffixID(id_) {
     sid = id_;
     sids = sid.split('_');
@@ -1361,12 +1379,8 @@ function dealWithDictQueryKeyInput(event_, idSuffix_) {
         var sq = $("#inpDictQuery" + idSuffix_).val();
 
         dealWithFieldSelectVisibility(sq, idSuffix_);
-        if (sq.length > 1) {
-            if (sq.indexOf('=') == -1) {
-                //console.log('fillWordSelector');
-
-                fillWordSelector(sq, collName + '__ind', idSuffix_);
-            }
+        if (sq.indexOf('=') == -1) {
+            debounceFillWordSelector(fillWordSelector, 500, false, [sq, collName + '__ind', idSuffix_]);
         } else {
             $("#dvWordSelector" + idSuffix_).hide();
         }
@@ -1946,7 +1960,7 @@ function () {
 
         inpID = '#inpDictQuery_' + suf;
         sh = $("#slWordSelector_" + suf + " option:selected").text();
-        sh = sh.trim().replace(/\|/g, '');
+        sh = sh.trim().replace(/[\[\]]/g, '');
         $(inpID).val(sh);
         console.log('keyup: ' + sh);
     });
@@ -1958,7 +1972,7 @@ function () {
 
         if (event.which == 13) {
             sh = $("#slWordSelector_" + suf + " option:selected").text();
-            sh = sh.trim().replace(/\|/g, '');
+            sh = sh.trim().replace(/[\[\]]/g, '');
             sh = sh.replace(/\[/g, '');
             sh = sh.replace(/\]/g, '');
 
@@ -1980,7 +1994,7 @@ function () {
 
     $(document).on("click", '[id^=slWordSelect]', function () {
         var selectedVal = $(this).val();
-        selectedVal = selectedVal.trim().replace(/\|/g, '');
+        selectedVal = selectedVal.trim().replace(/[\[\]]/g, '');
         var idSuffix = $(this).attr('id').split('_');
         var idSuffix = idSuffix[1];
         $('#inpDictQuery_' + idSuffix).val(selectedVal);
@@ -2016,7 +2030,7 @@ function () {
         document.getElementById(inpID).selectionEnd = cursorPosition + 1;
         var sq = $("#" + inpID).val();
         collName = $("#" + inpID).attr('dict');
-        fillWordSelector(sq, collName + '__ind', '_' + suf);
+        debounceFillWordSelector(fillWordSelector, 500, false, [sq, collName + '__ind', '_' + suf]);
         setTimeout(function() {
             $("#" + inpID).focus();
         },
