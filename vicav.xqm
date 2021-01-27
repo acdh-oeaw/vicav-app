@@ -733,8 +733,8 @@ let $ress := <results  xmlns="http://www.tei-c.org/ns/1.0">{$res2}</results>
 let $sReturn := xslt:transform-text($ress, $style)
 
 return
-    (: $sReturn :)
-    $res
+    $sReturn
+    (: $res :)
     (: <r>{$qs}</r> :)
     (: if (wde:check-user_($dict, $user, $pw)) :)
     (: then $sReturn :)
