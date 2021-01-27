@@ -488,6 +488,7 @@ function vicav:get_text($id as xs:string*, $xsltfn as xs:string) {
     let $sHTML := xslt:transform-text($results, $style)
     return
         $sHTML
+        
 };
 
 declare
@@ -732,7 +733,8 @@ let $ress := <results  xmlns="http://www.tei-c.org/ns/1.0">{$res2}</results>
 let $sReturn := xslt:transform-text($ress, $style)
 
 return
-    $sReturn
+    (: $sReturn :)
+    $res
     (: <r>{$qs}</r> :)
     (: if (wde:check-user_($dict, $user, $pw)) :)
     (: then $sReturn :)
