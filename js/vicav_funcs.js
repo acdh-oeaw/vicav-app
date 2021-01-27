@@ -812,7 +812,7 @@ function getDBSnippet(s_) {
                         console.log('dict: ' + sDict);
                         switch (sDict) {
                            case 'ar-arz-x-cairo-vicav': autoDictQuery('_cairo', 'id=' + sid, ); break;
-                           case 'ar-aeb-x-tunis-vicav': autoDictQuery('_tunis', 'id=' + sid, ); break;
+                           case 'ar-aeb': autoDictQuery('_tunis', 'id=' + sid, ); break;
                            case 'ar-acm-x-baghdad-vicav': autoDictQuery('_baghdad', 'id=' + sid, ); break;
                            case 'ar-apc-x-damascus-vicav': autoDictQuery('_damascus', 'id=' + sid, ); break;
                            case 'ar-x-DMG': autoDictQuery('_MSA', 'id=' + sid, ); break;
@@ -1319,6 +1319,10 @@ function execCrossDictQuery(dicts_, query_) {
     if (query_.indexOf("=") == -1) {
             query_ = 'any="' + query_ + '"';
         }
+
+    if (query_.indexOf("&") > 0) {
+      query_ = query_.replace(/\&/, ',');
+    }
 
     qs = './dicts_api?query=' + query_ + '&dicts=' + dicts_ + '&xslt=dicts_cross_query_001.xslt';
     $.ajax({
