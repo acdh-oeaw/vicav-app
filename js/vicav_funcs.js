@@ -1155,7 +1155,10 @@ function fillWordSelector(q_, dictInd_, idSuffix_) {
     $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
 
     if (q_.length == 0) {
-        q_ = '*';
+        q_ = '.*';
+    }
+    if (q_.length > 1 && q_.indexOf(' ') === -1) {
+        q_ += '.*'
     }
     sInd = $("#slFieldSelect" + idSuffix_).val();
     sIndexUrl = './dict_index?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + encodeURI(q_);
