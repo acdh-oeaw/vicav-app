@@ -518,6 +518,8 @@ let $rs2 := <res>{
         for $r in $rs
            let $replString := concat("[",$str,"]")
            let $a := replace($r/text(), $str, $replString)
+           let score $score := $r/text() contains text { $str } using wildcards
+           order by $score descending
            (: return :) 
             (: <w index="{$r/../@id}">{$a}</w> :)              
 
@@ -526,7 +528,7 @@ let $rs2 := <res>{
     }</res>
 
 let $style := doc('xslt/index_2_html.xslt')
-let $ress := <results>{$rs2}</results>
+let $ress := <results>{subsequence($rs2, 1, 500)}</results>
 let $sReturn := xslt:transform($ress, $style)
 return
     $sReturn
