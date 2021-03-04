@@ -51,6 +51,7 @@ var containerCount = 0;
 var lastTextPanelID = '';
 var panelIDs =[];
 var globalPreservePanel = -1;
+var vicavVersion = "@version@";
 
 /*
 To create a new Version
