@@ -1,0 +1,69 @@
+<commands>
+	<!-- restore name='dc_aeb_eng_001_000'/>
+	<restore name='dc_aeb_eng_001__skel'/>
+	<restore name='dc_aeb_eng_001__prof'/ -->
+	<restore name='dc_tunico'/>
+	<restore name='dc_tunico__prof'/>
+	<restore name='dc_aeb_eng_002_000'/>
+	<restore name='dc_aeb_eng_002__skel'/>
+	<restore name='dc_aeb_eng_002__prof'/>
+  <set option="BINDINGS">skel=dc_aeb_eng_002__skel,publ=dc_tunico</set>
+  <run file="vicav-content/xsl/create_polish_dicts_skel.xq"/>
+  <run file="vicav-content/xsl/create_polish_dicts_source.xq"/>
+  <run file="vicav-content/xsl/polish_dicts.xq"/>
+  <set option="BINDINGS">colls=dc_tunico</set>
+  <run file="webapp/vicav-app/create_autocomplete_index.xq"/>
+	<restore name='dc_apc_eng_005_000'/>
+	<restore name='dc_apc_eng_005__skel'/>
+	<restore name='dc_apc_eng_005__prof'/>
+  <set option="BINDINGS">skel=dc_apc_eng_005__skel,publ=dc_apc_eng_publ</set>
+  <run file="vicav-content/xsl/create_polish_dicts_skel.xq"/>
+  <run file="vicav-content/xsl/create_polish_dicts_source.xq"/>
+  <run file="vicav-content/xsl/polish_dicts.xq"/>
+  <set option="BINDINGS">colls=dc_apc_eng_publ</set>
+  <run file="webapp/vicav-app/create_autocomplete_index.xq"/>
+	<restore name='dc_ar_en_000'/>
+	<restore name='dc_ar_en_001'/>
+	<restore name='dc_ar_en__skel'/>
+	<restore name='dc_ar_en__prof'/>
+  <set option="BINDINGS">skel=dc_ar_en__skel,publ=dc_ar_en_publ</set>
+  <run file="vicav-content/xsl/create_polish_dicts_skel.xq"/>
+  <run file="vicav-content/xsl/create_polish_dicts_source.xq"/>
+  <run file="vicav-content/xsl/polish_dicts.xq"/>
+  <set option="BINDINGS">colls=dc_ar_en_publ</set>
+  <run file="webapp/vicav-app/create_autocomplete_index.xq"/>
+	<restore name='dc_ary_eng_006_000'/>
+	<restore name='dc_ary_eng_006__prof'/>
+	<restore name='dc_ary_eng_006__skel'/>
+  <set option="BINDINGS">skel=dc_ary_eng_006__skel,publ=dc_ary_eng_publ</set>
+  <run file="vicav-content/xsl/create_polish_dicts_skel.xq"/>
+  <run file="vicav-content/xsl/create_polish_dicts_source.xq"/>
+  <run file="vicav-content/xsl/polish_dicts.xq"/>
+  <set option="BINDINGS">colls=dc_ary_eng_publ</set>
+  <run file="webapp/vicav-app/create_autocomplete_index.xq"/>
+	<restore name='dc_arz_eng_007_000'/>
+	<restore name='dc_arz_eng_007__skel'/>
+	<restore name='dc_arz_eng_007__prof'/>
+  <set option="BINDINGS">skel=dc_arz_eng_007__skel,publ=dc_arz_eng_publ</set>
+  <run file="vicav-content/xsl/create_polish_dicts_skel.xq"/>
+  <run file="vicav-content/xsl/create_polish_dicts_source.xq"/>
+  <run file="vicav-content/xsl/polish_dicts.xq"/>
+  <set option="BINDINGS">colls=dc_arz_eng_publ</set>
+  <run file="webapp/vicav-app/create_autocomplete_index.xq"/>
+	<restore name='dict_users'/>
+	<!-- restore name='vicav_biblio'/>
+	<restore name='vicav_corpus'/>
+	<restore name='vicav_lingfeatures'/>
+	<restore name='vicav_profiles'/>
+	<restore name='vicav_texts'/>
+	<restore name='vicav_samples'/ -->
+	<xquery>let $u := collection('dict_users')/users return delete node $u/user[not(@name = 'webuser')]|$u/text()|$u/user/@type</xquery>
+	<drop-backup name='dc_aeb_eng_001*'/>
+	<drop-backup name='dc_aeb_eng_002*'/>
+	<drop-backup name='dc_apc_eng_005*'/>
+	<drop-backup name='dc_ar_en*'/>
+	<drop-backup name='dc_ary_eng_006*'/>
+	<drop-backup name='dc_arz_eng_007*'/>
+	<drop-backup name='dc_tunico*'/>
+	<drop-backup name='vicav_*'/>
+</commands>
