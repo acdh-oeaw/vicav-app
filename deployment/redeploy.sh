@@ -104,10 +104,10 @@ ret=$?
 if [ $ret != "0" ]; then exit $ret; fi
 if [ "$onlytags"x = 'truex' ]
 then
-latesttag=$(git describe --tags --always)
-echo checking out ${latesttag}
-git -c advice.detachedHead=false checkout ${latesttag}
-find ./ -type f -and \( -name '*.js' -or -name '*.html' \) -not \( -path './node_modules/*' -or -path './cypress/*' \) -exec sed -i "s~\@version@~$latesttag~g" {} \;
+uiversion=$(git describe --tags --always)
+echo checking out UI ${uiversion}
+git -c advice.detachedHead=false checkout ${uiversion}
+find ./ -type f -and \( -name '*.js' -or -name '*.html' \) -not \( -path './node_modules/*' -or -path './cypress/*' \) -exec sed -i "s~\@version@~$uiversion~g" {} \;
 fi
 git checkout master
 popd
@@ -122,15 +122,15 @@ ret=$?
 if [ $ret != "0" ]; then exit $ret; fi
 if [ "$onlytags"x = 'truex' ]
 then
-latesttag=$(git describe --tags --always)
-echo checking out ${latesttag}
-git -c advice.detachedHead=false checkout ${latesttag}
+dataversion=$(git describe --tags --always)
+echo checking out data ${dataversion}
+git -c advice.detachedHead=false checkout ${dataversion}
 who=$(git show -s --format='%cN')
 when=$(git show -s --format='%as')
 message=$(git show -s --format='%B')
 revisionDesc=$(sed ':a;N;$!ba;s/\n/\\n/g' <<EOF
 <revisionDesc>
-  <change n="$latesttag" who="$who" when="$when">
+  <change n="$dataversion" who="$who" when="$when">
 $message
    </change>
 </revisionDesc>
@@ -148,6 +148,10 @@ do echo "Directory $d:"
    fi
 done
 git checkout master
+popd
+pushd webapp/vicav-app
+find ./ -type f -and \( -name '*.js' -or -name '*.html' \) -not \( -path './node_modules/*' -or -path './cypress/*' \) -exec sed -i "s~\@data-version@~$dataversion~g" {} \;
+fi
 popd
 ./execute-basex-batch.sh deploy-vicav-content
 pushd vicav-content
