@@ -149,10 +149,12 @@ do echo "Directory $d:"
 done
 git checkout master
 popd
+if [ "$onlytags"x = 'truex' ]
+then
 pushd webapp/vicav-app
 find ./ -type f -and \( -name '*.js' -or -name '*.html' \) -not \( -path './node_modules/*' -or -path './cypress/*' \) -exec sed -i "s~\@data-version@~$dataversion~g" {} \;
-fi
 popd
+fi
 ./execute-basex-batch.sh deploy-vicav-content
 pushd vicav-content
 git reset --hard
