@@ -1157,36 +1157,39 @@ function execDictQuery_ajax(query_, idSuffix_) {
 function fillWordSelector(q_, dictInd_, idSuffix_) {
     $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
 
+    /*
     if (q_.length == 0) {
         q_ = '.*';
     }
-    if (q_.length > 1 && q_.indexOf(' ') === -1) {
-        q_ += '.*'
+    */
+    if (q_.length > 1) {
+      if (q_.length > 1 && q_.indexOf(' ') === -1) {
+          q_ += '.*'
+      }
+       sInd = $("#slFieldSelect" + idSuffix_).val();
+       sIndexUrl = './dict_index?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + encodeURI(q_);
+       console.log(sIndexUrl);
+       $.ajax({
+           url: sIndexUrl,
+           type: 'GET',
+           dataType: 'html',
+           contentType: 'application/html; charset=utf-8',
+           success: function (result) {
+               if (result.indexOf('option') !== -1) {
+                   $("#dvWordSelector" + idSuffix_).show();
+                   $("#slWordSelector" + idSuffix_).html(result);
+                   $("#slWordSelector" + idSuffix_).show();
+               } else {
+                   $("#dvWordSelector" + idSuffix_).hide();
+               }
+               $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
+           },
+           error: function (jqXHR, textStatus, errorThrown) {
+               alert('Line 1063' + errorThrown);
+               $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
+           }
+       });
     }
-    sInd = $("#slFieldSelect" + idSuffix_).val();
-    sIndexUrl = './dict_index?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + encodeURI(q_);
-    //console.log(sIndexUrl);
-    $.ajax({
-        url: sIndexUrl,
-        type: 'GET',
-        dataType: 'html',
-        contentType: 'application/html; charset=utf-8',
-        success: function (result) {
-            if (result.indexOf('option') !== -1) {
-                $("#dvWordSelector" + idSuffix_).show();
-                $("#slWordSelector" + idSuffix_).html(result);
-                $("#slWordSelector" + idSuffix_).show();
-            } else {
-
-                $("#dvWordSelector" + idSuffix_).hide();
-            }
-            $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert('Line 1063' + errorThrown);
-            $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
-        }
-    });
 }
 
 var timeoutFillWordSelector;
@@ -1733,11 +1736,13 @@ function () {
             i.onload = function(){
                 if (this.naturalWidth > this.naturalHeight) {
                     $(this).addClass('landscape');
+
+                    $(this).attr('style', $(this).attr('style') + 'margin-left: -' + this.width / 4 + 'px;');
                     if ($(this).attr('style') !== undefined) {
                         $(this).attr('style', $(this).attr('style') + '; margin-left: -' + this.width / 4 + 'px;');
                     } else {
                         $(this).attr('style', 'margin-left: -' + this.width / 4 + 'px;');
-                }
+                    }
                 }
                 if (this.naturalWidth < this.naturalHeight) {
                     $(this).addClass('portrait');
