@@ -13,7 +13,7 @@ then
   start basexhttp.bat
 else
   cd bin
-  basexhttp &
+  ./basexhttp &
 fi
 cd ..
 exec ./redeploy.sh
