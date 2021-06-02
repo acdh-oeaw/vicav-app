@@ -1575,6 +1575,11 @@ ul.overlapping-markers {
     display: block;
     text-align: center;
 }
+
+.slider-container .mySlides img {
+    max-height: 425px;
+}
+
 .slider-container .mySlides img.landscape {
     width: 100%;
 }

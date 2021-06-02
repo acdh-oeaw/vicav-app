@@ -95,7 +95,7 @@ version="2.0">
             </xsl:if>
             
             <xsl:choose>
-                <xsl:when test="string-length($w/tei:fs/tei:f[@name='pos'])>0 or string-length($w/tei:fs/tei:f[@name='lemma'])>0 or string-length($w/tei:fs/tei:f[@name='translation'])>0 or string-length($w/tei:fs/tei:f[@name='variant'])>0 or string-length($w/tei:fs/tei:f[@name='comment'])>0">
+                <xsl:when test="string-length($w/tei:fs/tei:f[@name='pos'])>0 or string-length($w/tei:fs/tei:f[@name='lemma'])>0 or string-length($w/tei:fs/tei:f[@name='translation'])>0 or string-length($w/tei:fs/tei:f[@name='variant'])>0 or string-length($w/tei:fs/tei:f[@name='comment']) > 0 or string-length($w/tei:fs/tei:f[@name='informant'])>0">
                     <xsl:attribute name="data-toggle">tooltip</xsl:attribute></xsl:when>
                 <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
@@ -157,33 +157,37 @@ version="2.0">
         </xsl:for-each>
     </xsl:variable> 
     
-    <span class="phr sample-text-tooltip sample-text-variant" data-toggle="tooltip" data-html="true" data-placement="top" href="#">
-    <xsl:attribute name="title">
+    <span class="phr sample-text-tooltip sample-text-variant" data-html="true" data-placement="top" href="#">
+    <xsl:value-of select="'('"/>
+   <!-- <xsl:attribute name="title">
         <xsl:if test="$variants">&lt;span class="spTrans"&gt;Alternative form:&lt;/span&gt;&#160;<xsl:value-of select="$variants-value"/>&lt;br/&gt;</xsl:if>  
         <xsl:if test="count($variants//tei:f[@name='informant'])&gt;0">&lt;span class="spTrans"&gt;Alternative form informant:&lt;/span&gt;&#160;<xsl:value-of select="string-join(distinct-values($variants//tei:f[@name='informant']), ', ')"/></xsl:if>
-    </xsl:attribute>
-    <xsl:for-each select="$choice/tei:seg[1]/*">
-        <xsl:choose>
-            <xsl:when test="./name() = 'w'">
-                <xsl:variable select="position()" name="position"/>
-                <xsl:sequence select="acdh:word-block(., $mode, $position, $highLightIdentifier)"></xsl:sequence>
-            </xsl:when>
-            <xsl:when test="./name() = 'phr'">
-                <xsl:for-each select="./*">
-                    <xsl:choose>
-                        <xsl:when test="name() = 'w'">
-                            <xsl:variable select="position()" name="position"/>
-                            
-                            <xsl:sequence select="acdh:word-block(., $mode, $position, $highLightIdentifier)"></xsl:sequence>
-                        </xsl:when>
-                        <xsl:otherwise><xsl:apply-templates select="." /></xsl:otherwise>                        
-                    </xsl:choose>
-                </xsl:for-each>
-            </xsl:when>
-            <xsl:otherwise><xsl:apply-templates select="." /></xsl:otherwise>
-        </xsl:choose>
-    </xsl:for-each>
-    </span>
+    </xsl:attribute>-->
+    <xsl:for-each select="$choice/tei:seg">
+        <xsl:for-each select="./*">
+            <xsl:choose>
+                <xsl:when test="./name() = 'w'">
+                    <xsl:variable select="position()" name="position"/>
+                    <xsl:sequence select="acdh:word-block(., $mode, $position, $highLightIdentifier)"></xsl:sequence>
+                </xsl:when>
+                <xsl:when test="./name() = 'phr'">
+                    <xsl:for-each select="./*">
+                        <xsl:choose>
+                            <xsl:when test="name() = 'w'">
+                                <xsl:variable select="position()" name="position"/>
+                                
+                                <xsl:sequence select="acdh:word-block(., $mode, $position, $highLightIdentifier)"></xsl:sequence>
+                            </xsl:when>
+                            <xsl:otherwise><xsl:apply-templates select="." /></xsl:otherwise>                        
+                        </xsl:choose>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise><xsl:apply-templates select="." /></xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
+        <xsl:if test="position() != last()"> / </xsl:if>
+        
+    </xsl:for-each><xsl:value-of select="')'"/></span>
     <xsl:if test="
         not($choice/following-sibling::*[1]/name() = 'pc') and
         not(matches($choice/following-sibling::tei:w[1]/tei:fs/tei:f[@name='wordform'], '^\W+$'))">

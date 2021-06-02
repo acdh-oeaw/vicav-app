@@ -51,6 +51,8 @@ var containerCount = 0;
 var lastTextPanelID = '';
 var panelIDs =[];
 var globalPreservePanel = -1;
+var uiVersion = "@version@";
+var dataVersion = "@data-version@";
 
 /*
 To create a new Version
@@ -1731,7 +1733,11 @@ function () {
             i.onload = function(){
                 if (this.naturalWidth > this.naturalHeight) {
                     $(this).addClass('landscape');
-                    $(this).attr('style', $(this).attr('style') + 'margin-left: -' + this.width / 4 + 'px;');
+                    if ($(this).attr('style') !== undefined) {
+                        $(this).attr('style', $(this).attr('style') + '; margin-left: -' + this.width / 4 + 'px;');
+                    } else {
+                        $(this).attr('style', 'margin-left: -' + this.width / 4 + 'px;');
+                }
                 }
                 if (this.naturalWidth < this.naturalHeight) {
                     $(this).addClass('portrait');
