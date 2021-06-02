@@ -1155,14 +1155,14 @@ function execDictQuery_ajax(query_, idSuffix_) {
 }
 
 function fillWordSelector(q_, dictInd_, idSuffix_) {
-    $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
-
     /*
     if (q_.length == 0) {
         q_ = '.*';
     }
     */
     if (q_.length > 1) {
+      $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
+
       if (q_.length > 1 && q_.indexOf(' ') === -1) {
           q_ += '.*'
       }
