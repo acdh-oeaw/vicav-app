@@ -146,6 +146,7 @@ function onSamplesMapClick(e) {
 
 function onDictMapClick(e) {
     //execSampleQuery('vicav_samples', e.layer.options.id, 'sampletext_01.xslt');
+    console.log(e.layer.options.id);
     if (e.layer.options.id == 'dict_tunis') {
         getText('TUNICO DICTIONARY', 'dictFrontPage_Tunis', 'vicavTexts.xslt');
     }
@@ -1316,12 +1317,36 @@ function execDictQuery_tei(idSuffix_) {
 
 function execCrossDictQuery(dicts_, query_) {
     //qs = './dicts_api?query=' + query_ + '&dicts=dc_tunico,dc_acm_baghdad_eng_publ&xslt=dicts_cross_query_001.xslt';
-    if (query_.indexOf("=") == -1) {
-            query_ = 'any="' + query_ + '"';
-        }
-
+    //*****************************************************
+    //*** root=ktb & pos=verb  --> root=ktb , pos=verb ****
+    //*****************************************************
     if (query_.indexOf("&") > 0) {
-      query_ = query_.replace(/\&/, ',');
+       query_ = query_.replace(/\&/, ',');
+    }
+
+    //*****************************************************
+    //*** adds a field identifier if there is none ********
+    //*****************************************************
+    var queries = query_.split(',');
+    for (i in queries) {
+       if (queries[i].indexOf("=") == -1) {
+          queries[i] = 'any="' + queries[i] + '"';
+       }                                       }
+    /*
+    for (var i = 0; i < queries.length; i++) {
+       if (queries[i].indexOf("=") == -1) {
+          queries[i] = 'any="' + queries[i] + '"';
+       }
+    }
+    */
+
+    query_ = '';
+    for (var i = 0; i < queries.length; i++) {
+       if (i == 0) {
+         query_ = queries[0];
+       } else {
+         query_ = query_ + ',' + queries[1];
+       }
     }
 
     qs = './dicts_api?query=' + query_ + '&dicts=' + dicts_ + '&xslt=dicts_cross_query_001.xslt';
@@ -1406,24 +1431,54 @@ function adjustNav(id_, activateID_) {
     changeURLMapParameter(id_);
 }
 
+function openDictFront_Damascus() {
+    //createNewDictQueryPanel('dc_apc_eng_publ', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc, defaultFields);
+    getText('DAMASCUS DICTIONARY', 'dictFrontPage_Damascus', 'vicavTexts.xslt');
+}
+
 function openDict_Damascus() {
     createNewDictQueryPanel('dc_apc_eng_publ', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc, defaultFields);
+    //getText('DAMASCUS DICTIONARY', 'dictFrontPage_Damascus', 'vicavTexts.xslt');
+}
+
+function openDictFront_Tunis() {
+    //createNewDictQueryPanel('dc_tunico', 'TUNICO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
+    getText('TUNICO DICTIONARY', 'dictFrontPage_Tunis', 'vicavTexts.xslt');
 }
 
 function openDict_Tunis() {
     createNewDictQueryPanel('dc_tunico', 'TUNICO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
+    //getText('TUNICO DICTIONARY', 'dictFrontPage_Tunis', 'vicavTexts.xslt');
+}
+
+function openDictFront_Baghdad() {
+    //createNewDictQueryPanel('dc_acm_baghdad_eng_publ', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_baghdad, baghdadFields);
+    getText('BAGHDAD DICTIONARY', 'dictFrontPage_Baghdad', 'vicavTexts.xslt');
 }
 
 function openDict_Baghdad() {
     createNewDictQueryPanel('dc_acm_baghdad_eng_publ', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_baghdad, baghdadFields);
+    //getText('BAGHDAD DICTIONARY', 'dictFrontPage_Baghdad', 'vicavTexts.xslt');
+}
+
+function openDictFront_Cairo() {
+    //createNewDictQueryPanel('dc_arz_eng_publ', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
+    getText('CAIRO DICTIONARY', 'dictFrontPage_Cairo', 'vicavTexts.xslt');
 }
 
 function openDict_Cairo() {
     createNewDictQueryPanel('dc_arz_eng_publ', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
+    //getText('CAIRO DICTIONARY', 'dictFrontPage_Cairo', 'vicavTexts.xslt');
+}
+
+function openDictFront_MSA() {
+    //createNewDictQueryPanel('dc_ar_en_publ', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa, MSAFields);
+    getText('MSA DICTIONARY', 'dictFrontPage_MSA', 'vicavTexts.xslt');
 }
 
 function openDict_MSA() {
     createNewDictQueryPanel('dc_ar_en_publ', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa, MSAFields);
+    //getText('MSA DICTIONARY', 'dictFrontPage_MSA', 'vicavTexts.xslt');
 }
 
 
@@ -1706,11 +1761,11 @@ function () {
     /* ******************************** */
     /* ****  DICTIONARY QUERIES ******* */
     /* ******************************** */
-    $(document).on("click", '#liVicavDict_Tunis', function () { openDict_Tunis(); });
-    $(document).on("click", '#liVicavDict_Damascus', function () { openDict_Damascus(); });
-    $(document).on("click", '#liVicavDict_Baghdad', function () { openDict_Baghdad(); });
-    $(document).on("click", '#liVicavDict_Cairo', function () { openDict_Cairo(); });
-    $(document).on("click", '#liVicavDict_MSA', function () { openDict_MSA(); });
+    $(document).on("click", '#liVicavDict_Tunis', function () { openDictFront_Tunis(); });
+    $(document).on("click", '#liVicavDict_Damascus', function () { openDictFront_Damascus(); });
+    $(document).on("click", '#liVicavDict_Baghdad', function () { openDictFront_Baghdad(); });
+    $(document).on("click", '#liVicavDict_Cairo', function () { openDictFront_Cairo(); });
+    $(document).on("click", '#liVicavDict_MSA', function () { openDictFront_MSA(); });
 
     /* ********************************************* */
     /* ****  DICTIONARY Auto Complete Events ******* */
