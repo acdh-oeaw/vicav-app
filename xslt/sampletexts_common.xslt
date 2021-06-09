@@ -45,7 +45,14 @@ version="2.0">
             </xsl:when>
             <xsl:when test="./name() = 'phr'">
                 <xsl:for-each select="./*">
-                    <xsl:sequence select="acdh:word-block(., 'feature', $position, $ana)" />                    
+                    <xsl:choose>
+                        <xsl:when test="./name() = 'choice'">
+                            <xsl:sequence select="acdh:choice-block(., 'feature', $ana)" />
+                        </xsl:when>
+                        <xsl:otherwise>                        
+                            <xsl:sequence select="acdh:word-block(., 'feature', $position, $ana)" />                    
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:for-each>
             </xsl:when>
             <xsl:when test="./name() = 'choice'">
