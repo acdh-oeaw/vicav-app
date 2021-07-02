@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "VICAV Dictionary of arabic varieties",
   "main": "index.js",
-  "engines": {
-    "basex": "9.5.2",
-    "saxon": "10.3"
-  },
   "directories": {
     "doc": "docs"
   },
