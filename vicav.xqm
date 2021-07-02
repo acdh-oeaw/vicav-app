@@ -614,7 +614,7 @@ let $ress := <results xmlns="http://www.tei-c.org/ns/1.0">{$results}</results>
 let $sReturn := xslt:transform-text($ress, $style)
 return
   $sReturn
-  (: $ress :)
+  (: $query :)
 };
 
 declare
