@@ -1169,7 +1169,7 @@ function vicav:get_feature_markers() {
                 <r type='geo'>    {$item/@xml:id}
                     <loc>{$item//tei:geo/text()}</loc>
                     <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc>
-                    <alt>{$item//tei:head[1]/tei:name[1]/text()}</alt>
+                    <alt>{($item//tei:head[1]/tei:name[1]/text(), $item//tei:settlement/tei:name[@xml:lang="en"][1]/text())[1]}</alt>
                     <freq>1</freq>
                 </r>
                 else ''

@@ -156,6 +156,7 @@ function insertFeatureMarkers() {
                 cnt = cnt + 1;
                 sLoc = $(this).find('loc').text();
                 sAlt = $(this).find('alt').text();
+                console.log(sLoc, sAlt)
                 //sLocName = $(this).find('locName').text();
                 sID = $(this).attr('xml:id');
                 
@@ -168,6 +169,7 @@ function insertFeatureMarkers() {
                 }
 
                 sCoords = parseCoords(sLoc)
+                console.log(sCoords)
                 sCoordNS = trim(normalizeLocCoord(sCoords[0]));
                 console.log(sCoordNS);
                 sCoordWE = trim(normalizeLocCoord(sCoords[1]));
@@ -182,14 +184,19 @@ function insertFeatureMarkers() {
                 //sQuery = 'profile:' + sTooltip + '';
                 //marker = L.marker([v1, v2], { alt: sAlt, title: sAlt, id: sID, type: 'feature' }).bindTooltip(sTooltip);
                 var coord = splitCoords(sLoc, sAlt);
-                //console.log('(' + coord.lat + ') (' + coord.lng + ')');
+                console.log('(' + coord.lat + ') (' + coord.lng + ')');
 
-                var dmslat = parseStringToDMS(coord.lat);
-                var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
+                if (coord.lat.match(/\d+\.\d+/) && coord.lng.match(/\d+\.\d+/)) {
+                    var declat = coord.lat
+                    var declng = coord.lng
+                }
+                else {
+                    var dmslat = parseStringToDMS(coord.lat);
+                    var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
 
-                var dmslng = parseStringToDMS(coord.lng);
-                var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
-
+                    var dmslng = parseStringToDMS(coord.lng);
+                    var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
+                }
                 marker = L.marker([declat, declng], { alt: sAlt, id: sID, type: 'feature' }).bindTooltip(sAlt);
                 fgFeatureMarkers.addLayer(marker);
                 //oms.addMarker(marker);
