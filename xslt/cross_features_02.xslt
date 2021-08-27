@@ -9,6 +9,7 @@
     <xsl:param name="filter-words"></xsl:param>
     <xsl:param name="filter-features"></xsl:param>
     <xsl:param name="filter-translations"></xsl:param>
+    <xsl:param name="filter-comments"></xsl:param>
 
     <xsl:template match="/items">
         <xsl:variable name="all-features" select="distinct-values(//*[@type= 'featureSample']/@ana)" />
@@ -20,7 +21,11 @@
         <xsl:variable name="results" >
             <xsl:for-each select="$features-shown">
                 <xsl:variable name="ana" select="."/>
-                <xsl:sequence select="$root/item//tei:cit[@type='featureSample' and contains-token(@ana,$ana) and (.//*[@type='translation' and contains(., $filter-translations)])]">
+                <xsl:sequence select="$root/item//tei:cit[
+                    @type='featureSample' and contains-token(@ana,$ana) and 
+                    (.//*[@type='translation' and contains(., $filter-translations)]) and
+                    (.//tei:f[@name='comment' and contains(., $filter-comments)])
+                    ]">
                     
                 </xsl:sequence>
             </xsl:for-each>
