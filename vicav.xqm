@@ -318,14 +318,15 @@ declare function vicav:and($args as xs:string+) as xs:string {
     return $out
 };  
 
-declare function vicav:explore-data(
+
+declare function vicav:explore-query(
     $collection as xs:string,
     $location as xs:string*, 
     $word as xs:string*,
     $person as xs:string*, 
     $age as xs:string*, 
     $sex as xs:string*
-) as element() {
+) as xs:string {
     let $ps := for $p in tokenize($person, ',')
             return "'" || $p || "'" 
 
@@ -389,6 +390,19 @@ declare function vicav:explore-data(
 
     let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || $collection ||'")//tei:TEI' 
         || $full_tei_query
+
+    return $query
+};
+
+declare function vicav:explore-data(
+    $collection as xs:string,
+    $location as xs:string*, 
+    $word as xs:string*,
+    $person as xs:string*, 
+    $age as xs:string*, 
+    $sex as xs:string*
+) as element() {
+    let $query := vicav:explore-query($collection, $location, $word, $person, $age, $sex)
     let $results := xquery:eval($query)
 
     let $ress := 
@@ -411,6 +425,7 @@ declare
 %rest:query-param("location", "{$location}")
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:query-param("word", "{$word}")
+%rest:query-param("comment", "{$comment}")
 %rest:query-param("features", "{$features}")
 %rest:query-param("translation", "{$translation}")
 %rest:query-param("highlight", "{$highlight}")
@@ -426,6 +441,7 @@ function vicav:explore_samples(
     $word as xs:string*,
     $features as xs:string*,
     $translation as xs:string*, 
+    $comment as xs:string*,
     $person as xs:string*, 
     $age as xs:string*, 
     $sex as xs:string*, 
@@ -447,6 +463,19 @@ function vicav:explore_samples(
             else ""
 
     let $trans_filter := if (empty($translation)) then '' else $translation
+    let $comment_filter := if (empty($comment)) then '' else $comment
+
+ (:   let $ress := vicav:explore-query(
+        'vicav_' || $resourcetype || vicav:get_project_db(),
+        $location, 
+        $word,
+        $person, 
+        $age, 
+        $sex
+    )
+
+    return $ress
+    :)
 
     let $ress1 := vicav:explore-data(
         'vicav_' || $resourcetype || vicav:get_project_db(),
@@ -463,13 +492,14 @@ function vicav:explore_samples(
         "highlight":string($word),
         "filter-words": string($word), 
         "filter-features":$filter_features, 
-        "filter-translations": $trans_filter
+        "filter-translations": $trans_filter,
+        "filter-comments": $comment_filter
     })
 
     return
         (:<div type="lingFeatures">{$sHTML}</div>:)
         (:$ress1:)
-        $sHTML
+        $sHTML 
 };
 
 declare
