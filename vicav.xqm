@@ -1194,7 +1194,6 @@ declare
 
 function vicav:get_feature_markers() {
     let $entries := collection('vicav_lingfeatures' || vicav:get_project_db())/descendant::tei:TEI
-
     let $out :=
         for $item in $entries
             order by $item/@xml:id
@@ -1227,7 +1226,6 @@ declare
 %output:method("xml")
 function vicav:get_data_list($type as xs:string*) {
     let $type := if (empty($type) or $type = '') then 'all' else $type
-    
     let $items := if ($type = 'all') then
         for $c in ('vicav_profiles', 'vicav_samples', 'vicav_lingfeatures') return collection($c)/descendant::tei:TEI 
     else
