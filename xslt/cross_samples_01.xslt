@@ -95,7 +95,7 @@
                                             <td class="tdFeaturesRightTarget">
                                                 <a class="show-sentence" title="Show full sample text" href="#">
                                                     <xsl:attribute name="data-sampletext">
-                                                        <xsl:value-of select=".//tei:TEI/@xml:id" />
+                                                        <xsl:value-of select="./descendant::tei:TEI/@xml:id" />
                                                     </xsl:attribute>
                                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                                 </a>

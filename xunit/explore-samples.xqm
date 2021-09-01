@@ -51,7 +51,7 @@ declare %unit:test function test:explore-samples-locations() {
     "",
     "", 
     "0,100", 
-    "")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01', 'test_sample_02')
+    "")/descendant::tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01', 'test_sample_02')
  )
 };
 
@@ -62,7 +62,7 @@ declare %unit:test function test:explore-samples-word() {
     "ṯūm,b*tin*",
     "", 
     "", 
-    "")//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01', 'test_sample_02')
+    "")/descendant::tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_01', 'test_sample_02')
   )
 };
 
@@ -73,7 +73,7 @@ declare %unit:test function test:explore-samples-gender-age-only() {
       (),
       (), 
       "0,100", 
-      "m,f")//tei:TEI/@xml:id/data(), ('test_sample_01', 'test_sample_02')
+      "m,f")/descendant::tei:TEI/@xml:id/data(), ('test_sample_01', 'test_sample_02')
   )
 };
 
@@ -85,7 +85,7 @@ declare %unit:test function test:explore-samples-locations-persons-data() {
       (),
       "Test2", 
       "0,100", 
-      ())//tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_02')
+      ())/descendant::tei:TEI/@xml:id/data(), ('tunis2_sample_01', 'test_sample_02')
   )
 };
 
@@ -97,7 +97,7 @@ declare %unit:test function test:explore-samples-person-only-data() {
       (),
       "Test1", 
       "0,100", 
-      "m,f")//tei:TEI/@xml:id/data(), ('test_sample_01')
+      "m,f")/descendant::tei:TEI/@xml:id/data(), ('test_sample_01')
   )
 };
 
@@ -108,7 +108,7 @@ declare %unit:test function test:explore-lingfeatures-locations-data() {
       (),
       (),
       (), 
-      ())//tei:TEI/@xml:id/data(), ('vicav_lingfeatures_test')
+      ())/descendant::tei:TEI/@xml:id/data(), ('vicav_lingfeatures_test')
   )
 };
 
@@ -119,6 +119,6 @@ declare %unit:test function test:explore-lingfeatures-data() {
       (),
       (),
       "0,100", 
-      ())//tei:TEI/@xml:id/data(), ('vicav_lingfeatures_test', 'vicav_lingfeatures_tunis2')
+      ())/descendant::tei:TEI/@xml:id/data(), ('vicav_lingfeatures_test', 'vicav_lingfeatures_tunis2')
   )
 };

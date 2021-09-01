@@ -1,68 +1,37 @@
 <xsl:stylesheet 
-   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-   xmlns="http://www.w3.org/1999/xhtml" 
-   xmlns:tei="http://www.tei-c.org/ns/1.0"
-   version="2.0">
-   
-    <xsl:output method="html"/>
-    <xsl:template match="/">
-        <div>                       
-            <!-- <div class="h2Profile"> -->
-                <table class="tbHeader">
-                    <tr><td><h2><xsl:value-of select="//tei:head"/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
-                </table>            
-                
-            <!-- </div> -->
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+    xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:tei="http://www.tei-c.org/ns/1.0"
+    version="2.0">    
+    <xsl:include href="sampletexts_common.xslt"/>
+
+    <xsl:strip-space elements="*"/>
+    <xsl:preserve-space elements=""/>
+    <xsl:template match="tei:TEI">        
+        <div>
+            <table class="tbHeader">
+                <tr><td><h2><xsl:value-of select="/tei:text/tei:body/tei:head"/></h2></td><td class="tdTeiLink">{teiLink}</td><td class="tdPrintLink">
+                <a href="#" data-print="true" class="aTEIButton"><xsl:attribute name="data-sampletext"><xsl:value-of 
+                    select="./@xml:id"/></xsl:attribute>Print</a></td></tr>
+            </table>
             
-            <p>By&#160;<i><xsl:value-of select="//tei:author"/>
-                <xsl:if test="//tei:publicationStmt/tei:date">&#160;(<xsl:value-of select="//tei:publicationStmt/tei:date"/>)</xsl:if>
-            </i></p>
-        
-            <xsl:if test="string-length(//tei:teiHeader/tei:profileDesc/tei:particDesc/tei:p[1])&gt;0">
-                <xsl:for-each select="//tei:teiHeader/tei:profileDesc/tei:particDesc/tei:p">
+            <p xml:space="preserve">By <i><xsl:value-of select="/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/><xsl:if test="/tei:teiHeader/tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="replace(/tei:teiHeader/tei:revisionDesc/tei:change[1]/@when, 'T.*', '')" />)</xsl:if></i></p>
+            <ul id="informants">
+            <xsl:for-each select="/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person">
+                <li xml:space="preserve">Informant ID: 
+                    <i><xsl:value-of select="."/></i><xsl:if test="@sex">, Sex: <i><xsl:value-of select="@sex"/></i></xsl:if><xsl:if test="@age">, Age: <i><xsl:value-of select="@age"/></i></xsl:if>
+                </li>
+            </xsl:for-each>
+            </ul>
+            
+            <xsl:if test="string-length(/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:p[1])&gt;0">
+                <xsl:for-each select="/tei:TEIHeader/tei:profileDesc/tei:particDesc/tei:p">
                     <xsl:apply-templates/>
                 </xsl:for-each>
                 <hr/>
             </xsl:if>
-        
-            <xsl:for-each select="//tei:div[@type='sampleText']/tei:p/tei:s | //tei:div[@type='corpusText']/tei:u">
-                <span class="spSentence">
-                    <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
-                    
-                        <xsl:attribute name="title">                    
-                            <xsl:variable name="nn" select="@n"/>
-                            <xsl:value-of select="//tei:s[@type='translationSentence'][@n=$nn] | //tei:div[@type='dvTranslations']/tei:u[@n=$nn]"/>
-                        </xsl:attribute>
-                        <i class="fa fa-commenting-o" aria-hidden="true"></i>
-                    </span>
-                
-                    <xsl:for-each select="tei:w | tei:c | tei:seg">
-                        <!-- <span >
-                            <xsl:attribute name="onmouseover">omi('')</xsl:attribute>
-                            <xsl:attribute name="onmouseout">omo()</xsl:attribute>
-                        
-                        </span>
-                         -->
-                    
-                        <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
-                            <xsl:attribute name="title">
-                                <xsl:if test="string-length(tei:fs/tei:f[@name='pos'])&gt;0">&lt;span class="spPos"&gt;POS:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='pos']"/>&lt;br/&gt;</xsl:if>
-                                <xsl:if test="string-length(tei:fs/tei:f[@name='lemma'])&gt;0">&lt;span class="spLemma"&gt;Lemma:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='lemma']"/>&lt;br/&gt;</xsl:if>                            
-                                <xsl:if test="string-length(tei:fs/tei:f[@name='translation'])&gt;0">&lt;span class="spTrans"&gt;English:&lt;/span&gt;&#160;<xsl:value-of select="tei:fs/tei:f[@name='translation']"/></xsl:if>                                                        
-                            </xsl:attribute>
-                            <xsl:if test="name()='w'"><xsl:value-of select="tei:fs/tei:f[@name='wordform']"/></xsl:if>
-                        </span>
-                    
-                        <xsl:if test="name()='c'">
-                            <xsl:value-of select="."/>
-                        </xsl:if>
-                    
-                        <xsl:if test="name()='seg'">
-                            <xsl:value-of select="."/>
-                        </xsl:if>               
-                    </xsl:for-each>
-                </span>
-            </xsl:for-each>
+
+            <xsl:apply-templates select="/tei:text/tei:body/tei:div[@type='sampleText']/tei:p/tei:s"/>
         </div> 
     </xsl:template>
     
