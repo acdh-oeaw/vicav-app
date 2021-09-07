@@ -10,28 +10,28 @@
     <xsl:template match="tei:TEI">        
         <div>
             <table class="tbHeader">
-                <tr><td><h2><xsl:value-of select="/tei:text/tei:body/tei:head"/></h2></td><td class="tdTeiLink">{teiLink}</td><td class="tdPrintLink">
+                <tr><td><h2><xsl:value-of select="./tei:text/tei:body/tei:head"/></h2></td><td class="tdTeiLink">{teiLink}</td><td class="tdPrintLink">
                 <a href="#" data-print="true" class="aTEIButton"><xsl:attribute name="data-sampletext"><xsl:value-of 
                     select="./@xml:id"/></xsl:attribute>Print</a></td></tr>
             </table>
             
-            <p xml:space="preserve">By <i><xsl:value-of select="/tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/><xsl:if test="/tei:teiHeader/tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="replace(/tei:teiHeader/tei:revisionDesc/tei:change[1]/@when, 'T.*', '')" />)</xsl:if></i></p>
+            <p xml:space="preserve">By <i><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/><xsl:if test="./tei:teiHeader/tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="replace(./tei:teiHeader/tei:revisionDesc/tei:change[1]/@when, 'T.*', '')" />)</xsl:if></i></p>
             <ul id="informants">
-            <xsl:for-each select="/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person">
+            <xsl:for-each select="./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person">
                 <li xml:space="preserve">Informant ID: 
                     <i><xsl:value-of select="."/></i><xsl:if test="@sex">, Sex: <i><xsl:value-of select="@sex"/></i></xsl:if><xsl:if test="@age">, Age: <i><xsl:value-of select="@age"/></i></xsl:if>
                 </li>
             </xsl:for-each>
             </ul>
             
-            <xsl:if test="string-length(/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:p[1])&gt;0">
-                <xsl:for-each select="/tei:TEIHeader/tei:profileDesc/tei:particDesc/tei:p">
+            <xsl:if test="string-length(./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:p[1])&gt;0">
+                <xsl:for-each select="./tei:TEIHeader/tei:profileDesc/tei:particDesc/tei:p">
                     <xsl:apply-templates/>
                 </xsl:for-each>
                 <hr/>
             </xsl:if>
 
-            <xsl:apply-templates select="/tei:text/tei:body/tei:div[@type='sampleText']/tei:p/tei:s"/>
+            <xsl:apply-templates select="./tei:text/tei:body/tei:div[@type='sampleText']/tei:p/tei:s"/>
         </div> 
     </xsl:template>
     

@@ -1192,10 +1192,12 @@ declare
 
 function vicav:get_feature_markers() {
     let $entries := collection('vicav_lingfeatures' || vicav:get_project_db())/descendant::tei:TEI
+
+
     let $out :=
         for $item in $entries
             order by $item/@xml:id
-            let $loc := replace($item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
+            let $loc := replace($item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
             let $alt := if ($item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person) then $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/text() || '/' || $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@sex || '/' || $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@age else ''
 
             return
@@ -1228,14 +1230,6 @@ function vicav:get_data_list($type as xs:string*) {
     else
         collection('vicav_' || $type || vicav:get_project_db())/descendant::tei:TEI
 
-    let $typestring := switch($type)
-        case 'lingfeatures' return
-            'data-featurelist'
-        case 'profiles' return
-            'data-profile'
-        default return
-            'data-sampletext'
-
     let $out := for $region in distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:region)
         order by $region 
         return <div class="region"><h3>{$region}</h3> {
@@ -1247,6 +1241,13 @@ function vicav:get_data_list($type as xs:string*) {
                 {if ($type = 'all') then
                     for $cat in distinct-values($city-items/tei:teiHeader/tei:profileDesc/tei:taxonomy/tei:category/tei:catDesc/text()) 
                         let $cat-items := $city-items[./tei:teiHeader/tei:profileDesc/tei:taxonomy/tei:category/tei:catDesc/text() = $cat]
+                        let $typestring := switch($cat)
+                                    case 'liguistic feature list' return
+                                        'data-featurelist'
+                                    case 'linguistic profile' return
+                                        'data-profile'
+                                    default return
+                                        'data-sampletext'
                         return (element h6 {
                             concat($cat, ': ', count($cat-items)) 
                         },
@@ -1263,8 +1264,16 @@ function vicav:get_data_list($type as xs:string*) {
                             
                         )
                     
+                (: Handle single type data list :)
                 else for $item in $city-items
                                 order by $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/text()
+                                let $typestring := switch($type)
+                                    case 'lingfeatures' return
+                                        'data-featurelist'
+                                    case 'profiles' return
+                                        'data-profile'
+                                    default return
+                                        'data-sampletext'
                                 return element p {
                                     element a {
                                         attribute href { '#' },
