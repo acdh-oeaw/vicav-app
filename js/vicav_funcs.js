@@ -1925,6 +1925,10 @@ function () {
         getDataList('profiles')
     });
 
+    $(document).on('mousedown', "#liDataListAll", function (event) {
+        getDataList('')
+    });
+    
     /* ******************************** */
     /* ****  CORPUS ******************* */
     /* ******************************** */
@@ -2281,4 +2285,3 @@ $(".cookie-accept-btn").on('click', function(){
 });
 
 /** COOKIES END **/
-
