@@ -150,6 +150,15 @@ do echo "Directory $d:"
      find "$d" -type f -and -name '*.xml' -exec sed -i "s~\(</teiHeader>\)~$revisionDesc\\n\1~g" {} \;
    fi
 done
+#------- copy all sound files into the "/sounds" directory in BaseX' static directory
+#------- this solves problems with MacOS Safari which wants the audio files in chunks
+#------- else it claims they are not available/broken
+echo "copying sound files from vicav_content to BaseX static/sound"
+mkdir -p ${BUILD_DIR:-../webapp/static}/sound
+for d in $(ls -d vicav_*)
+do echo "Directory $d:"
+   find "$d" -type f -and \( -name '*.m4a' \) -exec cp -v {} ${BUILD_DIR:-../webapp/static}/sound \;
+done
 git checkout master
 popd
 if [ "$onlytags"x = 'truex' ]
