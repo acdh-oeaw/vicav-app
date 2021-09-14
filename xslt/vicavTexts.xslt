@@ -277,9 +277,9 @@
                   <xsl:value-of select="tei:cell[3]"/>&#160;<i>(<xsl:value-of select="tei:cell[4]"/>)</i>
                   <audio controls="controls" preload="none" class="audio">
                       <source type="audio/mp4">
-                          <xsl:attribute name="src">sound/<xsl:value-of select='tei:cell[5]/tei:ptr/@target'/></xsl:attribute>
+                          <xsl:attribute name="src">/static/<xsl:value-of select='tei:cell[5]/tei:ptr/@target'/></xsl:attribute>
                       </source>
-                      <a><xsl:attribute name="href">sound/<xsl:value-of select="tei:cell[5]/tei:ptr/@target"/></xsl:attribute>
+                      <a><xsl:attribute name="href">/static/<xsl:value-of select="tei:cell[5]/tei:ptr/@target"/></xsl:attribute>
                           </a>
                   </audio>
               </div>
