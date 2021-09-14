@@ -6,17 +6,23 @@
   "directories": {
     "doc": "docs"
   },
+  "comments": {
+      "bootstrap": "bootstrap 4.0.0 compiled into fundament.min.js",
+      "jQuery": "bootstrap 4.0.0 is incompatibla with any jQuery >= 3.5.0",
+      "fundament": "fundament.min.js v1.2.1 is used but not the fundament.min.css.",
+      "fundament_1": "fundament.min.css v1.2.1 breaks the CSS"
+  },
   "dependencies": {
     "blueimp-gallery": "^3.2.0",
-    "bootstrap": "^3.3.7",
-    "jquery": "^3.1.0",
+    "bootstrap": "4.0.0",
+    "jquery": "3.4.1",
     "jquery-ui": "^1.12.1",
     "leaflet": "^1.2.0",
     "popper.js": "^1.12.5"
   },
   "devDependencies": {
     "chai-colors": "^1.0.1",
-    "cypress": "^4.3.0"
+    "cypress": "^4.12.1"
   },
   "scripts": {
     "cypress:open": "cypress open"
