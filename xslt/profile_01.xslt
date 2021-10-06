@@ -16,9 +16,11 @@
             
             <div class="dvImgProfile">
                 <xsl:if test="//tei:head/tei:figure/tei:graphic">
-                     <img>
-                        <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure/tei:graphic/@url"/></xsl:attribute>
-                    </img>
+                    <xsl:for-each select="//tei:head/tei:figure/tei:graphic">
+                        <img>
+                            <xsl:attribute name="src">images/<xsl:value-of select="@url"/></xsl:attribute>
+                        </img>
+                    </xsl:for-each>
                     <xsl:if test="//tei:head/tei:figure/tei:head">
                         <div class="imgCaption">
                             <xsl:apply-templates select="//tei:head/tei:figure/tei:head"/>
