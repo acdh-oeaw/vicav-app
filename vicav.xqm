@@ -1197,22 +1197,25 @@ function vicav:get_data_list($type as xs:string*) {
         default return
             'data-sampletext'
 
-    let $out :=
-        for $city in distinct-values($items//tei:settlement/tei:name[@xml:lang="en"])
+    let $out := for $region in distinct-values($items//tei:region)
+        order by $region 
+        return <div class="region"><h3>{$region}</h3> {for $city in distinct-values($items[.//tei:region[./text() = $region]]//tei:settlement/tei:name[@xml:lang="en"])
             order by $city
-            let $sts := for $item in $items[.//tei:settlement/tei:name[@xml:lang="en"] = $city]
-                order by $item//tei:person[1]/text()
-                return element p {
-                    element a {
-                        attribute href { '#' },
-                        attribute {$typestring} {$item/@xml:id},
-                        text {$item//tei:person[1]/text()},
-                        text { string-join((' (Revision: ', replace($item//tei:revisionDesc/tei:change[1]/@when, 'T.*', ''), ')')) }
-                    }, element br {}
-                }
-
             return
-                <div><h4>{$city} ({count($items[.//tei:settlement/tei:name[@xml:lang="en"] = $city])})</h4>{$sts}</div> 
+                <div class="settlement"><h5>{$city} ({count($items[.//tei:settlement/tei:name[@xml:lang="en"] = $city])})</h5>
+                {for $item in $items[.//tei:settlement/tei:name[@xml:lang="en"] = $city]
+                                order by $item//tei:person[1]/text()
+                                return element p {
+                                    element a {
+                                        attribute href { '#' },
+                                        attribute {$typestring} {$item/@xml:id},
+                                        text {$item//tei:person[1]/text()},
+                                        text { string-join((' (Revision: ', replace($item//tei:revisionDesc/tei:change[1]/@when, 'T.*', ''), ')')) }
+                                    }, element br {}
+                                }
+                            
+                                }</div> 
+        }</div>
     return
         <div>Total: {count($items)}<br/>{$out}</div>
 };
