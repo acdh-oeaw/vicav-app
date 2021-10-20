@@ -379,7 +379,7 @@ declare function vicav:explore-query(
     else
         ""
 
-    let $loc_word_age_sex_q := if ($location_q != '' or $word_q != '') then vicav:and(($location_q, $word_q, $age_q, $sex_q)) else ''
+    let $loc_word_age_sex_q := if ($location_q != '' or $word_q != '') then vicav:and(($location_q, $word_q, $age_q, $sex_q)) else vicav:and(($age_q, $sex_q))
 
     let $full_tei_query := if ($person_q != '' and $location_q != '') then vicav:or(($person_q, $loc_word_age_sex_q)) else 
         vicav:and(($person_q, $loc_word_age_sex_q))
