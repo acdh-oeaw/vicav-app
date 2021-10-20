@@ -35,7 +35,7 @@ version="2.0">
                         <xsl:attribute name="title">
                             <xsl:value-of select=".//tei:cit[@type='translation']/tei:quote[@xml:lang='ar']"/>
                         </xsl:attribute>
-                        <i class="fa fa-commenting-o" aria-hidden="true"></i>
+                        <i class="fa fa-commenting-o" aria-hidden="true"><span/></i>
                     </span>
                 </xsl:if>
                 <xsl:sequence select="acdh:feature-sentence(./tei:quote, acdh:current-feature-ana(., ()))"/><xsl:text> </xsl:text>

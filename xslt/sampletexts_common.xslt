@@ -16,7 +16,9 @@ version="2.0">
                 <xsl:variable name="nn" select="@n"/>
                 <xsl:value-of select="(//tei:s[@type='translationSentence'][@n=$nn] | //tei:div[@type='dvTranslations']/tei:u[@n=$nn])[1]"/>
             </xsl:attribute>
-            <i class="fa fa-commenting-o" aria-hidden="true"></i>
+            <i class="fa fa-commenting-o" aria-hidden="true">
+                <span/>
+            </i>
         </span>
         <xsl:value-of select="' '" />
         <xsl:for-each select="./(tei:w | tei:c | tei:pc | tei:choice)">

@@ -20,18 +20,6 @@ function convertDMSToDD(degrees, minutes, seconds, direction) {
     return dd;
 }
 
-function coordToDD(co_) {
-    sdir = '';
-    if (co_.indexOf('W') !== -1) { sdir = 'W'; co_ = co_.replace(/′W/g, ""); }
-    if (co_.indexOf('N') !== -1) { sdir = 'N'; co_ = co_.replace(/′N/g, ""); }
-    if (co_.indexOf('S') !== -1) { sdir = 'S'; co_ = co_.replace(/′S/g, ""); }
-    if (co_.indexOf('E') !== -1) { sdir = 'E'; co_ = co_.replace(/′E/g, ""); }
-    s1 = co_.split("°");
-    //console.log(s);
-    //console.log("   " + s1[0] + ' # ' + s1[1] + ' # ' + sdir);
-    return convertDMSToDD(s1[0], s1[1], 0, sdir);
-}
-
 function splitCoords(s_, loc_) {
    var mem = s_;
    if (s_.indexOf("N ") == 0) { s_ = "N" + s_.substring(2); }
@@ -111,11 +99,13 @@ function normalizeLocCoord(s_) {
     return s_;
 }
 
-function parseCoords(coords_) {
+function parseDecCoords(coords_) {
     if (coords_.indexOf(',') !== -1) {
-        return coords_.split(",");
+        coords = coords_.split(",")
+        return [coords[0].replace(/\s+/g, ''), coords[1].replace(/\s+/g, '')];
     } else {
-        return coords_.split(" ");
+        coords = coords_.split(" ")
+        return [coords[0].replace(/\s+/g, ''), coords[1].replace(/\s+/g, '')];
     }
 }
 
@@ -156,43 +146,33 @@ function insertFeatureMarkers() {
                 cnt = cnt + 1;
                 sLoc = $(this).find('loc').text();
                 sAlt = $(this).find('alt').text();
-                //sLocName = $(this).find('locName').text();
+                sLocName = $(this).find('locName').text();
                 sID = $(this).attr('xml:id');
                 
-                /*
-                console.log(sLoc);
+                console.log(sLoc, sAlt, sLocName);
 
                 let sCnt = sID.replace(/^[\w-]+_?0?/, '')
                 if (sCnt && parseInt(sCnt) > 1) {
                     sAlt = sAlt + ' (' + sCnt + ')'
                 }
 
-                sCoords = parseCoords(sLoc)
-                sCoordNS = trim(normalizeLocCoord(sCoords[0]));
-                console.log(sCoordNS);
-                sCoordWE = trim(normalizeLocCoord(sCoords[1]));
-                console.log(sCoordWE);
-                dd1 = coordToDD(sCoordNS)
-                dd2 = coordToDD(sCoordWE);
-                r1 = dd1.toFixed(2);
-                r2 = dd2.toFixed(2);                             
-                */
+                if (sLoc.match(/\d+.\d+,? *\d+.\d+/)) {
+                    var coords = parseDecCoords(sLoc)
+                    var declat = coords[0]
+                    var declng = coords[1]
+                } else {
+                    var coord = splitCoords(sLoc, sAlt);
+                    //console.log('(' + coord.lat + ') (' + coord.lng + ')');
 
+                    var dmslat = parseStringToDMS(coord.lat);
+                    var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
 
-                //sQuery = 'profile:' + sTooltip + '';
-                //marker = L.marker([v1, v2], { alt: sAlt, title: sAlt, id: sID, type: 'feature' }).bindTooltip(sTooltip);
-                var coord = splitCoords(sLoc, sAlt);
-                //console.log('(' + coord.lat + ') (' + coord.lng + ')');
-
-                var dmslat = parseStringToDMS(coord.lat);
-                var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
-
-                var dmslng = parseStringToDMS(coord.lng);
-                var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
+                    var dmslng = parseStringToDMS(coord.lng);
+                    var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
+                }
 
                 marker = L.marker([declat, declng], { alt: sAlt, id: sID, type: 'feature' }).bindTooltip(sAlt);
                 fgFeatureMarkers.addLayer(marker);
-                //oms.addMarker(marker);
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -216,23 +196,22 @@ function insertSampleMarkers() {
                 sAlt = $(this).find('alt').text();
                 sID = $(this).attr('xml:id');
 
-                /*
-                sCoords = loc.split(" ");
-                sCoordNS = sCoords[0];
-                sCoordWE = sCoords[1];
-                dd1 = coordToDD(sCoordNS)
-                dd2 = coordToDD(sCoordWE);
-                r1 = dd1.toFixed(2);
-                r2 = dd2.toFixed(2);
-                */
-                var coord = splitCoords(sLoc, sAlt);
-                //console.log('(' + coord.lat + ') (' + coord.lng + ')');
+                
+                if (sLoc.match(/\d+.\d+,? *\d+.\d+/)) {
+                    var coords = parseDecCoords(sLoc)
+                    var declat = coords[0]
+                    var declng = coords[1]
+                } else {
+                    var coord = splitCoords(sLoc, sAlt);
+                    //console.log('(' + coord.lat + ') (' + coord.lng + ')');
 
-                var dmslat = parseStringToDMS(coord.lat);
-                var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
+                    var dmslat = parseStringToDMS(coord.lat);
+                    var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
 
-                var dmslng = parseStringToDMS(coord.lng);
-                var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
+                    var dmslng = parseStringToDMS(coord.lng);
+                    var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
+                }
+
 
                 marker = L.marker([declat, declng], { alt: sAlt, id: sID, type: 'sample' }).bindTooltip(sAlt);
                 fgSampleMarkers.addLayer(marker);                
@@ -272,15 +251,20 @@ function insertProfileMarkers() {
                 sType = $(this).attr('type');
                 sAlt = $(this).find('alt').text();
                 sID = $(this).attr('xml:id');
+                if (sLoc.match(/\d+.\d+,? *\d+.\d+/)) {
+                    var coords = parseDecCoords(sLoc)
+                    var declat = coords[0]
+                    var declng = coords[1]
+                } else {
+                    var coord = splitCoords(sLoc, sAlt);
+                    //console.log('(' + coord.lat + ') (' + coord.lng + ')');
 
-                var coord = splitCoords(sLoc, sAlt);
-                //console.log(sAlt + ' (' + coord.lat + ') (' + coord.lng + ')');
+                    var dmslat = parseStringToDMS(coord.lat);
+                    var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
 
-                var dmslat = parseStringToDMS(coord.lat);
-                var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
-
-                var dmslng = parseStringToDMS(coord.lng);
-                var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
+                    var dmslng = parseStringToDMS(coord.lng);
+                    var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
+                }
 
                 console.log('(' + declat + ') (' + declng + ')' + sAlt + ': ' + sType + ' (' +  sID +')');
                 if ((sType == 'tribe')||(sType == 'region')) {

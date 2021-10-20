@@ -1552,7 +1552,7 @@ function parseCurrentUrl(curUrl) {
                     var snippetID = pArgs[1];
                     var caption = pArgs[2];
                     var pVisiblity = pArgs[3];
-                    getFeatureOfLocation(caption, snippetID, 'features_common.xslt', pID_, pVisiblity, true);
+                    getFeatureOfLocation(caption, snippetID, 'features_01.xslt', pID_, pVisiblity, true);
                 } else
 
                 if (queryFunc == 'sampleQuery') {
