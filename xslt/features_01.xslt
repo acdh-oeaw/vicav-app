@@ -22,15 +22,15 @@
                 <p xml:space="preserve">By <i><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/><xsl:if test="./tei:teiHeader/tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="replace(./tei:teiHeader/tei:revisionDesc/tei:change[1]/@when, 'T.*', '')" />)</xsl:if></i></p>
                 
                 <ul id="informants"><xsl:for-each select="./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person"><li xml:space="preserve">Informant ID: <i><xsl:value-of 
-                    select="./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person"/></i><xsl:if 
-                    test="./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person/@sex">, Sex: <i><xsl:value-of 
-                    select="./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person/@sex"/></i></xsl:if><xsl:if 
-                    test="./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person/@age">, Age: <i><xsl:value-of 
-                    select="./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person/@age"/></i></xsl:if></li>
+                    select="."/></i><xsl:if 
+                    test="@sex">, Sex: <i><xsl:value-of 
+                    select="@sex"/></i></xsl:if><xsl:if 
+                    test="@age">, Age: <i><xsl:value-of 
+                    select="@age"/></i></xsl:if></li>
                     </xsl:for-each></ul>
                 
                 <table class="tbFeatures">
-                    <xsl:for-each select="./tei:text/tei:body/tei:div/tei:div[@type='featureGroup']">
+                    <xsl:for-each select="./tei:text/tei:body//tei:div[@type='featureGroup']">
                         <tr>
                             <td colspan="2" class="tdFeaturesHead"><xsl:apply-templates select="./tei:head"/></td>
                         </tr>
