@@ -138,9 +138,9 @@ function loadLocations($root, type) {
 		dataType: "xml",
 		success: function( xmlResponse ) {
 			var data = $( "location", xmlResponse ).map(function() {
-				if( $( "name", this ).text() !== "") {
+				if( $( "label", this ).text() !== "") {
 					return {
-						value: $( "name", this ).text(),
+						value: $( "label", this ).text(),
 						label: $("label", this).text()
 					};
 				}

@@ -4,7 +4,7 @@ describe('Bibliography', function() {
 	    cy.get('img.leaflet-marker-icon') // Wait until the initial markers appear.
 
 	    cy.get('img[alt^="Tunis"]').click({force: true});
-	    cy.contains('geo:Tunis,.*')
+	    cy.contains('geo:Tunis & .*')
 	    cy.get('.dvBibBook')
     })
 })
@@ -20,7 +20,7 @@ describe('Regional bibliography', function() {
 	    	.then(function (el) {
 		    	cy.contains('Tunisia')
 		    	cy.get(el).click({force: true})
-		    cy.contains('reg:Tunisia,.*')
+		    cy.contains('reg:Tunisia & .*')
 		    cy.get('.dvBibBook')
 		})
     })
@@ -37,12 +37,12 @@ describe('Dictionaries bibliography', function() {
 	    	.then(function (el) {
 		    	cy.contains('Tunisia')
 		    	cy.get(el).click({force: true})
-		    cy.contains('reg:Tunisia,vt:dictionary')
+		    cy.contains('reg:Tunisia & vt:dictionary')
 		    cy.get('.dvBibBook')
 		})
 
 	    cy.get('img[data-testid="geo_Douz"]').click({force: true}).then(el => {
-		    cy.contains('geo:Douz,vt:dictionary')
+		    cy.contains('geo:Douz & vt:dictionary')
 	    })
     })
 })
