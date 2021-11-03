@@ -77,7 +77,7 @@ version="2.0">
     <xsl:param name="highLightIdentifier"></xsl:param>
     <xsl:variable name="wordform" select="acdh:get-wordform($w)"/>
     <xsl:variable name="matchesHighlights" select="acdh:matches-highlight($wordform)"/>
-    <xsl:variable name="matchesHighlightId" select="not($highLightIdentifier = '') and (not(empty($w/@ana)) and (contains($w/@ana,$highLightIdentifier)) or contains($w/parent::tei:phr/@ana, $highLightIdentifier))"/>    
+    <xsl:variable name="matchesHighlightId" select="not($highLightIdentifier = '') and (not(empty($w/@ana)) and (contains($w/@ana,$highLightIdentifier)) or contains($w/parent::tei:phr/@ana, $highLightIdentifier) or contains($w/ancestor::tei:choice/@ana, $highLightIdentifier))"/>    
     <span data-html="true" data-placement="top">
         <xsl:variable name="title">
             <xsl:if test="string-length($w/tei:fs/tei:f[@name='pos'])&gt;0">&lt;span class="spPos"&gt;POS:&lt;/span&gt;&#160;<xsl:value-of select="$w/tei:fs/tei:f[@name='pos']"/>&lt;br/&gt;</xsl:if>
