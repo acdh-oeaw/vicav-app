@@ -92,12 +92,6 @@ function api:images-file($file as xs:string) as item()+ {
 };
 
 declare
-  %rest:path("vicav/sound/{$file=.+}")
-function api:sound-file($file as xs:string) as item()+ {
-  api:file('sound/'||$file)
-};
-
-declare
   %rest:path("vicav/fonts/{$file=.+}")
 function api:fonts-file($file as xs:string) as item()+ {
   api:file('fonts/'||$file)
@@ -208,11 +202,14 @@ function api:test-error($error-qname as xs:string) as item()+ {
 declare
   %rest:path("vicav/runtime")
 function api:runtime-info() as item()+ {
-  let $runtime-info := db:system()
+  let $runtime-info := db:system(),
+      $xslt-runtime-info := xslt:transform(<_/>,
+      <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+    <xsl:output method="xml"/><xsl:template match='/'><_><product-name><xsl:value-of select="system-property('xsl:product-name')"/></product-name><product-version><xsl:value-of select="system-property('xsl:product-version')"/></product-version></_></xsl:template></xsl:stylesheet>)/*
   return
   <html xmlns="http://www.w3.org/1999/xhtml">
     <title>Runtime info</title>
-    <body>        
+    <body>
        <h1>Runtime info</h1>
        <table>
        {for $item in $runtime-info/*:generalinformation/*
@@ -222,6 +219,10 @@ function api:runtime-info() as item()+ {
            <td>{$item}</td>
          </tr>
        }
+         <tr>
+           <td>{$xslt-runtime-info/*:product-name/text()}</td>
+           <td>{$xslt-runtime-info/*:product-version/text()}</td>
+         </tr>
        </table>
     </body>
   </html>

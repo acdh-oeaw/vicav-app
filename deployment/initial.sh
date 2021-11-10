@@ -1,9 +1,11 @@
 #!/bin/bash
-cp -Rv ./deployment/* ../../
+
+cp -Rv ./deployment/* ${1:-../../}
 npm install
-cd ../../
+cd ${1:-../../}
 mv redeploy.settings.dist redeploy.settings
 git clone https://github.com/acdh-oeaw/vicav-content
+if [ "${STACK}x" = "x" ]; then
 pushd lib/custom
 curl -LO https://repo1.maven.org/maven2/net/sf/saxon/Saxon-HE/10.3/Saxon-HE-10.3.jar
 popd
@@ -16,4 +18,5 @@ else
   ./basexhttp &
 fi
 cd ..
+fi
 exec ./redeploy.sh

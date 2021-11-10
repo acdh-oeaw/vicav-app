@@ -98,6 +98,8 @@ fi
 git checkout master
 popd
 fi
+if [ -d webapp/vicav-app ]
+then
 pushd webapp/vicav-app
 git pull
 ret=$?
@@ -111,6 +113,7 @@ find ./ -type f -and \( -name '*.js' -or -name '*.html' \) -not \( -path './node
 fi
 git checkout master
 popd
+fi
 #-------------------------------------
 
 #------ Update content data from redmine git repository 
@@ -141,11 +144,20 @@ fi
 echo "copying image files from vicav_content to vicav-webapp"
 for d in $(ls -d vicav_*)
 do echo "Directory $d:"
-   find "$d" -type f -and \( -name '*.jpg' -or -name '*.JPG' -or -name '*.png' -or -name '*.PNG' -or -name '*.svg' \) -exec cp -v {} ../webapp/vicav-app/images \;
+   find "$d" -type f -and \( -name '*.jpg' -or -name '*.JPG' -or -name '*.png' -or -name '*.PNG' -or -name '*.svg' \) -exec cp -v {} ${BUILD_DIR:-../webapp/vicav-app}/images \;
    if [ "$onlytags"x = 'truex' ]
    then
      find "$d" -type f -and -name '*.xml' -exec sed -i "s~\(</teiHeader>\)~$revisionDesc\\n\1~g" {} \;
    fi
+done
+#------- copy all sound files into the "/sounds" directory in BaseX' static directory
+#------- this solves problems with MacOS Safari which wants the audio files in chunks
+#------- else it claims they are not available/broken
+echo "copying sound files from vicav_content to BaseX static/sound"
+mkdir -p ${BUILD_DIR:-../webapp/static}/sound
+for d in $(ls -d vicav_*)
+do echo "Directory $d:"
+   find "$d" -type f -and \( -name '*.m4a' \) -exec cp -v {} ${BUILD_DIR:-../webapp/static}/sound \;
 done
 git checkout master
 popd
