@@ -159,6 +159,13 @@ for d in $(ls -d vicav_*)
 do echo "Directory $d:"
    find "$d" -type f -and \( -name '*.m4a' \) -exec cp -v {} ${BUILD_DIR:-../webapp/static}/sound \;
 done
+#------- copy the apkg file into the "/anki" directory in BaseX' static directory
+echo "copying anki files from vicav_content to BaseX static/anki"
+mkdir -p ${BUILD_DIR:-../webapp/static}/anki
+for d in $(ls -d vicav_*)
+do echo "Directory $d:"
+   find "$d" -type f -and \( -name '*.apkg' \) -exec cp -v {} ${BUILD_DIR:-../webapp/static}/anki \;
+done
 git checkout master
 popd
 if [ "$onlytags"x = 'truex' ]
