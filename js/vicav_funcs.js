@@ -1614,7 +1614,7 @@ function parseCurrentUrl(curUrl) {
                     var snippetID = pArgs[1];
                     var caption = pArgs[2];
                     var pVisiblity = pArgs[3];
-                    getFeatureOfLocation(caption, snippetID, 'features_common.xslt', pID_, pVisiblity, true);
+                    getFeatureOfLocation(caption, snippetID, 'features_01.xslt', pID_, pVisiblity, true);
                 } else
 
                 if (queryFunc == 'sampleQuery') {
@@ -1989,6 +1989,10 @@ function () {
         getDataList('profiles')
     });
 
+    $(document).on('mousedown', "#liDataListAll", function (event) {
+        getDataList('')
+    });
+    
     /* ******************************** */
     /* ****  CORPUS ******************* */
     /* ******************************** */
@@ -2345,4 +2349,3 @@ $(".cookie-accept-btn").on('click', function(){
 });
 
 /** COOKIES END **/
-

@@ -16,7 +16,9 @@ version="2.0">
                 <xsl:variable name="nn" select="@n"/>
                 <xsl:value-of select="(//tei:s[@type='translationSentence'][@n=$nn] | //tei:div[@type='dvTranslations']/tei:u[@n=$nn])[1]"/>
             </xsl:attribute>
-            <i class="fa fa-commenting-o" aria-hidden="true"></i>
+            <i class="fa fa-commenting-o" aria-hidden="true">
+                <span/>
+            </i>
         </span>
         <xsl:value-of select="' '" />
         <xsl:for-each select="./(tei:w | tei:c | tei:pc | tei:choice)">
@@ -45,7 +47,14 @@ version="2.0">
             </xsl:when>
             <xsl:when test="./name() = 'phr'">
                 <xsl:for-each select="./*">
-                    <xsl:sequence select="acdh:word-block(., 'feature', $position, $ana)" />                    
+                    <xsl:choose>
+                        <xsl:when test="./name() = 'choice'">
+                            <xsl:sequence select="acdh:choice-block(., 'feature', $ana)" />
+                        </xsl:when>
+                        <xsl:otherwise>                        
+                            <xsl:sequence select="acdh:word-block(., 'feature', $position, $ana)" />                    
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:for-each>
             </xsl:when>
             <xsl:when test="./name() = 'choice'">
