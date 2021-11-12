@@ -298,8 +298,10 @@ function addID(id_) {
 }
 
 function makeAudioInVisible(obj_) {
-    $(obj_).css("cursor", "none");
-    $(obj_).find("audio").css("left", "-500px");
+    if (!$('audio', obj_).hasClass('playing')) {
+        $(obj_).css("cursor", "none");
+        $(obj_).find("audio").css("left", "-500px");
+    }
 }
 
 function makeAudioVisible(obj_) {
@@ -1749,7 +1751,68 @@ function () {
                 }
             }
         })
+
+        
     });
+
+
+    /**
+     * HANLING AUDIO PLAYER
+     */
+    // This extra function is needed because audio control events do not bubble
+    // in jQuery for some reason.
+    jQuery.createEventCapturing = (function () {
+        var special = jQuery.event.special;
+        return function (names) {
+            if (!document.addEventListener) {
+                return;
+            }
+            if (typeof names == 'string') {
+                names = [names];
+            }
+            jQuery.each(names, function (i, name) {
+                var handler = function (e) {
+                    e = jQuery.event.fix(e);
+
+                    return jQuery.event.dispatch.call(this, e);
+                };
+                special[name] = special[name] || {};
+                if (special[name].setup || special[name].teardown) {
+                    return;
+                }
+                jQuery.extend(special[name], {
+                    setup: function () {
+                        this.addEventListener(name, handler, true);
+                    },
+                    teardown: function () {
+                        this.removeEventListener(name, handler, true);
+                    }
+                });
+            });
+        };
+    })();
+
+    jQuery.createEventCapturing(['play', 'ended', 'pause'])
+
+    $(document).on('play', 'audio', function(e) {
+        e.target.classList.add('playing')
+        $('audio').each((_a2, a2) => {
+            if (a2 !== e.target) {
+                a2.pause()
+                a2.classList.remove('playing')
+                makeAudioInVisible($(a2).parent())
+            }
+        })
+    })
+
+     $(document).on('pause', 'audio', function(e) {
+        e.target.classList.remove('playing')
+    })
+
+     $(document).on('ended', 'audio', function(e) {
+        e.target.classList.remove('playing')
+    })
+
 
     /* *************************** */
     /* ****  Explanations  ******* */
@@ -1808,63 +1871,6 @@ function () {
         console.log('mouseDown - sid: ' + sid + '   sCaption: ' + sCaption);
         getText(sCaption, sid, 'vicavTexts.xslt');
     });
-
-   /*
-    $(document).on('mousedown', "#liProfileAbudhabi", function (event) {
-        getProfile('Abu Dhabi', 'profile_abu_dhabi_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileAhwaz", function (event) {
-        getProfile('Ahwaz', 'profile_ahwaz_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileBaghdad", function (event) {
-        getProfile('Baghdad', 'profile_baghdad_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileBasra", function (event) {
-        getProfile('Basra', 'profile_basra_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileBenghazi", function (event) {
-        getProfile('Benghazi', 'profile_benghazi_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileCairo", function (event) {
-        getProfile('Cairo', 'profile_cairo_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileDamascus", function (event) {
-        getProfile('Damascus', 'profile_damascus_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileDouz", function (event) {
-        getProfile('Douz', 'profile_douz_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileKhabura", function (event) {
-        getProfile('al-Khabura', 'profile_khabura_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileQamishli", function (event) {
-        getProfile('Qamishli', 'profile_qameshli_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileRabat", function (event) {
-        getProfile('Rabat (Salé)', 'profile_sale_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileSousse", function (event) {
-        getProfile('Sousse', 'profile_sousse_001', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileSoukhne", function (event) {
-        getProfile('Soukhne', 'profile_soukhne_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileTaizz", function (event) {
-        getProfile('Taizz', 'profile_taizz_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileTiberias", function (event) {
-        getProfile('Tiberias', 'profile_tiberias_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileTozeur", function (event) {
-        getProfile('Tozeur', 'profile_tozeur_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileTunis", function (event) {
-        getProfile('Tunis', 'profile_tunis_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileUrfa", function (event) {
-        getProfile('Şanlıurfa', 'profile_urfa_01', 'profile_01.xslt');
-    });
-     */
 
     /* **************************************** */
     /* ****  Show map with locators *********** */
@@ -1927,28 +1933,6 @@ function () {
         adjustNav(this.id, "#subNavVicavDictMarkers");
     });
 
-    /* *********************** */
-    /* ****  FEATURES ******** */
-    /* *********************** */
-    /*$(document).on('mousedown', "#liFeatureBaghdad", function (event) {
-        getFeatureOfLocation('Baghdad', 'ling_features_baghdad', 'features_01.xslt');
-    });
-    $(document).on('mousedown', "#liFeatureCairo", function (event) {
-        getFeatureOfLocation('Cairo', 'ling_features_cairo', 'features_01.xslt');
-    });
-    $(document).on('mousedown', "#liFeatureDamascus", function (event) {
-        getFeatureOfLocation('Damascus', 'ling_features_damascus', 'features_01.xslt');
-    });
-    $(document).on('mousedown', "#liFeatureDouz", function (event) {
-        getFeatureOfLocation('Douz', 'ling_features_douz', 'features_01.xslt');
-    });
-    $(document).on('mousedown', "#liFeatureTunis", function (event) {
-        getFeatureOfLocation('Tunis', 'ling_features_tunis', 'features_01.xslt');
-    });
-    $(document).on('mousedown', "#liFeatureUrfa", function (event) {
-        getFeatureOfLocation('Urfa', 'ling_features_urfa', 'features_01.xslt');
-    });
-    */
     /* ********************** */
     /* ****  SAMPLES ******** */
     /* ********************** */
@@ -1998,6 +1982,7 @@ function () {
     /* ******************************** */
     //$(document).on("click", '#liTextCukurova_001', function(){ getSample('Cukurova', 'cukurova_001', 'sampletext_01.xslt'); });
     //$(document).on("click", '#liTextJakal_001', function(){ getSample('Morocco', 'killing_jackal', 'sampletext_01.xslt'); });
+
 
 
     /* *******************************************************/
