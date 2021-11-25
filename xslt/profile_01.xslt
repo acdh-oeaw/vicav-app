@@ -43,7 +43,6 @@
                         </div>                   
                     </xsl:otherwise>
                 </xsl:choose>
-                 -->
             </div>
             
             <table class="tbProfile">
