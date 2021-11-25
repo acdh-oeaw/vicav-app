@@ -15,20 +15,18 @@
             </table>    
             
             <div class="dvImgProfile">
-                <xsl:if test="count(//tei:head/tei:figure/tei:graphic) > 1">
-                    <img>
-                        <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure[1]/tei:graphic/@url"/></xsl:attribute>
-                    </img>
-                    <xsl:if test="//tei:head/tei:figure/tei:head">
-                        <div class="imgCaption">
-                            <xsl:apply-templates select="//tei:head/tei:figure[1]/tei:head"/>
-                        </div>                                           
-                    </xsl:if> 
-                    
-                </xsl:if>      
-                <!-- 
                 <xsl:choose>
-                    <xsl:when test="//tei:head/tei:figure/tei:graphic">
+					<xsl:when test="count(//tei:head/tei:figure/tei:graphic) > 1">
+					    <img>
+					        <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure[1]/tei:graphic/@url"/></xsl:attribute>
+					    </img>
+					    <xsl:if test="//tei:head/tei:figure/tei:head">
+					        <div class="imgCaption">
+					            <xsl:apply-templates select="//tei:head/tei:figure[1]/tei:head"/>
+					        </div>                                           
+					    </xsl:if> 
+					</xsl:when>      
+                    <xsl:when test="count(//tei:head/tei:figure/tei:graphic) = 1">
                         <img>
                             <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure/tei:graphic/@url"/></xsl:attribute>
                         </img>
