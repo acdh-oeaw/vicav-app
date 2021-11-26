@@ -15,7 +15,6 @@
             </table>    
             
             <div class="dvImgProfile">
-                <xsl:if test="count(//tei:head/tei:figure/tei:graphic) > 1">
                     <img>
                         <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure[1]/tei:graphic/@url"/></xsl:attribute>
                     </img>
@@ -24,9 +23,7 @@
                             <xsl:apply-templates select="//tei:head/tei:figure[1]/tei:head"/>
                         </div>                                           
                     </xsl:if> 
-                    
-                </xsl:if>      
-                <!-- 
+<!-- 
                 <xsl:choose>
                     <xsl:when test="//tei:head/tei:figure/tei:graphic">
                         <img>
@@ -89,10 +86,10 @@
             <xsl:apply-templates select="//tei:body/tei:div/tei:div"/>     
 
 
-            <xsl:if test="count(//tei:head/tei:figure) > 2">
+            <xsl:if test="count(//tei:head/tei:figure) > 1">
                 <div class="slider-container">
-                    <xsl:variable select="count(//tei:head/tei:figure)" name="total"/>
-                    <xsl:for-each select="//tei:head/tei:figure">
+                    <xsl:variable select="count(//tei:head/tei:figure) - 1" name="total"/>
+                    <xsl:for-each select="subsequence(//tei:head/tei:figure, 2)">
                         <xsl:variable select="position()" name="pos"/>
 
                           <!-- Full-width images with number text -->
