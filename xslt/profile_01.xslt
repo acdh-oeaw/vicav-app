@@ -13,37 +13,19 @@
             <table class="tbHeader">
                 <tr><td><h2><xsl:value-of select="//tei:name[@xml:lang='eng']"/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
             </table>    
-            
-            <div class="dvImgProfile">
-                <xsl:choose>
-					<xsl:when test="count(//tei:head/tei:figure/tei:graphic) > 1">
-					    <img>
-					        <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure[1]/tei:graphic/@url"/></xsl:attribute>
-					    </img>
-					    <xsl:if test="//tei:head/tei:figure/tei:head">
-					        <div class="imgCaption">
-					            <xsl:apply-templates select="//tei:head/tei:figure[1]/tei:head"/>
-					        </div>                                           
-					    </xsl:if> 
-					</xsl:when>      
-                    <xsl:when test="count(//tei:head/tei:figure/tei:graphic) = 1">
-                        <img>
-                            <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure/tei:graphic/@url"/></xsl:attribute>
-                        </img>
-                        <div class="imgCaption">
-                            <xsl:apply-templates select="//tei:head/tei:figure/tei:head"/>
-                        </div>                   
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <img>
-                            <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:ref[1]/@target"/></xsl:attribute>
-                        </img>
-                        <div class="imgCaption">
-                            <xsl:apply-templates select="//tei:head/tei:ref/tei:p[1]"/>
-                        </div>                   
-                    </xsl:otherwise>
-                </xsl:choose>
-            </div>
+
+			<!-- in case there's only one picture in the profile, we create a small image next to the denomination info table-->            
+			<!-- in case there are more than one pictures in the profile, we generate a carousel (see below)-->
+			<xsl:if test="count(//tei:head/tei:figure/tei:graphic) = 1">
+				<div class="dvImgProfile">
+                	<img>
+                    	<xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure/tei:graphic/@url"/></xsl:attribute>
+                    </img>
+                    <div class="imgCaption">
+                        <xsl:apply-templates select="//tei:head/tei:figure/tei:head"/>
+                    </div>                   
+				</div>
+			</xsl:if>
             
             <table class="tbProfile">
                 <xsl:if test="//tei:name[@xml:lang='ara']">
@@ -86,10 +68,12 @@
             <xsl:apply-templates select="//tei:body/tei:div/tei:div"/>     
 
 
-            <xsl:if test="count(//tei:head/tei:figure) > 2">
+			<!-- in case there are more than one pictures in the profile, we generate a carousel -->
+			<!-- in case there's only one picture in the profile, we create a small image next to the denomination info table (see above)-->
+            <xsl:if test="count(//tei:head/tei:figure) > 1">
                 <div class="slider-container">
-                    <xsl:variable select="count(//tei:head/tei:figure)" name="total"/>
-                    <xsl:for-each select="//tei:head/tei:figure">
+                    <xsl:variable select="count(//tei:head/tei:figure) - 1" name="total"/>
+                    <xsl:for-each select="subsequence(//tei:head/tei:figure, 2)">
                         <xsl:variable select="position()" name="pos"/>
 
                           <!-- Full-width images with number text -->
