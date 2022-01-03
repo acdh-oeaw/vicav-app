@@ -127,13 +127,6 @@ function insertFeatureMarkers() {
     clearMarkerLayers();
     
     setExplanation('Features');
-    /* fgFeatureMarkers.addLayer(L.marker([30.05, 31.23], {  alt: 'Cairo', id: 'ling_features_cairo' }).bindTooltip('Cairo'));
-    fgFeatureMarkers.addLayer(L.marker([33.51, 36.29], {  alt: 'Damascus', id: 'ling_features_damascus' }).bindTooltip('Damascus'));
-    fgFeatureMarkers.addLayer(L.marker([36.8, 10.18], {  alt: 'Tunis', id: 'ling_features_tunis' }).bindTooltip('Tunis'));
-    fgFeatureMarkers.addLayer(L.marker([37.15, 38.79], { alt: 'Şanlıurfa', id: 'ling_features_urfa'  }).bindTooltip('Şanlıurfa'));
-    fgFeatureMarkers.addLayer(L.marker([33.45, 9.01], { alt: 'Douz', id: 'ling_features_douz' }).bindTooltip('Douz'));
-    fgFeatureMarkers.addLayer(L.marker([33.33, 44.38], {alt: 'Baghdad', id: 'ling_features_baghdad'}).bindTooltip('Baghdad'));
-    clearMarkerLayers(); */
     $.ajax({
         url: 'feature_markers',
         type: 'GET',
@@ -148,8 +141,6 @@ function insertFeatureMarkers() {
                 sAlt = $(this).find('alt').text();
                 sLocName = $(this).find('locName').text();
                 sID = $(this).attr('xml:id');
-                
-                console.log(sLoc, sAlt, sLocName);
 
                 let sCnt = sID.replace(/^[\w-]+_?0?/, '')
                 if (sCnt && parseInt(sCnt) > 1) {
@@ -223,6 +214,73 @@ function insertSampleMarkers() {
     });
         
     updateUrl_biblMarker('_samples_', '');
+}
+
+function insertAllDataMarkers() {
+    /* ******************************** */
+    /* Create with loc_features__001.xq */
+    /* ******************************** */
+    clearMarkerLayers();
+
+    setExplanation('Browse data');
+    $.ajax({
+        url: 'data_markers',
+        type: 'GET',
+        dataType: 'xml',
+        contentType: 'application/html; charset=utf-8',
+        success: function (result) {
+            s = '';
+            cnt = 0;
+            $(result).find('r').each(function (index) {
+                cnt = cnt + 1;
+                sLoc = $(this).find('loc').text();
+                sAlt = $(this).find('alt').text();
+                sLocName = $(this).find('locName').text();
+                sID = $(this).attr('xml:id');
+                sType = null
+                switch ($(this).find('taxonomy').text()) {
+                    case 'linguistic feature list':
+                        sType = 'feature';
+                        break;
+                    case 'linguistic profile':
+                        sType = 'profile';
+                        break;
+                    case 'sample text':
+                    default:
+                        sType = 'sample';
+                        break;
+                }
+
+                let sCnt = sID.replace(/^[\w-]+_?0?/, '')
+                if (sCnt && parseInt(sCnt) > 1) {
+                    sAlt = sAlt + ' (' + sCnt + ')'
+                }
+
+                if (sLoc.match(/\d+.\d+,? *\d+.\d+/)) {
+                    var coords = parseDecCoords(sLoc)
+                    var declat = coords[0]
+                    var declng = coords[1]
+                } else {
+                    var coord = splitCoords(sLoc, sAlt);
+                    //console.log('(' + coord.lat + ') (' + coord.lng + ')');
+
+                    var dmslat = parseStringToDMS(coord.lat);
+                    var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
+
+                    var dmslng = parseStringToDMS(coord.lng);
+                    var declng = convertDMSToDD(dmslng.deg, dmslng.min, dmslng.sec, dmslng.dir)
+                }
+
+                marker = L.marker([declat, declng], { alt: sAlt, id: sID, type: sType, locName: sLocName }).bindTooltip(sAlt);
+                fgDataMarkers.addLayer(marker);
+            });
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert('Line 199' + errorThrown);
+        }
+    });
+
+    updateUrl_biblMarker('_data_', '');
 }
 
 

@@ -1219,6 +1219,43 @@ function vicav:get_feature_markers() {
 };
 
 
+
+declare
+%rest:path("vicav/data_markers")
+%rest:GET
+%output:method("xml")
+
+function vicav:get_all_data_markers() {
+    let $entries := for $c in ('vicav_profiles', 'vicav_samples', 'vicav_lingfeatures')
+        return collection($c)/descendant::tei:TEI
+
+    let $out :=
+        for $item in $entries
+            order by $item/@xml:id
+            let $locName := $item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"]/text()
+            let $loc := if ($item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text()) then
+                            replace($item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
+                        else $item/tei:text/tei:body/tei:div[@type="positioning"]/tei:geo/text()
+            let $alt := if ($item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person) then $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/text() || '/' || $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@sex || '/' || $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@age else $locName
+
+            return
+                if ($item/@xml:id and $loc) then
+                <r
+                    type='geo'>{$item/@xml:id}
+                    <loc>{$loc}</loc>
+                    <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc>
+                    <locName>{$locName}</locName>
+                    <taxonomy>{$item/tei:teiHeader/tei:profileDesc/tei:taxonomy/tei:category/tei:catDesc/text()}</taxonomy>
+                    <alt>{$alt}</alt>
+                    <freq>1</freq>
+                </r>
+                else ''
+
+    return
+        <rs>{$out}</rs>
+};
+
+
 declare
 %rest:path("vicav/data_list")
 %rest:query-param("type", "{$type}")

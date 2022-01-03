@@ -183,7 +183,7 @@ mainMap.scrollWheelZoom.disable();
     parseCurrentUrl(currentURL);
 });
 
-let overlapHandler = function(e) {
+let overlapPopup = function(e, groupByType = false) {
     function ptDistanceSq(pt1, pt2) {
         let dx = pt1.x - pt2.x
         let dy = pt1.y - pt2.y
@@ -227,10 +227,38 @@ let overlapHandler = function(e) {
                 break;
 
         }
-    } else {
+    }
+    else if (groupByType) {
+        let popupContent = '<h5>Near locations</h5>';
+        let grouped = {}
+        nearbyMarkerData.sort((a,b) => {
+            return a.marker.options.alt.localeCompare(b.marker.options.alt);
+        }).forEach(data => {
+
+            if (grouped[data.marker.options.locName] === undefined) grouped[data.marker.options.locName] = {profile: [], feature: [], sample: []}
+            console.log(grouped[data.marker.options.locName][data.marker.options.type])
+
+            grouped[data.marker.options.locName][data.marker.options.type].push(data)
+        })
+
+        for (let loc in grouped) {
+            popupContent += '<h6>' + loc + '</h6>';
+            for (let dataType in grouped[loc]) {
+                if (grouped[loc][dataType].length < 1) continue;
+                let typeLink = exploreDataStrings[dataType].single_selector
+                popupContent += '<em>' + dataType.charAt(0).toUpperCase() + dataType.slice(1) + '</em><ul class="overlapping-markers">';
+                grouped[loc][dataType].forEach(data => {
+                    popupContent += '<li class="overlapping-marker-label"><a href="#" ' + typeLink +'="'+data.marker.options.id + '">' + data.marker.options.alt + '</a></li>'
+                })
+                popupContent = popupContent + '</ul>';
+            }
+        }
+        if (marker.options.locName) marker.alt = marker.options.locName;
+        marker.bindPopup(popupContent).openPopup()
+    }
+    else {
         let popupContent = '<h5>Near locations</h5><ul class="overlapping-markers">'
-        console.log('overlapHandler: ' + nearbyMarkerData.length + ': ' + nearbyMarkerData)
-        nearbyMarkerData.sort((a,b) => { 
+        nearbyMarkerData.sort((a,b) => {
             return a.marker.options.alt.localeCompare(b.marker.options.alt); }
         ).forEach(data => {
             let typeLink = exploreDataStrings[data.marker.options.type].single_selector
@@ -239,14 +267,25 @@ let overlapHandler = function(e) {
 
         popupContent = popupContent + '</ul>';
         console.log(popupContent);
+        if (marker.options.locName) marker.alt = marker.options.locName
         marker.bindPopup(popupContent).openPopup()
       }
+}
+
+
+let overlapHandler = function(e) {
+    overlapPopup(e);
+}
+
+let overlapGroupByType = function(e) {
+    overlapPopup(e, true);
 }
 
 var fgBiblMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
 var fgProfileMarkers = L.featureGroup().addTo(mainMap).on('click', overlapHandler);
 var fgSampleMarkers = L.featureGroup().addTo(mainMap).on('click', overlapHandler); // Click event is now handled through OverlappingMarkerSpiderifier
 var fgFeatureMarkers = L.featureGroup().addTo(mainMap).on('click', overlapHandler);
+var fgDataMarkers = L.featureGroup().addTo(mainMap).on('click', overlapGroupByType);
 var fgGeoDictMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
 var fgDictMarkers = L.featureGroup().addTo(mainMap).on("click", onDictMapClick);
 
@@ -1535,6 +1574,11 @@ function parseCurrentUrl(curUrl) {
                 insertSampleMarkers();
                 break;
 
+
+                case '_data_':
+                insertAllDataMarkers();
+                break;
+
                 default:
                 //console.log('pArgs[1]: ' + pArgs[2]);
 
@@ -1925,6 +1969,13 @@ function () {
         clearMarkerLayers();
         insertSampleMarkers();
         adjustNav(this.id, "#subNavSamplesGeoRegMarkers");
+    });
+
+    $(document).on('mousedown', "#navDataGeoRegMarkers,#subNavDataGeoRegMarkers", function (event) {
+        clearMarkerLayers();
+            insertAllDataMarkers();
+            console.log(this.id)
+        adjustNav(this.id, "#subNavDataGeoRegMarkers");
     });
 
     $(document).on('mousedown', "#navVicavDictMarkers,#subNavVicavDictMarkers", function (event) {
