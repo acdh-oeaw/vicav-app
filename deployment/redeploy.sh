@@ -98,7 +98,11 @@ fi
 git checkout master
 popd
 fi
+if [ -d webapp/vicav-app ]
+then
 pushd webapp/vicav-app
+git reset --hard
+git checkout master
 git pull
 ret=$?
 if [ $ret != "0" ]; then exit $ret; fi
@@ -108,15 +112,19 @@ uiversion=$(git describe --tags --always)
 echo checking out UI ${uiversion}
 git -c advice.detachedHead=false checkout ${uiversion}
 find ./ -type f -and \( -name '*.js' -or -name '*.html' \) -not \( -path './node_modules/*' -or -path './cypress/*' \) -exec sed -i "s~\@version@~$uiversion~g" {} \;
-fi
+else
 git checkout master
+fi
 popd
+fi
 #-------------------------------------
 
 #------ Update content data from redmine git repository 
 echo updating vicav_content 
 if [ ! -d vicav-content/.git ]; then echo "vicav_content does not exist or is not a git repository"; fi
 pushd vicav-content
+git reset --hard
+git checkout master
 git pull
 ret=$?
 if [ $ret != "0" ]; then exit $ret; fi
@@ -136,18 +144,35 @@ $message
 </revisionDesc>
 EOF
 )
+else
+git checkout master
 fi
 #------- copy all images into the "images" directory in the web application directory
 echo "copying image files from vicav_content to vicav-webapp"
 for d in $(ls -d vicav_*)
 do echo "Directory $d:"
-   find "$d" -type f -and \( -name '*.jpg' -or -name '*.JPG' -or -name '*.png' -or -name '*.PNG' -or -name '*.svg' \) -exec cp -v {} ../webapp/vicav-app/images \;
+   find "$d" -type f -and \( -name '*.jpg' -or -name '*.JPG' -or -name '*.png' -or -name '*.PNG' -or -name '*.svg' \) -exec cp -v {} ${BUILD_DIR:-../webapp/vicav-app}/images \;
    if [ "$onlytags"x = 'truex' ]
    then
      find "$d" -type f -and -name '*.xml' -exec sed -i "s~\(</teiHeader>\)~$revisionDesc\\n\1~g" {} \;
    fi
 done
-git checkout master
+#------- copy all sound files into the "/sounds" directory in BaseX' static directory
+#------- this solves problems with MacOS Safari which wants the audio files in chunks
+#------- else it claims they are not available/broken
+echo "copying sound files from vicav_content to BaseX static/sound"
+mkdir -p ${BUILD_DIR:-../webapp/static}/sound
+for d in $(ls -d vicav_*)
+do echo "Directory $d:"
+   find "$d" -type f -and \( -name '*.m4a' \) -exec cp -v {} ${BUILD_DIR:-../webapp/static}/sound \;
+done
+#------- copy the apkg file into the "/anki" directory in BaseX' static directory
+echo "copying anki files from vicav_content to BaseX static/anki"
+mkdir -p ${BUILD_DIR:-../webapp/static}/anki
+for d in $(ls -d vicav_*)
+do echo "Directory $d:"
+   find "$d" -type f -and \( -name '*.apkg' \) -exec cp -v {} ${BUILD_DIR:-../webapp/static}/anki \;
+done
 popd
 if [ "$onlytags"x = 'truex' ]
 then
@@ -157,7 +182,6 @@ popd
 fi
 ./execute-basex-batch.sh deploy-vicav-content
 pushd vicav-content
-git reset --hard
 popd
 
 #-------------------------------------

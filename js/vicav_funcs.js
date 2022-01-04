@@ -148,6 +148,7 @@ function onSamplesMapClick(e) {
 
 function onDictMapClick(e) {
     //execSampleQuery('vicav_samples', e.layer.options.id, 'sampletext_01.xslt');
+    console.log(e.layer.options.id);
     if (e.layer.options.id == 'dict_tunis') {
         getText('TUNICO DICTIONARY', 'dictFrontPage_Tunis', 'vicavTexts.xslt');
     }
@@ -182,7 +183,7 @@ mainMap.scrollWheelZoom.disable();
     parseCurrentUrl(currentURL);
 });
 
-let overlapHandler = function(e) {
+let overlapPopup = function(e, groupByType = false) {
     function ptDistanceSq(pt1, pt2) {
         let dx = pt1.x - pt2.x
         let dy = pt1.y - pt2.y
@@ -226,10 +227,38 @@ let overlapHandler = function(e) {
                 break;
 
         }
-    } else {
+    }
+    else if (groupByType) {
+        let popupContent = '<h5>Near locations</h5>';
+        let grouped = {}
+        nearbyMarkerData.sort((a,b) => {
+            return a.marker.options.alt.localeCompare(b.marker.options.alt);
+        }).forEach(data => {
+
+            if (grouped[data.marker.options.locName] === undefined) grouped[data.marker.options.locName] = {profile: [], feature: [], sample: []}
+            console.log(grouped[data.marker.options.locName][data.marker.options.type])
+
+            grouped[data.marker.options.locName][data.marker.options.type].push(data)
+        })
+
+        for (let loc in grouped) {
+            popupContent += '<h6>' + loc + '</h6>';
+            for (let dataType in grouped[loc]) {
+                if (grouped[loc][dataType].length < 1) continue;
+                let typeLink = exploreDataStrings[dataType].single_selector
+                popupContent += '<em>' + dataType.charAt(0).toUpperCase() + dataType.slice(1) + '</em><ul class="overlapping-markers">';
+                grouped[loc][dataType].forEach(data => {
+                    popupContent += '<li class="overlapping-marker-label"><a href="#" ' + typeLink +'="'+data.marker.options.id + '">' + data.marker.options.alt + '</a></li>'
+                })
+                popupContent = popupContent + '</ul>';
+            }
+        }
+        if (marker.options.locName) marker.alt = marker.options.locName;
+        marker.bindPopup(popupContent).openPopup()
+    }
+    else {
         let popupContent = '<h5>Near locations</h5><ul class="overlapping-markers">'
-        console.log('overlapHandler: ' + nearbyMarkerData.length + ': ' + nearbyMarkerData)
-        nearbyMarkerData.sort((a,b) => { 
+        nearbyMarkerData.sort((a,b) => {
             return a.marker.options.alt.localeCompare(b.marker.options.alt); }
         ).forEach(data => {
             let typeLink = exploreDataStrings[data.marker.options.type].single_selector
@@ -238,14 +267,25 @@ let overlapHandler = function(e) {
 
         popupContent = popupContent + '</ul>';
         console.log(popupContent);
+        if (marker.options.locName) marker.alt = marker.options.locName
         marker.bindPopup(popupContent).openPopup()
       }
+}
+
+
+let overlapHandler = function(e) {
+    overlapPopup(e);
+}
+
+let overlapGroupByType = function(e) {
+    overlapPopup(e, true);
 }
 
 var fgBiblMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
 var fgProfileMarkers = L.featureGroup().addTo(mainMap).on('click', overlapHandler);
 var fgSampleMarkers = L.featureGroup().addTo(mainMap).on('click', overlapHandler); // Click event is now handled through OverlappingMarkerSpiderifier
 var fgFeatureMarkers = L.featureGroup().addTo(mainMap).on('click', overlapHandler);
+var fgDataMarkers = L.featureGroup().addTo(mainMap).on('click', overlapGroupByType);
 var fgGeoDictMarkers = L.featureGroup().addTo(mainMap).on("click", onBiblMapClick);
 var fgDictMarkers = L.featureGroup().addTo(mainMap).on("click", onDictMapClick);
 
@@ -297,8 +337,10 @@ function addID(id_) {
 }
 
 function makeAudioInVisible(obj_) {
-    $(obj_).css("cursor", "none");
-    $(obj_).find("audio").css("left", "-500px");
+    if (!$('audio', obj_).hasClass('playing')) {
+        $(obj_).css("cursor", "none");
+        $(obj_).find("audio").css("left", "-500px");
+    }
 }
 
 function makeAudioVisible(obj_) {
@@ -814,7 +856,7 @@ function getDBSnippet(s_) {
                         console.log('dict: ' + sDict);
                         switch (sDict) {
                            case 'ar-arz-x-cairo-vicav': autoDictQuery('_cairo', 'id=' + sid, ); break;
-                           case 'ar-aeb-x-tunis-vicav': autoDictQuery('_tunis', 'id=' + sid, ); break;
+                           case 'ar-aeb': autoDictQuery('_tunis', 'id=' + sid, ); break;
                            case 'ar-acm-x-baghdad-vicav': autoDictQuery('_baghdad', 'id=' + sid, ); break;
                            case 'ar-apc-x-damascus-vicav': autoDictQuery('_damascus', 'id=' + sid, ); break;
                            case 'ar-x-DMG': autoDictQuery('_MSA', 'id=' + sid, ); break;
@@ -1154,38 +1196,41 @@ function execDictQuery_ajax(query_, idSuffix_) {
 }
 
 function fillWordSelector(q_, dictInd_, idSuffix_) {
-    $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
-
+    /*
     if (q_.length == 0) {
         q_ = '.*';
     }
-    if (q_.length > 1 && q_.indexOf(' ') === -1) {
-        q_ += '.*'
-    }
-    sInd = $("#slFieldSelect" + idSuffix_).val();
-    sIndexUrl = './dict_index?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + encodeURI(q_);
-    //console.log(sIndexUrl);
-    $.ajax({
-        url: sIndexUrl,
-        type: 'GET',
-        dataType: 'html',
-        contentType: 'application/html; charset=utf-8',
-        success: function (result) {
-            if (result.indexOf('option') !== -1) {
-                $("#dvWordSelector" + idSuffix_).show();
-                $("#slWordSelector" + idSuffix_).html(result);
-                $("#slWordSelector" + idSuffix_).show();
-            } else {
+    */
+    if (q_.length > 1) {
+      $("#imgPleaseWait" + idSuffix_).css('visibility', 'visible');
 
-                $("#dvWordSelector" + idSuffix_).hide();
-            }
-            $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert('Line 1063' + errorThrown);
-            $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
-        }
-    });
+      if (q_.length > 1 && q_.indexOf(' ') === -1) {
+          q_ += '.*'
+      }
+       sInd = $("#slFieldSelect" + idSuffix_).val();
+       sIndexUrl = './dict_index?dict=' + dictInd_ + '&ind=' + sInd + '&str=' + encodeURI(q_);
+       console.log(sIndexUrl);
+       $.ajax({
+           url: sIndexUrl,
+           type: 'GET',
+           dataType: 'html',
+           contentType: 'application/html; charset=utf-8',
+           success: function (result) {
+               if (result.indexOf('option') !== -1) {
+                   $("#dvWordSelector" + idSuffix_).show();
+                   $("#slWordSelector" + idSuffix_).html(result);
+                   $("#slWordSelector" + idSuffix_).show();
+               } else {
+                   $("#dvWordSelector" + idSuffix_).hide();
+               }
+               $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
+           },
+           error: function (jqXHR, textStatus, errorThrown) {
+               alert('Line 1063' + errorThrown);
+               $("#imgPleaseWait" + idSuffix_).css('visibility', 'hidden');
+           }
+       });
+    }
 }
 
 var timeoutFillWordSelector;
@@ -1318,9 +1363,37 @@ function execDictQuery_tei(idSuffix_) {
 
 function execCrossDictQuery(dicts_, query_) {
     //qs = './dicts_api?query=' + query_ + '&dicts=dc_tunico,dc_acm_baghdad_eng_publ&xslt=dicts_cross_query_001.xslt';
-    if (query_.indexOf("=") == -1) {
-            query_ = 'any="' + query_ + '"';
-        }
+    //*****************************************************
+    //*** root=ktb & pos=verb  --> root=ktb , pos=verb ****
+    //*****************************************************
+    if (query_.indexOf("&") > 0) {
+       query_ = query_.replace(/\&/, ',');
+    }
+
+    //*****************************************************
+    //*** adds a field identifier if there is none ********
+    //*****************************************************
+    var queries = query_.split(',');
+    for (i in queries) {
+       if (queries[i].indexOf("=") == -1) {
+          queries[i] = 'any="' + queries[i] + '"';
+       }                                       }
+    /*
+    for (var i = 0; i < queries.length; i++) {
+       if (queries[i].indexOf("=") == -1) {
+          queries[i] = 'any="' + queries[i] + '"';
+       }
+    }
+    */
+
+    query_ = '';
+    for (var i = 0; i < queries.length; i++) {
+       if (i == 0) {
+         query_ = queries[0];
+       } else {
+         query_ = query_ + ',' + queries[1];
+       }
+    }
 
     qs = './dicts_api?query=' + query_ + '&dicts=' + dicts_ + '&xslt=dicts_cross_query_001.xslt';
     $.ajax({
@@ -1404,24 +1477,54 @@ function adjustNav(id_, activateID_) {
     changeURLMapParameter(id_);
 }
 
+function openDictFront_Damascus() {
+    //createNewDictQueryPanel('dc_apc_eng_publ', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc, defaultFields);
+    getText('DAMASCUS DICTIONARY', 'dictFrontPage_Damascus', 'vicavTexts.xslt');
+}
+
 function openDict_Damascus() {
     createNewDictQueryPanel('dc_apc_eng_publ', 'Damascus Dictionary Query', '_damascus', 'damascus_dict_001.xslt', charTable_damasc, defaultFields);
+    //getText('DAMASCUS DICTIONARY', 'dictFrontPage_Damascus', 'vicavTexts.xslt');
+}
+
+function openDictFront_Tunis() {
+    //createNewDictQueryPanel('dc_tunico', 'TUNICO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
+    getText('TUNICO DICTIONARY', 'dictFrontPage_Tunis', 'vicavTexts.xslt');
 }
 
 function openDict_Tunis() {
     createNewDictQueryPanel('dc_tunico', 'TUNICO Dictionary Query', '_tunis', 'tunis_dict_001.xslt', charTable_tunis, defaultFields);
+    //getText('TUNICO DICTIONARY', 'dictFrontPage_Tunis', 'vicavTexts.xslt');
+}
+
+function openDictFront_Baghdad() {
+    //createNewDictQueryPanel('dc_acm_baghdad_eng_publ', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_baghdad, baghdadFields);
+    getText('BAGHDAD DICTIONARY', 'dictFrontPage_Baghdad', 'vicavTexts.xslt');
 }
 
 function openDict_Baghdad() {
     createNewDictQueryPanel('dc_acm_baghdad_eng_publ', 'Baghdad Dictionary Query', '_baghdad', 'baghdad_dict_001.xslt', charTable_baghdad, baghdadFields);
+    //getText('BAGHDAD DICTIONARY', 'dictFrontPage_Baghdad', 'vicavTexts.xslt');
+}
+
+function openDictFront_Cairo() {
+    //createNewDictQueryPanel('dc_arz_eng_publ', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
+    getText('CAIRO DICTIONARY', 'dictFrontPage_Cairo', 'vicavTexts.xslt');
 }
 
 function openDict_Cairo() {
     createNewDictQueryPanel('dc_arz_eng_publ', 'Cairo Dictionary Query', '_cairo', 'cairo_dict_001.xslt', charTable_cairo, defaultFields);
+    //getText('CAIRO DICTIONARY', 'dictFrontPage_Cairo', 'vicavTexts.xslt');
+}
+
+function openDictFront_MSA() {
+    //createNewDictQueryPanel('dc_ar_en_publ', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa, MSAFields);
+    getText('MSA DICTIONARY', 'dictFrontPage_MSA', 'vicavTexts.xslt');
 }
 
 function openDict_MSA() {
     createNewDictQueryPanel('dc_ar_en_publ', 'MSA Dictionary Query', '_MSA', 'fusha_dict_001.xslt', charTable_msa, MSAFields);
+    //getText('MSA DICTIONARY', 'dictFrontPage_MSA', 'vicavTexts.xslt');
 }
 
 
@@ -1469,6 +1572,11 @@ function parseCurrentUrl(curUrl) {
 
                 case '_samples_':
                 insertSampleMarkers();
+                break;
+
+
+                case '_data_':
+                insertAllDataMarkers();
                 break;
 
                 default:
@@ -1674,18 +1782,81 @@ function () {
             i.onload = function(){
                 if (this.naturalWidth > this.naturalHeight) {
                     $(this).addClass('landscape');
+
+                    $(this).attr('style', $(this).attr('style') + 'margin-left: -' + this.width / 4 + 'px;');
                     if ($(this).attr('style') !== undefined) {
                         $(this).attr('style', $(this).attr('style') + '; margin-left: -' + this.width / 4 + 'px;');
                     } else {
                         $(this).attr('style', 'margin-left: -' + this.width / 4 + 'px;');
-                }
+                    }
                 }
                 if (this.naturalWidth < this.naturalHeight) {
                     $(this).addClass('portrait');
                 }
             }
         })
+
+        
     });
+
+
+    /**
+     * HANLING AUDIO PLAYER
+     */
+    // This extra function is needed because audio control events do not bubble
+    // in jQuery for some reason.
+    jQuery.createEventCapturing = (function () {
+        var special = jQuery.event.special;
+        return function (names) {
+            if (!document.addEventListener) {
+                return;
+            }
+            if (typeof names == 'string') {
+                names = [names];
+            }
+            jQuery.each(names, function (i, name) {
+                var handler = function (e) {
+                    e = jQuery.event.fix(e);
+
+                    return jQuery.event.dispatch.call(this, e);
+                };
+                special[name] = special[name] || {};
+                if (special[name].setup || special[name].teardown) {
+                    return;
+                }
+                jQuery.extend(special[name], {
+                    setup: function () {
+                        this.addEventListener(name, handler, true);
+                    },
+                    teardown: function () {
+                        this.removeEventListener(name, handler, true);
+                    }
+                });
+            });
+        };
+    })();
+
+    jQuery.createEventCapturing(['play', 'ended', 'pause'])
+
+    $(document).on('play', 'audio', function(e) {
+        e.target.classList.add('playing')
+        $('audio').each((_a2, a2) => {
+            if (a2 !== e.target) {
+                a2.pause()
+                a2.classList.remove('playing')
+                makeAudioInVisible($(a2).parent())
+            }
+        })
+    })
+
+     $(document).on('pause', 'audio', function(e) {
+        e.target.classList.remove('playing')
+    })
+
+     $(document).on('ended', 'audio', function(e) {
+        e.target.classList.remove('playing')
+    })
+
 
     /* *************************** */
     /* ****  Explanations  ******* */
@@ -1708,11 +1879,11 @@ function () {
     /* ******************************** */
     /* ****  DICTIONARY QUERIES ******* */
     /* ******************************** */
-    $(document).on("click", '#liVicavDict_Tunis', function () { openDict_Tunis(); });
-    $(document).on("click", '#liVicavDict_Damascus', function () { openDict_Damascus(); });
-    $(document).on("click", '#liVicavDict_Baghdad', function () { openDict_Baghdad(); });
-    $(document).on("click", '#liVicavDict_Cairo', function () { openDict_Cairo(); });
-    $(document).on("click", '#liVicavDict_MSA', function () { openDict_MSA(); });
+    $(document).on("click", '#liVicavDict_Tunis', function () { openDictFront_Tunis(); });
+    $(document).on("click", '#liVicavDict_Damascus', function () { openDictFront_Damascus(); });
+    $(document).on("click", '#liVicavDict_Baghdad', function () { openDictFront_Baghdad(); });
+    $(document).on("click", '#liVicavDict_Cairo', function () { openDictFront_Cairo(); });
+    $(document).on("click", '#liVicavDict_MSA', function () { openDictFront_MSA(); });
 
     /* ********************************************* */
     /* ****  DICTIONARY Auto Complete Events ******* */
@@ -1744,63 +1915,6 @@ function () {
         console.log('mouseDown - sid: ' + sid + '   sCaption: ' + sCaption);
         getText(sCaption, sid, 'vicavTexts.xslt');
     });
-
-   /*
-    $(document).on('mousedown', "#liProfileAbudhabi", function (event) {
-        getProfile('Abu Dhabi', 'profile_abu_dhabi_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileAhwaz", function (event) {
-        getProfile('Ahwaz', 'profile_ahwaz_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileBaghdad", function (event) {
-        getProfile('Baghdad', 'profile_baghdad_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileBasra", function (event) {
-        getProfile('Basra', 'profile_basra_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileBenghazi", function (event) {
-        getProfile('Benghazi', 'profile_benghazi_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileCairo", function (event) {
-        getProfile('Cairo', 'profile_cairo_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileDamascus", function (event) {
-        getProfile('Damascus', 'profile_damascus_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileDouz", function (event) {
-        getProfile('Douz', 'profile_douz_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileKhabura", function (event) {
-        getProfile('al-Khabura', 'profile_khabura_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileQamishli", function (event) {
-        getProfile('Qamishli', 'profile_qameshli_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileRabat", function (event) {
-        getProfile('Rabat (Salé)', 'profile_sale_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileSousse", function (event) {
-        getProfile('Sousse', 'profile_sousse_001', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileSoukhne", function (event) {
-        getProfile('Soukhne', 'profile_soukhne_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileTaizz", function (event) {
-        getProfile('Taizz', 'profile_taizz_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileTiberias", function (event) {
-        getProfile('Tiberias', 'profile_tiberias_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileTozeur", function (event) {
-        getProfile('Tozeur', 'profile_tozeur_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileTunis", function (event) {
-        getProfile('Tunis', 'profile_tunis_01', 'profile_01.xslt');
-    });
-    $(document).on('mousedown', "#liProfileUrfa", function (event) {
-        getProfile('Şanlıurfa', 'profile_urfa_01', 'profile_01.xslt');
-    });
-     */
 
     /* **************************************** */
     /* ****  Show map with locators *********** */
@@ -1857,34 +1971,19 @@ function () {
         adjustNav(this.id, "#subNavSamplesGeoRegMarkers");
     });
 
+    $(document).on('mousedown', "#navDataGeoRegMarkers,#subNavDataGeoRegMarkers", function (event) {
+        clearMarkerLayers();
+            insertAllDataMarkers();
+            console.log(this.id)
+        adjustNav(this.id, "#subNavDataGeoRegMarkers");
+    });
+
     $(document).on('mousedown', "#navVicavDictMarkers,#subNavVicavDictMarkers", function (event) {
         clearMarkerLayers();
         insertVicavDictMarkers();
         adjustNav(this.id, "#subNavVicavDictMarkers");
     });
 
-    /* *********************** */
-    /* ****  FEATURES ******** */
-    /* *********************** */
-    /*$(document).on('mousedown', "#liFeatureBaghdad", function (event) {
-        getFeatureOfLocation('Baghdad', 'ling_features_baghdad', 'features_01.xslt');
-    });
-    $(document).on('mousedown', "#liFeatureCairo", function (event) {
-        getFeatureOfLocation('Cairo', 'ling_features_cairo', 'features_01.xslt');
-    });
-    $(document).on('mousedown', "#liFeatureDamascus", function (event) {
-        getFeatureOfLocation('Damascus', 'ling_features_damascus', 'features_01.xslt');
-    });
-    $(document).on('mousedown', "#liFeatureDouz", function (event) {
-        getFeatureOfLocation('Douz', 'ling_features_douz', 'features_01.xslt');
-    });
-    $(document).on('mousedown', "#liFeatureTunis", function (event) {
-        getFeatureOfLocation('Tunis', 'ling_features_tunis', 'features_01.xslt');
-    });
-    $(document).on('mousedown', "#liFeatureUrfa", function (event) {
-        getFeatureOfLocation('Urfa', 'ling_features_urfa', 'features_01.xslt');
-    });
-    */
     /* ********************** */
     /* ****  SAMPLES ******** */
     /* ********************** */
@@ -1934,6 +2033,7 @@ function () {
     /* ******************************** */
     //$(document).on("click", '#liTextCukurova_001', function(){ getSample('Cukurova', 'cukurova_001', 'sampletext_01.xslt'); });
     //$(document).on("click", '#liTextJakal_001', function(){ getSample('Morocco', 'killing_jackal', 'sampletext_01.xslt'); });
+
 
 
     /* *******************************************************/

@@ -7,7 +7,7 @@
       <xsl:output-character character="&amp;" string="&amp;"/>
     </xsl:character-map>
 
-    <xsl:output method="xml" encoding="UTF-8"/>
+    <xsl:output method="html" encoding="UTF-8"/>
   <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
   <xsl:param name="param-images-base-path">images</xsl:param>
   <!-- we make sure that $images-base-path always has a trailing slash -->
@@ -277,9 +277,9 @@
                   <xsl:value-of select="tei:cell[3]"/>&#160;<i>(<xsl:value-of select="tei:cell[4]"/>)</i>
                   <audio controls="controls" preload="none" class="audio">
                       <source type="audio/mp4">
-                          <xsl:attribute name="src">sound/<xsl:value-of select='tei:cell[5]/tei:ptr/@target'/></xsl:attribute>
+                          <xsl:attribute name="src">/static/<xsl:value-of select='tei:cell[5]/tei:ptr/@target'/></xsl:attribute>
                       </source>
-                      <a><xsl:attribute name="href">sound/<xsl:value-of select="tei:cell[5]/tei:ptr/@target"/></xsl:attribute>
+                      <a><xsl:attribute name="href">/static/<xsl:value-of select="tei:cell[5]/tei:ptr/@target"/></xsl:attribute>
                           </a>
                   </audio>
               </div>

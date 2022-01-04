@@ -1,5 +1,7 @@
 @echo off
-for %%f in (node_modules\bootstrap\dist\js\bootstrap.js node_modules\bootstrap\dist\js\bootstrap.min.js) do copy %%f js
+:: Bootstrap 4.0.0 is a compiled in part of fundament.min.js from
+:: https://github.com/acdh-oeaw/fundament
+:: for %%f in (node_modules\bootstrap\dist\js\bootstrap.js node_modules\bootstrap\dist\js\bootstrap.min.js) do copy %%f js
 for %%f in (node_modules\jquery\dist\jquery.js node_modules\jquery\dist\jquery.min.js node_modules\jquery\dist\jquery.min.map) do copy %%f js
 cd node_modules\jquery-ui
 del /s /q dist
