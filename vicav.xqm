@@ -1284,38 +1284,25 @@ function vicav:get_all_data_markers() {
 };
 
 
-declare
-%rest:path("vicav/data_list")
-%rest:query-param("type", "{$type}")
-%rest:GET
-%output:method("xml")
-function vicav:get_data_list($type as xs:string*) {
-    let $type := if (empty($type) or $type = '') then 'all' else $type
-    let $items := if ($type = 'all') then
-        for $c in ('vicav_profiles', 'vicav_samples', 'vicav_lingfeatures') return collection($c)/descendant::tei:TEI 
-    else
-        collection('vicav_' || $type || vicav:get_project_db())/descendant::tei:TEI
-
-    let $out := for $region in distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:region)
-        order by $region 
-        return <div class="region"><h3>{$region}</h3> {
-        for $city in distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:region[./text() = $region]]/tei:settlement/tei:name[@xml:lang="en"])
+declare function vicav:data_list_region($type as xs:string, $region as xs:string, $items as element()*) {
+    <div class="region"><h3>{$region}</h3>{
+        for $city in distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"])
             order by $city
             let $city-items := $items[./tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"] = $city]
             return
                 <div class="settlement"><h5>{$city} ({count($city-items)})</h5>
                 {if ($type = 'all') then
-                    for $cat in distinct-values($city-items/tei:teiHeader/tei:profileDesc/tei:taxonomy/tei:category/tei:catDesc/text()) 
+                    for $cat in distinct-values($city-items/tei:teiHeader/tei:profileDesc/tei:taxonomy/tei:category/tei:catDesc/text())
                         let $cat-items := $city-items[./tei:teiHeader/tei:profileDesc/tei:taxonomy/tei:category/tei:catDesc/text() = $cat]
                         let $typestring := switch($cat)
-                                    case 'liguistic feature list' return
+                                    case 'linguistic feature list' return
                                         'data-featurelist'
                                     case 'linguistic profile' return
                                         'data-profile'
                                     default return
                                         'data-sampletext'
                         return (element h6 {
-                            concat($cat, ': ', count($cat-items)) 
+                            concat($cat, ': ', count($cat-items))
                         },
                         for $item in $cat-items
                                 order by $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/text()
@@ -1327,9 +1314,9 @@ function vicav:get_data_list($type as xs:string*) {
                                         text { string-join((' (Revision: ', replace($item/tei:teiHeader/tei:revisionDesc/tei:change[1]/@when, 'T.*', ''), ')')) }
                                     }, element br {}
                                 }
-                            
+
                         )
-                    
+
                 (: Handle single type data list :)
                 else for $item in $city-items
                                 order by $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/text()
@@ -1348,9 +1335,40 @@ function vicav:get_data_list($type as xs:string*) {
                                         text { string-join((' (Revision: ', replace($item/tei:teiHeader/tei:revisionDesc/tei:change[1]/@when, 'T.*', ''), ')')) }
                                     }, element br {}
                                 }
-                            
-            }</div> 
+
+            }</div>
         }</div>
+};
+
+declare
+%rest:path("vicav/data_list")
+%rest:query-param("type", "{$type}")
+%rest:GET
+%output:method("xml")
+function vicav:get_data_list($type as xs:string*) {
+    let $type := if (empty($type) or $type = '') then 'all' else $type
+    let $items := if ($type = 'all') then
+        for $c in ('vicav_profiles', 'vicav_samples', 'vicav_lingfeatures') return collection($c)/descendant::tei:TEI
+    else
+        collection('vicav_' || $type || vicav:get_project_db())/descendant::tei:TEI
+
+    let $countries := distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:country)
+
+    let $out := if (count($countries) > 1) then
+        for $country in $countries
+        order by $country
+        let $regions := distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:country[./text() = $country]]/tei:region)
+        return <div class="country"><h1>{$country}</h1>{
+            for $region in $regions
+            order by $region
+            return vicav:data_list_region($type, $region, $items[./tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:region[./text() = $region]]])
+        }</div>
+    else
+        let $regions := distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:region)
+        for $region in $regions
+        order by $region
+             return vicav:data_list_region($type, $region, $items[./tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:region[./text() = $region]]])
+
     return
         <div>Total: {count($items)}<br/>{$out}</div>
 };
