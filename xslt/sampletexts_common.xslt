@@ -116,6 +116,11 @@ version="2.0">
                 <sup>š</sup>
                 <xsl:value-of select="substring-after($wordform, 'ᶴ')"/>
             </xsl:when>
+            <xsl:when test="contains($wordform, 'Q')">
+                <xsl:value-of select="substring-before($wordform, 'Q')"/>
+                <sup>q</sup>
+                <xsl:value-of select="substring-after($wordform, 'Q')"/>
+            </xsl:when>
             <xsl:otherwise>
                 <xsl:value-of select="$wordform"/>        
             </xsl:otherwise>
