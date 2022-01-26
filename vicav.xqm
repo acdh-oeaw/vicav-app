@@ -1267,7 +1267,7 @@ declare function vicav:data_list_region($type as xs:string, $region as xs:string
                     for $cat in distinct-values($city-items/tei:teiHeader/tei:profileDesc/tei:taxonomy/tei:category/tei:catDesc/text())
                         let $cat-items := $city-items[./tei:teiHeader/tei:profileDesc/tei:taxonomy/tei:category/tei:catDesc/text() = $cat]
                         let $typestring := switch($cat)
-                                    case 'liguistic feature list' return
+                                    case 'linguistic feature list' return
                                         'data-featurelist'
                                     case 'linguistic profile' return
                                         'data-profile'
