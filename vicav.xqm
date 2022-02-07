@@ -1102,7 +1102,7 @@ function vicav:get_sample_markers() {
         order by $item/@xml:id
         let $loc := if ($item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text()) then 
                         replace($item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
-                    else $item/tei:text/tei:body/tei:div[@type="positioning"]/tei:geo/text()
+                    else $item/tei:text/tei:body/tei:div[@type="positioning"]//tei:geo/text()
         let $alt := if ($item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person) then $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/text() || '/' || $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@sex || '/' || $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@age else ''
         
         return
@@ -1199,7 +1199,7 @@ function vicav:get_feature_markers() {
             order by $item/@xml:id
             let $loc := if ($item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text()) then 
                             replace($item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
-                        else $item/tei:text/tei:body/tei:div[@type="positioning"]/tei:geo/text()
+                        else $item/tei:text/tei:body/tei:div[@type="positioning"]//tei:geo/text()
             let $alt := if ($item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person) then $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/text() || '/' || $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@sex || '/' || $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@age else ''
 
             return
@@ -1235,7 +1235,7 @@ function vicav:get_all_data_markers() {
             let $locName := $item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"]/text()
             let $loc := if ($item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text()) then
                             replace($item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
-                        else $item/tei:text/tei:body/tei:div[@type="positioning"]/tei:geo/text()
+                        else $item/tei:text/tei:body/tei:div[@type="positioning"]//tei:geo/text()
             let $alt := if ($item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person) then $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/text() || '/' || $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@sex || '/' || $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@age else $locName
 
             return
