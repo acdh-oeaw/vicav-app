@@ -30,6 +30,7 @@ version="2.0">
         </tr>
         <tr>
             <td class="tdFeaturesRightTarget">
+
                 <xsl:if test=".//tei:cit[@type='translation']/tei:quote[@xml:lang='ar']">
                     <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
                         <xsl:attribute name="title">
