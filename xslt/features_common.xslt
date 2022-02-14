@@ -30,16 +30,7 @@ version="2.0">
         </tr>
         <tr>
             <td class="tdFeaturesRightTarget">
-
-                <xsl:if test=".//tei:cit[@type='translation']/tei:quote[@xml:lang='ar']">
-                    <span class="sample-text-tooltip" data-html="true" data-toggle="tooltip" data-placement="top">
-                        <xsl:attribute name="title">
-                            <xsl:value-of select=".//tei:cit[@type='translation']/tei:quote[@xml:lang='ar']"/>
-                        </xsl:attribute>
-                        <i class="fa fa-commenting-o" aria-hidden="true"><span/></i>
-                    </span>
-                </xsl:if>
-                <xsl:sequence select="acdh:feature-sentence(./tei:quote, acdh:current-feature-ana(., ()))"/><xsl:text> </xsl:text>
+                <xsl:sequence select="acdh:feature-sentence(.//tei:quote[@xml:lang=('ar', 'aeb')], acdh:current-feature-ana(., ()))"/><xsl:text> </xsl:text>
             </td>
         </tr>
     </xsl:template>

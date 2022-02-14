@@ -30,7 +30,7 @@
                     </xsl:for-each></ul>
                 
                 <table class="tbFeatures">
-                    <xsl:for-each select="./tei:text/tei:body/tei:div/tei:div[@type='featureGroup']">
+                    <xsl:for-each select="(./tei:text/tei:body/tei:div/tei:div[@type='featureGroup'], ./tei:text/tei:body/tei:div[@type='featureGroup'])">
                         <tr>
                             <td colspan="2" class="tdFeaturesHead"><xsl:apply-templates select="./tei:head"/></td>
                         </tr>
