@@ -14,8 +14,8 @@
                 <a href="#" data-print="true" class="aTEIButton"><xsl:attribute name="data-sampletext"><xsl:value-of 
                     select="./@xml:id"/></xsl:attribute>Print</a></td></tr>
             </table>
-            
-            <p xml:space="preserve">By <i><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/><xsl:if test="./tei:teiHeader/tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="replace(./tei:teiHeader/tei:revisionDesc/tei:change[1]/@when, 'T.*', '')" />)</xsl:if></i></p>
+
+            <p xml:space="preserve">By <i><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/><xsl:if test="./tei:teiHeader/tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="(./tei:teiHeader/tei:revisionDesc/tei:change[1]/@n, replace(./tei:teiHeader/tei:revisionDesc/tei:change[1]/@when, 'T.*', ''))[1]" />)</xsl:if></i></p>
             <ul id="informants">
             <xsl:for-each select="./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person">
                 <li xml:space="preserve">Informant ID: 

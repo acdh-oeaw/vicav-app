@@ -169,67 +169,6 @@ function loadLocations($root, type) {
 		}
 	});
 }
-// Init person widges
-
-$(document).on('DOMNodeInserted', "[data-snippetid='compare-samples']", function(event) {
-	loadWords($(event.target), 'samples')
-	loadLocations($(event.target), 'samples')
-	loadPersons($(event.target), 'samples')
-})
-
-$(document).on('DOMNodeInserted', "[data-snippetid='compare-features']", function(event) {
-	loadWords($(event.target), 'lingfeatures')
-	loadLocations($(event.target), 'lingfeatures')
-	loadPersons($(event.target), 'lingfeatures')
-	loadFeatures($(event.target))
-})
-
-$(document).on('click', 'a[data-wordform]', function(e) {    
-    e.preventDefault();
-
-    var word = $(e.target).closest('[data-wordform]').attr('data-wordform');
-    var dataType = $(e.target).closest('[data-type]').attr('data-type');
-
-    compareQuery('type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt, function(result) {
-        createExploreDataResultsPanel(dataType, result, 'type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt);
-    })
-})
-
-$(document).on('click', 'a[data-featurelist]', function(e) {    
-    e.preventDefault();
-    var item = $(e.target).closest('[data-featurelist]').attr('data-featurelist');
-    var print = $(e.target).closest('[data-featurelist]').attr('data-print');
-    if (item) {
-    	if (!print) {
-	        getFeatureOfLocation('', item, 'features_01.xslt');
-	    } else {
-	    	window.open('./profile?coll=vicav_lingfeatures&id=' + item + '&print=true&xslt=features_01.xslt');
-	    }
-
-    }
-});
-
-$(document).on('click', 'a[data-sampletext]', function(e) {    
-    e.preventDefault();
-    var item = $(e.target).closest('[data-sampletext]').attr('data-sampletext');
-    var print = $(e.target).closest('[data-sampletext]').attr('data-print');
-    if (item) {
-    	if (!print) {
-	        getSample('', item, 'sampletext_01.xslt');
-    	}
-    	else {
-    		window.open('./sample?coll=vicav_samples&id=' + item + '&print=true&xslt=' + 'sampletext_01.xslt')
-    	}
-    } 
-});
-
-$(document).on('click', 'a[data-profile]', function(e) {    
-    e.preventDefault();
-    var item = $(e.target).closest('[data-profile]').attr('data-profile');
-    if (item) {
-        getProfile('', item, 'profile_01.xslt');
-    }
-});
 
 function loadPersons($root, type) {
 	if ('personsLoading' in window) {
@@ -367,6 +306,7 @@ function compareFormSubmit($root, success_callback) {
   compareQuery(query, success_callback)
 }
 
+
 function createDisplayExploreDataPanel(type, query_, pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
     $( '<div>' ).load( "compare-" + type + "s.html form" , function(event) {
         var pID = appendPanel(this.innerHTML, "cross" + exploreDataStrings[type].class + "Form", "", "grid-wrap", '', 'hasTeiLink', '', 'compare-' + type + 's', pID_, pVisiblity_, pURL_);
@@ -457,4 +397,93 @@ $(document).on('mousedown', "#liExploreSamples", function (event) {
     insertSampleMarkers();
     adjustNav(this.id, "#subNavSamplesGeoRegMarkers");
     createDisplayExploreDataPanel('sample', '','', 'open', false);
+});
+
+// Init person widges
+
+$(document).on('DOMNodeInserted', "[data-snippetid='compare-samples']", function(event) {
+	loadWords($(event.target), 'samples')
+	loadLocations($(event.target), 'samples')
+	loadPersons($(event.target), 'samples')
+})
+
+$(document).on('DOMNodeInserted', "[data-snippetid='compare-features']", function(event) {
+	loadWords($(event.target), 'lingfeatures')
+	loadLocations($(event.target), 'lingfeatures')
+	loadPersons($(event.target), 'lingfeatures')
+	loadFeatures($(event.target))
+})
+
+
+function compareFeatureLink(feature) {
+	let query = 'type=lingfeatures&features=' + feature + '&xslt=cross_features_02.xslt';
+	compareQuery(query, function(result, query) {
+        if (result.includes('error type="user authentication"')) {
+            alert('Error: authentication did not work');
+        }
+        else {
+            createExploreDataResultsPanel('feature', result, query)
+        }
+    });
+}
+
+$(document).on('click', 'a[data-wordform]', function(e) {
+    e.preventDefault();
+
+    var word = $(e.target).closest('[data-wordform]').attr('data-wordform');
+    var dataType = $(e.target).closest('[data-type]').attr('data-type');
+
+    compareQuery('type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt, function(result) {
+        createExploreDataResultsPanel(dataType, result, 'type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt);
+    })
+})
+
+$(document).on('click', 'a[data-featurelist]', function(e) {
+    e.preventDefault();
+    var item = $(e.target).closest('[data-featurelist]').attr('data-featurelist');
+    var print = $(e.target).closest('[data-featurelist]').attr('data-print');
+    if (item) {
+    	if (!print) {
+	        getFeatureOfLocation('', item, 'features_01.xslt');
+	    } else {
+	    	window.open('./profile?coll=vicav_lingfeatures&id=' + item + '&print=true&xslt=features_01.xslt');
+	    }
+
+    }
+});
+
+$(document).on('click', 'a[data-sampletext]', function(e) {
+    e.preventDefault();
+    var item = $(e.target).closest('[data-sampletext]').attr('data-sampletext');
+    var print = $(e.target).closest('[data-sampletext]').attr('data-print');
+    if (item) {
+    	if (!print) {
+	        getSample('', item, 'sampletext_01.xslt');
+    	}
+    	else {
+    		window.open('./sample?coll=vicav_samples&id=' + item + '&print=true&xslt=' + 'sampletext_01.xslt')
+    	}
+    }
+});
+
+$(document).on('click', 'a[data-profile]', function(e) {
+    e.preventDefault();
+    var item = $(e.target).closest('[data-profile]').attr('data-profile');
+    if (item) {
+        getProfile('', item, 'profile_01.xslt');
+    }
+});
+
+$(document).on('click', 'a[data-featurecompare]', function(e) {
+    e.preventDefault();
+    var item = $(e.target).closest('[data-featurecompare]').attr('data-featurecompare');
+    var print = $(e.target).closest('[data-featurecompare]').attr('data-print');
+    if (item) {
+    	if (!print) {
+	        compareFeatureLink(item);
+	    } else {
+	    	window.open('/explore_samples?type=lingfeatures&features=' + item + '&print=true&xslt=cross_features_02.xslt');
+	    }
+
+    }
 });
