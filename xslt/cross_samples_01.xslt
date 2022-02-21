@@ -61,10 +61,10 @@
                 <xsl:if test="$filter-features">
                     <div class="sentences-nav">
                         <xsl:if test="not($prev_sentence = '')">
-                            <a href="#" data-feature="{$prev_sentence}" class="prev-link"><i class="fa fa-chevron-left"/> Previous</a>
+                            <a href="#" data-feature="{$prev_sentence}" class="prev-link"><i class="fa fa-chevron-left"><span/></i> Previous</a>
                         </xsl:if>
                         <xsl:if test="not($next_sentence = '')">
-                            <a href="#" data-feature="{$next_sentence}" class="next-link">Next <i class="fa fa-chevron-right"></i></a>
+                            <a href="#" data-feature="{$next_sentence}" class="next-link">Next <i class="fa fa-chevron-right"><span/></i></a>
                         </xsl:if>
                         <input name="sentences">
                             <xsl:attribute name="value"><xsl:value-of select="string-join($selected-sentences, ',')"/></xsl:attribute>
@@ -97,7 +97,7 @@
                                                     <xsl:attribute name="data-sampletext">
                                                         <xsl:value-of select="./descendant::tei:TEI/@xml:id" />
                                                     </xsl:attribute>
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                                    <i class="fa fa-eye" aria-hidden="true"><span/></i>
                                                 </a>
 
                                                 <xsl:apply-templates select=".//tei:div[@type='sampleText']//tei:s[@n=$sentence]"/>

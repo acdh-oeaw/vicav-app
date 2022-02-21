@@ -45,7 +45,7 @@
 
       <dropdown xml:id="dropdown03" title="Feature Lists">
         <item xml:id="li_vicavExplanationFeatures">Explanation</item>
-        <item xml:id="li_vicavExploreFeatures">Cross-examine the VICAV Feature Lists</item>
+        <item xml:id="liVicavCrossFeatureQuery">Cross-examine the VICAV Feature Lists</item>
         <separator></separator>
         <item xml:id="navFeaturesGeoRegMarkers">Show All Feature Lists on Map</item>
         <separator></separator>
@@ -56,7 +56,7 @@
         <item xml:id="li_vicavExplanationSamples">Explanation</item>
         <separator></separator>
         <item xml:id="navSamplesGeoRegMarkers">Show All Samples on Map</item>
-        <!--<item xml:id="liExploreSamples">Compare Locations</item>-->
+        <item xml:id="liExploreSamples">Compare Locations</item>
         <separator></separator>
         <item xml:id="li_vicavContributeSampleText">Contribute a Sample Text</item>        
       </dropdown>

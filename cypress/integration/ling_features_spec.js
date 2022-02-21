@@ -44,7 +44,7 @@ describe('VICAV Compare features window', function() {
 						    cy.contains('Compare features').click()
 						    cy.wait('@results', {responseTimeout: 10000}).then(() => {
 							    cy.get('[data-snippetID=compare-features-result]').then((el) => {
-							    	cy.url().should('contain', '[crossFeaturesResult,type|lingfeatures+xslt|cross_features_02.xslt+location|Tunis2+age|0%2C100+person|Test1+features|semlib%3Awho+translation|+word|+sex|m%2Cf,open]')	
+							    	cy.url().should('contain', '[crossFeaturesResult,type|lingfeatures+xslt|cross_features_02.xslt+location|Tunis2+age|0%2C100+person|Test1+features|semlib%3Awho+translation|+comment|+word|+sex|m%2Cf,open]')	
 							    	cy.get(el).contains('2 feature sentences found.')
 							    	cy.get('.tdFeaturesRightTarget').then((td) => {
 							    		assert.equal(td[0].innerText, 'škūn hā -ṛ -ṛāžil?– hūwa ṣāḥbi.')

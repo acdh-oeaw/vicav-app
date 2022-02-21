@@ -42,7 +42,7 @@ function splitCoords(s_, loc_) {
    s_ = s_.replace(/″ W$/g, '″W');
    s_ = s_.replace(/″ E$/g, '″E');
    s_ = s_.replace(/ ,/g, ',');
-
+   console.log(s_)
    var latlng = s_.split(' ');
    if (latlng.length !== 2) {
      //console.log(s_);
@@ -147,7 +147,7 @@ function insertFeatureMarkers() {
                     sAlt = sAlt + ' (' + sCnt + ')'
                 }
 
-                if (sLoc.match(/\d+.\d+,? *\d+.\d+/)) {
+                if (sLoc.match(/^\d+.\d+,? *\d+.\d+$/)) {
                     var coords = parseDecCoords(sLoc)
                     var declat = coords[0]
                     var declng = coords[1]
@@ -188,7 +188,7 @@ function insertSampleMarkers() {
                 sID = $(this).attr('xml:id');
 
                 
-                if (sLoc.match(/\d+.\d+,? *\d+.\d+/)) {
+                if (sLoc.match(/^\d+.\d+,? *\d+.\d+$/)) {
                     var coords = parseDecCoords(sLoc)
                     var declat = coords[0]
                     var declng = coords[1]
@@ -309,13 +309,14 @@ function insertProfileMarkers() {
                 sType = $(this).attr('type');
                 sAlt = $(this).find('alt').text();
                 sID = $(this).attr('xml:id');
-                if (sLoc.match(/\d+.\d+,? *\d+.\d+/)) {
+
+                if (sLoc.match(/^\d+.\d+,? *\d+.\d+$/)) {
                     var coords = parseDecCoords(sLoc)
                     var declat = coords[0]
                     var declng = coords[1]
                 } else {
                     var coord = splitCoords(sLoc, sAlt);
-                    //console.log('(' + coord.lat + ') (' + coord.lng + ')');
+                    console.log('(' + coord.lat + ') (' + coord.lng + ')');
 
                     var dmslat = parseStringToDMS(coord.lat);
                     var declat = convertDMSToDD(dmslat.deg, dmslat.min, dmslat.sec, dmslat.dir)
