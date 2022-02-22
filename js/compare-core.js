@@ -81,6 +81,9 @@ var unique = function(array) {
 	return newArray;
 }
 
+/**
+ * Load the word, person, feature etc. autocomplete options from baseX.
+ */
 function loadWords($root, type) {
 	if ('wordsLoading' in window) {
 		return;
@@ -289,6 +292,9 @@ function compareQuery(query, success_callback) {
 	});
 }
 
+/**
+ * Submission handler for the Explore data form.
+ */
 function compareFormSubmit($root, success_callback) {
 	var $form = $('form[class^=compare]', $root); 
 
@@ -307,6 +313,9 @@ function compareFormSubmit($root, success_callback) {
 }
 
 
+/**
+ * Create the Explore data form window and attache handlers to handle submission.
+ */
 function createDisplayExploreDataPanel(type, query_, pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
     $( '<div>' ).load( "compare-" + type + "s.html form" , function(event) {
         var pID = appendPanel(this.innerHTML, "cross" + exploreDataStrings[type].class + "Form", "", "grid-wrap", '', 'hasTeiLink', '', 'compare-' + type + 's', pID_, pVisiblity_, pURL_);
@@ -328,6 +337,9 @@ function createDisplayExploreDataPanel(type, query_, pID_ = '', pVisiblity_ = 'o
     });    
 }
 
+/**
+ * Create the Explore data results window.
+ */
 function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
     var attachPagingHandlers = function(pID, query) {
         var $root = $('[data-pid=' + pID + ']');
@@ -342,14 +354,17 @@ function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ =
                 }
                 compareQuery(query, function(result) {
                     $('.grid-wrap > div', $root).html(result);
-                    var currentURL = decodeURI(window.location.toString());
-                    var re = new RegExp("^(.*&" + pID + "=\\[.*?\\,.*)features|[0-9]*(.*\\])$")
-                    var newUrl = currentURL.replace(re, '$1features|' + feature + '$2')
-                    window.history.replaceState({ }, "", newUrl);
+                    // Disable URL update for now as it is buggy.
+                    // var currentURL = decodeURI(window.location.toString());
+                    // console.log("b")
+                    // var re = new RegExp("^(.*&" + pID + "=\\[.*\,.*?)(features\|?[0-9]*)(\|.*\])$")
+                    // console.log('c',currentURL.match(re))
+                    // var newUrl = currentURL.replace(re, '$1features|' + feature + '$3')
+                    // window.history.replaceState({ }, "", newUrl);
                 })
             }
     
-            $root.on('change', '[name=features]', function(e) {
+            $root.on('input', '[name=sentences]', function(e) {
                 var feature = $(e.target)[0].value.split(/,\s*/).join(',');
                 e.preventDefault();
                 changeFeature(feature);
@@ -399,8 +414,7 @@ $(document).on('mousedown', "#liExploreSamples", function (event) {
     createDisplayExploreDataPanel('sample', '','', 'open', false);
 });
 
-// Init person widges
-
+// Init autocomplete widgets.
 $(document).on('DOMNodeInserted', "[data-snippetid='compare-samples']", function(event) {
 	loadWords($(event.target), 'samples')
 	loadLocations($(event.target), 'samples')
@@ -415,6 +429,9 @@ $(document).on('DOMNodeInserted', "[data-snippetid='compare-features']", functio
 })
 
 
+/**
+ * Handle clicking on a link which triggers opening an Explore features window on a given feature.
+ */
 function compareFeatureLink(feature) {
 	let query = 'type=lingfeatures&features=' + feature + '&xslt=cross_features_02.xslt';
 	compareQuery(query, function(result, query) {
@@ -427,6 +444,15 @@ function compareFeatureLink(feature) {
     });
 }
 
+/**
+ * Handlers to trigger opening a new window upon clicking on a link with a speicifc data-$TYPE attibute.
+ *
+ * data-wordform: opens an Explore samples/features result window with a search query on the given word.
+ * data-featurelist: opens a feature list with the given XML ID.
+ * data-sampletext: opens a sample text with the given XML ID.
+ * data-profile: optens a linguistic profile with the given XML ID
+ * data-featurecompare: opens an Explore features result window with a search query on the given feature.
+ */
 $(document).on('click', 'a[data-wordform]', function(e) {
     e.preventDefault();
 
