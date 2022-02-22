@@ -113,12 +113,12 @@ declare %unit:test function test:explore-lingfeatures-locations-data() {
 };
 
 declare %unit:test function test:explore-lingfeatures-data() {
-  unit:assert-equals(vicav:explore-data(
+  unit:assert-equals(sort(vicav:explore-data(
     "vicav_lingfeatures",
       (), 
       (),
       (),
       "0,100", 
-      ())/descendant::tei:TEI/@xml:id/data(), ('vicav_lingfeatures_tunis2', 'vicav_lingfeatures_test')
+      ())/descendant::tei:TEI/@xml:id/data()), ('vicav_lingfeatures_test', 'vicav_lingfeatures_tunis2')
   )
 };
