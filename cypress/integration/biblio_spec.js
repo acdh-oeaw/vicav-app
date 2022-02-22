@@ -59,12 +59,12 @@ describe('Textbooks bibliography', function() {
 	    	.then(function (el) {
 		    	cy.contains('Tunisia')
 		    	cy.get(el).click({force: true})
-		    cy.contains('reg:Tunisia,vt:textbook')
+		    cy.contains('reg:Tunisia & vt:textbook')
 		    cy.get('.dvBibBook')
 		})
 
 	    cy.get('img[alt^="Ouaday"]').click({force: true}).then(el => {
-		    cy.contains('geo:Ouaday,vt:textbook')
+		    cy.contains('geo:Ouaday &vt:textbook')
 	    })
     })
 })
