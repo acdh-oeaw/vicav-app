@@ -72,7 +72,7 @@ declare %unit:test function test:explore-samples-gender-age-only() {
       (), 
       (),
       (), 
-      "0,100", 
+      "10,100",
       "m,f")/descendant::tei:TEI/@xml:id/data(), ('test_sample_01', 'test_sample_02')
   )
 };
@@ -119,6 +119,6 @@ declare %unit:test function test:explore-lingfeatures-data() {
       (),
       (),
       "0,100", 
-      ())/descendant::tei:TEI/@xml:id/data(), ('vicav_lingfeatures_test', 'vicav_lingfeatures_tunis2')
+      ())/descendant::tei:TEI/@xml:id/data(), ('vicav_lingfeatures_tunis2', 'vicav_lingfeatures_test')
   )
 };

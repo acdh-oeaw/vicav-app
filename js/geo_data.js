@@ -137,9 +137,9 @@ function insertFeatureMarkers() {
             cnt = 0;
             $(result).find('r').each(function (index) {
                 cnt = cnt + 1;
-                sLoc = $(this).find('loc').text();
-                sAlt = $(this).find('alt').text();
-                sLocName = $(this).find('locName').text();
+                sLoc = $(this).find('loc').text().trim();
+                sAlt = $(this).find('alt').text().trim();
+                sLocName = $(this).find('locName').text().trim();
                 sID = $(this).attr('xml:id');
 
                 let sCnt = sID.replace(/^[\w-]+_?0?/, '')
@@ -183,9 +183,10 @@ function insertSampleMarkers() {
         contentType: 'application/html; charset=utf-8',
         success: function (result) {
             $(result).find('r').each(function (index) {
-                sLoc = $(this).find('loc').text();
-                sAlt = $(this).find('alt').text();
+                sLoc = $(this).find('loc').text().trim();
+                sAlt = $(this).find('alt').text().trim();
                 sID = $(this).attr('xml:id');
+                sLocName = $(this).find('locName').text().trim();
 
                 
                 if (sLoc.match(/^\d+.\d+,? *\d+.\d+$/)) {
@@ -204,7 +205,7 @@ function insertSampleMarkers() {
                 }
 
 
-                marker = L.marker([declat, declng], { alt: sAlt, id: sID, type: 'sample' }).bindTooltip(sAlt);
+                marker = L.marker([declat, declng], { alt: sAlt, id: sID, locName: sLocName, type: 'sample' }).bindTooltip(sLocName);
                 fgSampleMarkers.addLayer(marker);                
             });
         },

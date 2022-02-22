@@ -350,7 +350,7 @@ declare function vicav:explore-query(
             return $a
         else ()
 
-    let $age_q := if (not(empty($age_bounds)) and ($age_bounds[2] != "100" or $age_bounds[1] != "0")) then 
+    let $age_q := if (not(empty($age_bounds)) and ($age_bounds[2] != "100" or $age_bounds[1] != "0")) then
         vicav:and((
             '(./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person/@age > ' || min($age_bounds) || ')',
             ' (./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person/@age < ' || max($age_bounds) || ')'
@@ -390,17 +390,17 @@ declare function vicav:explore-query(
     else
         ""
 
-    let $loc_word_age_sex_q := if ($location_q != '' or $word_q != '') then vicav:and(($location_q, $word_q, $age_q, $sex_q)) else vicav:and(($age_q, $sex_q))
+    let $loc_word_age_sex_q := if ($location_q != '' or $word_q != '' or $age_q != '' or $sex_q != '') then vicav:and(($location_q, $word_q, $age_q, $sex_q)) else ''
 
-    let $full_tei_query := if ($person_q != '' and $location_q != '') then vicav:or(($person_q, $loc_word_age_sex_q)) else 
+    let $full_tei_query := if ($person_q != '' and $location_q != '') then vicav:or(($person_q, $loc_word_age_sex_q)) else
         vicav:and(($person_q, $loc_word_age_sex_q))
 
     let $full_tei_query := if (not($full_tei_query = '')) then
         '[' || $full_tei_query || ']'
-        else 
+        else
         $full_tei_query
 
-    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || $collection ||'")/descendant::tei:TEI' 
+    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || $collection ||'")/descendant::tei:TEI'
         || $full_tei_query
 
     return $query
@@ -417,7 +417,7 @@ declare function vicav:explore-data(
     let $query := vicav:explore-query($collection, $location, $word, $person, $age, $sex)
     let $results := xquery:eval($query)
 
-    let $ress := 
+    let $ress :=
       for $item in $results
         let $city := $item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"]/text()
         let $informant := $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/text()
@@ -427,7 +427,7 @@ declare function vicav:explore-data(
         return
            <item city="{$city}" informant="{$informant}" age="{$age}" sex="{$sex}">{$item}</item>
     let $ress1 := <items>{$ress}</items>
-    return $ress1    
+    return $ress1
 };
 
 

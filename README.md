@@ -35,3 +35,41 @@ into `<basexhome>`.
 ### Update data and web page code
 
 In `<basexhome>` execute `./redeploy.sh`
+
+
+Then if
+
+
+### Tests
+
+3 types of tests:
+* XSPEC for unit testing the XSL transformations in ./xslt,
+* XUnit for testing basex API endpoint outputs
+* Cypress for end-to-end testing of the frontend features
+
+Test data is located in ./fixtures.
+Before running tests locally, you have to setup your test environment with the fixtures.
+
+Tests are automatically executed upon a git push on Gitlab.
+See https://gitlab.com/acdh-oeaw/vicav/vicav-app/-/pipelines.
+
+#### XSpec
+
+Installation: Download xspec from https://github.com/xspec/xspec
+Running a test file:
+1a. Windows: `<xspechome>/bin/xspec.sh FILENAME`
+1b. Linux, mac: run `<xspechome>/bin/xspec.sh FILENAME`
+
+#### Run xUnit:
+
+Running a test file:
+Run `<basexhome>/bin/basex -t FILENAME`
+
+#### Run cypress
+
+Installation:
+* install nodejs and npm
+* run `npm install`
+
+Running tests:
+Either open the GUI with `npm run cypress:open` or run them on command line with `npm run cypress:run`.

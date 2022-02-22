@@ -266,7 +266,6 @@ let overlapPopup = function(e, groupByType = false) {
         })
 
         popupContent = popupContent + '</ul>';
-        console.log(popupContent);
         if (marker.options.locName) marker.alt = marker.options.locName
         marker.bindPopup(popupContent).openPopup()
       }

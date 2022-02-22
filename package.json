@@ -25,7 +25,8 @@
     "cypress": "^4.12.1"
   },
   "scripts": {
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "repository": {
     "type": "git",
