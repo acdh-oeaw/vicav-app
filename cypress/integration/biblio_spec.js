@@ -64,7 +64,7 @@ describe('Textbooks bibliography', function() {
 		})
 
 	    cy.get('img[alt^="Ouaday"]').click({force: true}).then(el => {
-		    cy.contains('geo:Ouaday &vt:textbook')
+		    cy.contains('geo:Ouaday & vt:textbook')
 	    })
     })
 })
