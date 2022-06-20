@@ -166,8 +166,12 @@ function onDictMapClick(e) {
 L.Icon.Default.prototype.options.iconSize = [13, 35];
 L.Icon.Default.prototype.options.iconAnchor = [2, 35];
 
+// we use a cop of the North Star map style: https://blog.mapbox.com/designing-north-star-c8574e299c94
+// mapbox://styles/osiam/cl4mxp3zk003v15ufbeb1ynbc
+// to copy and edit the VICAV North Star style use this link https://api.mapbox.com/styles/v1/osiam/cl4mxp3zk003v15ufbeb1ynbc.html?title=copy&access_token=pk.eyJ1Ijoib3NpYW0iLCJhIjoiY2pmMnVpZTV3MDFpNjJxbHQxb2Nna25ldiJ9.mlqREmow6onk_Zfco-qDHA&zoomwheel=true&fresh=true#4.6/31.38/26.74
+// map style from acetin ~2017 https://api.mapbox.com/styles/v1/acetin/cjb22mkrf16qf2spyl3u1vee3.html?title=copy&access_token=pk.eyJ1IjoiYWNldGluIiwiYSI6ImNqYjIybG5xdTI4OWYyd285dmsydGFkZWQifQ.xG4sN5u8h-BoXaej6OjkXw&zoomwheel=true&fresh=true#4.6/31.38/26.74
 var mainMap = L.map('dvMainMap').setView([19.064, 24.544], 4);
-L.tileLayer('https://api.mapbox.com/styles/v1/acetin/cjb22mkrf16qf2spyl3u1vee3/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWNldGluIiwiYSI6ImNqYjIybG5xdTI4OWYyd285dmsydGFkZWQifQ.xG4sN5u8h-BoXaej6OjkXw', {
+L.tileLayer('https://api.mapbox.com/styles/v1/osiam/cl4mxp3zk003v15ufbeb1ynbc/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoib3NpYW0iLCJhIjoiY2w0bXg1bnNkMTBlODNjcXBvNW95YXJxMyJ9.ZiEUkkjVe2jzAlHZTRcJXA', {
     maxZoom: 20,
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
