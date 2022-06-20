@@ -16,7 +16,7 @@
 		]
 	},
 	"Test": {
-		"labels": ["Test", "Test1/m/20"],
+		"labels": ["Test1/m/20","Test1/m/20"],
 		"snippetid": "test_sample_01",
 		"sentences": [
 			"nhāṛ l-iṯnīn baʕd ṣlǟt il-fažⁱr mšīt l-is-sūq w-šrīt ᵃʕḏ̣am w-šwayya xuḏ̣ṛa, kīma l-bitinžǟn w-iṯ-ṯūm.",
@@ -25,10 +25,9 @@
 			"w-baʕd ⁱšwayya žū l-ūlǟd min madⁱrsa w-klīna xubz w-fūl.",
 			"w-baʕd l-ⁱfṭūṛ sʔilthum fīsaʕ qult-ilhum: šnēy miš taʕmlu f-il-masǟ?",
 			"yǟxi hūma qālū-li: il-yūm biš nabqu f-id-dāṛ, amma ġudwa biš nšūfu ṣḥābna w-numšu mʕāhum ⁱl-dāṛ wild xālti illi yuskun fi-ḥayy il-baḥḏǟna. w-ġādīka biš nušᵘṛbu qahwa w-nitḥaddṯu in-šāḷḷa.",
-			"qult-ilhum: bǟhi, mā-tansū-š biš thizzu mʕākum tǟlīfōnǟtkum biš nisʔilkum kǟn ḥbastu."
+			"qult-ilhum: bǟhi, mā-tansū-š biš thizzu mʕākum tǟlīfōnǟtkum biš nisʔilkum kǟn (ḥbastu / ⁱbṭītu)."
 		],
 		"variants": {
-			"ḥbastu": "ⁱbṭītu",
 			"masǟ": "Standard Arabic"
 		},
 		"person": "Test1",
