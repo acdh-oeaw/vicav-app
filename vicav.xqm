@@ -537,10 +537,13 @@ declare
 %rest:query-param("str", "{$str}")
 
 %rest:GET
-%output:method("html")
+(: %output:method("html") :)
+%output:method("xml")
 
 function vicav:query-index___($dict as xs:string, $ind as xs:string, $str as xs:string) {
-    let $rs := (# db:enforceindex #) {
+    let $rs := 
+    (: it seems there is a bug right now in 9.7.2 that prevents us from using this here. Check later if it still exists. :)
+    (: (# db:enforceindex #) { :)
     switch ($ind)
         case "any"
             return
@@ -551,7 +554,7 @@ function vicav:query-index___($dict as xs:string, $ind as xs:string, $str as xs:
                 collection($dict)//index[@id = $ind]/w
             else
                 collection($dict)//index[@id = $ind]/w[text() contains text { $str } using wildcards]
-    }
+    (: } :)
 
 let $rs2 := <res>{
         for $r in $rs
@@ -571,6 +574,7 @@ let $ress := <results>{subsequence($rs2, 1, 500)}</results>
 let $sReturn := xslt:transform($ress, $style)
 return
     $sReturn
+    (: $rs :)
 };
 
 declare function vicav:createMatchString($in as xs:string) {
