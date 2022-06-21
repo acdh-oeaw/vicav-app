@@ -98,9 +98,9 @@ fi
 git checkout master
 popd
 fi
-if [ -d webapp/vicav-app ]
+if [ -d ${BUILD_DIR:-../webapp/vicav-app} ]
 then
-pushd webapp/vicav-app
+pushd ${BUILD_DIR:-../webapp/vicav-app}
 git reset --hard
 git checkout master
 git pull
@@ -161,25 +161,26 @@ done
 #------- this solves problems with MacOS Safari which wants the audio files in chunks
 #------- else it claims they are not available/broken
 echo "copying sound files from vicav_content to BaseX static/sound"
-mkdir -p ${BUILD_DIR:-../webapp/static}/sound
+mkdir -p ${BUILD_DIR:-../webapp}/static/sound
 for d in $(ls -d vicav_*)
 do echo "Directory $d:"
-   find "$d" -type f -and \( -name '*.m4a' \) -exec cp -v {} ${BUILD_DIR:-../webapp/static}/sound \;
+   find "$d" -type f -and \( -name '*.m4a' \) -exec cp -v {} ${BUILD_DIR:-../webapp}/static/sound \;
 done
 #------- copy the apkg file into the "/anki" directory in BaseX' static directory
 echo "copying anki files from vicav_content to BaseX static/anki"
-mkdir -p ${BUILD_DIR:-../webapp/static}/anki
+mkdir -p ${BUILD_DIR:-../webapp}/static/anki
 for d in $(ls -d vicav_*)
 do echo "Directory $d:"
-   find "$d" -type f -and \( -name '*.apkg' \) -exec cp -v {} ${BUILD_DIR:-../webapp/static}/anki \;
+   find "$d" -type f -and \( -name '*.apkg' \) -exec cp -v {} ${BUILD_DIR:-../webapp}/static/anki \;
 done
 popd
 if [ "$onlytags"x = 'truex' ]
 then
-pushd webapp/vicav-app
+pushd ${BUILD_DIR:-webapp/vicav-app}
 find ./ -type f -and \( -name '*.js' -or -name '*.html' \) -not \( -path './node_modules/*' -or -path './cypress/*' \) -exec sed -i "s~\@data-version@~$dataversion~g" {} \;
 popd
 fi
+sed -i "s~webapp/vicav-app/~${BUILD_DIR:-webapp/vicav-app}/~g" deploy-vicav-content.bxs
 ./execute-basex-batch.sh deploy-vicav-content
 pushd vicav-content
 popd
