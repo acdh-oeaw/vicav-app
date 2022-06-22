@@ -26,7 +26,8 @@
   },
   "scripts": {
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "test": "cypress run && echo 'TODO: Add other tests (xspec, BaseX unit)...'"
   },
   "repository": {
     "type": "git",
@@ -41,7 +42,7 @@
   "engines": {
     "node": "16.x",
     "npm": "8.x",
-    "jvm": "11",
+    "jvm": "11.x",
     "basex": "9.7.2",
     "saxon": "11.3"
   }
