@@ -14,8 +14,8 @@ jobs:
       image_tagged: vicav-app
       registry_root: ghcr.io/acdh-oeaw/
       default_port: "5000"
-      source_image: tmp-cnb-image
-#      herokuish_base_image: ghcr.io/acdh-oeaw/herokuish-for-cypress/main
+      herokuish_base_image: ghcr.io/acdh-oeaw/herokuish-for-cypress/main
+      BUILDPACK_URL: https://github.com/simar0at/heroku-buildpack-basex
       APP_NAME: vicav-app
 # This together with the branch name is also used as the namespace to deploy to
       APP_ROOT: "/vicav"
@@ -26,10 +26,11 @@ jobs:
       - run: "/bin/true"      
   _1:
     needs: [setup_workflow_env]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-cnb-and-push-to-registry.yaml@main
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
     with:
+      BUILDPACK_URL: ${{ needs.setup_workflow_env.outputs.BUILDPACK_URL }}
       registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
       image_tagged: ${{ needs.setup_workflow_env.outputs.image_tagged }}
       source_image: ${{ needs.setup_workflow_env.outputs.source_image }}
@@ -40,6 +41,7 @@ jobs:
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
     with:
+      BUILDPACK_URL: ${{ needs.setup_workflow_env.outputs.BUILDPACK_URL }}
       registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
       image_tagged: ${{ needs.setup_workflow_env.outputs.image_tagged }}
       source_image: ${{ needs.setup_workflow_env.outputs.source_image }}
