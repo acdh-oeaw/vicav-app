@@ -1,9 +1,13 @@
-//const sampletexts = require('../fixtures/sampletexts')
+
 import chaiColors from 'chai-colors'
 chai.use(chaiColors)
 
+const BASEX_ROOT = Cypress.env('BASEX_ROOT') || '/app/.heroku/basex'
+const BASEX_PWD = Cypress.env('BASEX_admin_pw') || 'admin'
 describe('VICAV Compare samples window', function() {
 	it ('shows form with the right behavior', function() {
+		cy.exec(`${BASEX_ROOT}/bin/basexclient -Uadmin -P${BASEX_PWD} -c "OPEN vicav_projects; REPLACE vicav.xml ${Cypress.config()['fileServerFolder']}/fixtures/vicav_projects/vicav.xml"`)
+		cy.exec(`${BASEX_ROOT}/bin/basexclient -Uadmin -P${BASEX_PWD} -c "OPEN vicav_samples; REPLACE vicav_sample_text_002.xml ${Cypress.config()['fileServerFolder']}/fixtures/vicav_samples/sampletexts.xml"`)
 	    cy.visit('http://localhost:8984/vicav/')
 
 		cy.get('button.navbar-toggler').click().then(() => {
