@@ -20,7 +20,11 @@ describe('VICAV Compare features window', function() {
 
 	    cy.visit('http://localhost:8984/vicav/')
 
-		cy.get('button.navbar-toggler').click()
+		cy.get('button.navbar-toggler').then(($navbar_toggler) => {
+			if ($navbar_toggler.is(':visible')) {
+			  $navbar_toggler.click()
+			}
+		  })
 		cy.contains('Feature Lists').click()
 		cy.contains('Cross-examine the VICAV Feature Lists').click()
 		cy.wait('@resources')

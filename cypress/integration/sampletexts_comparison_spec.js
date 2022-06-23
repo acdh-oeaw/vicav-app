@@ -10,7 +10,11 @@ describe('VICAV Compare samples window', function() {
 		cy.exec(`${BASEX_ROOT}/bin/basexclient -Uadmin -P${BASEX_PWD} -c "OPEN vicav_samples; REPLACE vicav_sample_text_002.xml ${Cypress.config()['fileServerFolder']}/fixtures/vicav_samples/sampletexts.xml"`)
 	    cy.visit('http://localhost:8984/vicav/')
 
-		cy.get('button.navbar-toggler').click().then(() => {
+		cy.get('button.navbar-toggler').then(($navbar_toggler) => {
+          if ($navbar_toggler.is(':visible')) {
+			$navbar_toggler.click()
+		  }
+		})
 			cy.contains('Samples').click().then(() => {
 				cy.contains('Compare Locations').click().then(() => {
 				    cy.get('.location-wrapper .tagit input').type('Tun', {force: true})
@@ -40,13 +44,12 @@ describe('VICAV Compare samples window', function() {
 				    })
 				});
 			});
-		});
 
 	}) 
 
 
 	it('should only show the given sentences ', () => {
-		cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,_samples_,]&1=[crossSamplesResult,location|Tunis2+age|0%2C100+person|+features|2+word+xslt|cross_samples_01.xslt,open]')
+		cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,_samples_,]&1=[crossSamplesResult,location|Tunis2+age|0%2C100+person|+features|2+word+xslt|cross_samples_01.xslt,open]')	
 		cy.get('[data-snippetID=compare-samples-result]')
 			.contains('šrīt zūz kīlu buṛdgāna b-dīnāṛ zāda.')
 			.contains('nhāṛ li-ṯnīn baʕd il-fažr əmšīt l-is-sūq bāš nišri ʕ9am w-xu9ṛa kīma bītinžāl w-ṯūm.').should('not.exist');
