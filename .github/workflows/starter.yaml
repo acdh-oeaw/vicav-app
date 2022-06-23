@@ -20,7 +20,7 @@ jobs:
 # This together with the branch name is also used as the namespace to deploy to
       APP_ROOT: "/vicav"
       SERVICE_ID: "10917"
-      PUBLIC_URL: https://vicav.acdh-cluster.oewa.ac.at
+      PUBLIC_URL: https://vicav.acdh.oeaw.ac.at
       POSTGRES_ENABLED: "false"
     steps:
       - run: "/bin/true"      
