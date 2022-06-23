@@ -1,5 +1,8 @@
 const sampletexts = require('../../fixtures/sampletexts')
+const BASEX_ROOT = Cypress.env('BASEX_ROOT') || '/app/.heroku/basex'
+const BASEX_PWD = Cypress.env('BASEX_admin_pw') || 'admin'
 let checksampleTexts = function(fixture, label) {
+    cy.exec(`${BASEX_ROOT}/bin/basexclient -Uadmin -P${BASEX_PWD} -c "OPEN vicav_samples; REPLACE vicav_sample_text_002.xml ${Cypress.config()['fileServerFolder']}/fixtures/vicav_samples/sampletexts.xml"`)
     cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,_samples_,]')
     cy.get('#cookie-overlay').should('be.visible')
     cy.get('.cookie-accept-btn').click()

@@ -14,7 +14,6 @@ describe('Features', function() {
 describe('VICAV Compare features window', function() {
 	it ('shows form with the right behavior', function() {
 		cy.exec(`${BASEX_ROOT}/bin/basexclient -Uadmin -P${BASEX_PWD} -c "OPEN vicav_lingfeatures; REPLACE vicav_lingfeatures_test2_toks.xml ${Cypress.config()['fileServerFolder']}/fixtures/vicav_lingfeatures/vicav_lingfeatures_test2_toks.xml"`)
-		cy.exec(`${BASEX_ROOT}/bin/basexclient -Uadmin -P${BASEX_PWD} -c "OPEN vicav_samples; REPLACE sampletexts.xml ${Cypress.config()['fileServerFolder']}/fixtures/vicav_samples/sampletexts.xml"`)
 		cy.server()
 		cy.route('vicav/data_locations*').as('resources')
 		cy.route('vicav/explore_samples*').as('results')
