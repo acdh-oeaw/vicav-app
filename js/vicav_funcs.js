@@ -231,6 +231,7 @@ let overlapPopup = function(e, groupByType = false) {
                 break;
 
         }
+        if (marker.options.locName) marker.alt = marker.options.locName;
     }
     else if (groupByType) {
         let popupContent = '<h5>Near locations</h5>';
