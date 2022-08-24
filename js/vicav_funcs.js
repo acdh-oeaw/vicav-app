@@ -1154,6 +1154,7 @@ function clearMarkerLayers() {
     fgSampleMarkers.clearLayers();
     fgBiblMarkers.clearLayers();
     fgDictMarkers.clearLayers();
+    fgDataMarkers.clearLayers();
 
     fgFeatureMarkers.clearLayers();
     fgGeoDictMarkers.clearLayers();
@@ -1978,7 +1979,6 @@ function () {
     $(document).on('mousedown', "#navDataGeoRegMarkers,#subNavDataGeoRegMarkers", function (event) {
         clearMarkerLayers();
             insertAllDataMarkers();
-            console.log(this.id)
         adjustNav(this.id, "#subNavDataGeoRegMarkers");
     });
 

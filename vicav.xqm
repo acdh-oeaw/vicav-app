@@ -1301,7 +1301,7 @@ declare function vicav:data_list_region($type as xs:string, $region as xs:string
                         let $typestring := switch($cat)
                                     case 'linguistic feature list' return
                                         'data-featurelist'
-                                    case 'linguistic profile' return
+                                    case 'profile' return
                                         'data-profile'
                                     default return
                                         'data-sampletext'
