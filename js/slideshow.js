@@ -70,7 +70,6 @@ function showSlides(container, n) {
   if (slides.length > 0) {
     var dots = $('.demo', container);
     var captionText = $('.caption', container);
-  
     if (n > slides.length) {slideIndex = 1}
     if (n < 1) {slideIndex = slides.length}
     for (i = 0; i < slides.length; i++) {
@@ -109,11 +108,9 @@ $(document).ready(function(e) {
       event.preventDefault();
       event.stopPropagation();
       var options = { index: event.target, event: event }
-      console.log($(event.target).parent().parent().parent())
       var links = $('.mySlides a', $(event.target).parent().parent().parent())
       blueimp.Gallery(links, options)
     });
-
   });
 });
 

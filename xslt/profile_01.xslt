@@ -93,7 +93,7 @@
                         <xsl:variable select="position()" name="pos"/>
 
                           <!-- Full-width images with number text -->
-                          <div class="mySlides fade">
+                          <div class="mySlides slider-fade">
                             <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
                               <a>
                               <xsl:attribute name="href" select="concat('images/', ./tei:graphic/@url)"/>
@@ -212,7 +212,7 @@
                 <xsl:variable select="position()" name="pos"/>
 
                   <!-- Full-width images with number text -->
-                  <div class="mySlides fade">
+                  <div class="mySlides slider-fade">
                     <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
                       <a>
                       <xsl:attribute name="href" select="concat('images/', ./tei:link/@target)"/>
@@ -323,7 +323,7 @@
                 <xsl:variable select="position()" name="pos"/>
 
                   <!-- Full-width images with number text -->
-                  <div class="mySlides fade">
+                  <div class="mySlides slider-fade">
                     <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
                     <a>
                       <xsl:attribute name="href" select="./@target"/>

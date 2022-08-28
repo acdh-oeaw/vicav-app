@@ -1744,7 +1744,7 @@ ul.overlapping-markers {
   opacity: 1;
 }
 /* Fading animation */
-.slider-container .fade {
+.slider-container .slider-fade {
   -webkit-animation-name: fade;
   -webkit-animation-duration: 1.5s;
   animation-name: fade;
