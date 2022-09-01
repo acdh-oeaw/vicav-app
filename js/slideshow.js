@@ -2,19 +2,66 @@
 //   showSlides($(e.target), 1);
 // });
 
-$(document).on('click', '.slider-container .next', function(e) {    
+$(document).on('click', '.slider-container .slider-next', function(e) {
     e.preventDefault();
     var item = $(e.target).closest('.slider-container');
     let current = item.attr('data-slider') !== undefined ? parseInt(item.attr('data-slider')) : 1
     showSlides(item, current + 1)
 })
 
-$(document).on('click', '.slider-container .back', function(e) {    
+$(document).on('click', '.slider-container .slider-prev', function(e) {
     e.preventDefault();
     var item = $(e.target).closest('.slider-container');
     let current = item.attr('data-slider') !== undefined ? parseInt(item.attr('data-slider')) : 1
     showSlides(item, current - 1)
 })
+
+
+function sideScroll(element, direction, speed, distance, step) {
+  scrollAmount = 0;
+  var slideTimer = setInterval(function() {
+    if (direction == 'left') {
+      element[0].scrollLeft -= step;
+    } else {
+      element[0].scrollLeft += step;
+    }
+    scrollAmount += step;
+    if (scrollAmount >= distance) {
+      window.clearInterval(slideTimer);
+    }
+  }, speed);
+}
+
+
+function showSlides(container, n) {
+  console.log(n)
+  var slideIndex = n//container.attr('data-slider') !== undefined ? parseInt(container.attr('data-slider')) : 1
+  var i;
+  var slides = $('.mySlides', container);
+  if (slides.length > 0) {
+    var dots = $('.demo', container);
+    var captionText = $('.caption', container);
+    if (n > slides.length) {slideIndex = 1}
+    if (n < 1) {slideIndex = slides.length}
+
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+    }
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    console.log(slides[slideIndex-1], slideIndex)
+    slides[slideIndex-1].style.display = "block";
+    dots[slideIndex-1].className += " active";
+    captionText[0].innerHTML = dots[slideIndex-1].alt;
+    container.attr('data-slider', slideIndex)
+  }
+}
+
+
+$(document).ready(function(e) {
+    $(document).on('DOMNodeInserted', ".content-panel .grid-wrap", function(event) {
+
 
 $(document).on('mouseover', '.demo.cursor', function(e) {
   e.preventDefault();
@@ -39,55 +86,13 @@ $(document).on('mouseover', '.demo.cursor', function(e) {
   }
 })
 
-$(document).on('click', '.demo.cursor', function(e) {    
+$(document).on('click', '.demo.cursor', function(e) {
     e.preventDefault();
     var item = $(e.target).closest('.slider-container');
     var wrapper = $(e.target).closest('.thumbs-wrapper');
     var n = $(e.target).attr('data-showslide');
-    showSlides(item, n)
+    showSlides(item, parseInt(n))
 });
-
-function sideScroll(element, direction, speed, distance, step) {
-  scrollAmount = 0;
-  var slideTimer = setInterval(function() {
-    if (direction == 'left') {
-      element[0].scrollLeft -= step;
-    } else {
-      element[0].scrollLeft += step;
-    }
-    scrollAmount += step;
-    if (scrollAmount >= distance) {
-      window.clearInterval(slideTimer);
-    }
-  }, speed);
-}
-
-
-function showSlides(container, n) {
-  var slideIndex = container.attr('data-slider') !== undefined ? parseInt(container.attr('data-slider')) : 1
-  var i;
-  var slides = $('.mySlides', container);
-  if (slides.length > 0) {
-    var dots = $('.demo', container);
-    var captionText = $('.caption', container);
-    if (n > slides.length) {slideIndex = 1}
-    if (n < 1) {slideIndex = slides.length}
-    for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";
-    }
-    for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-    }
-    slides[slideIndex-1].style.display = "block";
-    dots[slideIndex-1].className += " active";
-    captionText[0].innerHTML = dots[slideIndex-1].alt;
-    container.attr('data-slider', n)
-  }
-}
-
-
-$(document).ready(function(e) {
-    $(document).on('DOMNodeInserted', ".content-panel .grid-wrap", function(event) {
 
     $('.slider-container', event.target).each(function(_i, i) {
       showSlides($(i), 1);

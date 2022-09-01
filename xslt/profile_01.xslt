@@ -104,8 +104,8 @@
                           </div>
                       </xsl:for-each>
                   <!-- Next and previous buttons -->
-                  <a class="prev">&#10094;</a>
-                  <a class="next">&#10095;</a>
+                  <a class="slider-prev">&#10094;</a>
+                  <a class="slider-next">&#10095;</a>
 
                   <!-- Image text -->
                   <div class="caption-container">
@@ -223,8 +223,8 @@
                   </div>
               </xsl:for-each>
           <!-- Next and previous buttons -->
-          <a class="prev">&#10094;</a>
-          <a class="next">&#10095;</a>
+          <a class="slider-prev">&#10094;</a>
+          <a class="slider-next">&#10095;</a>
 
           <!-- Image text -->
           <div class="caption-container">
@@ -335,8 +335,8 @@
                   </div>
               </xsl:for-each>
           <!-- Next and previous buttons -->
-          <a class="prev">&#10094;</a>
-          <a class="next">&#10095;</a>
+          <a class="slider-prev">&#10094;</a>
+          <a class="slider-next">&#10095;</a>
 
           <!-- Image text -->
           <div class="caption-container">

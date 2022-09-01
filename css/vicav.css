@@ -1593,8 +1593,8 @@ ul.overlapping-markers {
 }
 
 /* Next & previous buttons */
-.slider-container a.prev,
-.slider-container a.next {
+.slider-container a.slider-prev,
+.slider-container a.slider-next {
   cursor: pointer;
   position: absolute;
   top: 40%;
@@ -1610,14 +1610,14 @@ ul.overlapping-markers {
 }
 
 /* Position the "next button" to the right */
- .slider-container .next {
+ .slider-container .slider-next {
   right: 0;
   border-radius: 3px 0 0 3px;
 }
 
 /* On hover, add a black background color with a little bit see-through */
-.slider-container a.prev:hover,
-.slider-container a.next:hover {
+.slider-container a.slider-prev:hover,
+.slider-container a.slider-next:hover {
     color: white;
   background-color: rgba(0, 0, 0, 0.8);
 }
@@ -1708,6 +1708,7 @@ ul.overlapping-markers {
     border: 1px solid black;
     padding-left:3px;
     padding-right: 3px;    
+}
 
 /* Container for image text */
 .slider-container .caption-container {
