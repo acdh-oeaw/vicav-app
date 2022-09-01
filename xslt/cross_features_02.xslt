@@ -24,8 +24,10 @@
                 <xsl:sequence select="$root/item//tei:cit[
                     @type='featureSample' and contains-token(@ana,$ana) and 
                     (.//*[@type='translation' and contains(., $filter-translations)]) and
-                    (if ($filter-comments = '') then true() else .//tei:f[@name='comment' and contains(., $filter-comments)])
-                    ]">
+                    (if ($filter-comments = '') then true() else .//tei:f[@name='comment' and
+                    contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                    'abcdefghijklmnopqrstuvwxyz'),$filter-comments)
+                    ])]">
                     
                 </xsl:sequence>
             </xsl:for-each>
