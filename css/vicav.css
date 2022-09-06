@@ -24,6 +24,13 @@ body .navbar ul.navbar-nav .navbar-icons a:hover{
     color: #88dcdf;
 }
 
+@media (max-width: 768px) {
+    .navbar-nav .dropdown-menu {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+}
+
 .dvBiblio,
 .dvProfiles,
 .dvMainMapCont{
