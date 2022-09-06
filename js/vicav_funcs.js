@@ -348,12 +348,18 @@ function makeAudioInVisible(obj_) {
 }
 
 function makeAudioVisible(obj_) {
-    $(obj_).css("cursor", "pointer");
-    var x = $(obj_).position();
+    var x = {};
     var audioWidth = $(obj_).find("audio").width();
+    $(obj_).css("cursor", "pointer");
+    if ($(window).width() <= 768) {
+      $(obj_).find("audio").css("left", audioWidth);
+      $(obj_).find("audio").css("top", x.top);        
+    } else {
+    x = $(obj_).position();
 
     $(obj_).find("audio").css("left", $(obj_).width() - audioWidth);
     $(obj_).find("audio").css("top", x.top);
+    }
 }
 
 function changeURLMapParameter(newParameter) {

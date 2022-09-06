@@ -73,6 +73,14 @@ body .navbar ul.navbar-nav .navbar-icons a:hover{
     box-shadow: 2px 2px 3px 0px #e2e2e2;
 }
 
+
+@media (max-width: 768px) {
+    .content-panel{
+        overflow: initial;
+        overflow-y: auto;
+    }
+}
+
 .content-panel.open-panel{
     flex: 1;
 }
@@ -82,6 +90,12 @@ body .navbar ul.navbar-nav .navbar-icons a:hover{
     flex: 1;
     height: 100%;
     overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+    .content-panel .grid-wrap{
+      overflow-y: initial;
+    }
 }
 
 .panel-chrome.vertical{
