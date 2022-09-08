@@ -13,8 +13,9 @@
             <table class="tbHeader">
                 <tr><td><h2><xsl:value-of select="//tei:name[@xml:lang='eng']"/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
             </table>    
-            
-            <div class="dvImgProfile">
+
+            <div class="profileHeader">
+                <div class="dvImgProfile">
                     <img>
                         <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure[1]/tei:graphic/@url"/></xsl:attribute>
                     </img>
@@ -43,45 +44,47 @@
                     </xsl:otherwise>
                 </xsl:choose>
                  -->
-            </div>
+                </div>
+
             
-            <table class="tbProfile">
-                <xsl:if test="//tei:name[@xml:lang='ara']">
+                <table class="tbProfile">
+                    <xsl:if test="//tei:name[@xml:lang='ara']">
+                        <tr>
+                            <td class="tdHead">MSA Name</td>
+                            <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@xml:lang='ara']"/></td>
+                        </tr>
+                    </xsl:if>
+                    <xsl:if test="//tei:name[@xml:lang='ara-x-DMG']">
+                        <tr>
+                            <td class="tdHead">MSA Name (trans.)</td>
+                            <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@xml:lang='ara-x-DMG']"/></td>
+                        </tr>
+                    </xsl:if>
+
+                    <xsl:if test="//tei:name[@type='araLoc']">
+                        <tr>
+                            <td class="tdHead">Local name</td>
+                            <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@type='araLoc']"/></td>
+                        </tr>
+                    </xsl:if>
+
+                    <xsl:if test="//tei:name[@type='latLoc']">
+                        <tr>
+                            <td class="tdHead">Local name (trans.)</td>
+                            <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@type='latLoc']"/></td>
+                        </tr>
+                    </xsl:if>
+
                     <tr>
-                        <td class="tdHead">MSA Name</td>
-                        <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@xml:lang='ara']"/></td>
+                        <td class="tdHead">Geo location</td>
+                        <td class="tdProfileTableRight"><i><xsl:value-of select="//tei:div[@type='positioning']/tei:p"/></i></td>
                     </tr>
-                </xsl:if>
-                <xsl:if test="//tei:name[@xml:lang='ara-x-DMG']">
                     <tr>
-                        <td class="tdHead">MSA Name (trans.)</td>
-                        <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@xml:lang='ara-x-DMG']"/></td>                    
+                        <td class="tdHead">Contributed by</td>
+                        <td class="tdProfileTableRight"><i><xsl:value-of select="//tei:author"/></i></td>
                     </tr>
-                </xsl:if>
-                
-                <xsl:if test="//tei:name[@type='araLoc']">
-                    <tr>
-                        <td class="tdHead">Local name</td>
-                        <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@type='araLoc']"/></td>
-                    </tr>
-                </xsl:if>
-                
-                <xsl:if test="//tei:name[@type='latLoc']">
-                    <tr>
-                        <td class="tdHead">Local name (trans.)</td>
-                        <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@type='latLoc']"/></td>
-                    </tr>
-                </xsl:if>
-                
-                <tr>
-                    <td class="tdHead">Geo location</td>
-                    <td class="tdProfileTableRight"><i><xsl:value-of select="//tei:div[@type='positioning']/tei:p"/></i></td>
-                </tr>
-                <tr>
-                    <td class="tdHead">Contributed by</td>
-                    <td class="tdProfileTableRight"><i><xsl:value-of select="//tei:author"/></i></td>
-                </tr>
-            </table>
+                </table>
+            </div>
         
             <xsl:apply-templates select="//tei:body/tei:div/tei:div"/>     
 
@@ -253,15 +256,28 @@
 
     <xsl:template match="tei:p[./tei:figure and not(@rendition='#slideshow')]">
         <div class="pFigure">
+            <xsl:attribute name="class" select="concat('pFigure ', 'fig-col-', count(./tei:figure))" />
             <xsl:apply-templates/>
         </div>
+    </xsl:template>
+
+    <xsl:template match="tei:media">
+        <video width="320" height="240" controls="true">
+        <source>
+                  <xsl:attribute name="type" select="./@mimeType" />
+                  <xsl:attribute name="src" select="./@url" />
+        </source>
+        Your browser does not support the video tag.
+        </video>
+
     </xsl:template>
 
     
     <xsl:template match="tei:p">
         <div class="pNorm"><xsl:apply-templates/></div>
     </xsl:template>
-        
+
+
     <xsl:template match="tei:list">
         <ul><xsl:apply-templates/></ul>
     </xsl:template>

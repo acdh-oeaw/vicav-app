@@ -997,11 +997,12 @@ body .navbar ul.navbar-nav{
 }
 
 .dvImgProfile{
-    float: right;
+    order: 1;
+/*    float: right;
     overflow: hidden;
     width: 50%;
     padding-left: 8px;
-}
+*/}
 
 .imgBiblItem{
     padding-right: 5px;
@@ -1520,6 +1521,11 @@ ul.overlapping-markers {
    width:200px;
 }
 
+.profileHeader {
+    display: flex;
+    gap: 3%;
+}
+
 /** IMAGES **/
 
 .gallery {
@@ -1546,10 +1552,23 @@ ul.overlapping-markers {
 .pFigure {
     display: flex;
     justify-content: center;
+    gap: 1%;
+}
+
+.pFigure.fig-col-2 {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.pFigure.fig-col-3 {
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    column-gap: 3%;
 }
 
 .figure {
     max-width: 180px;
+    overflow: hidden;
 }
 
 .figure.small {
