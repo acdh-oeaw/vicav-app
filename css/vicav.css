@@ -1533,10 +1533,8 @@ ul.overlapping-markers {
 }
 
 .gallery-item {
-    display: inline-block;
     max-width: 180px;
     max-height: 180px;
-    overflow: hidden;
 }
 
 .gallery-item img.portrait {
@@ -1575,14 +1573,32 @@ ul.overlapping-markers {
     max-width: 90px;
 }
 
+.figure .gallery-item {
+        position: relative;
+
+}
+
+.figure .gallery-item::after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.figure .gallery-item img {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
 .figure.full-width, .figure.full-width .gallery-item {
     max-width: inherit;
     max-height: inherit;
 }
 
 .figure.small .gallery-item {
-    max-width: 90px;
-    max-height: 90px;
+    width: 90px;
+    height: auto;
 }
 
 * {
