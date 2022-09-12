@@ -352,8 +352,8 @@ declare function vicav:explore-query(
 
     let $age_q := if (not(empty($age_bounds)) and ($age_bounds[2] != "100" or $age_bounds[1] != "0")) then
         vicav:and((
-            '(./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person/@age > ' || min($age_bounds) || ')',
-            ' (./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person/@age < ' || max($age_bounds) || ')'
+            '(number(./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@age) > ' || min($age_bounds) || ')',
+            ' (number(./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@age) < ' || max($age_bounds) || ')'
         ))
         else ''
 
