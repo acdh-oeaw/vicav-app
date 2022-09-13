@@ -55,8 +55,6 @@
                             <xsl:value-of select="string-join(distinct-values(.//item/@city), ', ')"/></i>
                     </td></tr>
                 </table>    
-
-                <p xml:space="preserve"><xsl:value-of select="count($filtered-by-word/tei:s)"/> sentences found.</p>
                 
                 <xsl:if test="$filter-features">
                     <div class="sentences-nav">
@@ -81,9 +79,13 @@
                         </xsl:if>
 
                         <xsl:for-each-group select="$root//item" group-by="(.//tei:region[1], 'unknown')[1]">
-                            <xsl:if test="count(current-group()//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .) > 0]) > 0">
+                            <xsl:variable name="count" select="count(current-group()//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .)> 0])"/>
+                            <xsl:if test="$count > 0">
                                 <h4><xsl:value-of select="current-grouping-key()"/></h4>
                                 
+
+                                <p xml:space="preserve"><xsl:value-of select="$count"/> sentences found.</p>
+
                                 <table class="tbFeatures">
                                     <xsl:for-each select="current-group()">
                                         <xsl:sort select="@city"/>
