@@ -83,7 +83,6 @@
                             <xsl:if test="$count > 0">
                                 <h4><xsl:value-of select="current-grouping-key()"/></h4>
                                 
-
                                 <p xml:space="preserve"><xsl:value-of select="$count"/> sentences found.</p>
 
                                 <table class="tbFeatures">

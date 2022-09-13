@@ -62,8 +62,6 @@
                     </td></tr>
                 </table>    
 
-                <p xml:space="preserve"><xsl:value-of select="count($filtered-by-word/tei:cit)"/> feature sentences found.</p>
-
                 <xsl:for-each select="$features-shown">
                     <xsl:variable name="ana" select="."/>
                     <xsl:if test="count($results) > 0">
@@ -72,9 +70,13 @@
 
                             <xsl:for-each-group select="$root//item" group-by="(.//tei:region[1], 'unknown')[1]">
                                 <xsl:sort select="current-grouping-key()"/>
-                                <xsl:if test="count(current-group()//tei:cit[@type='featureSample' and contains-token(@ana,$ana) and index-of($filtered-by-word/tei:cit, .) > 0]) > 0">
+                                <xsl:variable name="count" select="count(current-group()//tei:cit[@type='featureSample' and contains-token(@ana,$ana) and index-of($filtered-by-word/tei:cit, .) > 0])"/>
+                                <xsl:if test="$count > 0">
                                     <h4><xsl:value-of select="current-grouping-key()"/></h4>
                                     
+                                    <p xml:space="preserve"><xsl:value-of select="$count"/> feature sentences found.</p>
+
+
                                     <table class="tbFeatures">
                                         <xsl:for-each select="current-group()">
                                             <xsl:sort select="@city"/>
