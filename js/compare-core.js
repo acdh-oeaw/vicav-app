@@ -20,6 +20,9 @@ const exploreDataStrings = {
     }
 }
 
+const LoadingRoller = '<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>'
+
+
 const accentMap = {
 	"â": "a",
 	"æ": "a",
@@ -278,7 +281,11 @@ function attachAgeSliderHandler($root) {
 	$('[name="age"]', $root).hide();
 }
 
-function compareQuery(query, success_callback) {
+function compareQuery(query, success_callback, $root) {
+	var wrapper = $('.grid-wrap > *', $root)
+	wrapper.hide()
+	$('.grid-wrap', $root).append(LoadingRoller);
+
 	var url = 'explore_samples?'+ query;
 	$.ajax({
 		url: url,
@@ -287,7 +294,9 @@ function compareQuery(query, success_callback) {
 		crossDomain: true,
 		contentType: 'application/html; ',
 		success: function(result) {
-			success_callback(result, query)
+			success_callback(result, query, $root)
+			$('.grid-wrap .lds-roller', $root).remove()
+			wrapper.show()
 		}
 	});
 }
@@ -295,9 +304,8 @@ function compareQuery(query, success_callback) {
 /**
  * Submission handler for the Explore data form.
  */
-function compareFormSubmit($root, success_callback) {
+function compareFormSubmit($root, type, success_callback) {
 	var $form = $('form[class^=compare]', $root); 
-
 	var sex = []
 	if ($('[name="sex"][value=m]', $root).prop('checked')) {
 		sex.push('m')
@@ -308,8 +316,10 @@ function compareFormSubmit($root, success_callback) {
 
 	query = $form.serialize().replace(/(&sex=[a-z])/g, '') + ('&sex=' + encodeURIComponent(sex.join(',')));
 
+    createExploreDataResultsPanel(type, '', query)
+
   //var sentencesUri = (Array.isArray(sentences) && sentences.indexOf('any') != -1) ? 'any' : sentences.replace(/\s+/g, '')
-  compareQuery(query, success_callback)
+  //compareQuery(query, success_callback, $root)
 }
 
 
@@ -325,7 +335,9 @@ function createDisplayExploreDataPanel(type, query_, pID_ = '', pVisiblity_ = 'o
 
         $('form.compare-' + type + 's', $root).submit(function(event) {
             event.preventDefault();
-            compareFormSubmit($root, function (result, query) {
+
+            compareFormSubmit($root, type, function (result, query) {
+            	console.log(result)
                 if (result.includes('error type="user authentication"')) {
                     alert('Error: authentication did not work');
                 } 
@@ -341,9 +353,8 @@ function createDisplayExploreDataPanel(type, query_, pID_ = '', pVisiblity_ = 'o
  * Create the Explore data results window.
  */
 function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
+    var $root = $('[data-pid=' + pID + ']');
     var attachPagingHandlers = function(pID, query) {
-        var $root = $('[data-pid=' + pID + ']');
-
         if (type == 'sample') {
             function changeFeature(feature) {
                 var query = $root.attr('data-query').replace(/\+/g, '&').replace(/\|/g, '=')
@@ -352,6 +363,8 @@ function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ =
                 } else {
                     query = query + 'features=' + encodeURIComponent(feature)
                 }
+                $('.grid-wrap > div', $root).html(LoadingRoller);
+
                 compareQuery(query, function(result) {
                     $('.grid-wrap > div', $root).html(result);
                     // Disable URL update for now as it is buggy.
@@ -361,7 +374,7 @@ function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ =
                     // console.log('c',currentURL.match(re))
                     // var newUrl = currentURL.replace(re, '$1features|' + feature + '$3')
                     // window.history.replaceState({ }, "", newUrl);
-                })
+                }, $root)
             }
     
             $root.on('input', '[name=sentences]', function(e) {
@@ -385,15 +398,19 @@ function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ =
 		});
     }
 	var query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
+    	console.log(contents_, query)
 
     if (contents_ == '' && query != '') {
+    	var pID = appendPanel(LoadingRoller, "cross" + exploreDataStrings[type].class + "Result", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-' +type + 's-result', '', pVisiblity_, pURL_);
+
         compareQuery(query, function(result) {
-            var pID = appendPanel(result, "cross" + exploreDataStrings[type].class + "Result", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-' +type + 's-result', '', pVisiblity_, pURL_);
+        	var $root = $('[data-pid=' + pID + ']');
+        	$('.grid-wrap', $root).html(result);
             attachPagingHandlers(pID, query)
-        })
+        }, $root)
     } else if (contents_ !== '') {
         var pID = appendPanel(contents_, "cross"+ exploreDataStrings[type].class + "Result", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-' + type + 's-result', '', pVisiblity_, pURL_);
-            attachPagingHandlers(pID, query)
+        attachPagingHandlers(pID, query)
     }
 }
 
@@ -432,7 +449,7 @@ $(document).on('DOMNodeInserted', "[data-snippetid='compare-features']", functio
 /**
  * Handle clicking on a link which triggers opening an Explore features window on a given feature.
  */
-function compareFeatureLink(feature) {
+function compareFeatureLink(feature, $root) {
 	let query = 'type=lingfeatures&features=' + feature + '&xslt=cross_features_02.xslt';
 	compareQuery(query, function(result, query) {
         if (result.includes('error type="user authentication"')) {
@@ -441,7 +458,7 @@ function compareFeatureLink(feature) {
         else {
             createExploreDataResultsPanel('feature', result, query)
         }
-    });
+    }, $root);
 }
 
 /**
@@ -458,6 +475,7 @@ $(document).on('click', 'a[data-wordform]', function(e) {
 
     var word = $(e.target).closest('[data-wordform]').attr('data-wordform');
     var dataType = $(e.target).closest('[data-type]').attr('data-type');
+    var $root = $(e.target).closest('[data-pid]');
 
     compareQuery('type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt, function(result) {
         createExploreDataResultsPanel(dataType, result, 'type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt);
@@ -468,6 +486,7 @@ $(document).on('click', 'a[data-featurelist]', function(e) {
     e.preventDefault();
     var item = $(e.target).closest('[data-featurelist]').attr('data-featurelist');
     var print = $(e.target).closest('[data-featurelist]').attr('data-print');
+
     if (item) {
     	if (!print) {
 	        getFeatureOfLocation('', item, 'features_01.xslt');
@@ -482,6 +501,8 @@ $(document).on('click', 'a[data-sampletext]', function(e) {
     e.preventDefault();
     var item = $(e.target).closest('[data-sampletext]').attr('data-sampletext');
     var print = $(e.target).closest('[data-sampletext]').attr('data-print');
+        var $root = $(e.target).closest('[data-pid]');
+
     if (item) {
     	if (!print) {
 	        getSample('', item, 'sampletext_01.xslt');
@@ -504,9 +525,11 @@ $(document).on('click', 'a[data-featurecompare]', function(e) {
     e.preventDefault();
     var item = $(e.target).closest('[data-featurecompare]').attr('data-featurecompare');
     var print = $(e.target).closest('[data-featurecompare]').attr('data-print');
+    var $root = $(e.target).closest('[data-pid]');
+
     if (item) {
     	if (!print) {
-	        compareFeatureLink(item);
+	        compareFeatureLink(item, $root);
 	    } else {
 	    	window.open('/explore_samples?type=lingfeatures&features=' + item + '&print=true&xslt=cross_features_02.xslt');
 	    }
