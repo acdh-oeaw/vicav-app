@@ -1,4 +1,7 @@
 module namespace vicav = "http://acdh.oeaw.ac.at/vicav";
+
+import module namespace cors = 'https://www.oeaw.ac.at/acdh/tools/vle/cors' at 'cors.xqm';
+
 declare namespace bib = 'http://purl.org/net/biblio#';
 declare namespace dc = 'http://purl.org/dc/elements/1.1/';
 declare namespace tei = 'http://www.tei-c.org/ns/1.0';
@@ -116,7 +119,8 @@ function vicav:query_biblio($query as xs:string*, $xsltfn as xs:string) {
     let $results := <results num="{$num}">{$results}</results>
     let $sHTML := xslt:transform-text($results, $style)
     return
-        $sHTML
+        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        $sHTML)
 };
 
 declare
@@ -176,7 +180,8 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
     let $sHTML := xslt:transform-text($results, $style)
     return
         (: <r>{$sHTML}</r> :)
-        $sHTML
+        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        $sHTML)
         (: <r>{$query2}</r> :)
 };
 
@@ -242,7 +247,9 @@ function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:
     let $q := 'collection("' || $coll || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
     let $query := $ns || $q
     let $results := xquery:eval($query)
-    return vicav:transform($results, $xsltfn, $print, ())
+    return 
+        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        vicav:transform($results, $xsltfn, $print, ()))
 };
 
 declare
@@ -259,7 +266,9 @@ function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:
     let $q := 'collection("' || $coll || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
     let $query := $ns || $q
     let $results := xquery:eval($query)
-    return vicav:transform($results, $xsltfn, $print, ())
+    return 
+        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        vicav:transform($results, $xsltfn, $print, ()))
 };
 
 
@@ -292,7 +301,8 @@ function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn
     return 
         (:<div type="lingFeatures">{$sHTML}</div>:)
         (: <r>{$query}</r> :)
-        $sHTML
+        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        $sHTML)
 };
 
 declare function vicav:query_clause($name as xs:string, $args as xs:string+) as xs:string {
@@ -508,7 +518,8 @@ function vicav:explore_samples(
     return
         (:<div type="lingFeatures">{$sHTML}</div>:)
         (:$ress1:)
-        $sHTML 
+        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        $sHTML)
 };
 
 declare
@@ -537,8 +548,6 @@ declare
 %rest:query-param("str", "{$str}")
 
 %rest:GET
-(: %output:method("html") :)
-%output:method("xml")
 
 function vicav:query-index___($dict as xs:string, $ind as xs:string, $str as xs:string) {
     let $rs := 
@@ -573,7 +582,8 @@ let $style := doc('xslt/index_2_html.xslt')
 let $ress := <results>{subsequence($rs2, 1, 500)}</results>
 let $sReturn := xslt:transform($ress, $style)
 return
-    $sReturn
+    (web:response-header(map {'method': 'xml'}, cors:header(())),
+    $sReturn)
     (: $rs :)
 };
 
@@ -656,7 +666,8 @@ let $style := doc("xslt/" || $xsltfn)
 let $ress := <results xmlns="http://www.tei-c.org/ns/1.0">{$results}</results>
 let $sReturn := xslt:transform-text($ress, $style)
 return
-  $sReturn
+  (web:response-header(map {'method': 'basex'}, cors:header(())),
+  $sReturn)
   (: $query :)
 };
 
@@ -778,7 +789,8 @@ let $ress := <results  xmlns="http://www.tei-c.org/ns/1.0">{$res2}</results>
 let $sReturn := xslt:transform-text($ress, $style)
 
 return
-    $sReturn
+    (web:response-header(map {'method': 'basex'}, cors:header(())),
+    $sReturn)
     (: $res :)
     (: <r>{$qs}</r> :)
     (: if (wde:check-user_($dict, $user, $pw)) :)
@@ -791,7 +803,6 @@ declare
 %rest:query-param("query", "{$query}")
 %rest:query-param("scope", "{$scope}")
 %rest:GET
-%output:method("xml")
 
 function vicav:get_bibl_markers($query as xs:string, $scope as xs:string) {
     let $queries := tokenize($query, ',')
@@ -905,8 +916,9 @@ return
         
         (: return file:write("c:\dicttemp\geo_bibl_001.txt", $out) :)
 return
+   (web:response-header(map {'method': 'xml'}, cors:header(())),
     <rs
-        type="{count($out)}">{$out}</rs>
+        type="{count($out)}">{$out}</rs>)
 
 };
 
@@ -915,7 +927,6 @@ declare
 %rest:query-param("query", "{$query}")
 %rest:query-param("scope", "{$scope}")
 %rest:GET
-%output:method("xml")
 
 function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
     let $queries := tokenize($query, '\+')
@@ -1038,7 +1049,9 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
         :)
     (:else  ():)
         
-    return <rs type="{count($out2)}">{$out2}</rs>
+    return
+        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        <rs type="{count($out2)}">{$out2}</rs>)
     (: return <res>{$out}</res> :)
     (: return <res>{$query}</res> :) 
 };
@@ -1046,7 +1059,6 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
 declare
 %rest:path("vicav/profile_markers")
 %rest:GET
-%output:method("xml")
 
 function vicav:get_profile_markers() {
     let $entries := collection('vicav_profiles' || vicav:get_project_db())/descendant::tei:TEI
@@ -1071,14 +1083,14 @@ function vicav:get_profile_markers() {
         )
     
     return
-        <rs>{$out}</rs>
+        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        <rs>{$out}</rs>)
 };
 
 declare
 %rest:path("vicav/data_locations")
 %rest:GET
 %rest:query-param("type", "{$type}")
-%output:method("xml")
 function vicav:data_locations($type as xs:string*) {
     let $type := if ($type = () or $type = '') then 'samples' else $type
 
@@ -1101,13 +1113,14 @@ function vicav:data_locations($type as xs:string*) {
             <label>{$label}</label>
         </location>
        
-    return  <results>{$out}</results>
+    return 
+    (web:response-header(map {'method': 'xml'}, cors:header(())),
+    <results>{$out}</results>)
 };
 
 declare
 %rest:path("vicav/sample_markers")
 %rest:GET
-%output:method("xml")
 
 function vicav:get_sample_markers() {
     let $entries := collection("vicav_samples" || vicav:get_project_db())/descendant::tei:TEI
@@ -1140,13 +1153,13 @@ function vicav:get_sample_markers() {
             else ()
     
     return
-        <rs>{$out}</rs>
+        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        <rs>{$out}</rs>)
 };
 
 declare
 %rest:path("vicav/feature_labels")
 %rest:GET
-%output:method("xml")
 
 function vicav:get_feature_labels() {
     let $features := collection('vicav_lingfeatures' || vicav:get_project_db())/descendant::tei:TEI//tei:cit[@type="featureSample"]
@@ -1154,7 +1167,8 @@ function vicav:get_feature_labels() {
         return <feature ana="{$ana}">{$features[./@ana = $ana][1]/tei:lbl/text()}</feature>
 
     return
-        <features>{$out}</features>
+        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        <features>{$out}</features>)
 };
 
 
@@ -1162,7 +1176,6 @@ declare
 %rest:path("vicav/data_persons")
 %rest:GET
 %rest:query-param("type", "{$type}")
-%output:method("xml")
 
 function vicav:get_sample_persons($type as xs:string*) {
     let $type := if ($type = () or $type = '') then 'samples' else $type
@@ -1177,14 +1190,14 @@ function vicav:get_sample_persons($type as xs:string*) {
         </person>
     
     return
-        <persons>{$out}</persons>
+        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        <persons>{$out}</persons>)
 };
 
 declare
 %rest:path("vicav/data_words")
 %rest:query-param("type", "{$type}")
 %rest:GET
-%output:method("xml")
 
 function vicav:get_sample_words($type as xs:string*) {
     let $type := if ($type = () or $type = '') then 'samples' else $type
@@ -1206,14 +1219,14 @@ function vicav:get_sample_words($type as xs:string*) {
         </word>
     
     return
-        <words>{$out}</words>
+        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        <words>{$out}</words>)
 };
 
 
 declare
 %rest:path("vicav/feature_markers")
 %rest:GET
-%output:method("xml")
 
 function vicav:get_feature_markers() {
     let $entries := collection('vicav_lingfeatures' || vicav:get_project_db())/descendant::tei:TEI
@@ -1247,7 +1260,8 @@ function vicav:get_feature_markers() {
                 else ''
     
     return
-        <rs>{$out}</rs>
+        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        <rs>{$out}</rs>)
 };
 
 
@@ -1255,7 +1269,6 @@ function vicav:get_feature_markers() {
 declare
 %rest:path("vicav/data_markers")
 %rest:GET
-%output:method("xml")
 
 function vicav:get_all_data_markers() {
     let $entries := for $c in ('vicav_profiles', 'vicav_samples', 'vicav_lingfeatures')
@@ -1284,7 +1297,8 @@ function vicav:get_all_data_markers() {
                 else ''
 
     return
-        <rs>{$out}</rs>
+        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        <rs>{$out}</rs>)
 };
 
 
@@ -1348,7 +1362,6 @@ declare
 %rest:path("vicav/data_list")
 %rest:query-param("type", "{$type}")
 %rest:GET
-%output:method("xml")
 function vicav:get_data_list($type as xs:string*) {
     let $type := if (empty($type) or $type = '') then 'all' else $type
     let $items := if ($type = 'all') then
@@ -1374,7 +1387,8 @@ function vicav:get_data_list($type as xs:string*) {
              return vicav:data_list_region($type, $region, $items[./tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:region[./text() = $region]]])
 
     return
-        <div>Total: {count($items)}<br/>{$out}</div>
+        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        <div>Total: {count($items)}<br/>{$out}</div>)
 };
 
 
@@ -1385,7 +1399,6 @@ declare
 %rest:path("vicav/show_docs")
 %rest:query-param("db", "{$db}")
 %rest:GET
-%output:method("html")
 
 function vicav:vicav_show_docs($db as xs:string*) {
   let $docs := db:list($db)
@@ -1393,30 +1406,9 @@ function vicav:vicav_show_docs($db as xs:string*) {
   for $item in $docs 
     return <div>{$item}</div>
   
-  return <p>{$out}</p>
-};
-
-
-declare
-%rest:path("vicav/delete_dbase")
-%rest:query-param("db", "{$db}")
-%rest:GET
-
-updating function vicav:vicav_delete_db($db as xs:string*) {
-   db:delete($db, '')
-};
-
-declare
-%rest:path("vicav/refill_texts")
-%rest:query-param("src", "{$src}")
-%rest:query-param("db", "{$db}")
-%rest:GET
-
-updating function vicav:refill_texts($src as xs:string, $db as xs:string) {
-  for $file in file:list($src, true())
-  let $path := $src || '\' || $file
-  where not(contains($file, 'backup') or contains($file, '.jpg') or contains($file, '.png'))
-  return db:add($db, $path)
+  return
+        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        <p>{$out}</p>)
 };
 
 declare
@@ -1443,7 +1435,9 @@ function vicav:get_profiles_overview() {
     (: let $res3 := parse-xml($res2) :)
     
     (: let $out := xslt:transform($tei, $style1) :)
-        return $tei
+        return 
+        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        $tei)
 };
   
  
