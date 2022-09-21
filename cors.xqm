@@ -6,7 +6,6 @@ xquery version "3.1";
 module namespace _ = 'https://www.oeaw.ac.at/acdh/tools/vle/cors';
 import module namespace rest = "http://exquery.org/ns/restxq";
 import module namespace req = "http://exquery.org/ns/request";
-import module namespace util = "https://www.oeaw.ac.at/acdh/tools/vle/util" at 'util.xqm';
 import module namespace admin = "http://basex.org/modules/admin"; (: for logging :)
 
 declare namespace http = "http://expath.org/ns/http-client";
