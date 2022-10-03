@@ -20,8 +20,9 @@ const exploreDataStrings = {
     }
 }
 
-const LoadingRoller = '<div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>'
-
+const LoadingRoller = '<div class="loading-roller">'+
+'<div class="lds-roller">Loading<div></div><div></div><div></div>'+
+'<div></div><div></div><div></div><div></div><div></div></div>'
 
 const accentMap = {
 	"â": "a",
@@ -285,7 +286,6 @@ function compareQuery(query, success_callback, $root) {
 	var wrapper = $('.grid-wrap > *', $root)
 	wrapper.hide()
 	$('.grid-wrap', $root).append(LoadingRoller);
-
 	var url = 'explore_samples?'+ query;
 	$.ajax({
 		url: url,
@@ -295,8 +295,11 @@ function compareQuery(query, success_callback, $root) {
 		contentType: 'application/html; ',
 		success: function(result) {
 			success_callback(result, query, $root)
-			$('.grid-wrap .lds-roller', $root).remove()
+			$('.grid-wrap .loading-roller', $root).remove()
 			wrapper.show()
+		},
+		error: function(query, message, e) {
+			$('.grid-wrap', $root).html("ERROR: " + e)
 		}
 	});
 }
@@ -337,7 +340,6 @@ function createDisplayExploreDataPanel(type, query_, pID_ = '', pVisiblity_ = 'o
             event.preventDefault();
 
             compareFormSubmit($root, type, function (result, query) {
-            	console.log(result)
                 if (result.includes('error type="user authentication"')) {
                     alert('Error: authentication did not work');
                 } 
@@ -353,8 +355,8 @@ function createDisplayExploreDataPanel(type, query_, pID_ = '', pVisiblity_ = 'o
  * Create the Explore data results window.
  */
 function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ = '', pVisiblity_ = 'open', pURL_ = false) {
-    var $root = $('[data-pid=' + pID + ']');
     var attachPagingHandlers = function(pID, query) {
+	    var $root = $('[data-pid=' + pID + ']');
         if (type == 'sample') {
             function changeFeature(feature) {
                 var query = $root.attr('data-query').replace(/\+/g, '&').replace(/\|/g, '=')
@@ -398,13 +400,12 @@ function createExploreDataResultsPanel(type, contents_ = '', query_ = '', pID_ =
 		});
     }
 	var query = query_.replace(/\+/g, '&').replace(/\|/g, '=')
-    	console.log(contents_, query)
 
     if (contents_ == '' && query != '') {
     	var pID = appendPanel(LoadingRoller, "cross" + exploreDataStrings[type].class + "Result", "", "grid-wrap", query, 'hasTeiLink', '', 'compare-' +type + 's-result', '', pVisiblity_, pURL_);
+        var $root = $('[data-pid=' + pID + ']');
 
         compareQuery(query, function(result) {
-        	var $root = $('[data-pid=' + pID + ']');
         	$('.grid-wrap', $root).html(result);
             attachPagingHandlers(pID, query)
         }, $root)
