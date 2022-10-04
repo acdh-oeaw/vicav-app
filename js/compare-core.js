@@ -480,7 +480,7 @@ $(document).on('click', 'a[data-wordform]', function(e) {
 
     compareQuery('type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt, function(result) {
         createExploreDataResultsPanel(dataType, result, 'type='+ exploreDataStrings[dataType].db +'&word=' + word + '&xslt=' + exploreDataStrings[dataType].xslt);
-    })
+    }, $root)
 })
 
 $(document).on('click', 'a[data-featurelist]', function(e) {
@@ -537,3 +537,9 @@ $(document).on('click', 'a[data-featurecompare]', function(e) {
 
     }
 });
+
+$(document).on('click', 'div.explore-samples-summary h4', function(e) {
+    var table = $('table', $(e.target).parent())
+    console.log(table)
+    table.toggle()
+})

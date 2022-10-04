@@ -1493,6 +1493,11 @@ form.compare-samples fieldset > fieldset {
 form.compare-samples .sentences-wrapper > fieldset {
     display: inline-block;
 }
+
+.explore-samples-summary {
+    cursor: pointer;
+}
+
 .tagit-autocomplete,
 .ui-menu-item-wrapper {
     z-index: 99999 !important;

@@ -33,13 +33,13 @@
                     <xsl:for-each select="tokenize($filter-words, ',')">
                         <xsl:variable name="word" select="."/>
                         <xsl:for-each 
-                            select="$root//item//tei:s[not(@type = 'translationSentence') and .//tei:w[matches(., concat('(\W|^)', replace($word, '\*', '.*'), '(\W|$)' ))]]">
+                            select="$root/item//tei:s[not(@type = 'translationSentence') and .//tei:w[matches(., concat('(\W|^)', replace($word, '\*', '.*'), '(\W|$)' ))]]">
                             <xsl:sequence select="."/>
                         </xsl:for-each>
                      </xsl:for-each>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:sequence select="$root//item//tei:s[not(@type = 'translationSentence')]"/>
+                    <xsl:sequence select="$root/item//tei:s[not(@type = 'translationSentence')]"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
@@ -51,10 +51,23 @@
                         <h2 xml:space="preserve">Compare samples</h2></td>
                         <td class="tdPrintLink"><a href="#" data-print="true" class="aTEIButton">Print</a></td>
                     </tr>
-                    <tr><td><i>
-                            <xsl:value-of select="string-join(distinct-values(.//item/@city), ', ')"/></i>
-                    </td></tr>
-                </table>    
+                </table>
+                <div class="explore-samples-summary">
+                    <h4>Summary</h4>
+                    <table>
+                    <xsl:for-each-group select="$root/item" group-by="(.//tei:region[1], 'unknown')[1]">
+                        <xsl:variable name="count" select="count(current-group()//tei:s[index-of($filtered-by-word/tei:s, .)> 0])"/>
+                        <tr>
+                            <th>
+                                <xsl:value-of select="current-grouping-key()"/>
+                            </th>
+                            <td>
+                                <xsl:value-of select="$count"/>
+                            </td>
+                        </tr>
+                    </xsl:for-each-group>
+                    </table>
+                </div>
                 
                 <xsl:if test="$filter-features">
                     <div class="sentences-nav">
@@ -70,15 +83,14 @@
                     </div>
                 </xsl:if>
 
-
                 <xsl:for-each select="$sentences-shown">
                     <xsl:variable name="sentence" select="."/>
-                    <xsl:if test="count($root//item//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .) > 0]) > 0">
+                    <xsl:if test="count($root/item//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .) > 0]) > 0">
                         <xsl:if test="count($selected-sentences) > 1 or not($filter-features)">
                             <h3><xsl:value-of select="$sentence"/></h3>
                         </xsl:if>
 
-                        <xsl:for-each-group select="$root//item" group-by="(.//tei:region[1], 'unknown')[1]">
+                        <xsl:for-each-group select="$root/item" group-by="(.//tei:region[1], 'unknown')[1]">
                             <xsl:variable name="count" select="count(current-group()//tei:s[@n=$sentence and index-of($filtered-by-word/tei:s, .)> 0])"/>
                             <xsl:if test="$count > 0">
                                 <h4><xsl:value-of select="current-grouping-key()"/></h4>
