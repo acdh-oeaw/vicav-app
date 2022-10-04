@@ -41,7 +41,7 @@ describe('VICAV Compare features window', function() {
 		cy.wait('@results', {responseTimeout: 10000})
 		cy.get('[data-snippetID=compare-features-result]').as('el')
 		cy.url().should('contain', '[crossFeaturesResult,type|lingfeatures+xslt|cross_features_02.xslt+location|Tunis2+age|0%2C100+person|Test1+features|semlib%3Awho+translation|+comment|+word|+sex|m%2Cf,open]')	
-		cy.get('@el').contains('2 feature sentences found.')
+		cy.get('@el').contains('1 feature sentences found.')
 		cy.get('.tdFeaturesRightTarget').as('td')
 		cy.get('@td').each(($td, index) => {
 			const expected = [
