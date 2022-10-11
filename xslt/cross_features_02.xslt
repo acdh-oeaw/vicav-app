@@ -12,7 +12,7 @@
     <xsl:param name="filter-comments"></xsl:param>
 
     <xsl:template match="/items">
-        <xsl:variable name="all-features" select="distinct-values(//*[@type= 'featureSample']/@ana)" />
+        <xsl:variable name="all-features" select="distinct-values(//*[@type='featureSample']/@ana)" />
         <xsl:variable name="selected-features" select="tokenize($filter-features, ',')" />
 
         <xsl:variable name="features-shown" select="if (empty($selected-features)) then $all-features else $selected-features"/>
@@ -57,12 +57,26 @@
                     <tr><td>
                         <h2 xml:space="preserve">Compare features</h2></td><td class="tdPrintLink"><a href="#" data-print="true" class="aTEIButton">Print</a></td>
                     </tr>
-                    <tr><td><i>
+                    <!-- <tr><td><i>
                             <xsl:value-of select="string-join(distinct-values(.//item/@city), ', ')"/></i>
-                    </td></tr>
+                    </td></tr> -->
                 </table>    
-
-                <p xml:space="preserve"><xsl:value-of select="count($filtered-by-word/tei:cit)"/> feature sentences found.</p>
+                <div class="explore-samples-summary">
+                    <h4>Summary</h4>
+                    <table>
+                    <xsl:for-each-group select="$root/item" group-by="(.//tei:region[1], 'unknown')[1]">
+                        <xsl:variable name="count" select="count(current-group()//tei:cit[@type='featureSample' and index-of($filtered-by-word/tei:cit, .) > 0])"/>
+                        <tr>
+                            <th>
+                                <xsl:value-of select="current-grouping-key()"/>
+                            </th>
+                            <td>
+                                <xsl:value-of select="$count"/>
+                            </td>
+                        </tr>
+                    </xsl:for-each-group>
+                    </table>
+                </div>
 
                 <xsl:for-each select="$features-shown">
                     <xsl:variable name="ana" select="."/>
@@ -72,9 +86,13 @@
 
                             <xsl:for-each-group select="$root//item" group-by="(.//tei:region[1], 'unknown')[1]">
                                 <xsl:sort select="current-grouping-key()"/>
-                                <xsl:if test="count(current-group()//tei:cit[@type='featureSample' and contains-token(@ana,$ana) and index-of($filtered-by-word/tei:cit, .) > 0]) > 0">
+                                <xsl:variable name="count" select="count(current-group()//tei:cit[@type='featureSample' and contains-token(@ana,$ana) and index-of($filtered-by-word/tei:cit, .) > 0])"/>
+                                <xsl:if test="$count > 0">
                                     <h4><xsl:value-of select="current-grouping-key()"/></h4>
                                     
+                                    <p xml:space="preserve"><xsl:value-of select="$count"/> feature sentences found.</p>
+
+
                                     <table class="tbFeatures">
                                         <xsl:for-each select="current-group()">
                                             <xsl:sort select="@city"/>
