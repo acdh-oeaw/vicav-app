@@ -300,6 +300,21 @@
         </a>
     </xsl:template>
 
+    <xsl:template match="tei:ref[@type='feature']">
+        <a href="#">
+            <xsl:attribute name="data-featurelist"><xsl:value-of select="@target"/></xsl:attribute>
+            <xsl:apply-templates/>
+        </a>
+        <br/>
+    </xsl:template>
+
+    <xsl:template match="tei:ref[@type='sample']">
+        <a href="#">
+            <xsl:attribute name="data-sampletext"><xsl:value-of select="@target"/></xsl:attribute>
+            <xsl:apply-templates/>
+        </a><br/>
+    </xsl:template>
+
     <xsl:template match="tei:rs[
         starts-with(@ref,'profile:') or
         starts-with(@ref,'feature:') or
