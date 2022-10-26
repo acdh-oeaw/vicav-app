@@ -243,7 +243,7 @@ function insertAllDataMarkers() {
                     case 'linguistic feature list':
                         sType = 'feature';
                         break;
-                    case 'linguistic profile':
+                    case 'profile':
                         sType = 'profile';
                         break;
                     case 'sample text':

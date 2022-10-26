@@ -485,7 +485,7 @@ function vicav:explore_samples(
             else ""
 
     let $trans_filter := if (empty($translation)) then '' else $translation
-    let $comment_filter := if (empty($comment)) then '' else $comment
+    let $comment_filter := if (empty($comment)) then '' else  lower-case($comment)
 
     (:let $ress := vicav:explore-query(
         'vicav_' || $resourcetype || vicav:get_project_db(),
