@@ -1545,10 +1545,10 @@ if (window.localStorage.vicavStyle) {
     $("<style>").append(window.localStorage.vicavStyle).appendTo('head')
 }
 
-/*$(document).on('mousedown', '[data-type="vicavTexts"]', function(event) {
+$(document).on('mousedown', '[data-type="vicavTexts"]', function(event) {
     getText($(event.target).text(), $(event.target).attr('data-target'), 'vicavTexts.xslt');    
 })
-*/
+
 
 function parseCurrentUrl(curUrl) {
     if (curUrl.includes('#')) {

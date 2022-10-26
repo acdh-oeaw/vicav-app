@@ -1,5 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
+  xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0" >
   
     <xsl:character-map name="a">
        <xsl:output-character character="&lt;" string="&lt;"/>
@@ -145,7 +145,7 @@
 
   <xsl:template match="tei:div[@type='html-content']">
     <div class="html-content">
-    <xsl:analyze-string select="." regex="&lt;div id=&quot;bwg_container1_0&quot;(.+)bwg_main_ready\(\);      }}\);    &lt;/script&gt;">
+    <xsl:analyze-string select="." regex="&lt;div id=&quot;bwg_container1_0&quot;(.+)bwg_main_ready\(\);      \}}\);    &lt;/script&gt;">
       <xsl:matching-substring>
         <div class="gallery">
           <xsl:analyze-string select="." regex="href=&quot;(http.*?\.jpe?g).*?&quot;.*?src=&quot;(http.*?\.jpe?g).*?&quot;.*? alt=&quot;(.*?)&quot;">
@@ -171,7 +171,7 @@
             </div>
             </xsl:matching-substring>
           <xsl:non-matching-substring>    
-            <xsl:value-of select="replace(., '&amp;nbsp;', '&amp;#160;')"/>
+            <xsl:value-of disable-output-escaping="yes" select="replace(., '&amp;nbsp;', '&amp;#160;')"/>
           </xsl:non-matching-substring>
         </xsl:analyze-string>
       </xsl:non-matching-substring>
