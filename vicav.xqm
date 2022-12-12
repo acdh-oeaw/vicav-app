@@ -505,15 +505,27 @@ function vicav:explore_samples(
         $sex
     )//item
 
-    let $ress := <items>{$ress1}</items>
 
-    let $sHTML := vicav:transform($ress, $xsltfn, $print, map {
-        "highlight":string($word),
-        "filter-words": string($word), 
-        "filter-features":$filter_features, 
-        "filter-translations": $trans_filter,
-        "filter-comments": $comment_filter
-    })
+
+
+
+
+    let $sHTML := if ((empty($location) or $location = '') and (empty($features) or $features = '')) then
+        vicav:transform(<items>{$ress1}</items>, "cross_" || $resourcetype || "_summary_01.xslt", $print, map {
+            "highlight":string($word),
+            "filter-words": string($word),
+            "filter-features":$filter_features,
+            "filter-translations": $trans_filter,
+            "filter-comments": $comment_filter
+        })
+    else
+        vicav:transform(<items>{$ress1}</items>, $xsltfn, $print, map {
+            "highlight":string($word),
+            "filter-words": string($word),
+            "filter-features":$filter_features,
+            "filter-translations": $trans_filter,
+            "filter-comments": $comment_filter
+        })
 
     return
         (:<div type="lingFeatures">{$sHTML}</div>:)

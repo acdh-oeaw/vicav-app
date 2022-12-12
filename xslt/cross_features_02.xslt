@@ -61,7 +61,7 @@
                             <xsl:value-of select="string-join(distinct-values(.//item/@city), ', ')"/></i>
                     </td></tr> -->
                 </table>    
-                <div class="explore-samples-summary">
+                <!-- <div class="explore-samples-summary">
                     <h4>Summary</h4>
 
                     <table>
@@ -77,7 +77,7 @@
                         </tr>
                     </xsl:for-each-group>
                     </table>
-                </div>
+                </div> -->
 
                 <xsl:for-each select="$features-shown">
                     <xsl:variable name="ana" select="."/>

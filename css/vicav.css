@@ -1516,6 +1516,14 @@ form.compare-samples .sentences-wrapper > fieldset {
     cursor: pointer;
 }
 
+.explore-samples-summary th {
+    vertical-align: top;
+}
+
+.explore-samples-summary table {
+    width: 100%;
+}
+
 .tagit-autocomplete,
 .ui-menu-item-wrapper {
     z-index: 99999 !important;

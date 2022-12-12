@@ -483,6 +483,19 @@ $(document).on('click', 'a[data-wordform]', function(e) {
     }, $root)
 })
 
+$(document).on('click', 'a[data-query]', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var query = $(e.target).closest('[data-query]').attr('data-query');
+    var dataType = $(e.target).closest('[data-type]').attr('data-type');
+    var $root = $(e.target).closest('[data-pid]');
+
+    compareQuery('type='+ exploreDataStrings[dataType].db +'&' + query + '&xslt=' + exploreDataStrings[dataType].xslt, function(result) {
+        createExploreDataResultsPanel(dataType, result, 'type='+ exploreDataStrings[dataType].db +'&' + query + '&xslt=' + exploreDataStrings[dataType].xslt);
+    }, $root)
+})
+
 $(document).on('click', 'a[data-featurelist]', function(e) {
     e.preventDefault();
     var item = $(e.target).closest('[data-featurelist]').attr('data-featurelist');
@@ -538,8 +551,11 @@ $(document).on('click', 'a[data-featurecompare]', function(e) {
     }
 });
 
-$(document).on('click', 'div.explore-samples-summary h4', function(e) {
-    var table = $('table', $(e.target).parent())
-    console.log(table)
+$(document).on('click', 'tr.explore-samples-summary h4', function(e) {
+    var table = $('table', $(e.target).closest('tr.explore-samples-summary'))
+    table.toggle()
+})
+$(document).on('click', 'tr.explore-samples-summary th', function(e) {
+    var table = $('table', $(e.target).closest('tr.explore-samples-summary'))
     table.toggle()
 })

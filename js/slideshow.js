@@ -1,7 +1,3 @@
-// $(document).on('DOMNodeInserted', '.slider-container', function(e) {
-//   showSlides($(e.target), 1);
-// });
-
 $(document).on('click', '.slider-container .slider-next', function(e) {
     e.preventDefault();
     var item = $(e.target).closest('.slider-container');
@@ -25,8 +21,6 @@ $(document).on('click', '.demo.cursor', function(e) {
     showSlides(item, parseInt(n))
 });
 
-
-
 function sideScroll(element, direction, speed, distance, step) {
   scrollAmount = 0;
   var slideTimer = setInterval(function() {
@@ -41,7 +35,6 @@ function sideScroll(element, direction, speed, distance, step) {
     }
   }, speed);
 }
-
 
 function showSlides(container, n) {
   var slideIndex = n-1//container.attr('data-slider') !== undefined ? parseInt(container.attr('data-slider')) : 1
