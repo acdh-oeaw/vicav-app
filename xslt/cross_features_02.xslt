@@ -63,6 +63,7 @@
                 </table>    
                 <div class="explore-samples-summary">
                     <h4>Summary</h4>
+
                     <table>
                     <xsl:for-each-group select="$root/item" group-by="(.//tei:region[1], 'unknown')[1]">
                         <xsl:variable name="count" select="count(current-group()//tei:cit[@type='featureSample' and index-of($filtered-by-word/tei:cit, .) > 0])"/>
@@ -71,7 +72,7 @@
                                 <xsl:value-of select="current-grouping-key()"/>
                             </th>
                             <td>
-                                <xsl:value-of select="$count"/>
+                                <xsl:value-of select="$count"/> sentences
                             </td>
                         </tr>
                     </xsl:for-each-group>

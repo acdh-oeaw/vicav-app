@@ -71,13 +71,25 @@
                     <xsl:if test="//tei:name[@type='latLoc']">
                         <tr>
                             <td class="tdHead">Local name (trans.)</td>
-                            <td class="tdProfileTableRight"><xsl:value-of select="//tei:name[@type='latLoc']"/></td>
+                            <td class="tdProfileTableRight">
+                                <xsl:value-of select="//tei:name[@type='latLoc']"/></td>
                         </tr>
                     </xsl:if>
 
                     <tr>
                         <td class="tdHead">Geo location</td>
-                        <td class="tdProfileTableRight"><i><xsl:value-of select="//tei:div[@type='positioning']/tei:p"/></i></td>
+                        <td class="tdProfileTableRight">
+                            <i>
+                                <xsl:analyze-string select="//tei:div[@type='positioning']/tei:p" regex="[\d\.]+">
+                                    <xsl:matching-substring>
+                                        <xsl:value-of select="substring(., 1, 6)"/>
+                                    </xsl:matching-substring>
+                                    <xsl:non-matching-substring>
+                                        <xsl:value-of select="', '"/>
+                                    </xsl:non-matching-substring>
+                                </xsl:analyze-string>
+                            </i>
+                        </td>
                     </tr>
                     <tr>
                         <td class="tdHead">Contributed by</td>
@@ -89,7 +101,18 @@
             <xsl:apply-templates select="//tei:body/tei:div/tei:div"/>     
 
 
-            <xsl:if test="count(//tei:head/tei:figure) > 1">
+            <xsl:if test="count(//tei:head/tei:figure) = 2">
+                <div>
+                    <a>
+                      <xsl:attribute name="href" select="concat('images/', //tei:head/tei:figure[2]/tei:graphic/@url)"/>
+                        <img>
+                          <xsl:attribute name="src" select="concat('images/', //tei:head/tei:figure[2]/tei:graphic/@url)"/>
+                      </img>
+                    </a>
+                </div>
+            </xsl:if>
+
+            <xsl:if test="count(//tei:head/tei:figure) > 2">
                 <div class="slider-container">
                     <xsl:variable select="count(//tei:head/tei:figure) - 1" name="total"/>
                     <xsl:for-each select="subsequence(//tei:head/tei:figure, 2)">
@@ -119,7 +142,7 @@
                   <div class="thumbs-wrapper">
                       <div class="row">
                         <xsl:attribute name="style" select="concat('width: ', count(//tei:head/tei:figure) * 100, 'px')"/>
-                        <xsl:for-each select="//tei:head/tei:figure">
+                        <xsl:for-each select="subsequence(//tei:head/tei:figure, 2)">
                             <xsl:variable select="position()" name="pos"/>
                             <div class="column">
                               <img class="demo cursor" style="width:100px; height: 100px">
@@ -300,6 +323,14 @@
         </a>
     </xsl:template>
 
+    <xsl:template match="tei:div[@type=['sampleText', 'lingFeatures', 'bibliography']]">
+        <xsl:if test="count(./tei:p/tei:ref) > 0">
+            <xsl:copy>
+                <xsl:apply-templates/>
+            </xsl:copy>
+        </xsl:if>
+    </xsl:template>
+
     <xsl:template match="tei:ref[@type='feature']">
         <a href="#">
             <xsl:attribute name="data-featurelist"><xsl:value-of select="@target"/></xsl:attribute>
@@ -311,6 +342,13 @@
     <xsl:template match="tei:ref[@type='sample']">
         <a href="#">
             <xsl:attribute name="data-sampletext"><xsl:value-of select="@target"/></xsl:attribute>
+            <xsl:apply-templates/>
+        </a><br/>
+    </xsl:template>
+
+     <xsl:template match="tei:ref[@type='profile']">
+        <a href="#">
+            <xsl:attribute name="data-profile"><xsl:value-of select="@target"/></xsl:attribute>
             <xsl:apply-templates/>
         </a><br/>
     </xsl:template>

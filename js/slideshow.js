@@ -16,6 +16,16 @@ $(document).on('click', '.slider-container .slider-prev', function(e) {
     showSlides(item, current - 1)
 })
 
+$(document).on('click', '.demo.cursor', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var item = $(e.target).closest('.slider-container');
+    var wrapper = $(e.target).closest('.thumbs-wrapper');
+    var n = $(e.target).attr('data-showslide');
+    showSlides(item, parseInt(n))
+});
+
+
 
 function sideScroll(element, direction, speed, distance, step) {
   scrollAmount = 0;
@@ -34,14 +44,13 @@ function sideScroll(element, direction, speed, distance, step) {
 
 
 function showSlides(container, n) {
-  console.log(n)
-  var slideIndex = n//container.attr('data-slider') !== undefined ? parseInt(container.attr('data-slider')) : 1
+  var slideIndex = n-1//container.attr('data-slider') !== undefined ? parseInt(container.attr('data-slider')) : 1
   var i;
   var slides = $('.mySlides', container);
   if (slides.length > 0) {
     var dots = $('.demo', container);
     var captionText = $('.caption', container);
-    if (n > slides.length) {slideIndex = 1}
+    if (n > slides.length) {slideIndex = 0}
     if (n < 1) {slideIndex = slides.length}
 
     for (i = 0; i < slides.length; i++) {
@@ -50,21 +59,26 @@ function showSlides(container, n) {
     for (i = 0; i < dots.length; i++) {
       dots[i].className = dots[i].className.replace(" active", "");
     }
-    console.log(slides[slideIndex-1], slideIndex)
-    slides[slideIndex-1].style.display = "block";
-    dots[slideIndex-1].className += " active";
-    captionText[0].innerHTML = dots[slideIndex-1].alt;
-    container.attr('data-slider', slideIndex)
+    console.log(slides[slideIndex], slideIndex)
+    slides[slideIndex].style.display = "flex";
+    dots[slideIndex].className += " active";
+    captionText[0].innerHTML = dots[slideIndex].alt;
+    container.attr('data-slider', n)
   }
 }
 
 
 $(document).ready(function(e) {
-    $(document).on('DOMNodeInserted', ".content-panel .grid-wrap", function(event) {
-
+  $(document).on('DOMNodeInserted', ".content-panel .grid-wrap", function(event) {
+    $('.slider-container', event.target).each(function(_i, i) {
+      showSlides($(i), 1);
+    })
+  })
+});
 
 $(document).on('mouseover', '.demo.cursor', function(e) {
   e.preventDefault();
+  e.stopPropagation();
   var container = $(e.target).closest('.slider-container');
 
   var wrapper = $(e.target).closest('.thumbs-wrapper');
@@ -86,36 +100,24 @@ $(document).on('mouseover', '.demo.cursor', function(e) {
   }
 })
 
-$(document).on('click', '.demo.cursor', function(e) {
-    e.preventDefault();
-    var item = $(e.target).closest('.slider-container');
-    var wrapper = $(e.target).closest('.thumbs-wrapper');
-    var n = $(e.target).attr('data-showslide');
-    showSlides(item, parseInt(n))
-});
 
-    $('.slider-container', event.target).each(function(_i, i) {
-      showSlides($(i), 1);
-    })
 
-    $('.mySlides img', event.target).each((_i, i) => {
-        i.onload = function(){
-            if (this.naturalWidth > this.naturalHeight) {
-                $(this).addClass('landscape');
-            }
-            if (this.naturalWidth < this.naturalHeight) {
-                $(this).addClass('portrait');
-            }
-        }
-    })
+  $('.mySlides img', event.target).each((_i, i) => {
+      i.onload = function(){
+          if (this.naturalWidth > this.naturalHeight) {
+              $(this).addClass('landscape');
+          }
+          if (this.naturalWidth < this.naturalHeight) {
+              $(this).addClass('portrait');
+          }
+      }
+  })
 
-    $(document).on('click', '.mySlides a', function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-      var options = { index: event.target, event: event }
-      var links = $('.mySlides a', $(event.target).parent().parent().parent())
-      blueimp.Gallery(links, options)
-    });
-  });
-});
+  $(document).on('click', '.mySlides a', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    var options = { index: event.target, event: event }
+    var links = $('.mySlides a', $(event.target).parent().parent().parent())
+    blueimp.Gallery(links, options)
+   });
 

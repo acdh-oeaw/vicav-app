@@ -97,6 +97,8 @@ body .navbar ul.navbar-nav .navbar-icons a:hover{
     flex: 1;
     height: 100%;
     overflow-y: auto;
+    container-type: inline-size;
+    container-name: panel;
 }
 
 @media (max-width: 768px) {
@@ -1096,6 +1098,22 @@ body .navbar ul.navbar-nav{
     background: rgb(246, 236, 225);
 }
 
+@media (max-width: 1200px) {
+    .tbFeatures, .tbFeatures tbody,
+    .tbFeatures tr, .tbFeatures td {
+        display: block !important;
+        width: 100%;
+    }
+}
+
+@container panel (max-width: 425px) {
+    .tbFeatures, .tbFeatures tbody,
+    .tbFeatures tr, .tbFeatures td {
+        display: block !important;
+        width: 100%;
+    }
+}
+
 /* *************************************************** */
 /* * PROFILEs **************************************** */
 /* *************************************************** */
@@ -1613,6 +1631,7 @@ ul.overlapping-markers {
 /* Position the image container (needed to position the left and right arrows) */
 .slider-container {
   position: relative;
+  margin-bottom: 12px;
 }
 
 .thumbs-wrapper {
@@ -1630,11 +1649,14 @@ ul.overlapping-markers {
   display: none;
   background: black;
   height: 425px;
+  align-content: center;
+  justify-content: center;
 }
 
 .slider-container .mySlides a {
-    display: block;
-    text-align: center;
+    display: flex;
+    align-content: center;
+    justify-content: center;
 }
 
 .slider-container .mySlides img {
