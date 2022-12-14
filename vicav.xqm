@@ -496,22 +496,27 @@ function vicav:explore_samples(
         $sex
     ):)
 
-    let $ress1 := vicav:explore-data(
+    let $items := vicav:explore-data(
         'vicav_' || $resourcetype || vicav:get_project_db(),
         $location, 
         $word,
         $person, 
         $age, 
         $sex
-    )//item
+    )/item
 
+    let $ress1 := <items
+        location="{$location}"
+        word="{$word}"
+        person="{$person}"
+        features="{$features}"
+        age="{$age}"
+        sex="{$sex}"
+        translation="{$translation}"
+        comment="{$comment}">{$items}</items>
 
-
-
-
-
-    let $sHTML := if ((empty($location) or $location = '') and (empty($features) or $features = '')) then
-        vicav:transform(<items>{$ress1}</items>, "cross_" || $resourcetype || "_summary_01.xslt", $print, map {
+    let $sHTML := if ((empty($location) or $location = '') and (empty($person) or $person = '')) then
+        vicav:transform($ress1, "cross_" || $resourcetype || "_summary_01.xslt", $print, map {
             "highlight":string($word),
             "filter-words": string($word),
             "filter-features":$filter_features,
@@ -519,7 +524,7 @@ function vicav:explore_samples(
             "filter-comments": $comment_filter
         })
     else
-        vicav:transform(<items>{$ress1}</items>, $xsltfn, $print, map {
+        vicav:transform($ress1, $xsltfn, $print, map {
             "highlight":string($word),
             "filter-words": string($word),
             "filter-features":$filter_features,

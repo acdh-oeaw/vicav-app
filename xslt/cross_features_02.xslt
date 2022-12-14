@@ -61,23 +61,27 @@
                             <xsl:value-of select="string-join(distinct-values(.//item/@city), ', ')"/></i>
                     </td></tr> -->
                 </table>    
-                <!-- <div class="explore-samples-summary">
-                    <h4>Summary</h4>
+                <div class="explore-samples-summary">
+                    <h5>Query</h5>
 
-                    <table>
-                    <xsl:for-each-group select="$root/item" group-by="(.//tei:region[1], 'unknown')[1]">
-                        <xsl:variable name="count" select="count(current-group()//tei:cit[@type='featureSample' and index-of($filtered-by-word/tei:cit, .) > 0])"/>
-                        <tr>
-                            <th>
-                                <xsl:value-of select="current-grouping-key()"/>
-                            </th>
-                            <td>
-                                <xsl:value-of select="$count"/> sentences
-                            </td>
-                        </tr>
-                    </xsl:for-each-group>
-                    </table>
-                </div> -->
+                    <div>
+                        <xsl:if test="not(@word = '')">
+                            <xsl:value-of select="concat('Word: ', @word, ' ')"/>
+                        </xsl:if>
+                        <xsl:if test="not(@age = '')">
+                            <xsl:value-of select="concat('Age: ', @age, ' ')"/>
+                        </xsl:if>
+                        <xsl:if test="not(@sex = '')">
+                            <xsl:value-of select="concat('Sex: ', @sex, ' ')"/>
+                        </xsl:if>
+                        <xsl:if test="not(@comment = '')">
+                            <xsl:value-of select="concat('Comment: ', @comment, ' ')"/>
+                        </xsl:if>
+                        <xsl:if test="not(@translation = '')">
+                            <xsl:value-of select="concat('Translation: ', @translation, ' ')"/>
+                        </xsl:if>
+                    </div>
+                </div>
 
                 <xsl:for-each select="$features-shown">
                     <xsl:variable name="ana" select="."/>
