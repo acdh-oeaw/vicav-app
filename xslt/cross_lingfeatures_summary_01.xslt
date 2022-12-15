@@ -72,6 +72,9 @@
                     <h5>Query</h5>
 
                     <div>
+                        <xsl:if test="not(@features = '')">
+                            <xsl:value-of select="concat('Features: ', @features, ' ')"/>
+                        </xsl:if>
                         <xsl:if test="not(@word = '')">
                             <xsl:value-of select="concat('Word: ', @word, ' ')"/>
                         </xsl:if>
@@ -96,14 +99,23 @@
                     <xsl:for-each-group select="$root/item" group-by="(.//tei:region[1], 'unknown')[1]">
                         <xsl:variable name="count" select="count(current-group()//tei:cit[@type='featureSample' and index-of($filtered-by-word/tei:cit, .) > 0])"/>
                         <xsl:variable select="current-grouping-key()" name="region"/>
-                        <tr  class="explore-samples-summary">
+                        <xsl:variable name="feature-query">
+                            <xsl:if test="not($root/@features = '')">
+                                &amp;features=
+                                <xsl:value-of select="$root/@features"/>
+                            </xsl:if>
+                        </xsl:variable>
+                        <tr>
+                            <xsl:if test="$root/@features = ''">
+                                <xsl:attribute name="class" select="'explore-samples-summary'"/>
+                            </xsl:if>
                             <th>
                                 <xsl:value-of select="current-grouping-key()"/>
                             </th>
                             <td>
                                     <a href="#">
                                     <xsl:attribute name="data-type">feature</xsl:attribute>
-                                    <xsl:attribute name="data-query" select="concat($query,'&amp;location=region:', $region)"/>
+                                    <xsl:attribute name="data-query" select="concat($query,'&amp;location=region:', $region, $feature-query)"/>
                                     <xsl:value-of select="$count"/>
                                     <xsl:value-of select="' sentences'"/>
                                 </a>

@@ -78,8 +78,6 @@ $(document).ready(function(e) {
       }
   })
   })
-
-
 });
 
 $(document).on('mouseover', '.demo.cursor', function(e) {
