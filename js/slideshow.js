@@ -66,7 +66,20 @@ $(document).ready(function(e) {
     $('.slider-container', event.target).each(function(_i, i) {
       showSlides($(i), 1);
     })
+
+    $('.mySlides img', event.target).each((_i, i) => {
+      i.onload = function(){
+          if (this.naturalWidth > this.naturalHeight) {
+              $(this).addClass('landscape');
+          }
+          if (this.naturalWidth < this.naturalHeight) {
+              $(this).addClass('portrait');
+          }
+      }
   })
+  })
+
+
 });
 
 $(document).on('mouseover', '.demo.cursor', function(e) {
@@ -95,16 +108,7 @@ $(document).on('mouseover', '.demo.cursor', function(e) {
 
 
 
-  $('.mySlides img', event.target).each((_i, i) => {
-      i.onload = function(){
-          if (this.naturalWidth > this.naturalHeight) {
-              $(this).addClass('landscape');
-          }
-          if (this.naturalWidth < this.naturalHeight) {
-              $(this).addClass('portrait');
-          }
-      }
-  })
+
 
   $(document).on('click', '.mySlides a', function (event) {
     event.preventDefault();
