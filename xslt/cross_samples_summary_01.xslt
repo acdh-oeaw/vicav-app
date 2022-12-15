@@ -112,7 +112,7 @@
                                         <xsl:variable name="count2" select="count(current-group()//tei:s[index-of($filtered-by-word/tei:s, .)> 0])"/>
                                         <xsl:if test="$count2 > 0">
                                         <tr>
-                                            <xsl:if test="$root/$features = ''">
+                                            <xsl:if test="$root/@features = ''">
                                                 <xsl:attribute name="class" select="explore-samples-summary"/>
                                             </xsl:if>
                                             <th>
