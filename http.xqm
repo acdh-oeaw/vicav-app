@@ -158,39 +158,6 @@ function api:forbidden-file($file as xs:string) as item()+ {
 };
 
 declare
-  %rest:error('*')
-  %rest:error-param("code", "{$code}")
-  %rest:error-param("description", "{$description}")
-  %rest:error-param("value", "{$value}")
-  %rest:error-param("module", "{$module}")
-  %rest:error-param("line-number", "{$line-number}")
-  %rest:error-param("column-number", "{$column-number}")
-  %rest:error-param("additional", "{$additional}")
-function api:error-handler($code as xs:string, $description, $value, $module, $line-number, $column-number, $additional) as item()+ {
-let $origin := try { request:header("Origin") } catch basex:http {'urn:local'}
-return <rest:response>
-    <http:response status="500" message="{$description}.">
-      <http:header name="Content-Language" value="en"/>
-      <http:header name="Content-Type" value="text/html; charset=utf-8"/>
-      <http:header name="Access-Control-Allow-Origin" value="{$origin}"/>
-      <http:header name="Access-Control-Allow-Credentials" value="true"/>
-    </http:response>
-  </rest:response>,
-  <html xmlns="http://www.w3.org/1999/xhtml">
-    <title>{$description}</title>
-    <body>        
-       <h1>{$description}</h1>
-	   <p>
-       {$code}:{$description} {$value} in {$module} at {$line-number}:{$column-number}:<br/>
-       {for $match in analyze-string($additional, '.*\n', 'm')/*
-          return ($match/text(),<br/>)
-       }
-	   </p>
-    </body>
-  </html>
-};
-
-declare
   %rest:path("vicav/test-error.xqm")
 function api:test-error() as item()+ {
   api:test-error('api:test-error')
