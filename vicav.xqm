@@ -1,6 +1,7 @@
 module namespace vicav = "http://acdh.oeaw.ac.at/vicav";
 
 import module namespace cors = 'https://www.oeaw.ac.at/acdh/tools/vle/cors' at 'cors.xqm';
+import module namespace api-problem = "https://tools.ietf.org/html/rfc7807" at "api-problem.xqm";
 
 declare namespace bib = 'http://purl.org/net/biblio#';
 declare namespace dc = 'http://purl.org/dc/elements/1.1/';
@@ -70,12 +71,22 @@ declare function vicav:get_project_db() as xs:string {
 declare
 %rest:path("vicav/project")
 %rest:GET
-
 function vicav:project_config() {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_project_config#0, []
+  )
+};
+
+declare
+function vicav:_project_config() {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
     let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
-    let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
-    return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform($config, 'xslt/menu-json.xslt')
+    return serialize($renderedJson, map {"method": "json"})
+    else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
+      return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
 };
 
 
