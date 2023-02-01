@@ -24,19 +24,23 @@
         <_ type="object">
             <xsl:apply-templates select="@*"/>
             <item><xsl:apply-templates/></item>
-        <xsl:apply-templates/></_>
+            <type><xsl:value-of select="local-name()"/></type>
+        </_>
     </xsl:template>
     
     <xsl:template match="panel|item">
         <_ type="object">
           <xsl:apply-templates select="@*"/>
           <title><xsl:value-of select="text()"/></title>
+          <xsl:if test="not(@type)">
+            <type><xsl:value-of select="local-name()"/></type>
+          </xsl:if>
         </_>
     </xsl:template>
     
     <xsl:template match="separator">
         <_ type="object">
-            <title>---</title>
+            <type>separator</type>
         </_>
     </xsl:template>
     
