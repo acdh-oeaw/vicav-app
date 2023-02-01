@@ -38,7 +38,7 @@ describe('VICAV Compare samples window', function() {
 				    cy.get('.features-wrapper [type=text]').type('1')
 				    cy.contains('Compare texts').click()
 				    cy.get('[data-snippetID=compare-samples-result]').then((el) => {
-				    	cy.url().should('contain', '[crossSamplesResult,xslt|cross_samples_01.xslt+location|Tunis2+age|0%2C100+person|Test1+features|1+comment|+word|nh%C4%81%E1%B9%9B+sex|,open]')	
+				    	cy.url().should('contain', '[crossSamplesResult,xslt|cross_samples_01.xslt+location|Tunis2+age|0%2C100+person|Test1+features|1+comment|+translation|+word|nh%C4%81%E1%B9%9B+sex|,open]')	
 				    	cy.get(el).contains('nhāṛ li-ṯnīn baʕd il-fažr əmšīt l-is-sūq bāš nišri ʕ9am w-xu9ṛa kīma bītinžāl w-ṯūm.')
 				    	cy.get(el).contains('Siliana')
 				    })
