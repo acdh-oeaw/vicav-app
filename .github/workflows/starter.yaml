@@ -38,6 +38,7 @@ jobs:
           fi      
   _1:
     needs: [setup_workflow_env]
+    environment: ${{ steps.get_environment_from_git_ref.outputs.environment }}
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
@@ -50,6 +51,7 @@ jobs:
       default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
   _2:
     needs: [setup_workflow_env]
+    environment: ${{ steps.get_environment_from_git_ref.outputs.environment }}
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/herokuish-tests-db-url.yaml@main
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
@@ -64,6 +66,7 @@ jobs:
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED }}
   _3:
     needs: [setup_workflow_env, _1, _2]
+    environment: ${{ steps.get_environment_from_git_ref.outputs.environment }}
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
@@ -72,5 +75,5 @@ jobs:
       APP_NAME: ${{ needs.setup_workflow_env.outputs.APP_NAME }}
       APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
       SERVICE_ID: ${{ needs.setup_workflow_env.outputs.SERVICE_ID || vars.SERVICE_ID }}
-      PUBLIC_URL: ${{ needs.setup_workflow_env.outputs.PUBLIC_URL }}
+      PUBLIC_URL: ${{ needs.setup_workflow_env.outputs.PUBLIC_URL || vars.PUBLIC_URL }}
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
