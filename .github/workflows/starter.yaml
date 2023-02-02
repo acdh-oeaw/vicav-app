@@ -12,6 +12,7 @@ jobs:
 # as there is no way yet to get the active environment
       # environment: production
 # or see the switch on ref_name script below
+      environment: ${{ steps.get_environment_from_git_ref.outputs.environment }}
       image_tagged: vicav-app
       registry_root: ghcr.io/acdh-oeaw/
       default_port: "5000"
@@ -24,7 +25,9 @@ jobs:
       # PUBLIC_URL: "https://some-stuff.acdh-ch-dev.oeaw.ac.at" # Better use GitHub environment variables for this
       # POSTGRES_ENABLED: "false" # needs to be set to true to enable a postgres db installed next to the deployed app
     steps:
-      - run: |
+      - name: Get environment from git ref
+        id: get_environment_from_git_ref
+        run: |
           echo "Running on branch ${{ github.ref_name }}"
           if [ "${{ github.ref }}" = "refs/heads/master" ]; then
             echo "environment=production"
