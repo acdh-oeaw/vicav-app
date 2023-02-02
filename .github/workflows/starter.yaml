@@ -16,7 +16,7 @@ jobs:
       image_tagged: vicav-app
       registry_root: ghcr.io/acdh-oeaw/
       default_port: "5000"
-      herokuish_base_image: ghcr.io/acdh-oeaw/herokuish-for-cypress/main
+      herokuish_base_image: ghcr.io/acdh-oeaw/herokuish-for-cypress/main:latest-22
       BUILDPACK_URL: https://github.com/simar0at/heroku-buildpack-basex
       APP_NAME: vicav-app
 # This together with the branch name is also used as the namespace to deploy to
