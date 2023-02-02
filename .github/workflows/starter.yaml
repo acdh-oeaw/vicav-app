@@ -38,7 +38,7 @@ jobs:
           fi      
   _1:
     needs: [setup_workflow_env]
-    environment: ${{ steps.get_environment_from_git_ref.outputs.environment }}
+    environment: ${{ needs.setup_workflow_env.outputs.environment }}
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
@@ -51,7 +51,7 @@ jobs:
       default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
   _2:
     needs: [setup_workflow_env]
-    environment: ${{ steps.get_environment_from_git_ref.outputs.environment }}
+    environment: ${{ needs.setup_workflow_env.outputs.environment }}
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/herokuish-tests-db-url.yaml@main
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
@@ -66,7 +66,7 @@ jobs:
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED }}
   _3:
     needs: [setup_workflow_env, _1, _2]
-    environment: ${{ steps.get_environment_from_git_ref.outputs.environment }}
+    environment: ${{ needs.setup_workflow_env.outputs.environment }}
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
