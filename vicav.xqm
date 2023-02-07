@@ -73,8 +73,15 @@ declare
 %rest:GET
 function vicav:project_config() {
   api-problem:or_result (prof:current-ns(),
-    vicav:_project_config#0, []
+    vicav:_project_config#0, [], map:merge((cors:header(()), vicav:return_content_header()))
   )
+};
+
+declare function vicav:return_content_header() {
+  let $first-accept-header := replace(try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }, '^([^,]+).*', '$1')
+  return switch ($first-accept-header)
+  case '' return map{}
+  default return map{'Content-Type': $first-accept-header||';charset=UTF-8'}
 };
 
 declare
@@ -130,7 +137,7 @@ function vicav:query_biblio($query as xs:string*, $xsltfn as xs:string) {
     let $results := <results num="{$num}">{$results}</results>
     let $sHTML := xslt:transform-text($results, $style)
     return
-        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
         $sHTML)
 };
 
@@ -191,7 +198,7 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
     let $sHTML := xslt:transform-text($results, $style)
     return
         (: <r>{$sHTML}</r> :)
-        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
         $sHTML)
         (: <r>{$query2}</r> :)
 };
@@ -246,9 +253,9 @@ declare function vicav:transform($doc as element(), $xsltfn as xs:string, $print
 
 declare
 %rest:path("vicav/profile")
-%rest:query-param("coll", "{$coll}")
+%rest:query-param("coll", "{$coll}", "vicav_profiles")
 %rest:query-param("id", "{$id}")
-%rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("xslt", "{$xsltfn}", "profile_01.xslt")
 %rest:query-param("print", "{$print}")
 
 %rest:GET
@@ -259,7 +266,7 @@ function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:
     let $query := $ns || $q
     let $results := xquery:eval($query)
     return 
-        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
         vicav:transform($results, $xsltfn, $print, ()))
 };
 
@@ -278,7 +285,7 @@ function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:
     let $query := $ns || $q
     let $results := xquery:eval($query)
     return 
-        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
         vicav:transform($results, $xsltfn, $print, ()))
 };
 
@@ -312,7 +319,7 @@ function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn
     return 
         (:<div type="lingFeatures">{$sHTML}</div>:)
         (: <r>{$query}</r> :)
-        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
         $sHTML)
 };
 
@@ -546,14 +553,14 @@ function vicav:explore_samples(
     return
         (:<div type="lingFeatures">{$sHTML}</div>:)
         (:$ress1:)
-        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
         $sHTML)
 };
 
 declare
 %rest:path("vicav/text")
 %rest:query-param("id", "{$id}")
-%rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("xslt", "{$xsltfn}", "vicavTexts.xslt")
 %rest:GET
 
 function vicav:get_text($id as xs:string*, $xsltfn as xs:string) {
@@ -565,7 +572,8 @@ function vicav:get_text($id as xs:string*, $xsltfn as xs:string) {
     let $style := doc($stylePath)
     let $sHTML := xslt:transform-text($results, $style)
     return
-        $sHTML
+        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
+        $sHTML)
         
 };
 
@@ -610,7 +618,7 @@ let $style := doc('xslt/index_2_html.xslt')
 let $ress := <results>{subsequence($rs2, 1, 500)}</results>
 let $sReturn := xslt:transform($ress, $style)
 return
-    (web:response-header(map {'method': 'xml'}, cors:header(())),
+    (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
     $sReturn)
     (: $rs :)
 };
@@ -694,7 +702,7 @@ let $style := doc("xslt/" || $xsltfn)
 let $ress := <results xmlns="http://www.tei-c.org/ns/1.0">{$results}</results>
 let $sReturn := xslt:transform-text($ress, $style)
 return
-  (web:response-header(map {'method': 'basex'}, cors:header(())),
+  (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
   $sReturn)
   (: $query :)
 };
@@ -817,7 +825,7 @@ let $ress := <results  xmlns="http://www.tei-c.org/ns/1.0">{$res2}</results>
 let $sReturn := xslt:transform-text($ress, $style)
 
 return
-    (web:response-header(map {'method': 'basex'}, cors:header(())),
+    (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
     $sReturn)
     (: $res :)
     (: <r>{$qs}</r> :)
@@ -944,7 +952,7 @@ return
         
         (: return file:write("c:\dicttemp\geo_bibl_001.txt", $out) :)
 return
-   (web:response-header(map {'method': 'xml'}, cors:header(())),
+   (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
     <rs
         type="{count($out)}">{$out}</rs>)
 
@@ -1078,7 +1086,7 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
     (:else  ():)
         
     return
-        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
         <rs type="{count($out2)}">{$out2}</rs>)
     (: return <res>{$out}</res> :)
     (: return <res>{$query}</res> :) 
@@ -1111,7 +1119,7 @@ function vicav:get_profile_markers() {
         )
     
     return
-        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
         <rs>{$out}</rs>)
 };
 
@@ -1142,7 +1150,7 @@ function vicav:data_locations($type as xs:string*) {
         </location>
        
     return 
-    (web:response-header(map {'method': 'xml'}, cors:header(())),
+    (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
     <results>{$out}</results>)
 };
 
@@ -1181,7 +1189,7 @@ function vicav:get_sample_markers() {
             else ()
     
     return
-        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
         <rs>{$out}</rs>)
 };
 
@@ -1195,7 +1203,7 @@ function vicav:get_feature_labels() {
         return <feature ana="{$ana}">{$features[./@ana = $ana][1]/tei:lbl/text()}</feature>
 
     return
-        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
         <features>{$out}</features>)
 };
 
@@ -1218,7 +1226,7 @@ function vicav:get_sample_persons($type as xs:string*) {
         </person>
     
     return
-        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
         <persons>{$out}</persons>)
 };
 
@@ -1247,7 +1255,7 @@ function vicav:get_sample_words($type as xs:string*) {
         </word>
     
     return
-        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
         <words>{$out}</words>)
 };
 
@@ -1288,7 +1296,7 @@ function vicav:get_feature_markers() {
                 else ''
     
     return
-        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
         <rs>{$out}</rs>)
 };
 
@@ -1325,7 +1333,7 @@ function vicav:get_all_data_markers() {
                 else ''
 
     return
-        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
         <rs>{$out}</rs>)
 };
 
@@ -1415,7 +1423,7 @@ function vicav:get_data_list($type as xs:string*) {
              return vicav:data_list_region($type, $region, $items[./tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:region[./text() = $region]]])
 
     return
-        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
         <div>Total: {count($items)}<br/>{$out}</div>)
 };
 
@@ -1435,7 +1443,7 @@ function vicav:vicav_show_docs($db as xs:string*) {
     return <div>{$item}</div>
   
   return
-        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
         <p>{$out}</p>)
 };
 
@@ -1464,7 +1472,7 @@ function vicav:get_profiles_overview() {
     
     (: let $out := xslt:transform($tei, $style1) :)
         return 
-        (web:response-header(map {'method': 'xml'}, cors:header(())),
+        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
         $tei)
 };
   
