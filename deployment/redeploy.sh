@@ -88,34 +88,35 @@ fi
 if [ -d webapp/wde_basex ]
 then
 pushd webapp/wde_basex
+git reset --hard
 git pull
 if [ "$onlytags"x = 'truex' ]
 then
+latesttag=$(git describe --tags --abbrev=0)
+else
 latesttag=$(git describe --tags --always)
+fi
 echo checking out ${latesttag}
 git -c advice.detachedHead=false checkout ${latesttag}
-fi
-git checkout master
 popd
 fi
 if [ -d ${BUILD_DIR:-../webapp/vicav-app} ]
 then
-pushd ${BUILD_DIR:-../webapp/vicav-app}
-git reset --hard
-git checkout master
-git pull
-ret=$?
-if [ $ret != "0" ]; then exit $ret; fi
-if [ "$onlytags"x = 'truex' ]
-then
-uiversion=$(git describe --tags --always)
-echo checking out UI ${uiversion}
-git -c advice.detachedHead=false checkout ${uiversion}
-find ./ -type f -and \( -name '*.js' -or -name '*.html' \) -not \( -path './node_modules/*' -or -path './cypress/*' \) -exec sed -i "s~\@version@~$uiversion~g" {} \;
-else
-git checkout master
-fi
-popd
+  pushd ${BUILD_DIR:-../webapp/vicav-app}
+  git reset --hard
+  git pull
+  ret=$?
+  if [ $ret != "0" ]; then exit $ret; fi
+  if [ "$onlytags"x = 'truex' ]
+  then
+    uiversion=$(git describe --tags --abbrev=0)
+  else
+    uiversion=$(git describe --tags --always)
+  fi
+  echo checking out UI ${uiversion}
+  git -c advice.detachedHead=false checkout ${uiversion}
+  find ./ -type f -and \( -name '*.js' -or -name '*.html' \) -not \( -path './node_modules/*' -or -path './cypress/*' \) -exec sed -i "s~\@version@~$uiversion~g" {} \;
+  popd
 fi
 #-------------------------------------
 
@@ -124,13 +125,15 @@ echo updating vicav_content
 if [ ! -d vicav-content/.git ]; then echo "vicav_content does not exist or is not a git repository"; fi
 pushd vicav-content
 git reset --hard
-git checkout master
 git pull
 ret=$?
 if [ $ret != "0" ]; then exit $ret; fi
 if [ "$onlytags"x = 'truex' ]
 then
+dataversion=$(git describe --tags --abbrev=0)
+else
 dataversion=$(git describe --tags --always)
+fi
 echo checking out data ${dataversion}
 git -c advice.detachedHead=false checkout ${dataversion}
 who=$(git show -s --format='%cN')
@@ -144,9 +147,6 @@ $message
 </revisionDesc>
 EOF
 )
-else
-git checkout master
-fi
 #------- copy all images into the "images" directory in the web application directory
 echo "copying image files from vicav_content to vicav-webapp"
 for d in $(ls -d vicav_*)
