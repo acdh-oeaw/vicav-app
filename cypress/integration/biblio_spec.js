@@ -3,7 +3,7 @@ describe('Bibliography', function() {
 	    cy.visit('http://localhost:8984/vicav/#map=[biblMarkers,.*,geo]')
 	    cy.get('img.leaflet-marker-icon') // Wait until the initial markers appear.
 
-	    cy.get('img[alt^="Tunis"]').click({force: true});
+	    cy.get('img[alt="Tunis"]').click({force: true});
 	    cy.contains('geo:Tunis & .*')
 	    cy.get('.dvBibBook')
     })
