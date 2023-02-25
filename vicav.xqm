@@ -846,7 +846,7 @@ function vicav:get_bibl_markers($query as xs:string, $scope as xs:string) {
                 if (contains($query, 'vt:')) then
                     '[dc:subject[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
                 else
-                    '[node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
+                    '[node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]')
     
     let $ns := "declare namespace bib = 'http://purl.org/net/biblio#'; " ||
     "declare namespace rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'; " ||
@@ -975,7 +975,7 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
               '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'prj:')) then
               '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
-          else
+           else
               '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'          
                            
         
@@ -1004,13 +1004,13 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
             let $geos :=
                 switch ($scope)
                     case 'geo_reg'
-                        return $subj/tei:note/tei:note[(tei:name/@type = 'reg') or (tei:name/@type = 'geo') or (tei:name/@type = 'diaGroup')]
+                        return $subj/tei:note/tei:note[(tei:name/@type = 'reg') or (tei:name/@type = 'geo') or (tei:name/@type = 'diaGroup')][tei:geo]
                     case 'geo'
-                        return $subj/tei:note/tei:note[tei:name/@type = 'geo']
+                        return $subj/tei:note/tei:note[tei:name/@type = 'geo'][tei:geo]
                     case 'diaGroup'
-                        return $subj/tei:note/tei:note[tei:name/@type = 'diaGroup']
+                        return $subj/tei:note/tei:note[tei:name/@type = 'diaGroup'][tei:geo]
                     case 'reg'
-                        return $subj/tei:note/tei:note[tei:name/@type = 'reg']
+                        return $subj/tei:note/tei:note[tei:name/@type = 'reg'][tei:geo]
             default return ()
     
     for $geo in $geos
@@ -1079,9 +1079,11 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
         
     return
         (web:response-header(map {'method': 'xml'}, cors:header(())),
-        <rs type="{count($out2)}">{$out2}</rs>)
-    (: return <res>{$out}</res> :)
-    (: return <res>{$query}</res> :) 
+        <rs type="{count($out2)}">{$out2}</rs>
+        (: <res>{$out}</res> :)
+        (: <res>{$query}</res> :)
+        (: <_>{$tempresults}</_> :)
+        )
 };
 
 declare
