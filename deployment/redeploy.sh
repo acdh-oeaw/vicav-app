@@ -174,12 +174,9 @@ do echo "Directory $d:"
    find "$d" -type f -and \( -name '*.apkg' \) -exec cp -v {} ${BUILD_DIR:-../webapp}/static/anki \;
 done
 popd
-if [ "$onlytags"x = 'truex' ]
-then
 pushd ${BUILD_DIR:-webapp/vicav-app}
 find ./ -type f -and \( -name '*.js' -or -name '*.html' \) -not \( -path './node_modules/*' -or -path './cypress/*' \) -exec sed -i "s~\@data-version@~$dataversion~g" {} \;
 popd
-fi
 sed -i "s~webapp/vicav-app/~${BUILD_DIR:-webapp/vicav-app}/~g" deploy-vicav-content.bxs
 ./execute-basex-batch.sh deploy-vicav-content
 pushd vicav-content
