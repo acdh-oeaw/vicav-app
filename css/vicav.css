@@ -1287,6 +1287,10 @@ a:hover{
     text-align: center !important;
 }
 
+.soundTable{
+    position: absolute;
+}
+
 .dvAudio{
     border-bottom: 1px dotted grey;
     vertical-align: top;
@@ -1294,7 +1298,7 @@ a:hover{
 
 .audio{
     color: green;
-    position: absolute;
+    position: fixed;
     left: -500px;
 }
 

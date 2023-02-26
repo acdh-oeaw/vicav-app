@@ -1,5 +1,9 @@
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0" >
+<xsl:stylesheet 
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:tei="http://www.tei-c.org/ns/1.0"
+  exclude-result-prefixes="#all"
+  version="2.0" >
   
     <xsl:character-map name="a">
        <xsl:output-character character="&lt;" string="&lt;"/>
@@ -270,7 +274,7 @@
   </xsl:template>
 
   <xsl:template match="tei:table[@type='soundTable']">
-      <p>
+      <p class="{@type}">
           <xsl:for-each select="tei:row">
               <div class="dvAudio" onmouseover="makeAudioVisible(this)" onmouseout="makeAudioInVisible(this)">
                   <b><xsl:value-of select="tei:cell[2]"/>:&#160;</b>

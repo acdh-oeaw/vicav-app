@@ -348,18 +348,10 @@ function makeAudioInVisible(obj_) {
 }
 
 function makeAudioVisible(obj_) {
-    var x = {};
-    var audioWidth = $(obj_).find("audio").width();
+    var audioHeight = $(obj_).find("audio").height();
+    var parrentOffset = $(obj_).offset().top
     $(obj_).css("cursor", "pointer");
-    if ($(window).width() <= 768) {
-      $(obj_).find("audio").css("left", audioWidth);
-      $(obj_).find("audio").css("top", x.top);        
-    } else {
-    x = $(obj_).position();
-
-    $(obj_).find("audio").css("left", $(obj_).width() - audioWidth);
-    $(obj_).find("audio").css("top", x.top);
-    }
+    $(obj_).find("audio").css("left", 200);
 }
 
 function changeURLMapParameter(newParameter) {
