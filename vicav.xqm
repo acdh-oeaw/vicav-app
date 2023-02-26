@@ -854,7 +854,7 @@ function vicav:get_bibl_markers($query as xs:string, $scope as xs:string) {
                 if (contains($query, 'vt:')) then
                     '[dc:subject[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
                 else
-                    '[node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]')
+                    '[node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'
     
     let $ns := "declare namespace bib = 'http://purl.org/net/biblio#'; " ||
     "declare namespace rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'; " ||
