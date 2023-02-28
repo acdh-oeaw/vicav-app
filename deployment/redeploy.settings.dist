@@ -1,4 +1,4 @@
-onlytags=false # enable for production
+onlytags=true # disable for development
 local_username=admin
 local_password=admin
 curation= # optional, only used with --from-curation
