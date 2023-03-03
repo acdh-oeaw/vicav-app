@@ -1,7 +1,9 @@
 name: workflows starter
 # env: is empty, see setup-env and the outputs there
 on:
-  push: {}
+  push:
+    tags-ignore:
+      - "**"
 jobs:
   setup_workflow_env:
     runs-on: ubuntu-latest
