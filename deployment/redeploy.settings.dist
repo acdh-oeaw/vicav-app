@@ -1,8 +1,0 @@
-onlytags=false # enable for production
-local_username=admin
-local_password=admin
-curation= # optional, only used with --from-curation
-curation_access_id= # optional, can use ssh agent key instead
-curation_username= # optional
-curation_password= # optional
-docker_env_name= # optional, only for docker-tools based servers
