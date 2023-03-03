@@ -39,7 +39,7 @@ jobs:
           else
             echo "environment=review-${{ github.ref_name }}"
             echo "environment=review-${{ github.ref_name }}" >> $GITHUB_OUTPUT
-          fi      
+          fi
   _1:
     needs: [setup_workflow_env]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
@@ -50,6 +50,18 @@ jobs:
       BUILDPACK_URL: ${{ needs.setup_workflow_env.outputs.BUILDPACK_URL }}
       registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
       image_tagged: ${{ needs.setup_workflow_env.outputs.image_tagged }}
+      source_image: ${{ needs.setup_workflow_env.outputs.source_image }}
+      default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
+  _1-tunocent:
+    needs: [setup_workflow_env]
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
+    secrets: inherit
+# if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
+    with:
+      environment: ${{ needs.setup_workflow_env.outputs.environment}}-tunocent
+      BUILDPACK_URL: ${{ needs.setup_workflow_env.outputs.BUILDPACK_URL }}
+      registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
+      image_tagged: ${{ needs.setup_workflow_env.outputs.image_tagged }}-tunocent
       source_image: ${{ needs.setup_workflow_env.outputs.source_image }}
       default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
   _2:
@@ -73,6 +85,18 @@ jobs:
     with:
       environment: ${{ needs.setup_workflow_env.outputs.environment}}
       DOCKER_TAG: ${{ needs.setup_workflow_env.outputs.registry_root }}${{ needs.setup_workflow_env.outputs.image_tagged }}
+      APP_NAME: ${{ needs.setup_workflow_env.outputs.APP_NAME }}
+      APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
+      SERVICE_ID: ${{ needs.setup_workflow_env.outputs.SERVICE_ID }}
+      PUBLIC_URL: ${{ needs.setup_workflow_env.outputs.PUBLIC_URL }}
+      POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
+  _3-tunocent:
+    needs: [setup_workflow_env, _1, _2]
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy-cluster-2.yml@main
+    secrets: inherit
+    with:
+      environment: ${{ needs.setup_workflow_env.outputs.environment}}-tunocent
+      DOCKER_TAG: ${{ needs.setup_workflow_env.outputs.registry_root }}${{ needs.setup_workflow_env.outputs.image_tagged }}-tunocent
       APP_NAME: ${{ needs.setup_workflow_env.outputs.APP_NAME }}
       APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
       SERVICE_ID: ${{ needs.setup_workflow_env.outputs.SERVICE_ID }}
