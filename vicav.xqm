@@ -55,7 +55,7 @@ $seq as node()*) as xs:boolean {
 
 declare function vicav:get_project_name() as xs:string {
     let $project := doc('vicav_projects/projects.xml')/projects/project[matches(request:hostname(), @regex)]/text()
-    return if (empty($project) or $project = '') then 'vicav' else $project
+    return if (empty($project) or $project = '') then doc('vicav_projects/projects.xml')/projects/project[1]/text() else $project
 };
 
 declare function vicav:get_project_db() as xs:string {
