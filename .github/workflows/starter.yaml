@@ -3,7 +3,7 @@ name: workflows starter
 on:
   push:
     tags-ignore:
-      - "**"
+      - "v*"
 jobs:
   setup_workflow_env:
     runs-on: ubuntu-latest
