@@ -1,7 +1,10 @@
 name: workflows starter
 # env: is empty, see setup-env and the outputs there
 on:
-  push: {}
+  push:
+    branches:
+      - "master"
+      - "devel"
 jobs:
   setup_workflow_env:
     runs-on: ubuntu-latest
