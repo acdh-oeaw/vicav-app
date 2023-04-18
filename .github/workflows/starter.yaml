@@ -3,9 +3,8 @@ name: workflows starter
 on:
   push:
     branches:
-      - "**"
-    tags-ignore:
-      - "**"
+      - "master"
+      - "devel"
 jobs:
   setup_workflow_env:
     runs-on: ubuntu-latest
