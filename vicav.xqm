@@ -1539,7 +1539,7 @@ function vicav:search_corpus($query as xs:string, $print as xs:string?) {
         return <hit u="{$uId}" doc="{$docId}">{$u}<token>{normalize-space($tokenId)}</token></hit>
 
     
-    let $out := vicav:transform(<hits>{$hits}</hits>, 'corpus_search_result.xslt', $print, map{})
+    let $out := vicav:transform(<hits>{$hits}</hits>, 'corpus_search_result.xslt', $print, map{ 'query': $query })
 
     return
         (web:response-header(map {'method': 'basex'}, cors:header(())),
@@ -1557,12 +1557,16 @@ function vicav:corpus_text($id as xs:string, $page as xs:integer?, $size as xs:i
     let $p := if (empty($page)) then 1 else $page
     let $s := if (empty($size)) then 10 else $size
 
+
+
     let $doc := subsequence(collection(
             'vicav_corpus/' || vicav:get_project_db()
         )/descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[@level="a"]/text() = $id]
         /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s)
 
+    let $out := vicav:transform(<doc>{$doc}</doc>, 'corpus_utterances.xslt', (), map{})
+
     return
         (web:response-header(map {'method': 'basex'}, cors:header(())),
-        <doc>{$doc}</doc>)
+        $out)
 };
