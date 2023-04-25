@@ -1546,4 +1546,23 @@ function vicav:search_corpus($query as xs:string, $print as xs:string?) {
         $out)
 
 };
- 
+
+declare
+%rest:path("vicav/corpus_text")
+%rest:GET
+%rest:query-param("id", "{$id}")
+%rest:query-param("page", "{$page}")
+%rest:query-param("size", "{$size}")
+function vicav:corpus_text($id as xs:string, $page as xs:integer?, $size as xs:integer?) {
+    let $p := if (empty($page)) then 1 else $page
+    let $s := if (empty($size)) then 10 else $size
+
+    let $doc := subsequence(collection(
+            'vicav_corpus/' || vicav:get_project_db()
+        )/descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[@level="a"]/text() = $id]
+        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s)
+
+    return
+        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        <doc>{$doc}</doc>)
+};
