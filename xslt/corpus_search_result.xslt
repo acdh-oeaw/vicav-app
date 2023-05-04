@@ -6,7 +6,6 @@
     
     <xsl:param name="query"></xsl:param>
 
-
     <xsl:function name="acdh:index-of-node">
         <xsl:param name="nodes"></xsl:param>
         <xsl:param name="search"></xsl:param>

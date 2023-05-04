@@ -1478,7 +1478,14 @@ function vicav:get_profiles_overview() {
         $tei)
 };
   
-
+(:~
+ : Performs a corpus search in NoSKE.
+ : 
+ : @param $query Query to perform against NoSKE.
+ : @param $print Whether return the printable page with full HTML headers.
+ :
+ : @return A rendered HTML snippet with the search results.
+ :)
 declare
 %rest:path("vicav/corpus")
 %rest:GET
@@ -1532,10 +1539,10 @@ function vicav:search_corpus($query as xs:string, $print as xs:string?) {
                         $line/Left/_[1]/text()
                      else if (count($line/Right/_) > 0) then
                         $line/Right/_[1]/text() else ""
-                        
         let $u := collection(
             'vicav_corpus/' || vicav:get_project_db()
-        )/descendant::tei:TEI/tei:text/tei:body/tei:div/tei:annotationBlock/tei:u[@xml:id = $uId]
+        )/descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]         
+        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u[@xml:id = $uId]
         return <hit u="{$uId}" doc="{$docId}">{$u}<token>{normalize-space($tokenId)}</token></hit>
 
     
@@ -1547,24 +1554,33 @@ function vicav:search_corpus($query as xs:string, $print as xs:string?) {
 
 };
 
+(:~
+ : Retrieve pageble set of utterances from a corpus text.
+ : 
+ : @param $id Text Identidfier.
+ : @param $page Page number (defaults to 1)
+ : @param $size Page size (defaults to 10)
+ : @param $print Whether to return a printable page with full HTML headers.
+ :
+ : @return A rendered HTML snippet of the utterances.
+ :)
 declare
 %rest:path("vicav/corpus_text")
 %rest:GET
 %rest:query-param("id", "{$id}")
 %rest:query-param("page", "{$page}")
 %rest:query-param("size", "{$size}")
-function vicav:corpus_text($id as xs:string, $page as xs:integer?, $size as xs:integer?) {
+%rest:query-param("print", "{$print}")
+function vicav:corpus_text($id as xs:string, $page as xs:integer?, $size as xs:integer?, $print as xs:string?) {
     let $p := if (empty($page)) then 1 else $page
     let $s := if (empty($size)) then 10 else $size
-
-
 
     let $doc := subsequence(collection(
             'vicav_corpus/' || vicav:get_project_db()
         )/descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[@level="a"]/text() = $id]
         /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s)
 
-    let $out := vicav:transform(<doc>{$doc}</doc>, 'corpus_utterances.xslt', (), map{})
+    let $out := vicav:transform(<doc>{$doc}</doc>, 'corpus_utterances.xslt', $print, map{})
 
     return
         (web:response-header(map {'method': 'basex'}, cors:header(())),
