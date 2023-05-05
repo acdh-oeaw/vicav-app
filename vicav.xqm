@@ -958,6 +958,34 @@ return
 
 };
 
+(:~
+ : gets a geo marker information.
+ :
+ : Retrieve geo data information from the bibliography for displaying coordinates on a map.
+ : 
+ : @param $query A BaseX Full-Text search query in in vicav-biblio tei:biblstruct with wildcards enabled.
+ :           See: https://docs.basex.org/wiki/Full-Text#Match_Options
+ :           using wildcards using diacritics sensitive
+ :           Uses prefixes to limit the full text search to certein elements.
+ :           * date: -> tei:date
+ :           * title: -> tei:title
+ :           * pubPlace: -> tei:pubPlace
+ :           * author: -> tei:author/tei:surname
+ :           * geo:, geo_reg:, reg:, diaGroup: -> tei:note[@type="tag"]/tei:name
+ :           * vt:, prj: -> tei:note[@type="tag"]
+ :           
+ :           Without a prefix any text in vicav-biblio tei:biblstruct is searched.
+ :           
+ :           More than one query is possible by separating with ' '/+.
+ : @param $scope Filters based on a set of tei:name/@types being present in a tei:note[tei:geo]           
+ :           * geo
+ :           * diaGroup
+ :           * reg
+ :           * geo_reg: any of the above
+ :
+ : @return a list of geo markers
+ :)
+
 declare
 %rest:path("vicav/bibl_markers_tei")
 %rest:query-param("query", "{$query}")
@@ -976,7 +1004,7 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
            else if (contains($query, 'pubPlace:')) then
               '[.//tei:pubPlace[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'author:')) then
-              '[.//tei:author/tei:surname[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+              '[.//[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'geo:') or contains($query, 'geo_reg:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
               '[.//tei:note[@type="tag"]/tei:name[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'vt:')) then
