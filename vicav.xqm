@@ -71,6 +71,10 @@ declare function vicav:get_project_db() as xs:string {
 declare
 %rest:path("vicav/project")
 %rest:GET
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
 function vicav:project_config() {
   api-problem:or_result (prof:current-ns(),
     vicav:_project_config#0, [], map:merge((cors:header(()), vicav:return_content_header()))
@@ -991,8 +995,18 @@ declare
 %rest:query-param("query", "{$query}")
 %rest:query-param("scope", "{$scope}")
 %rest:GET
-
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
 function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_bibl_markers_tei#2, [$query, $scope], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $queries := tokenize($query, '\+')
     let $qs :=
         for $query in $queries
@@ -1113,13 +1127,13 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
         :)
     (:else  ():)
         
-    return
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <rs type="{count($out2)}">{$out2}</rs>
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out2}</_>, 'xslt/bibl-markers-json.xslt')
+    return serialize($renderedJson, map {"method": "json"})
+    else <rs type="{count($out2)}">{$out2}</rs>
         (: <res>{$out}</res> :)
         (: <res>{$query}</res> :)
         (: <_>{$tempresults}</_> :)
-        )
 };
 
 declare
