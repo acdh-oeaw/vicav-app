@@ -71,6 +71,10 @@ declare function vicav:get_project_db() as xs:string {
 declare
 %rest:path("vicav/project")
 %rest:GET
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
 function vicav:project_config() {
   api-problem:or_result (prof:current-ns(),
     vicav:_project_config#0, [], map:merge((cors:header(()), vicav:return_content_header()))
@@ -958,13 +962,51 @@ return
 
 };
 
+(:~
+ : gets a geo marker information.
+ :
+ : Retrieve geo data information from the bibliography for displaying coordinates on a map.
+ : 
+ : @param $query A BaseX Full-Text search query in in vicav-biblio tei:biblstruct with wildcards enabled.
+ :           See: https://docs.basex.org/wiki/Full-Text#Match_Options
+ :           using wildcards using diacritics sensitive
+ :           Uses prefixes to limit the full text search to certein elements.
+ :           * date: -> tei:date
+ :           * title: -> tei:title
+ :           * pubPlace: -> tei:pubPlace
+ :           * author: -> tei:author/tei:surname
+ :           * geo:, geo_reg:, reg:, diaGroup: -> tei:note[@type="tag"]/tei:name
+ :           * vt:, prj: -> tei:note[@type="tag"]
+ :           
+ :           Without a prefix any text in vicav-biblio tei:biblstruct is searched.
+ :           
+ :           More than one query is possible by separating with ' '/+.
+ : @param $scope Filters based on a set of tei:name/@types being present in a tei:note[tei:geo]           
+ :           * geo
+ :           * diaGroup
+ :           * reg
+ :           * geo_reg: any of the above
+ :
+ : @return a list of geo markers
+ :)
+
 declare
 %rest:path("vicav/bibl_markers_tei")
 %rest:query-param("query", "{$query}")
 %rest:query-param("scope", "{$scope}")
 %rest:GET
-
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
 function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_bibl_markers_tei#2, [$query, $scope], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $queries := tokenize($query, '\+')
     let $qs :=
         for $query in $queries
@@ -976,7 +1018,7 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
            else if (contains($query, 'pubPlace:')) then
               '[.//tei:pubPlace[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'author:')) then
-              '[.//tei:author/tei:surname[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+              '[.//[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'geo:') or contains($query, 'geo_reg:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
               '[.//tei:note[@type="tag"]/tei:name[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'vt:')) then
@@ -1085,13 +1127,13 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
         :)
     (:else  ():)
         
-    return
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <rs type="{count($out2)}">{$out2}</rs>
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out2}</_>, 'xslt/bibl-markers-json.xslt')
+    return serialize($renderedJson, map {"method": "json"})
+    else <rs type="{count($out2)}">{$out2}</rs>
         (: <res>{$out}</res> :)
         (: <res>{$query}</res> :)
         (: <_>{$tempresults}</_> :)
-        )
 };
 
 declare
