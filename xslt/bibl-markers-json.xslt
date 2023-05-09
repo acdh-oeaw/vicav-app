@@ -27,8 +27,8 @@
             <geometry>
                 <type>Point</type>
                 <coordinates>
-                    <_><xsl:value-of select="$coords[1]"/></_>
-                    <_><xsl:value-of select="$coords[2]"/></_>
+                    <_ type="number"><xsl:value-of select="$coords[2]"/></_>
+                    <_ type="number"><xsl:value-of select="$coords[1]"/></_>
                 </coordinates>
             </geometry>
             <properties>
