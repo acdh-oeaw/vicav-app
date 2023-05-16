@@ -15,6 +15,8 @@ sed -e "s/local_password=.*/local_password='$local_password'/g" -i'' redeploy.se
 if [ $branch_name == "devel" ]
 then sed -e 's/onlytags=true.*/onlytags=false # enable for production/g' -i'' redeploy.settings
 fi
+echo 'redeploy.settings content:'
+cat redeploy.settings
 if [ "${STACK}x" = "x" ]; then
 pushd lib/custom
 curl -LO https://repo1.maven.org/maven2/net/sf/saxon/Saxon-HE/12.2/Saxon-HE-12.2.jar
