@@ -1,11 +1,12 @@
 #!/bin/bash
 
 CONTENT_REPO=${CONTENT_REPO:-https://github.com/acdh-oeaw/vicav-content}
+CONTENT_BRANCH=${CONTENT_BRANCH:-master}
 branch_name=$(git rev-parse --abbrev-ref HEAD)
 cp -Rv ./deployment/* ${1:-../../}
 npm install
 cd ${1:-../../}
-git clone $CONTENT_REPO
+git clone $CONTENT_REPO $CONTENT_BRANCH
 cp -Rv ./*-{content,data}/deployment/* .
 mv redeploy.settings.dist redeploy.settings
 if [ $branch_name == "devel" ]
