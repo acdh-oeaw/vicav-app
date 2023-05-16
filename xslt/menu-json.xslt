@@ -35,6 +35,18 @@
           <xsl:if test="not(@type)">
             <type><xsl:value-of select="local-name()"/></type>
           </xsl:if>
+          <componentName>
+            <xsl:choose>
+              <xsl:when test="ends-with(@xml:id, 'List')">DataList</xsl:when>
+              <xsl:when test="starts-with(@xml:id, 'nav')">WMap</xsl:when>
+              <xsl:when test="starts-with(@xml:id, 'liVicavDict')">DictQuery</xsl:when>
+              <xsl:when test="starts-with(@xml:id, 'li_')">Text</xsl:when>
+              <xsl:when test="starts-with(@xml:id, 'liSample')">SampleText</xsl:when>
+              <xsl:when test="data(@xml:id) = 'liBiblNewQuery'">BiblioQuery</xsl:when>
+              <xsl:when test="data(@xml:id) = 'liVicavCrossDictQuery'">CrossDictQuery</xsl:when>
+              <xsl:otherwise>UnknownTypeWarning</xsl:otherwise>
+            </xsl:choose>
+          </componentName>
         </_>
     </xsl:template>
     
