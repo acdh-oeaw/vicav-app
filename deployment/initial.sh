@@ -6,7 +6,7 @@ cp -Rv ./deployment/* ${1:-../../}
 npm install
 cd ${1:-../../}
 git clone $CONTENT_REPO
-cp -Rv ./*-content/deployment/* .
+cp -Rv ./*-{content,data}/deployment/* .
 mv redeploy.settings.dist redeploy.settings
 if [ $branch_name == "devel" ]
 then sed 's/onlytags=true.*/onlytags=false # enable for production/g' -i redeploy.settings
