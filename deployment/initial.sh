@@ -6,7 +6,7 @@ branch_name=$(git rev-parse --abbrev-ref HEAD)
 cp -Rv ./deployment/* ${1:-../../}
 npm install
 cd ${1:-../../}
-git clone $CONTENT_REPO $CONTENT_BRANCH
+git clone $CONTENT_REPO -b $CONTENT_BRANCH
 cp -Rv ./*-{content,data}/deployment/* .
 mv redeploy.settings.dist redeploy.settings
 if [ $branch_name == "devel" ]
