@@ -1520,4 +1520,111 @@ function vicav:get_profiles_overview() {
         $tei)
 };
   
- 
+(:~
+ : Performs a corpus search in NoSKE.
+ : 
+ : @param $query Query to perform against NoSKE.
+ : @param $print Whether return the printable page with full HTML headers.
+ :
+ : @return A rendered HTML snippet with the search results.
+ :)
+declare
+%rest:path("vicav/corpus")
+%rest:GET
+%rest:query-param("query", "{$query}")
+%rest:query-param("print", "{$print}")
+function vicav:search_corpus($query as xs:string, $print as xs:string?) {
+    let $noske_host := vicav:project_config()//noskeHost
+
+    let $result := if ($noske_host) then
+        http:send-request(<http:request method='get'/>,
+        $noske_host || '/bonito/run.cgi/first?corpname=' || vicav:get_project_name()
+        || '&amp;queryselector=cqlrow&amp;cql=[word="' || $query
+        || '"]&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=-1&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000')
+        else false()
+
+(:let consecutiveIDs
+        json.Lines.map((line) => {
+          const key = line.Refs.map((ref) => {return ref.split('=')[1]}).join();
+          consecutiveIDs = consecutiveIDs || []
+          docsUandIDs[key] = docsUandIDs[key] || [];
+          docsUHits[key] = docsUHits[key] || [];
+          if (!line.Kwic[0]) {line.Kwic = line.Left}
+          if (!line.Kwic[0]) {line.Kwic = line.Right}
+          const ids = line.Kwic[0].str.split(" ").filter(str => str != "")
+          const found = docsUandIDs[key].findIndex((id) => id === ids[0])
+          if (line.Kwic[0]) {
+            if (ids[0] === '' || found === -1) {
+              consecutiveIDs = consecutiveIDs.concat(ids)
+              docsUHits[key].push(Array.from(consecutiveIDs))
+              docsUandIDs[key] = docsUandIDs[key].concat(consecutiveIDs)
+              console.log('uhits', JSON.stringify(docsUHits), 'uandids', JSON.stringify(docsUandIDs))
+              consecutiveIDs = []
+            } else {
+              const newIds = ids.filter(id => docsUandIDs[key].indexOf(id) === -1)
+              if (newIds.length > 1) {
+                consecutiveIDs = consecutiveIDs.concat(newIds)
+              }
+            }
+          }:)
+
+
+    let $consecutiveIds := []
+    (:let $docUandIds := map:merge():)
+    let $hits := if (not($result)) then '' else for $line in $result/json/Lines/_
+        let $uId := tokenize($line/Refs/_[1], '=')[2]
+        let $docId := tokenize($line/Refs/_[2], '=')[2]
+        (:$docUandIds := if not((map:contains($docUandIds, $key))) then map:put($docUandIds, $key, []) else $docUandIds:)
+        let $tokenId := if (count($line/Kwic/_) > 0) then
+                        $line/Kwic/_[1]/str/text()
+                     else if (count($line/Left/_) > 0) then
+                        $line/Left/_[1]/text()
+                     else if (count($line/Right/_) > 0) then
+                        $line/Right/_[1]/text() else ""
+        let $u := collection(
+            'vicav_corpus/' || vicav:get_project_db()
+        )/descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]         
+        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u[@xml:id = $uId]
+        return <hit u="{$uId}" doc="{$docId}">{$u}<token>{normalize-space($tokenId)}</token></hit>
+
+    
+    let $out := vicav:transform(<hits>{$hits}</hits>, 'corpus_search_result.xslt', $print, map{ 'query': $query })
+
+    return
+        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        $out)
+
+};
+
+(:~
+ : Retrieve pageble set of utterances from a corpus text.
+ : 
+ : @param $id Text Identidfier.
+ : @param $page Page number (defaults to 1)
+ : @param $size Page size (defaults to 10)
+ : @param $print Whether to return a printable page with full HTML headers.
+ :
+ : @return A rendered HTML snippet of the utterances.
+ :)
+declare
+%rest:path("vicav/corpus_text")
+%rest:GET
+%rest:query-param("id", "{$id}")
+%rest:query-param("page", "{$page}")
+%rest:query-param("size", "{$size}")
+%rest:query-param("print", "{$print}")
+function vicav:corpus_text($id as xs:string, $page as xs:integer?, $size as xs:integer?, $print as xs:string?) {
+    let $p := if (empty($page)) then 1 else $page
+    let $s := if (empty($size)) then 10 else $size
+
+    let $doc := subsequence(collection(
+            'vicav_corpus/' || vicav:get_project_db()
+        )/descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[@level="a"]/text() = $id]
+        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s)
+
+    let $out := vicav:transform(<doc>{$doc}</doc>, 'corpus_utterances.xslt', $print, map{})
+
+    return
+        (web:response-header(map {'method': 'basex'}, cors:header(())),
+        $out)
+};
