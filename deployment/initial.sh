@@ -11,9 +11,9 @@ local_password=${BASEX_admin_pw:-admin}
 git clone $CONTENT_REPO -b $CONTENT_BRANCH
 cp -Rv ./*-{content,data}/deployment/* .
 mv redeploy.settings.dist redeploy.settings
-sed -e "s/local_password=.*/local_password=$local_password/g" -i '' redeploy.settings
+sed -e "s/local_password=.*/local_password=$local_password/g" -i'' redeploy.settings
 if [ $branch_name == "devel" ]
-then sed -e 's/onlytags=true.*/onlytags=false # enable for production/g' -i '' redeploy.settings
+then sed -e 's/onlytags=true.*/onlytags=false # enable for production/g' -i'' redeploy.settings
 fi
 if [ "${STACK}x" = "x" ]; then
 pushd lib/custom
