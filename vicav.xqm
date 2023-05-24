@@ -54,7 +54,7 @@ $seq as node()*) as xs:boolean {
 };
 
 declare function vicav:get_project_name() as xs:string {
-    let $project := doc('vicav_projects/projects.xml')/projects/project[matches(request:hostname(), @regex)]/text()
+    let $project := doc('vicav_projects/projects.xml')/projects/project[matches(try{request:hostname()} catch basex:http {()}, @regex)]/text()
     return if (empty($project) or $project = '') then doc('vicav_projects/projects.xml')/projects/project[1]/text() else $project
 };
 
@@ -1534,14 +1534,18 @@ declare
 %rest:query-param("query", "{$query}")
 %rest:query-param("print", "{$print}")
 function vicav:search_corpus($query as xs:string, $print as xs:string?) {
-    let $noske_host := vicav:project_config()//noskeHost
+    let $noske_host := vicav:project_config()//noskeHost,
+        $request := $noske_host || '/bonito/run.cgi/first?corpname=' || vicav:get_project_name()
+        || '&amp;queryselector=cqlrow&amp;cql=[word="' || $query
+        || '"]&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=-1&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
+      , $_ := admin:write-log($request, 'INFO')
+        
 
     let $result := if ($noske_host) then
         http:send-request(<http:request method='get'/>,
-        $noske_host || '/bonito/run.cgi/first?corpname=' || vicav:get_project_name()
-        || '&amp;queryselector=cqlrow&amp;cql=[word="' || $query
-        || '"]&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=-1&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000')
+        $request)
         else false()
+      (: , $_ := admin:write-log(serialize($result[2], map{'method': 'json'}), 'INFO') :)
 
 (:let consecutiveIDs
         json.Lines.map((line) => {
@@ -1571,7 +1575,7 @@ function vicav:search_corpus($query as xs:string, $print as xs:string?) {
 
     let $consecutiveIds := []
     (:let $docUandIds := map:merge():)
-    let $hits := if (not($result)) then '' else for $line in $result/json/Lines/_
+    let $hits := <hits>{if (not($result)) then '' else for $line in $result/json/Lines/_
         let $uId := tokenize($line/Refs/_[1], '=')[2]
         let $docId := tokenize($line/Refs/_[2], '=')[2]
         (:$docUandIds := if not((map:contains($docUandIds, $key))) then map:put($docUandIds, $key, []) else $docUandIds:)
@@ -1581,14 +1585,14 @@ function vicav:search_corpus($query as xs:string, $print as xs:string?) {
                         $line/Left/_[1]/text()
                      else if (count($line/Right/_) > 0) then
                         $line/Right/_[1]/text() else ""
-        let $u := collection(
-            'vicav_corpus/' || vicav:get_project_db()
-        )/descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]         
+        let $u := collection('vicav_corpus')
+          /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]         
         /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u[@xml:id = $uId]
-        return <hit u="{$uId}" doc="{$docId}">{$u}<token>{normalize-space($tokenId)}</token></hit>
-
+        return <hit u="{$uId}" doc="{$docId}">{$u}<token>{normalize-space($tokenId)}</token></hit>}</hits>
+      (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
+      (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
     
-    let $out := vicav:transform(<hits>{$hits}</hits>, 'corpus_search_result.xslt', $print, map{ 'query': $query })
+    let $out := vicav:transform($hits, 'corpus_search_result.xslt', $print, map{ 'query': $query })
 
     return
         (web:response-header(map {'method': 'basex'}, cors:header(())),
