@@ -245,10 +245,10 @@ function vicav:query_biblio_id($query as xs:string*, $xsltfn as xs:string) {
 };
 
 declare function vicav:transform($doc as element(), $xsltfn as xs:string, $print as xs:string?, $options as map(*)?) {
-    let $stylePath := file:base-dir() || 'xslt/'
-    let $style := doc($stylePath || $xsltfn)
+    let $stylePath := file:resolve-path('xslt/', file:base-dir())
+    let $style := doc(file:resolve-path('xslt/' || $xsltfn, file:base-dir()))
 
-    let $xslt := if (empty($print)) then $style else xslt:transform-text(doc($stylePath || 'printable.xslt'), doc($stylePath || 'printable_path.xslt'), map {'xslt': $stylePath || $xsltfn})
+    let $xslt := if (empty($print)) then $style else xslt:transform-text(doc(file:resolve-path('xslt/printable.xslt', file:base-dir())), doc(file:resolve-path('xslt/printable_path.xslt', file:base-dir())), map {'xslt': file:path-to-uri(file:resolve-path('xslt/' || $xsltfn, file:base-dir()))})
 
     let $sHTML := xslt:transform-text($doc, $xslt, $options)
     return
@@ -1603,7 +1603,7 @@ function vicav:search_corpus($query as xs:string, $print as xs:string?) {
 (:~
  : Retrieve pageble set of utterances from a corpus text.
  : 
- : @param $id Text Identidfier.
+ : @param $docId Text Identidfier.
  : @param $page Page number (defaults to 1)
  : @param $size Page size (defaults to 10)
  : @param $print Whether to return a printable page with full HTML headers.
@@ -1613,20 +1613,20 @@ function vicav:search_corpus($query as xs:string, $print as xs:string?) {
 declare
 %rest:path("vicav/corpus_text")
 %rest:GET
-%rest:query-param("id", "{$id}")
+%rest:query-param("id", "{$docId}")
 %rest:query-param("page", "{$page}")
 %rest:query-param("size", "{$size}")
 %rest:query-param("print", "{$print}")
-function vicav:corpus_text($id as xs:string, $page as xs:integer?, $size as xs:integer?, $print as xs:string?) {
+function vicav:corpus_text($docId as xs:string, $page as xs:integer?, $size as xs:integer?, $print as xs:string?) {
     let $p := if (empty($page)) then 1 else $page
     let $s := if (empty($size)) then 10 else $size
 
-    let $doc := subsequence(collection(
-            'vicav_corpus/' || vicav:get_project_db()
-        )/descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[@level="a"]/text() = $id]
-        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s)
-
-    let $out := vicav:transform(<doc>{$doc}</doc>, 'corpus_utterances.xslt', $print, map{})
+    let $doc := <doc>{subsequence(collection('vicav_corpus')
+        /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]
+        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s)}</doc>
+      (: , $_ := file:write(file:resolve-path('doc.xml', file:base-dir()), $doc, map { "method": "xml"}) :)
+      
+    let $out := vicav:transform($doc, 'corpus_utterances.xslt', $print, map{})
 
     return
         (web:response-header(map {'method': 'basex'}, cors:header(())),
