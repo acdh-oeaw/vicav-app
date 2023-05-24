@@ -5,9 +5,9 @@
     xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
     <xsl:preserve-space elements="span"/>
 
-    <xsl:template match="/">
+    <xsl:template match="/doc">
         <div class="corpus-utterances">
-        <xsl:for-each select="./doc/tei:u">
+        <xsl:for-each select="./tei:u">
                 <div class="u">
                     <xsl:attribute name="id" select="@xml:id"/>
                     <xsl:for-each select="./*">
