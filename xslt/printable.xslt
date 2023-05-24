@@ -74,6 +74,33 @@
                     .tdFeaturesHead, .highlight {
                         font-weight: bold;
                     }
+                    .corpus-utterances > .u {
+                      white-space: nowrap;
+                      overflow-x: scroll;                          
+                    }
+                    .corpus-search-results {
+                      display: table;
+                      width: 100%
+                    }
+                    .corpus-search-result {
+                      display: table-row;                     
+                      width: 100%
+                    }
+                    .corpus-search-result > * {
+                      display: table-cell;
+                    }
+                    .corpus-search-result > .left {
+                      text-align: right;
+                    }
+                    .corpus-search-result > .keyword {
+                      text-align: center;
+                      padding-left: 1en;
+                      padding-right: 1en;
+                      background-color: yellow;
+                    }
+                    .corpus-search-result > .right {
+                      text-align: left;
+                    }
                 </style>
             </head>
             <body><xsl:apply-templates/></body>
