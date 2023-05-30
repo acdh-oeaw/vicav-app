@@ -186,12 +186,12 @@
                <!-- ** SENSES *********************************** -->
                <!-- ********************************************* -->
                <xsl:for-each select="tei:sense">
-                  <xsl:if test="./tei:cit">
+                  <xsl:if test="./tei:def">
                      <tr>
                         <td class="tdHead">Defs.</td>
                         <td class="tdSense">
                            <div class="dvDef">
-                              <xsl:for-each select="tei:cit[@xml:lang='en'] | tei:cit[@lang='en']">
+                              <xsl:for-each select="tei:def[@xml:lang='en'] | tei:cit[@lang='en']">
                                  <xsl:if test="string-length(.)&gt;1">
                                     <span class="spTransEn">
                                        <xsl:if test="position()&gt;1">,<xsl:text> </xsl:text></xsl:if>
@@ -200,7 +200,7 @@
                                  </xsl:if>
                               </xsl:for-each>
                               <div class="dvLangSep">
-                                 <xsl:for-each select="tei:cit[@xml:lang='fr'] | tei:cit[@lang='fr']">
+                                 <xsl:for-each select="tei:def[@xml:lang='fr'] | tei:cit[@lang='fr']">
                                     <xsl:if test="string-length(.)&gt;1">
                                        <span class="spTransFr">
                                           <xsl:if test="position()&gt;1">,<xsl:text> </xsl:text></xsl:if>
@@ -210,7 +210,7 @@
                                  </xsl:for-each>
                               </div>
                               <div class="dvLangSep">
-                                 <xsl:for-each select="tei:cit[@xml:lang='de'] | tei:cit[@lang='de']">
+                                 <xsl:for-each select="tei:def[@xml:lang='de'] | tei:cit[@lang='de']">
                                     <xsl:if test="string-length(.)&gt;1">
                                        <span class="spTransDe">
                                           <xsl:if test="position()&gt;1">,<xsl:text> </xsl:text></xsl:if>
@@ -250,7 +250,7 @@
                               <xsl:if test="string-length(.)&gt;1">
                                  <span class="spTransEn">
                                     <xsl:if test="position()&gt;1">,<xsl:text> </xsl:text></xsl:if>
-                                    <xsl:value-of select="tei:quote"/>
+                                    <xsl:value-of select="tei:form"/>
                                     <xsl:if test="tei:usg">
                                        (<xsl:value-of select="tei:usg"/>)
                                     </xsl:if>
@@ -296,15 +296,15 @@
                         </div>
                         <xsl:for-each select="tei:cit[@type='example']">
                            <div class="dvExamples">
-                              <xsl:if test="tei:quote[@xml:lang='ar-arz-x-cairo-vicav']">
-                                 <xsl:value-of select="tei:quote[@xml:lang='ar-arz-x-cairo-vicav']"/>
+                              <xsl:if test="tei:quote">
+                                 <xsl:value-of select="tei:quote"/>
                               </xsl:if>
-                              <xsl:for-each select="tei:cit[@type='translation'][@xml:lang='en']">
+                              <xsl:for-each select="tei:cit[@type='translationEquivalent'][@xml:lang='en']">
                                  <span class="spTransEn"><xsl:text> </xsl:text>
                                     <xsl:value-of select="tei:quote"/>
                                  </span>
                               </xsl:for-each>
-                              <xsl:for-each select="tei:cit[@type='translation'][@xml:lang='de']">
+                              <xsl:for-each select="tei:cit[@type='translationEquivalent'][@xml:lang='de']">
                                  <span class="spTransDe"><xsl:text> </xsl:text>
                                     <xsl:value-of select="tei:quote"/>
                                  </span>
@@ -321,10 +321,10 @@
                                        </td>
                                     </xsl:if>
                                     <td class="tdNoBorder">
-                                       <xsl:for-each select="tei:cit[@type='translation']">
+                                       <xsl:for-each select="tei:cit[@type='translationEquivalent']">
                                           <div class="dvDef">
                                              <span class="spTrans">
-                                                <xsl:value-of select="tei:quote[@xml:lang='ar-arz-x-cairo-vicav']"/>
+                                                <xsl:value-of select="tei:quote"/>
                                                 <xsl:if test="tei:usg"><xsl:text> </xsl:text>
                                                    (<xsl:value-of select="tei:usg"/>)
                                                 </xsl:if>
@@ -340,16 +340,16 @@
                            <div class="dvMWUExamples">
                               <table>
                                  <tr>
-                                    <xsl:if test="tei:form/tei:orth[@xml:lang='ar-arz-x-cairo-vicav']">
+                                    <xsl:if test="tei:form/tei:orth">
                                        <td class="tdNoBorder">
-                                          <xsl:value-of select="tei:form/tei:orth[@xml:lang='ar-arz-x-cairo-vicav']"/>
+                                          <xsl:value-of select="tei:form/tei:orth"/>
                                        </td>
                                     </xsl:if>
                                     <td class="tdNoBorder">
                                        <xsl:for-each select="tei:sense">
                                           <div class="dvDef">
                                              <span class="spTrans">
-                                                <xsl:value-of select="tei:cit/tei:quote[@xml:lang='ar-arz-x-cairo-vicav']"/>
+                                                <xsl:value-of select="tei:cit/tei:quote"/>
                                                 <xsl:if test="tei:usg">
                                                    (<xsl:value-of select="tei:usg"/>)
                                                 </xsl:if>
