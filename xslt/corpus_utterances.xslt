@@ -16,7 +16,7 @@
                         <xsl:attribute name="id" select="@xml:id"/>
                         <xsl:value-of select="."/>
                     </span>
-                    <xsl:if test="not(./@join = 'right')  or following-sibling::*[1]/name() = 'pc'">
+                    <xsl:if test="not(./@join = 'right' or following-sibling::*[1]/name() = 'pc')">
                         <span xml:space="preserve"> </span>
                     </xsl:if>
                 </xsl:for-each>
