@@ -297,14 +297,16 @@
                         <xsl:for-each select="tei:cit[@type='example']">
                            <div class="dvExamples">
                               <xsl:if test="tei:quote">
-                                 <xsl:value-of select="tei:quote"/>
+                                 <span class="spExampleQuote">
+                                    <xsl:value-of select="tei:quote"/>
+                                 </span>
                               </xsl:if>
-                              <xsl:for-each select="tei:cit[@type='translationEquivalent'][@xml:lang='en']">
+                              <xsl:for-each select="tei:cit[@type=['translationEquivalent', 'translation']][@xml:lang='en']">
                                  <span class="spTransEn"><xsl:text> </xsl:text>
                                     <xsl:value-of select="tei:quote"/>
                                  </span>
                               </xsl:for-each>
-                              <xsl:for-each select="tei:cit[@type='translationEquivalent'][@xml:lang='de']">
+                              <xsl:for-each select="tei:cit[@type= ['translationEquivalent', 'translation']][@xml:lang='de']">
                                  <span class="spTransDe"><xsl:text> </xsl:text>
                                     <xsl:value-of select="tei:quote"/>
                                  </span>

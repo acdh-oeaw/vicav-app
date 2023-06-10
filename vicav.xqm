@@ -26,6 +26,9 @@ declare function vicav:expandExamplePointers($in as item(), $dict as document-no
         case element(tei:ptr)
             return
                 $dict//tei:cit[@xml:id = $in/@target]
+        case element(tei:ref)
+            return
+                $dict//tei:cit[@xml:id = replace($in/@target, '#', '')]
         case element()
             return
                 (: element { QName( namespace-uri($in), local-name($in) ) } { for $node in $in/node() return wde:expandExamplePointers($node, $dict) } :)
@@ -817,7 +820,7 @@ let $ress1 :=
         <span xmlns="http://www.tei-c.org/ns/1.0" type="editor">{$ed}</span>
         return <div xmlns="http://www.tei-c.org/ns/1.0" type="entry">{$entry}{$editors}</div>
         
-let $exptrs := $ress1//tei:ptr[@type = 'example']
+let $exptrs := $ress1//tei:*[name() = ['ptr', 'ref'] and @type = 'example']
 let $entries :=
 for $r in $ress1
 return
