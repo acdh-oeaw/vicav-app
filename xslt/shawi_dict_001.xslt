@@ -1,6 +1,6 @@
 <xsl:stylesheet xml:space="preserve" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="1.0">
    <xsl:output method="html"/>
-   <xsl:template match="/">
+   <xsl:template match="/tei:results">
       <div>
          <div class="dvStats" id="dvStats">
             <xsl:variable name="recNum"><xsl:value-of select="count(//tei:entry)"/></xsl:variable>
@@ -12,7 +12,7 @@
          <xsl:for-each select="//tei:div[@type='entry']/tei:entry">
             <xsl:sort select="./tei:form/tei:orth"/>
             <div class="dvRoundLemmaBox_ltr">
-               <xsl:value-of select="tei:form[@type='lemma']/tei:orth |&#xA;                      tei:form[@type='multiWordUnit']/tei:orth | &#xA;                      tei:form[@type='abbrev']/tei:orth"/>
+               <span class="lemma"><xsl:value-of select="tei:form[@type='lemma']/tei:orth |&#xA;                      tei:form[@type='multiWordUnit']/tei:orth | &#xA;                      tei:form[@type='abbrev']/tei:orth"/></span>
                <xsl:if test="tei:gramGrp/tei:gram[@type='pos']">
                   <span class="spGramGrp">
                      <xsl:text> </xsl:text>
@@ -116,7 +116,7 @@
                         <xsl:for-each select="tei:form[@type='inflected']">
                            <xsl:if test="string-length(tei:orth)&gt;0">
                               <xsl:if test="position()&gt;1">,<xsl:text> </xsl:text></xsl:if>
-                              <xsl:value-of select="tei:orth"/>
+                              <span class="lemma"><xsl:value-of select="tei:orth"/></span>
                               <!-- ********************************************* -->
                               <!-- ***  ANA attributes   *********************** -->
                               <!-- ********************************************* -->
