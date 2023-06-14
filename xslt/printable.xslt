@@ -101,6 +101,9 @@
                     .corpus-search-result > .right {
                       text-align: left;
                     }
+                    .spExampleQuote, .lemma {
+                        font-weight: bold;
+                    }
                 </style>
             </head>
             <body><xsl:apply-templates/></body>

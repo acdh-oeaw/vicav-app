@@ -26,6 +26,9 @@ declare function vicav:expandExamplePointers($in as item(), $dict as document-no
         case element(tei:ptr)
             return
                 $dict//tei:cit[@xml:id = $in/@target]
+        case element(tei:ref)
+            return
+                $dict//tei:cit[@xml:id = replace($in/@target, '#', '')]
         case element()
             return
                 (: element { QName( namespace-uri($in), local-name($in) ) } { for $node in $in/node() return wde:expandExamplePointers($node, $dict) } :)
@@ -271,7 +274,7 @@ function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:
     let $results := xquery:eval($query)
     return 
         (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        vicav:transform($results, $xsltfn, $print, ()))
+        vicav:transform($results, $xsltfn, $print, map{}))
 };
 
 declare
@@ -290,7 +293,7 @@ function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:
     let $results := xquery:eval($query)
     return 
         (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        vicav:transform($results, $xsltfn, $print, ()))
+        vicav:transform($results, $xsltfn, $print, map{}))
 };
 
 
@@ -644,9 +647,10 @@ declare
 %rest:query-param("query", "{$query}")
 %rest:query-param("dicts", "{$dicts}")
 %rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("print", "{$print}")
 %rest:GET
 
-function vicav:dicts_query($dicts as xs:string, $query as xs:string*, $xsltfn as xs:string) {
+function vicav:dicts_query($dicts as xs:string, $query as xs:string*, $xsltfn as xs:string, $print as xs:string?) {
     let $nsTei := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $queries := tokenize($query, ',')
     let $qs :=
@@ -702,9 +706,11 @@ let $qq :=
 let $sQuery := $nsTei || string-join($qq)
 let $results := xquery:eval($sQuery)
 
-let $style := doc("xslt/" || $xsltfn)
 let $ress := <results xmlns="http://www.tei-c.org/ns/1.0">{$results}</results>
-let $sReturn := xslt:transform-text($ress, $style)
+let $sReturn := vicav:transform($ress, $xsltfn, $print, map{
+  "query": $query,
+  "dicts": $dicts
+})
 return
   (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
   $sReturn)
@@ -716,9 +722,10 @@ declare
 %rest:query-param("query", "{$query}")
 %rest:query-param("dict", "{$dict}")
 %rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("print", "{$print}")
 %rest:GET
 
-function vicav:dict_query($dict as xs:string, $query as xs:string*, $xsltfn as xs:string) {
+function vicav:dict_query($dict as xs:string, $query as xs:string*, $xsltfn as xs:string, $print as xs:string?) {
     (: let $user := substring-before($autho, ':')
   let $pw := substring-after($autho, ':') :)
     
@@ -813,7 +820,7 @@ let $ress1 :=
         <span xmlns="http://www.tei-c.org/ns/1.0" type="editor">{$ed}</span>
         return <div xmlns="http://www.tei-c.org/ns/1.0" type="entry">{$entry}{$editors}</div>
         
-let $exptrs := $ress1//tei:ptr[@type = 'example']
+let $exptrs := $ress1//tei:*[name() = ['ptr', 'ref'] and @type = 'example']
 let $entries :=
 for $r in $ress1
 return
@@ -824,9 +831,11 @@ let $res2 := for $e in $res
 return
     vicav:expandExamplePointers($e, collection($dict))
 
-let $style := doc("xslt/" || $xsltfn)
 let $ress := <results  xmlns="http://www.tei-c.org/ns/1.0">{$res2}</results>
-let $sReturn := xslt:transform-text($ress, $style)
+let $sReturn := vicav:transform($ress, $xsltfn, $print, map{
+  "query": $query,
+  "dict": $dict
+})
 
 return
     (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
