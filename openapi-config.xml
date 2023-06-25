@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="https://lab.sub.uni-goettingen.de/restxqopenapi">
+  <info>
+  <termsOfService>https://example.com/terms-of-use</termsOfService>
+  <contact>
+      <email>christoph.hoffmann@oeaw.ac.at</email>
+  </contact>
+  </info>
+  <servers>
+    <server url="http://localhost:8984/">Local development server</server>
+    <server url="https://vicav.acdh.oeaw.ac.at/">current ACDH-CH prod server</server>
+    <server url="https://vicav.acdh-ch-dev.oeaw.ac.at/vicav">current ACDH-CH dev server</server>
+    <server url="https://virtserver.swaggerhub.com/ctot-nondef/Vicav/1.0.0">SwaggerHub API Auto Mocking</server>
+  </servers>
+  <tags>
+    <tag name="noauth" method="exclusive">
+        Operations available without authentication
+    </tag>
+  </tags>
+  <!-- if you have any authentication: httpBasic info generation is implemented at the moment: >
+  <components>
+    <securitySchemes>
+      <securityScheme name="httpBasic">
+        This service uses HTTP Basic authentication.
+        <type>http</type>
+        <scheme>basic</scheme>
+      </securityScheme>
+    </securitySchemes>
+  </components>
+  <security>
+    <SecurityRequirement name="httpBasic"/>
+  </security> <!- -->
+</config>

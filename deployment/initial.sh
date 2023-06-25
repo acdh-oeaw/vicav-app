@@ -22,6 +22,11 @@ pushd lib/custom
 curl -LO https://repo1.maven.org/maven2/net/sf/saxon/Saxon-HE/12.2/Saxon-HE-12.2.jar
 curl -LO https://repo1.maven.org/maven2/org/xmlresolver/xmlresolver/5.1.3/xmlresolver-5.1.3.jar
 popd
+
+pushd webapp
+git clone https://github.com/acdh-oeaw/openapi4restxq
+popd
+
 if [ "$OSTYPE" == "msys" -o "$OSTYPE" == "win32" ]
 then
   cd bin
