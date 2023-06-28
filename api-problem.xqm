@@ -187,7 +187,7 @@ declare %private function _:runtime($start as xs:integer) {
   ((prof:current-ns() - $start) idiv 10000) div 100
 };
 
-declare
+(: declare :)
 (: use when there is another error handler :)
 (:  %rest:error('Q{https://tools.ietf.org/html/rfc7231#section-6}*') :)
 (: use when this is the only error handler :)
@@ -196,7 +196,7 @@ declare
    You could declare all of them in this module
    or you could add a call to a lookup function in your module(s)
    that will resolve the xs:string to an xs:QName. :)
-  %rest:error('*')
+(:  %rest:error('*')
   %rest:error-param("code", "{$code}")
   %rest:error-param("description", "{$description}")
   %rest:error-param("value", "{$value}")
@@ -204,7 +204,7 @@ declare
   %rest:error-param("line-number", "{$line-number}")
   %rest:error-param("column-number", "{$column-number}")
   %rest:error-param("additional", "{$additional}")
-function _:error-handler($code as xs:string, $description, $value, $module, $line-number, $column-number, $additional) as item()+ {
+ function _:error-handler($code as xs:string, $description, $value, $module, $line-number, $column-number, $additional) as item()+ {
         let $start-time-ns := prof:current-ns(),
             $origin := try { req:header("Origin") } catch basex:http {'urn:local'},
             $type := try {
@@ -234,7 +234,7 @@ function _:error-handler($code as xs:string, $description, $value, $module, $lin
                     {if ($_:enable_trace) then <trace xml:space="preserve">{replace(replace($additional, '^.*Stopped at ', '', 's'), ':\n.*($|(\n\nStack Trace:(\n)))', '$3')}</trace> else ()}
                 </problem>, if (exists($origin)) then map{"Access-Control-Allow-Origin": $origin,
                           "Access-Control-Allow-Credentials": "true"} else ())  
-};
+}; :)
 
 declare %private function _:on_accept_to_json($problem as element(rfc7807:problem)) {
   let $objects := string-join($problem//*[*[local-name() ne '_']]/local-name(), ' '),
