@@ -27,6 +27,7 @@ Set up a local instance
 * in `<basexhome>/webapp` git clone [this repository](https://github.com/acdh-oeaw/vicav-app.git),
   please do not change the name `vicav-app`
 * start a bash in `<basexhome>/webapp/vicav-app`
+* run `git submodule update --init --recursive`
 * run `./deployment/initial.sh`
 
 This will clone [vicav-content](https://github.com/acdh-oeaw/vicav-content)

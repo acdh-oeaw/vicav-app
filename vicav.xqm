@@ -9,6 +9,15 @@ declare namespace tei = 'http://www.tei-c.org/ns/1.0';
 declare namespace dcterms = "http://purl.org/dc/terms/";
 declare namespace prof = "http://basex.org/modules/prof";
 
+import module namespace openapi="https://lab.sub.uni-goettingen.de/restxqopenapi" at "3rd-party/openapi4restxq/content/openapi.xqm";
+
+declare
+    %rest:path('/vicav/openapi.json')
+    %rest:produces('application/json')
+    %output:media-type('application/json')
+function vicav:getOpenapiJSON() as item()+ {
+    openapi:json(file:base-dir())
+};
 
 declare function vicav:expandExamplePointers($in as item(), $dict as document-node()*) {
     typeswitch ($in)
@@ -251,7 +260,9 @@ declare function vicav:transform($doc as element(), $xsltfn as xs:string, $print
     let $stylePath := file:resolve-path('xslt/', file:base-dir())
     let $style := doc(file:resolve-path('xslt/' || $xsltfn, file:base-dir()))
 
-    let $xslt := if (empty($print)) then $style else xslt:transform-text(doc(file:resolve-path('xslt/printable.xslt', file:base-dir())), doc(file:resolve-path('xslt/printable_path.xslt', file:base-dir())), map {'xslt': file:path-to-uri(file:resolve-path('xslt/' || $xsltfn, file:base-dir()))})
+    let $xslt := if (empty($print)) then $style else xslt:transform-text(
+        doc(file:resolve-path('xslt/printable.xslt', file:base-dir()))
+        , doc(file:resolve-path('xslt/printable_path.xslt', file:base-dir())), map {'xslt': file:path-to-uri(file:resolve-path('xslt/' || $xsltfn, file:base-dir()))})
 
     let $sHTML := xslt:transform-text($doc, $xslt, $options)
     return
