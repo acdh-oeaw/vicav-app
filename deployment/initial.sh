@@ -39,6 +39,7 @@ popd
 pushd 3rd-party/openapi4restxq
 npm install
 mv node_modules resources
+sed -i 's~https://petstore.swagger.io/v2/swagger.json~/vicav/openapi.json~g' resources/swagger-ui-dist/index.html
 rm content/openapi-test*.xqm
 popd
 
@@ -59,4 +60,7 @@ else
 fi
 cd ..
 fi
+
+curl -X POST "http://localhost:8984/restvle/dicts" -H "accept: application/vnd.wde.v2+json" -H "Content-Type: application/json" -d "{\"name\":\"dict_users\"}"
+curl -X POST "http://localhost:8984/restvle/dicts/dict_users/users" -H "accept: application/vnd.wde.v2+json" -H "Content-Type: application/json" -d "{\"id\":\"\",\"userID\":\"admin\",\"pw\":\"$local_password\",\"read\":\"y\",\"write\":\"y\",\"writeown\":\"n\",\"table\":\"dict_users\"}"
 exec ./redeploy.sh
