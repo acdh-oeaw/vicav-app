@@ -39,6 +39,7 @@ popd
 pushd 3rd-party/openapi4restxq
 npm install
 mv node_modules resources
+rm content/openapi-test*.xqm
 popd
 
 pushd ${1:-../../}
