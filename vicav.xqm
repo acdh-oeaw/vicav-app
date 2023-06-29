@@ -81,7 +81,7 @@ declare function vicav:get_project_db() as xs:string {
 };
 
 declare
-%rest:path("vicav/project")
+%rest:path("/vicav/project")
 %rest:GET
 %rest:produces("application/xml")
 %rest:produces("application/json")
@@ -114,7 +114,7 @@ function vicav:_project_config() {
 
 
 declare
-%rest:path("vicav/biblio")
+%rest:path("/vicav/biblio")
 %rest:query-param("query", "{$query}")
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:GET
@@ -139,7 +139,7 @@ function vicav:query_biblio($query as xs:string*, $xsltfn as xs:string) {
     "declare namespace rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'; " ||
     "declare namespace foaf= 'http://xmlns.com/foaf/0.1/'; " ||
     "declare namespace dc = 'http://purl.org/dc/elements/1.1/';"
-    let $q := 'let $arts := collection("vicav_biblio")//node()[(name()="bib:Article") or 
+    let $q := 'let $arts := collection("/vicav_biblio")//node()[(name()="bib:Article") or 
     (name()="bib:Book") or (name()="bib:BookSection") or (name()="bib:Thesis")]' ||
     string-join($qs) ||
     'for $art in $arts ' ||
@@ -158,7 +158,7 @@ function vicav:query_biblio($query as xs:string*, $xsltfn as xs:string) {
 };
 
 declare
-%rest:path("vicav/biblio_tei")
+%rest:path("/vicav/biblio_tei")
 %rest:query-param("query", "{$query}")
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:GET
@@ -187,7 +187,7 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
     
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $q := 'let $arts := ' ||
-    'collection("vicav_biblio'  || vicav:get_project_db() || '")//tei:biblStruct' ||
+    'collection("/vicav_biblio'  || vicav:get_project_db() || '")//tei:biblStruct' ||
     string-join($qs) ||
     'for $art in $arts ' ||
     'let $author := ' ||
@@ -220,7 +220,7 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
 };
 
 declare
-%rest:path("vicav/biblio_id")
+%rest:path("/vicav/biblio_id")
 %rest:query-param("query", "{$query}")
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:GET
@@ -230,7 +230,7 @@ function vicav:query_biblio_id($query as xs:string*, $xsltfn as xs:string) {
     let $bibls :=
     for $id in $ids
     return
-        collection("vicav_biblio" || vicav:get_project_db())//tei:biblStruct[@corresp = 'http://zotero.org/groups/2165756/items/' || $id]
+        collection("/vicav_biblio" || vicav:get_project_db())//tei:biblStruct[@corresp = 'http://zotero.org/groups/2165756/items/' || $id]
     
     let $results :=
     for $bibl in $bibls
@@ -270,8 +270,8 @@ declare function vicav:transform($doc as element(), $xsltfn as xs:string, $print
 };
 
 declare
-%rest:path("vicav/profile")
-%rest:query-param("coll", "{$coll}", "vicav_profiles")
+%rest:path("/vicav/profile")
+%rest:query-param("coll", "{$coll}", "/vicav_profiles")
 %rest:query-param("id", "{$id}")
 %rest:query-param("xslt", "{$xsltfn}", "profile_01.xslt")
 %rest:query-param("print", "{$print}")
@@ -289,7 +289,7 @@ function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:
 };
 
 declare
-%rest:path("vicav/sample")
+%rest:path("/vicav/sample")
 %rest:query-param("coll", "{$coll}")
 %rest:query-param("id", "{$id}")
 %rest:query-param("xslt", "{$xsltfn}")
@@ -309,7 +309,7 @@ function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:
 
 
 declare
-%rest:path("vicav/features")
+%rest:path("/vicav/features")
 %rest:query-param("ana", "{$ana}")
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:query-param("expl", "{$expl}")
@@ -318,7 +318,7 @@ declare
 
 function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn as xs:string) {
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $q := 'collection("vicav_lingfeatures'  || vicav:get_project_db() ||'")//tei:cit[@type="featureSample" and (.//tei:w[contains-token(@ana,"' || $ana || '")][1] or .//tei:phr[contains-token(@ana,"' || $ana || '")][1])]'
+    let $q := 'collection("/vicav_lingfeatures'  || vicav:get_project_db() ||'")//tei:cit[@type="featureSample" and (.//tei:w[contains-token(@ana,"' || $ana || '")][1] or .//tei:phr[contains-token(@ana,"' || $ana || '")][1])]'
     let $query := $ns || $q    
     let $results := xquery:eval($query)
     
@@ -478,7 +478,7 @@ declare function vicav:explore-data(
 
 
 declare
-%rest:path("vicav/explore_samples")
+%rest:path("/vicav/explore_samples")
 %rest:query-param("type", "{$type}")
 %rest:query-param("location", "{$location}")
 %rest:query-param("xslt", "{$xsltfn}")
@@ -576,14 +576,14 @@ function vicav:explore_samples(
 };
 
 declare
-%rest:path("vicav/text")
+%rest:path("/vicav/text")
 %rest:query-param("id", "{$id}")
-%rest:query-param("xslt", "{$xsltfn}", "vicavTexts.xslt")
+%rest:query-param("xslt", "{$xsltfn}", "/vicavTexts.xslt")
 %rest:GET
 
 function vicav:get_text($id as xs:string*, $xsltfn as xs:string) {
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $q := 'collection("vicav_texts")//tei:div[@xml:id="' || $id || '"]'
+    let $q := 'collection("/vicav_texts")//tei:div[@xml:id="' || $id || '"]'
     let $query := $ns || $q
     let $results := parse-xml(serialize(xquery:eval($query), map {'method': 'xml', 'indent': 'yes'}))
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
@@ -596,7 +596,7 @@ function vicav:get_text($id as xs:string*, $xsltfn as xs:string) {
 };
 
 declare
-%rest:path("vicav/dict_index")
+%rest:path("/vicav/dict_index")
 %rest:query-param("dict", "{$dict}")
 %rest:query-param("ind", "{$ind}")
 %rest:query-param("str", "{$str}")
@@ -654,7 +654,7 @@ declare function vicav:createMatchString($in as xs:string) {
 };
 
 declare
-%rest:path("vicav/dicts_api")
+%rest:path("/vicav/dicts_api")
 %rest:query-param("query", "{$query}")
 %rest:query-param("dicts", "{$dicts}")
 %rest:query-param("xslt", "{$xsltfn}")
@@ -729,7 +729,7 @@ return
 };
 
 declare
-%rest:path("vicav/dict_api")
+%rest:path("/vicav/dict_api")
 %rest:query-param("query", "{$query}")
 %rest:query-param("dict", "{$dict}")
 %rest:query-param("xslt", "{$xsltfn}")
@@ -859,7 +859,7 @@ return
 };
 
 declare
-%rest:path("vicav/bibl_markers")
+%rest:path("/vicav/bibl_markers")
 %rest:query-param("query", "{$query}")
 %rest:query-param("scope", "{$scope}")
 %rest:GET
@@ -884,7 +884,7 @@ function vicav:get_bibl_markers($query as xs:string, $scope as xs:string) {
     "declare namespace rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'; " ||
     "declare namespace foaf= 'http://xmlns.com/foaf/0.1/'; " ||
     "declare namespace dc = 'http://purl.org/dc/elements/1.1/';"
-    let $q := 'let $arts := collection("vicav_biblio' || vicav:get_project_db() || '")//node()[(name()="bib:Article") or (name()="bib:Book") or (name()="bib:BookSection") or (name()="bib:Thesis")]' ||
+    let $q := 'let $arts := collection("/vicav_biblio' || vicav:get_project_db() || '")//node()[(name()="bib:Article") or (name()="bib:Book") or (name()="bib:BookSection") or (name()="bib:Thesis")]' ||
     string-join($qs) ||
     'for $art in $arts ' ||
     'let $author := $art/bib:authors[1]/rdf:Seq[1]/rdf:li[1]/foaf:Person[1]/foaf:surname[1] ' ||
@@ -1011,7 +1011,7 @@ return
  :)
 
 declare
-%rest:path("vicav/bibl_markers_tei")
+%rest:path("/vicav/bibl_markers_tei")
 %rest:query-param("query", "{$query}")
 %rest:query-param("scope", "{$scope}")
 %rest:GET
@@ -1053,7 +1053,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
             (: return '[tei:note/tei:note[tei:name contains text "' || $query || '" using wildcards using diacritics sensitive]]' :)
             (: return '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]' :)
   
-    let $q := 'let $arts := collection("vicav_biblio' || vicav:get_project_db() ||'")//tei:biblStruct' || string-join($qs) || 
+    let $q := 'let $arts := collection("/vicav_biblio' || vicav:get_project_db() ||'")//tei:biblStruct' || string-join($qs) || 
               'for $art in $arts ' ||
               'let $author := ' ||
               '   if ($art/tei:analytic) ' ||
@@ -1157,7 +1157,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
 };
 
 declare
-%rest:path("vicav/profile_markers")
+%rest:path("/vicav/profile_markers")
 %rest:GET
 
 function vicav:get_profile_markers() {
@@ -1188,7 +1188,7 @@ function vicav:get_profile_markers() {
 };
 
 declare
-%rest:path("vicav/data_locations")
+%rest:path("/vicav/data_locations")
 %rest:GET
 %rest:query-param("type", "{$type}")
 function vicav:data_locations($type as xs:string*) {
@@ -1219,11 +1219,11 @@ function vicav:data_locations($type as xs:string*) {
 };
 
 declare
-%rest:path("vicav/sample_markers")
+%rest:path("/vicav/sample_markers")
 %rest:GET
 
 function vicav:get_sample_markers() {
-    let $entries := collection("vicav_samples" || vicav:get_project_db())/descendant::tei:TEI
+    let $entries := collection("/vicav_samples" || vicav:get_project_db())/descendant::tei:TEI
     let $out :=
     for $item in $entries
         order by $item/@xml:id
@@ -1258,7 +1258,7 @@ function vicav:get_sample_markers() {
 };
 
 declare
-%rest:path("vicav/feature_labels")
+%rest:path("/vicav/feature_labels")
 %rest:GET
 
 function vicav:get_feature_labels() {
@@ -1273,7 +1273,7 @@ function vicav:get_feature_labels() {
 
 
 declare
-%rest:path("vicav/data_persons")
+%rest:path("/vicav/data_persons")
 %rest:GET
 %rest:query-param("type", "{$type}")
 
@@ -1295,7 +1295,7 @@ function vicav:get_sample_persons($type as xs:string*) {
 };
 
 declare
-%rest:path("vicav/data_words")
+%rest:path("/vicav/data_words")
 %rest:query-param("type", "{$type}")
 %rest:GET
 
@@ -1325,7 +1325,7 @@ function vicav:get_sample_words($type as xs:string*) {
 
 
 declare
-%rest:path("vicav/feature_markers")
+%rest:path("/vicav/feature_markers")
 %rest:GET
 
 function vicav:get_feature_markers() {
@@ -1367,7 +1367,7 @@ function vicav:get_feature_markers() {
 
 
 declare
-%rest:path("vicav/data_markers")
+%rest:path("/vicav/data_markers")
 %rest:GET
 
 function vicav:get_all_data_markers() {
@@ -1459,7 +1459,7 @@ declare function vicav:data_list_region($type as xs:string, $region as xs:string
 };
 
 declare
-%rest:path("vicav/data_list")
+%rest:path("/vicav/data_list")
 %rest:query-param("type", "{$type}")
 %rest:GET
 function vicav:get_data_list($type as xs:string*) {
@@ -1496,7 +1496,7 @@ function vicav:get_data_list($type as xs:string*) {
 (:** MANAGEMENT FUNCS ********************************************************:)
 (:****************************************************************************:)
 declare
-%rest:path("vicav/show_docs")
+%rest:path("/vicav/show_docs")
 %rest:query-param("db", "{$db}")
 %rest:GET
 
@@ -1512,7 +1512,7 @@ function vicav:vicav_show_docs($db as xs:string*) {
 };
 
 declare
-%rest:path("vicav/profiles")
+%rest:path("/vicav/profiles")
 %rest:GET
 
 function vicav:get_profiles_overview() {
@@ -1549,7 +1549,7 @@ function vicav:get_profiles_overview() {
  : @return A rendered HTML snippet with the search results.
  :)
 declare
-%rest:path("vicav/corpus")
+%rest:path("/vicav/corpus")
 %rest:GET
 %rest:query-param("query", "{$query}")
 %rest:query-param("print", "{$print}")
@@ -1631,7 +1631,7 @@ function vicav:search_corpus($query as xs:string, $print as xs:string?) {
  : @return A rendered HTML snippet of the utterances.
  :)
 declare
-%rest:path("vicav/corpus_text")
+%rest:path("/vicav/corpus_text")
 %rest:GET
 %rest:query-param("id", "{$docId}")
 %rest:query-param("page", "{$page}")
