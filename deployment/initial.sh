@@ -13,7 +13,7 @@ cp -Rv ./*-{content,data}/deployment/* .
 mv redeploy.settings.dist redeploy.settings
 sed -e "s/local_password=.*/local_password='$local_password'/g" -i'' redeploy.settings
 popd
-if [ $branch_name == "59-add-interactive-openapi-documentation" ]
+if [ $branch_name == "devel" ]
 then
 
 pushd ${1:-../../} 
