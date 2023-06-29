@@ -2,6 +2,7 @@
 
 CONTENT_REPO=${CONTENT_REPO:-https://github.com/acdh-oeaw/vicav-content}
 CONTENT_BRANCH=${CONTENT_BRANCH:-master}
+PORT=${PORT:-8984}
 branch_name=$(git rev-parse --abbrev-ref HEAD)
 cp -Rv ./deployment/* ${1:-../../}
 npm install
@@ -61,6 +62,6 @@ fi
 cd ..
 fi
 
-curl -X POST "http://localhost:8984/restvle/dicts" -H "accept: application/vnd.wde.v2+json" -H "Content-Type: application/json" -d "{\"name\":\"dict_users\"}"
-curl -X POST "http://localhost:8984/restvle/dicts/dict_users/users" -H "accept: application/vnd.wde.v2+json" -H "Content-Type: application/json" -d "{\"id\":\"\",\"userID\":\"admin\",\"pw\":\"$local_password\",\"read\":\"y\",\"write\":\"y\",\"writeown\":\"n\",\"table\":\"dict_users\"}"
+curl -X POST "http://localhost:$PORT/restvle/dicts" -H "accept: application/vnd.wde.v2+json" -H "Content-Type: application/json" -d "{\"name\":\"dict_users\"}"
+curl -X POST "http://localhost:$PORT/restvle/dicts/dict_users/users" -H "accept: application/vnd.wde.v2+json" -H "Content-Type: application/json" -d "{\"id\":\"\",\"userID\":\"admin\",\"pw\":\"$local_password\",\"read\":\"y\",\"write\":\"y\",\"writeown\":\"n\",\"table\":\"dict_users\"}"
 exec ./redeploy.sh
