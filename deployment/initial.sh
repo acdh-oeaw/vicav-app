@@ -44,6 +44,7 @@ sed -i 's~https://petstore.swagger.io/v2/swagger.json~/vicav/openapi.json~g' res
 rm content/openapi-test*.xqm
 popd
 
+pwd=$(pwd)
 pushd ${1:-../../}
 if [ "${STACK}x" = "x" ]; then
 pushd lib/custom
@@ -60,6 +61,8 @@ else
   ./basexhttp &
 fi
 cd ..
+else
+sed -i "s~^WEBPATH.*~WEBPATH = $pwd~" $1/.basex
 fi
 
 curl --connect-timeout 5 --max-time 10 --retry 3 --retry-delay 0  --retry-max-time 40 --retry-connrefused 3 \
