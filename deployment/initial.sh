@@ -44,6 +44,7 @@ sed -i 's~https://petstore.swagger.io/v2/swagger.json~/vicav/openapi.json~g' res
 rm content/openapi-test*.xqm
 popd
 
+pwd=$(pwd)
 pushd ${1:-../../}
 if [ "${STACK}x" = "x" ]; then
 pushd lib/custom
@@ -60,8 +61,11 @@ else
   ./basexhttp &
 fi
 cd ..
+else
+sed -i "s~^WEBPATH.*~WEBPATH = $pwd~" $1/.basex
 fi
 
-curl -X POST "http://localhost:$PORT/restvle/dicts" -H "accept: application/vnd.wde.v2+json" -H "Content-Type: application/json" -d "{\"name\":\"dict_users\"}"
+curl --connect-timeout 5 --max-time 10 --retry 3 --retry-delay 0  --retry-max-time 40 --retry-connrefused 3 \
+     -X POST "http://localhost:$PORT/restvle/dicts" -H "accept: application/vnd.wde.v2+json" -H "Content-Type: application/json" -d "{\"name\":\"dict_users\"}"
 curl -X POST "http://localhost:$PORT/restvle/dicts/dict_users/users" -H "accept: application/vnd.wde.v2+json" -H "Content-Type: application/json" -d "{\"id\":\"\",\"userID\":\"admin\",\"pw\":\"$local_password\",\"read\":\"y\",\"write\":\"y\",\"writeown\":\"n\",\"table\":\"dict_users\"}"
 exec ./redeploy.sh

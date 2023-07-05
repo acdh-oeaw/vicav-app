@@ -45,5 +45,9 @@
     "jvm": "17",
     "basex": "9.7.3",
     "saxon": "11.3"
+  },
+  "basex": {
+      "parallel": "128",
+      "gzip": "true"
   }
 }
