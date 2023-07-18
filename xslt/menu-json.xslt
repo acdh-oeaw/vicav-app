@@ -44,6 +44,7 @@
               <xsl:when test="starts-with(@xml:id, 'liSample')">SampleText</xsl:when>
               <xsl:when test="data(@xml:id) = 'liBiblNewQuery'">BiblioQuery</xsl:when>
               <xsl:when test="data(@xml:id) = 'liVicavCrossDictQuery'">CrossDictQuery</xsl:when>
+              <xsl:when test="@componentName"><xsl:value-of select="@componentName"/></xsl:when>
               <xsl:otherwise>UnknownTypeWarning</xsl:otherwise>
             </xsl:choose>
           </componentName>

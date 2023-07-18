@@ -1586,7 +1586,10 @@ declare
 %rest:query-param("query", "{$query}")
 %rest:query-param("print", "{$print}")
 function vicav:search_corpus($query as xs:string, $print as xs:string?) {
-    let $noske_host := vicav:project_config()//noskeHost,
+    let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
+    let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
+
+    let $noske_host := $config//noskeHost,
         $request := $noske_host || '/bonito/run.cgi/first?corpname=' || vicav:get_project_name()
         || '&amp;queryselector=cqlrow&amp;cql=[word="' || $query
         || '"]&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=-1&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
