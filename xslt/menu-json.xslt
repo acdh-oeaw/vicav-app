@@ -51,42 +51,42 @@
             <xsl:when test="starts-with(@xml:id, 'navBiblGeoMarkers')">
               <query>
                 <endpoint>bibl_markers_tei</endpoint>
-                <query>.*</query>
+                <query type="string">.*</query>
                 <scope><_>geo</_></scope>
               </query>              
             </xsl:when>
             <xsl:when test="starts-with(@xml:id, 'navBiblRegMarkers')">
               <query>
                 <endpoint>bibl_markers_tei</endpoint>
-                <query>.*</query>
+                <query type="string">.*</query>
                 <scope><_>reg</_></scope>
               </query>
             </xsl:when>            
             <xsl:when test="starts-with(@xml:id, 'navBiblDiaGroupMarkers')">
               <query>
                 <endpoint>bibl_markers_tei</endpoint>                
-                <query>This feature is unused at the moment</query>                
+                <query type="string">This feature is unused at the moment</query>                
                 <scope><_>diaGroup</_></scope>
               </query>
             </xsl:when>
             <xsl:when test="starts-with(@xml:id, 'navDictGeoRegMarkers')">
               <query>
                 <endpoint>bibl_markers_tei</endpoint>
-                <query>vt:dictionary</query>
+                <query type="string">vt:dictionary</query>
                 <scope><_>geo</_><_>reg</_></scope>
               </query>
             </xsl:when>
             <xsl:when test="starts-with(@xml:id, 'navTextbookGeoRegMarkers')">
               <query>
                 <endpoint>bibl_markers_tei</endpoint>
-                <query>vt:textbook</query>
+                <query type="string">vt:textbook</query>
                 <scope><_>geo</_><_>reg</_></scope>
               </query>
             </xsl:when>
             <xsl:when test="starts-with(@xml:id, 'navProfilesGeoRegMarkers')">
               <query>
                 <endpoint>profile_markers</endpoint>
-                <query></query>
+                <query type="string"></query>
                 <scope></scope>
               </query>
             </xsl:when>
