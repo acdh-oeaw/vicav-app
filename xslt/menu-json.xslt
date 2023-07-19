@@ -4,7 +4,7 @@
     <xsl:output method="xml" indent="yes"/>
     
     <xsl:template match="/">
-        <json objects="json projectConfig logo frontpage menu" arrays="panel param main item subnav"><xsl:apply-templates/></json>
+        <json objects="json projectConfig logo frontpage menu query" arrays="panel param main item subnav scope"><xsl:apply-templates/></json>
     </xsl:template>
     
     <xsl:template match="img">
@@ -47,6 +47,51 @@
               <xsl:otherwise>UnknownTypeWarning</xsl:otherwise>
             </xsl:choose>
           </componentName>
+          <xsl:choose>
+            <xsl:when test="starts-with(@xml:id, 'navBiblGeoMarkers')">
+              <query>
+                <endpoint>bibl_markers_tei</endpoint>
+                <query>.*</query>
+                <scope><_>geo</_></scope>
+              </query>              
+            </xsl:when>
+            <xsl:when test="starts-with(@xml:id, 'navBiblRegMarkers')">
+              <query>
+                <endpoint>bibl_markers_tei</endpoint>
+                <query>.*</query>
+                <scope><_>reg</_></scope>
+              </query>
+            </xsl:when>            
+            <xsl:when test="starts-with(@xml:id, 'navBiblDiaGroupMarkers')">
+              <query>
+                <endpoint>bibl_markers_tei</endpoint>                
+                <query>This feature is unused at the moment</query>                
+                <scope><_>diaGroup</_></scope>
+              </query>
+            </xsl:when>
+            <xsl:when test="starts-with(@xml:id, 'navDictGeoRegMarkers')">
+              <query>
+                <endpoint>bibl_markers_tei</endpoint>
+                <query>vt:dictionary</query>
+                <scope><_>geo</_><_>reg</_></scope>
+              </query>
+            </xsl:when>
+            <xsl:when test="starts-with(@xml:id, 'navTextbookGeoRegMarkers')">
+              <query>
+                <endpoint>bibl_markers_tei</endpoint>
+                <query>vt:textbook</query>
+                <scope><_>geo</_><_>reg</_></scope>
+              </query>
+            </xsl:when>
+            <xsl:when test="starts-with(@xml:id, 'navProfilesGeoRegMarkers')">
+              <query>
+                <endpoint>profile_markers</endpoint>
+                <query></query>
+                <scope></scope>
+              </query>
+            </xsl:when>
+            <xsl:otherwise/>
+          </xsl:choose>
         </_>
     </xsl:template>
     

@@ -1159,8 +1159,18 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
 declare
 %rest:path("/vicav/profile_markers")
 %rest:GET
-
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
 function vicav:get_profile_markers() {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_profile_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_profile_markers() {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $entries := collection('vicav_profiles' || vicav:get_project_db())/descendant::tei:TEI
     let $out :=
     for $item in $entries
@@ -1182,9 +1192,10 @@ function vicav:get_profile_markers() {
           </r>
         )
     
-    return
-        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <rs>{$out}</rs>)
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt')
+    return serialize($renderedJson, map {"method": "json"})
+    else <rs>{$out}</rs>
 };
 
 declare
