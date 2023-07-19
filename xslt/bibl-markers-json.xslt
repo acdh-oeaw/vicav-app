@@ -24,7 +24,7 @@
         <xd:desc>One marker</xd:desc>
     </xd:doc>
     <xsl:template match="r">
-        <xsl:variable name="coords" select="tokenize((geo,loc)[1], ' ')"/>
+        <xsl:variable name="coords" select="tokenize((geo,loc)[1], ',? ')"/>
         <xsl:variable name="coords" as="xs:double+">
             <xsl:try>
                 <xsl:sequence select="(xs:double($coords[1]), xs:double($coords[2]))"/>

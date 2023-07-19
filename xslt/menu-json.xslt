@@ -38,7 +38,7 @@
           <componentName>
             <xsl:choose>
               <xsl:when test="ends-with(@xml:id, 'List')">DataList</xsl:when>
-              <xsl:when test="starts-with(@xml:id, 'nav')">WMap</xsl:when>
+              <xsl:when test="contains(lower-case(@xml:id), 'nav')">WMap</xsl:when>
               <xsl:when test="starts-with(@xml:id, 'liVicavDict')">DictQuery</xsl:when>
               <xsl:when test="starts-with(@xml:id, 'li_')">Text</xsl:when>
               <xsl:when test="starts-with(@xml:id, 'liSample')">SampleText</xsl:when>
@@ -48,44 +48,65 @@
             </xsl:choose>
           </componentName>
           <xsl:choose>
-            <xsl:when test="starts-with(@xml:id, 'navBiblGeoMarkers')">
+            <xsl:when test="contains(@xml:id, 'avBiblGeoMarkers')">
               <query>
                 <endpoint>bibl_markers_tei</endpoint>
                 <query type="string">.*</query>
                 <scope><_>geo</_></scope>
               </query>              
             </xsl:when>
-            <xsl:when test="starts-with(@xml:id, 'navBiblRegMarkers')">
+            <xsl:when test="contains(@xml:id, 'avBiblRegMarkers')">
               <query>
                 <endpoint>bibl_markers_tei</endpoint>
                 <query type="string">.*</query>
                 <scope><_>reg</_></scope>
               </query>
             </xsl:when>            
-            <xsl:when test="starts-with(@xml:id, 'navBiblDiaGroupMarkers')">
+            <xsl:when test="contains(@xml:id, 'avBiblDiaGroupMarkers')">
               <query>
                 <endpoint>bibl_markers_tei</endpoint>                
                 <query type="string">This feature is unused at the moment</query>                
                 <scope><_>diaGroup</_></scope>
               </query>
             </xsl:when>
-            <xsl:when test="starts-with(@xml:id, 'navDictGeoRegMarkers')">
+            <xsl:when test="contains(@xml:id, 'avDictGeoRegMarkers')">
               <query>
                 <endpoint>bibl_markers_tei</endpoint>
                 <query type="string">vt:dictionary</query>
                 <scope><_>geo</_><_>reg</_></scope>
               </query>
             </xsl:when>
-            <xsl:when test="starts-with(@xml:id, 'navTextbookGeoRegMarkers')">
+            <xsl:when test="contains(@xml:id, 'avTextbookGeoRegMarkers')">
               <query>
                 <endpoint>bibl_markers_tei</endpoint>
                 <query type="string">vt:textbook</query>
                 <scope><_>geo</_><_>reg</_></scope>
               </query>
             </xsl:when>
-            <xsl:when test="starts-with(@xml:id, 'navProfilesGeoRegMarkers')">
+            <xsl:when test="contains(@xml:id, 'avProfilesGeoRegMarkers')">
               <query>
                 <endpoint>profile_markers</endpoint>
+                <query type="string"></query>
+                <scope></scope>
+              </query>
+            </xsl:when>
+            <xsl:when test="contains(@xml:id, 'avFeaturesGeoRegMarkers')">
+              <query>
+                <endpoint>feature_markers</endpoint>
+                <query type="string"></query>
+                <scope></scope>
+              </query>
+            </xsl:when>
+            <xsl:when test="contains(@xml:id, 'avSamplesGeoRegMarkers')">
+              <query>
+                <endpoint>sample_markers</endpoint>
+                <query type="string"></query>
+                <scope></scope>
+              </query>
+            </xsl:when>
+            <xsl:when test="contains(@xml:id, 'avVicavDictMarkers')">
+              <query>
+                <endpoint>dict_markers</endpoint>
                 <query type="string"></query>
                 <scope></scope>
               </query>
@@ -103,10 +124,6 @@
     
     <xsl:template match="@*">
         <xsl:element name="{local-name()}"><xsl:value-of select="."/></xsl:element>
-    </xsl:template>
-    
-    <xsl:template match="subnav">
-        <subnav><xsl:apply-templates/></subnav>
     </xsl:template>
     
     <xsl:template match="*">

@@ -1232,8 +1232,17 @@ function vicav:data_locations($type as xs:string*) {
 declare
 %rest:path("/vicav/sample_markers")
 %rest:GET
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
+function vicav:get_sample_markers() {api-problem:or_result (prof:current-ns(),
+    vicav:_get_sample_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
 
-function vicav:get_sample_markers() {
+declare function vicav:_get_sample_markers() {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $entries := collection("/vicav_samples" || vicav:get_project_db())/descendant::tei:TEI
     let $out :=
     for $item in $entries
@@ -1263,9 +1272,10 @@ function vicav:get_sample_markers() {
             </r>
             else ()
     
-    return
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <rs>{$out}</rs>)
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt')
+    return serialize($renderedJson, map {"method": "json"})
+    else <rs>{$out}</rs>
 };
 
 declare
@@ -1338,8 +1348,18 @@ function vicav:get_sample_words($type as xs:string*) {
 declare
 %rest:path("/vicav/feature_markers")
 %rest:GET
-
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
 function vicav:get_feature_markers() {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_feature_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_feature_markers() {  
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $entries := collection('vicav_lingfeatures' || vicav:get_project_db())/descendant::tei:TEI
     let $out :=
         for $item in $entries
@@ -1370,9 +1390,10 @@ function vicav:get_feature_markers() {
                 </r>
                 else ''
     
-    return
-        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <rs>{$out}</rs>)
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt')
+    return serialize($renderedJson, map {"method": "json"})
+    else <rs>{$out}</rs>
 };
 
 
@@ -1662,4 +1683,63 @@ function vicav:corpus_text($docId as xs:string, $page as xs:integer?, $size as x
     return
         (web:response-header(map {'method': 'basex'}, cors:header(())),
         $out)
+};
+
+declare
+%rest:path("/vicav/dict_markers")
+%rest:GET
+%rest:produces("application/json")
+%rest:produces('application/problem+json')
+function vicav:get_dict_markers() {api-problem:or_result (prof:current-ns(),
+    vicav:_get_dict_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_dict_markers() {
+  serialize([
+    map {
+    "type": "Feature",
+    "geometry": map {
+      "type": "Point",
+      "coordinates": [30.05, 31.23]
+    },
+    "properties": map{
+      "type": "dict",
+      "name": "Cairo",
+      "hitCount": "1"
+    }},
+    map {
+    "type": "Feature",
+    "geometry": map {
+      "type": "Point",
+      "coordinates": [33.51, 36.29]
+    },
+    "properties": map{
+      "type": "dict",
+      "name": "Damascus",
+      "hitCount": "1"
+    }},
+    map {
+    "type": "Feature",
+    "geometry": map {
+      "type": "Point",
+      "coordinates": [36.8, 10.18]
+    },
+    "properties": map{
+      "type": "dict",
+      "name": "Tunis",
+      "hitCount": "1"
+    }},
+    map {
+    "type": "Feature",
+    "geometry": map {
+      "type": "Point",
+      "coordinates": [33.33, 44.38]
+    },
+    "properties": map{
+      "type": "dict",
+      "name": "Baghdad",
+      "hitCount": "1"
+    }}
+  ], map{"method": "json"})
 };
