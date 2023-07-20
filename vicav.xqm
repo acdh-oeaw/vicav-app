@@ -1553,7 +1553,20 @@ declare
 %rest:GET
 %rest:query-param("query", "{$query}")
 %rest:query-param("print", "{$print}")
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')
+%rest:produces('application/problem+xml')
 function vicav:search_corpus($query as xs:string, $print as xs:string?) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_search_corpus#2, [$query, $print], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_search_corpus($query as xs:string, $print as xs:string?) {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+
+
     let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
     let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
 
@@ -1615,12 +1628,35 @@ function vicav:search_corpus($query as xs:string, $print as xs:string?) {
       (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
       (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
     
-    let $out := vicav:transform($hits, 'corpus_search_result.xslt', $print, map{ 'query': $query })
 
-    return
-        (web:response-header(map {'method': 'basex'}, cors:header(())),
-        $out)
+    return if (matches($accept-header, '[+/]json'))
+        then
+            let $transformedOutput := xslt:transform($hits, 'xslt/corpus_search_result_json.xslt', map{ 'query': $query})
+            return serialize($transformedOutput, map {"method": "json"})
+        else
+            let $out := vicav:transform($hits, 'corpus_search_result.xslt', $print, map{ 'query': $query })
+            return $out
 
+
+
+};
+
+
+declare function vicav:_corpus_text($docId as xs:string, $page as xs:integer?, $size as xs:integer?, $print as xs:string?) {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+    let $p := if (empty($page)) then 1 else $page
+    let $s := if (empty($size)) then 10 else $size
+
+    let $doc := <doc>{subsequence(collection('vicav_corpus')
+        /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]
+        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s)}</doc>
+      (: , $_ := file:write(file:resolve-path('doc.xml', file:base-dir()), $doc, map { "method": "xml"}) :)
+
+    let $out := vicav:transform($doc, 'corpus_utterances.xslt', $print, map{})
+
+    return if (matches($accept-header, '[+/]json'))
+    then  serialize($out, map {"method": "json"})
+    else  $out
 };
 
 (:~
@@ -1640,18 +1676,12 @@ declare
 %rest:query-param("page", "{$page}")
 %rest:query-param("size", "{$size}")
 %rest:query-param("print", "{$print}")
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')
+%rest:produces('application/problem+xml')
 function vicav:corpus_text($docId as xs:string, $page as xs:integer?, $size as xs:integer?, $print as xs:string?) {
-    let $p := if (empty($page)) then 1 else $page
-    let $s := if (empty($size)) then 10 else $size
-
-    let $doc := <doc>{subsequence(collection('vicav_corpus')
-        /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]
-        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s)}</doc>
-      (: , $_ := file:write(file:resolve-path('doc.xml', file:base-dir()), $doc, map { "method": "xml"}) :)
-      
-    let $out := vicav:transform($doc, 'corpus_utterances.xslt', $print, map{})
-
-    return
-        (web:response-header(map {'method': 'basex'}, cors:header(())),
-        $out)
+  api-problem:or_result (prof:current-ns(),
+    vicav:_corpus_text#4, [$docId, $page, $size, $print], map:merge((cors:header(()), vicav:return_content_header()))
+  )
 };
