@@ -1641,22 +1641,23 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?)
 
 };
 
-
 declare function vicav:_corpus_text($docId as xs:string, $page as xs:integer?, $size as xs:integer?, $print as xs:string?) {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $p := if (empty($page)) then 1 else $page
     let $s := if (empty($size)) then 10 else $size
 
-    let $doc := <doc>{subsequence(collection('vicav_corpus')
+    let $doc := <doc id="${$docId}">{subsequence(collection('vicav_corpus')
         /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]
         /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s)}</doc>
       (: , $_ := file:write(file:resolve-path('doc.xml', file:base-dir()), $doc, map { "method": "xml"}) :)
 
-    let $out := vicav:transform($doc, 'corpus_utterances.xslt', $print, map{})
-
     return if (matches($accept-header, '[+/]json'))
-    then  serialize($out, map {"method": "json"})
-    else  $out
+        then
+            let $out := xslt:transform($doc, 'xslt/corpus_utterances_json.xslt', map{})
+            return serialize($out, map {"method": "json"})
+        else
+            let $out := vicav:transform($doc, 'corpus_utterances.xslt', $print, map{})
+            return $out
 };
 
 (:~

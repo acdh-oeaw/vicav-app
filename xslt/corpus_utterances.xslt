@@ -19,6 +19,9 @@
                     <xsl:if test="not(./@join = 'right' or following-sibling::*[1]/name() = 'pc')">
                         <span xml:space="preserve"> </span>
                     </xsl:if>
+                    <xsl:if test="./@join = 'right' and ./@rend='withDash'">
+                        <span>-</span>
+                    </xsl:if>
                 </xsl:for-each>
                 </div>
 

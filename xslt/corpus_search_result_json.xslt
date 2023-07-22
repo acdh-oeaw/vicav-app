@@ -6,6 +6,8 @@
     <xsl:output method="xml" indent="yes"/>
     <xsl:param name="query"></xsl:param>
 
+    <xsl:include href="serialize-html.xslt"/>
+
     <xsl:function name="acdh:index-of-node">
         <xsl:param name="nodes"></xsl:param>
         <xsl:param name="search"></xsl:param>
@@ -94,36 +96,6 @@
             </_>
         </xsl:for-each>
         </hits>
-    </xsl:template>
-
-    <xsl:template match="*" mode="serialize">
-        <xsl:text>&lt;</xsl:text>
-        <xsl:value-of select="name()"/>
-        <xsl:apply-templates select="@*" mode="serialize" />
-        <xsl:choose>
-            <xsl:when test="node()">
-                <xsl:text>&gt;</xsl:text>
-                <xsl:apply-templates mode="serialize" />
-                <xsl:text>&lt;/</xsl:text>
-                <xsl:value-of select="name()"/>
-                <xsl:text>&gt;</xsl:text>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:text> /&gt;</xsl:text>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-
-    <xsl:template match="@*" mode="serialize">
-        <xsl:text> </xsl:text>
-        <xsl:value-of select="name()"/>
-        <xsl:text>="</xsl:text>
-        <xsl:value-of select="."/>
-        <xsl:text>"</xsl:text>
-    </xsl:template>
-
-    <xsl:template match="text()" mode="serialize">
-      <xsl:value-of select="."/>
     </xsl:template>
 
     <xsl:template match="@*">
