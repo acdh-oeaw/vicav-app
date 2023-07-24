@@ -7,6 +7,10 @@
         <json objects="json projectConfig logo frontpage menu query" arrays="panel param main item subnav scope"><xsl:apply-templates/></json>
     </xsl:template>
     
+    <xsl:template match="text()[parent::logo]">
+        <string><xsl:value-of select="."/></string>
+    </xsl:template>
+    
     <xsl:template match="img">
         <img><xsl:value-of select="@src"/></img>
     </xsl:template>
