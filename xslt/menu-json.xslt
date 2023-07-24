@@ -4,7 +4,7 @@
     <xsl:output method="xml" indent="yes"/>
     
     <xsl:template match="/">
-        <json objects="json projectConfig logo frontpage menu query" arrays="panel param main item subnav scope"><xsl:apply-templates/></json>
+        <json objects="json projectConfig logo frontpage menu query map center" arrays="panel param main item subnav scope" numbers="zoom lat lng"><xsl:apply-templates/></json>
     </xsl:template>
     
     <xsl:template match="text()[parent::logo]">
