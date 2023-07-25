@@ -34,13 +34,17 @@
     
     <xsl:template match="panel|item">
         <_ type="object">
-          <xsl:apply-templates select="@*"/>
+          <xsl:apply-templates select="@* except @type"/>
           <title><xsl:value-of select="text()"/></title>
-          <xsl:if test="not(@type)">
-            <type><xsl:value-of select="local-name()"/></type>
-          </xsl:if>
+          <type><xsl:value-of select="local-name()"/></type>
           <componentName>
             <xsl:choose>
+              <xsl:when test="@type">
+                <xsl:choose>
+                  <xsl:when test="data(@type) = 'vicavTexts'">Text</xsl:when>                  
+                  <xsl:otherwise><xsl:value-of select="upper-case(substring(@type,1,1)) || substring(@type,2)"/></xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
               <xsl:when test="ends-with(@xml:id, 'List')">DataList</xsl:when>
               <xsl:when test="contains(lower-case(@xml:id), 'nav')">WMap</xsl:when>
               <xsl:when test="starts-with(@xml:id, 'liVicavDict')">DictQuery</xsl:when>
