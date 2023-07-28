@@ -46,7 +46,7 @@ jobs:
           else
             echo "environment=review-${{ github.ref_name }}"
             echo "environment=review-${{ github.ref_name }}" >> $GITHUB_OUTPUT
-            echo "environment_short="$environment_short" >> $GITHUB_OUTPUT
+            echo "environment_short=$environment_short" >> $GITHUB_OUTPUT
           fi
           kube_ingress_base_domain="${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"
           public_url="${{ vars.PUBLIC_URL }}"
