@@ -28,7 +28,8 @@ jobs:
 # This together with the branch name is also used as the namespace to deploy to
       APP_ROOT: "/vicav"
       # SERVICE_ID: "99999" # Better use GtiHub environment variables for this
-      # PUBLIC_URL: "https://some-stuff.acdh-ch-dev.oeaw.ac.at" # Better use GitHub environment variables for this
+      # PUBLIC_URL: "https://some-stuff.acdh-ch-dev.oeaw.ac.at" # Use GitHub environment variables for a stable custom public url
+      PUBLIC_URL: ${{ steps.get_environment_from_git_ref.outputs.public_url }}
       # POSTGRES_ENABLED: "false" # needs to be set to true to enable a postgres db installed next to the deployed app
 # You should not need to have to change anything below this line
 #-----------------------------------------------------------------------------------------------------
@@ -37,15 +38,22 @@ jobs:
         id: get_environment_from_git_ref
         run: |
           echo "Running on branch ${{ github.ref_name }}"
-          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+          environment_short=$(echo -n ${{ github.ref_name }} | sed 's/feature[_/]//' | tr '_' '-' | tr '[:upper:]' '[:lower:]' | cut -c1-24 | sed 's/-*$//' )"
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
             echo "environment=production"
             echo "environment=production" >> $GITHUB_OUTPUT
             echo "environment_short=prod" >> $GITHUB_OUTPUT
           else
             echo "environment=review-${{ github.ref_name }}"
             echo "environment=review-${{ github.ref_name }}" >> $GITHUB_OUTPUT
-            echo "environment_short=$(echo -n ${{ github.ref_name }} | sed s/feature_// | tr '_' '-' | tr '[:upper:]' '[:lower:]' )" >> $GITHUB_OUTPUT
+            echo "environment_short=$environment_short" >> $GITHUB_OUTPUT
           fi
+          kube_ingress_base_domain="${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"
+          public_url="${{ vars.PUBLIC_URL }}"
+          if [ "${public_url}x" == 'x' ]
+          then public_url=https://${environment_short}.${kube_ingress_base_domain}
+          fi
+          echo "public_url=$public_url" >> $GITHUB_OUTPUT
   _1:
     needs: [setup_workflow_env]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
