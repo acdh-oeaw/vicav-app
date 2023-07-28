@@ -29,7 +29,6 @@ jobs:
       APP_ROOT: "/vicav"
       # SERVICE_ID: "99999" # Better use GtiHub environment variables for this
       # PUBLIC_URL: "https://some-stuff.acdh-ch-dev.oeaw.ac.at" # Use GitHub environment variables for a stable custom public url
-      PUBLIC_URL: ${{ steps.get_environment_from_git_ref.outputs.public_url }}
       # POSTGRES_ENABLED: "false" # needs to be set to true to enable a postgres db installed next to the deployed app
 # You should not need to have to change anything below this line
 #-----------------------------------------------------------------------------------------------------
@@ -38,7 +37,6 @@ jobs:
         id: get_environment_from_git_ref
         run: |
           echo "Running on branch ${{ github.ref_name }}"
-          environment_short="$(echo -n ${{ github.ref_name }} | sed 's/feature[_/]//' | tr '_' '-' | tr '[:upper:]' '[:lower:]' | cut -c1-24 | sed 's/-*$//' )"
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
             echo "environment=production"
             echo "environment=production" >> $GITHUB_OUTPUT
@@ -46,14 +44,25 @@ jobs:
           else
             echo "environment=review-${{ github.ref_name }}"
             echo "environment=review-${{ github.ref_name }}" >> $GITHUB_OUTPUT
-            echo "environment_short=$environment_short" >> $GITHUB_OUTPUT
+            echo "environment_short=$(echo -n ${{ github.ref_name }} | sed 's/feature[_/]//' | tr '_' '-' | tr '[:upper:]' '[:lower:]' | cut -c1-24 | sed 's/-*$//' )" >> $GITHUB_OUTPUT
           fi
+  generate_workflow_vars:
+    needs: [setup_workflow_env]
+    environment:
+      name: ${{ needs.setup_workflow_env.outputs.environment }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate PUBLIC_URL if not set
+        id: generate_public_url
+        run: |
           kube_ingress_base_domain="${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"
-          public_url="${{ vars.PUBLIC_URL }}"
+          public_url="${{ needs.setup_workflow_env.outputs.PUBLIC_URL || vars.PUBLIC_URL }}"
           if [ "${public_url}x" == 'x' ]
-          then public_url=https://${environment_short}.${kube_ingress_base_domain}
+          then public_url=https://${{ needs.setup_workflow_env.outputs.environment_short }}.${kube_ingress_base_domain}
           fi
           echo "public_url=$public_url" >> $GITHUB_OUTPUT
+    outputs:     
+      PUBLIC_URL: ${{ steps.generate_public_url.outputs.public_url }}
   _1:
     needs: [setup_workflow_env]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
@@ -109,7 +118,7 @@ jobs:
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED }}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _3:
-    needs: [setup_workflow_env, _1, _2]
+    needs: [setup_workflow_env, generate_workflow_vars, _1, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy-cluster-2.yml@main
     secrets: inherit
     with:
@@ -118,12 +127,12 @@ jobs:
       APP_NAME: ${{ needs.setup_workflow_env.outputs.APP_NAME }}-${{ needs.setup_workflow_env.outputs.environment_short }}
       APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
       SERVICE_ID: ${{ needs.setup_workflow_env.outputs.SERVICE_ID }}
-      PUBLIC_URL: ${{ needs.setup_workflow_env.outputs.PUBLIC_URL }}
+      PUBLIC_URL: ${{ needs.generate_workflow_vars.outputs.PUBLIC_URL }}
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _3-tunocent:
-    needs: [setup_workflow_env, _1-tunocent, _2]
+    needs: [setup_workflow_env, generate_workflow_vars, _1-tunocent, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy-cluster-2.yml@main
     secrets: inherit
     with:
@@ -132,12 +141,12 @@ jobs:
       APP_NAME: tunocent-app-${{ needs.setup_workflow_env.outputs.environment_short }}
       APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
       SERVICE_ID: ${{ needs.setup_workflow_env.outputs.SERVICE_ID }}
-      PUBLIC_URL: ${{ needs.setup_workflow_env.outputs.PUBLIC_URL }}
+      PUBLIC_URL: ${{ needs.generate_workflow_vars.outputs.PUBLIC_URL }}
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _3-shawi:
-    needs: [setup_workflow_env, _1-shawi, _2]
+    needs: [setup_workflow_env, generate_workflow_vars, _1-shawi, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy-cluster-2.yml@main
     secrets: inherit
     with:
@@ -146,7 +155,7 @@ jobs:
       APP_NAME: shawi-app-${{ needs.setup_workflow_env.outputs.environment_short }}
       APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
       SERVICE_ID: ${{ needs.setup_workflow_env.outputs.SERVICE_ID }}
-      PUBLIC_URL: ${{ needs.setup_workflow_env.outputs.PUBLIC_URL }}
+      PUBLIC_URL: ${{ needs.generate_workflow_vars.outputs.PUBLIC_URL }}
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
