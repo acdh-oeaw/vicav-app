@@ -23,6 +23,8 @@
             <div class="xmlId">
                 <xsl:value-of select="$u/@xml:id"/>
             </div>
+            <div class="speaker">
+            </div>
             <div class="content">
             <xsl:for-each select="$u/*">
                 <span>
@@ -30,7 +32,7 @@
                         <xsl:value-of select="./name()"/>
                         <xsl:if test="@xml:id = $hits">
                           <xsl:value-of select="' '"/>
-                          hit
+                          <xsl:value-of select="'hit'"/>
                         </xsl:if>
                     </xsl:attribute>
                     <xsl:attribute name="id" select="@xml:id"/>
