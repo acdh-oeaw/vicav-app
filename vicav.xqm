@@ -1627,7 +1627,6 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?)
         return <hit u="{$uId}" doc="{$docId}">{$u}<token>{normalize-space($tokenId)}</token></hit>}</hits>
       (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
       (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
-    
 
     return if (matches($accept-header, '[+/]json'))
         then
@@ -1641,10 +1640,18 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?)
 
 };
 
-declare function vicav:_corpus_text($docId as xs:string, $page as xs:integer?, $size as xs:integer?, $print as xs:string?) {
+declare function vicav:_corpus_text(
+        $docId as xs:string,
+        $page as xs:integer?,
+        $size as xs:integer?,
+        $hits as xs:string?,
+        $print as xs:string?
+    ) {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $p := if (empty($page)) then 1 else $page
     let $s := if (empty($size)) then 10 else $size
+
+    let $hits_str := if (not(empty($hits))) then $hits else ""
 
     let $doc := <doc id="${$docId}">{subsequence(collection('vicav_corpus')
         /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]
@@ -1653,16 +1660,18 @@ declare function vicav:_corpus_text($docId as xs:string, $page as xs:integer?, $
 
     return if (matches($accept-header, '[+/]json'))
         then
-            let $out := xslt:transform($doc, 'xslt/corpus_utterances_json.xslt', map{})
+            let $out := xslt:transform($doc, 'xslt/corpus_utterances_json.xslt', map{
+                "hits_str": $hits_str
+            })
             return serialize($out, map {"method": "json"})
         else
-            let $out := vicav:transform($doc, 'corpus_utterances.xslt', $print, map{})
+            let $out := vicav:transform($doc, 'corpus_utterances.xslt', $print, map{ "hits_str": $hits_str })
             return $out
 };
 
 (:~
  : Retrieve pageble set of utterances from a corpus text.
- : 
+ :
  : @param $docId Text Identidfier.
  : @param $page Page number (defaults to 1)
  : @param $size Page size (defaults to 10)
@@ -1676,13 +1685,14 @@ declare
 %rest:query-param("id", "{$docId}")
 %rest:query-param("page", "{$page}")
 %rest:query-param("size", "{$size}")
+%rest:query-param("hits", "{$hits}")
 %rest:query-param("print", "{$print}")
 %rest:produces("application/xml")
 %rest:produces("application/json")
 %rest:produces('application/problem+json')
 %rest:produces('application/problem+xml')
-function vicav:corpus_text($docId as xs:string, $page as xs:integer?, $size as xs:integer?, $print as xs:string?) {
+function vicav:corpus_text($docId as xs:string, $page as xs:integer?, $size as xs:integer?, $hits as xs:string?, $print as xs:string?) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_corpus_text#4, [$docId, $page, $size, $print], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_corpus_text#5, [$docId, $page, $size, $hits, $print], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };

@@ -78,6 +78,9 @@
                       white-space: nowrap;
                       overflow-x: scroll;                          
                     }
+                    .corpus-utterances > .u .hit {
+                        font-weight: bold;
+                    }
                     .corpus-search-results {
                       display: table;
                       width: 100%

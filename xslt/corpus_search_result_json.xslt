@@ -79,19 +79,25 @@
 
 
     <xsl:template match="/">
-        <json objects="json" arrays="hits">
+        <json objects="json" arrays="hits docHits">
             <xsl:apply-templates/></json>
     </xsl:template>
 
     <xsl:template match="hits">
+        <xsl:variable select="." name="hits"/>
         <query><xsl:value-of select="$query"/></query>
         <hits>
 
 
         <xsl:for-each select="./hit">
+            <xsl:variable select="." name="hit"/>
             <_ type="object">
-
                 <xsl:apply-templates select="./@*"/>
+                <docHits>
+                    <xsl:for-each select="$hits/hit[./@doc = $hit/@doc]/token">
+                        <_ type="string"><xsl:value-of select="."/></_>
+                    </xsl:for-each>
+                </docHits>
                 <content><xsl:apply-templates select="acdh:render-hit(.)" mode="serialize"/></content>
             </_>
         </xsl:for-each>

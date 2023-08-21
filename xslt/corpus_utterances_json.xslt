@@ -6,6 +6,7 @@
     <xsl:preserve-space elements="span"/>
 
     <xsl:include href="serialize-html.xslt"/>
+    <xsl:param name="hits_str"/>
 
     <xsl:template match="/">
         <json objects="json" arrays="utterances">
@@ -15,12 +16,23 @@
 
     <xsl:function name="acdh:render-u">
         <xsl:param name="u"/>
+        <xsl:variable name="hits" select="tokenize($hits_str, ',')" />
 
         <div class="u">
             <xsl:attribute name="id" select="$u/@xml:id"/>
+            <div class="xmlId">
+                <xsl:value-of select="$u/@xml:id"/>
+            </div>
+            <div class="content">
             <xsl:for-each select="$u/*">
                 <span>
-                    <xsl:attribute name="class" select="./name()"/>
+                    <xsl:attribute name="class">
+                        <xsl:value-of select="./name()"/>
+                        <xsl:if test="@xml:id = $hits">
+                          <xsl:value-of select="' '"/>
+                          hit
+                        </xsl:if>
+                    </xsl:attribute>
                     <xsl:attribute name="id" select="@xml:id"/>
                     <xsl:value-of select="."/>
                 </span>
@@ -31,6 +43,7 @@
                     <span>-</span>
                 </xsl:if>
             </xsl:for-each>
+            </div>
         </div>
     </xsl:function>
 
