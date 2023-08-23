@@ -23,8 +23,6 @@
             <div class="xmlId">
                 <xsl:value-of select="$u/@xml:id"/>
             </div>
-            <div class="speaker">
-            </div>
             <div class="content">
             <xsl:for-each select="$u/*">
                 <span>
