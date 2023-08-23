@@ -12,27 +12,11 @@ local_password=${BASEX_admin_pw:-admin}
 git clone $CONTENT_REPO -b $CONTENT_BRANCH
 cp -Rv ./*-{content,data}/deployment/* .
 mv redeploy.settings.dist redeploy.settings
-sed -e "s~local_password=.*~local_password='$local_password'~g" -i'' redeploy.settings
-popd
+sed -e "s/local_password=.*/local_password=$local_password/g" -i '' redeploy.settings
 if [ $branch_name == "devel" ]
-then
-
-pushd ${1:-../../} 
-sed -e 's/onlytags=true.*/onlytags=false # enable for production/g' -i'' redeploy.settings
-popd
-  
-pushd 3rd-party/openapi4restxq
-git checkout master_basex
-git pull
-popd
-
-pushd 3rd-party/vleserver_basex
-git checkout main
-git pull
-popd
-
+then sed -e 's/onlytags=true.*/onlytags=false # enable for production/g' -i '' redeploy.settings
 fi
-pushd ${1:-../../} 
+pushd ${1:-../../}
 echo 'redeploy.settings content:'
 cat redeploy.settings
 popd
