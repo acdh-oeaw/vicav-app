@@ -9,13 +9,14 @@ cd ${1:-../../}
 git clone $CONTENT_REPO -b $CONTENT_BRANCH
 cp -Rv ./*-{content,data}/deployment/* .
 mv redeploy.settings.dist redeploy.settings
+sed -e "s/local_password=.*/local_password=$local_password/g" -i '' redeploy.settings
 if [ $branch_name == "devel" ]
-then sed 's/onlytags=true.*/onlytags=false # enable for production/g' -i redeploy.settings
+then sed -e 's/onlytags=true.*/onlytags=false # enable for production/g' -i '' redeploy.settings
 fi
 if [ "${STACK}x" = "x" ]; then
 pushd lib/custom
-curl -LO https://repo1.maven.org/maven2/net/sf/saxon/Saxon-HE/11.4/Saxon-HE-11.4.jar
-curl -LO https://repo1.maven.org/maven2/org/xmlresolver/xmlresolver/4.6.4/xmlresolver-4.6.4.jar
+curl -LO https://repo1.maven.org/maven2/net/sf/saxon/Saxon-HE/12.2/Saxon-HE-12.2.jar
+curl -LO https://repo1.maven.org/maven2/org/xmlresolver/xmlresolver/5.1.3/xmlresolver-5.1.3.jar
 popd
 if [ "$OSTYPE" == "msys" -o "$OSTYPE" == "win32" ]
 then
