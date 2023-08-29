@@ -8,9 +8,22 @@ declare namespace dc = 'http://purl.org/dc/elements/1.1/';
 declare namespace tei = 'http://www.tei-c.org/ns/1.0';
 declare namespace dcterms = "http://purl.org/dc/terms/";
 declare namespace prof = "http://basex.org/modules/prof";
+declare namespace response-codes = "https://tools.ietf.org/html/rfc7231#section-6";
+declare namespace test = "http://exist-db.org/xquery/xqsuite";
 
 import module namespace openapi="https://lab.sub.uni-goettingen.de/restxqopenapi" at "3rd-party/openapi4restxq/content/openapi.xqm";
 
+(:~
+ : VICAV API
+ :
+ : An API for retrieving the various VICAV TEI documents rendered either as XHTML snippets or JSON
+ :)
+ 
+(:~
+ : get the API description
+ :
+ : OpenAPI 3.0 JSON description of the API
+ :)
 declare
     %rest:path('/vicav/openapi.json')
     %rest:produces('application/json')
@@ -575,24 +588,44 @@ function vicav:explore_samples(
         $sHTML)
 };
 
+(:~
+ : get a description text
+ :
+ : Retrieve a description TEI text found in the DB.
+ : 
+ : @param $id ID of a description TEI text found in the DB.
+ :           May start with li_
+ : @param $xsltfn XSL used to rencer the TEI (defaults to vicavTexts.xslt)
+ :
+ : @return A rendered HTML of the description TEI text.
+ :)
 declare
 %rest:path("/vicav/text")
 %rest:query-param("id", "{$id}")
-%rest:query-param("xslt", "{$xsltfn}", "/vicavTexts.xslt")
+%test:arg("id", "li_vicavMission")
+%rest:query-param("xslt", "{$xsltfn}", "vicavTexts.xslt")
 %rest:GET
+%rest:produces("application/xml")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
+function vicav:get_text($id as xs:string, $xsltfn as xs:string?) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_text#2, [$id, $xsltfn], map:merge((cors:header(()), vicav:return_content_header()))
+  )  
+};
 
-function vicav:get_text($id as xs:string*, $xsltfn as xs:string) {
-    let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $q := 'collection("/vicav_texts")//tei:div[@xml:id="' || $id || '"]'
-    let $query := $ns || $q
-    let $results := parse-xml(serialize(xquery:eval($query), map {'method': 'xml', 'indent': 'yes'}))
+declare function vicav:_get_text($id as xs:string, $xsltfn as xs:string?) {
+    let $id := replace($id, '^li_', '')
+    let $xsltfn := if (exists($xsltfn)) then $xsltfn else "vicavTexts.xslt" 
+    let $results := collection("/vicav_texts")//tei:div[@xml:id=$id]
+    let $notFound := if (not(exists($results))) then
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'Text with id '||$id||' does not exist') else ()
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
     let $sHTML := xslt:transform-text($results, $style)
-    return
-        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        $sHTML)
-        
+    return $sHTML        
 };
 
 declare
