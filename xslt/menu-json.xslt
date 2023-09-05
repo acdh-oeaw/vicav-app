@@ -3,6 +3,45 @@
 
     <xsl:output method="xml" indent="yes"/>
     
+    <xsl:variable name="captionFromMenuID" select=" map{
+    'vicavArabicTools': 'ARABIC TOOLS',
+    'vicavContributeBibliography': 'CONTRIBUTE TO BIBLIOGRAPHY',
+    'vicavContributeDictionary': 'CONTRIBUTE A DICTIONARY',
+    'vicavContributeFeature': 'CONTRIBUTE A FEATURE LIST',
+    'vicavContributeProfile': 'CONTRIBUTE A PROFILE',
+    'vicavContributeSample': 'CONTRIBUTE A SAMPLE',
+
+    'vicavContributors': 'CONTRIBUTORS',
+    'vicavDictionaryEncoding': 'DICTIONARIES (ENCODING)',
+    'vicavDictionariesTechnicalities': 'DICTIONARIES (TECHNICALITIES)',
+    'vicavOverview_corpora_spoken': 'CORPORA OF SPOKEN ARABIC',
+    'vicavOverview_corpora_msa': 'MSA CORPORA',
+    'vicavOverview_special_corpora': 'SPECIAL CORPORA',
+    'vicavOverview_corpora_historical_varieties': 'CORPORA OF HISTORICAL LANGUAGE',
+    'vicavOverview_dictionaries': 'DICTIONARY PROJECTS',
+    'vicavOverview_nlp': 'ARABIC NLP',
+    'vicavOverview_otherStuff': 'OTHER STUFF',
+    'vicavLearning': 'LEARNING',
+    'vicavLearningTextbookDamascus': 'TEXTBOOK DAMASCUS',
+    'vicavLearningSmartphone': 'VOCABULARIES ON SMARTPHONES',
+    'vicavLearningPrograms': 'LEARNING PROGRAMS',
+    'vicavLearningData': 'LEARNING DATA',
+    'vicavKeyboards': 'KEYBOARDS',
+    'vicavVLE': 'DICTIONARY EDITOR (VLE)',
+
+    'vicavExplanationBibliography': 'BIBLIOGRAPHY (DETAILS)',
+    'vicavExplanationCorpusTexts': 'CORPUS TEXTS (DETAILS)',
+    'vicavExplanationFeatures': 'FEATURES (DETAILS)',
+    'vicavExplanationProfiles': 'PROFILES (DETAILS)',
+    'vicavExplanationSamples': 'SAMPLES (DETAILS)',
+    'vicavExploreFeatures': 'EXPLORE FEATURES',
+
+
+    'vicavLinguistics': 'LINGUISTICS',
+    'vicavMission': 'MISSION',
+    'vicavNews': 'VICAV NEWS',
+    'vicavTypesOfText': 'TYPES OF TEXT'}"/>
+    
     <xsl:template match="/">
         <json objects="json projectConfig logo frontpage menu query map center styleSettings colors" arrays="panel param main item subnav scope" numbers="zoom lat lng"><xsl:apply-templates/></json>
     </xsl:template>
@@ -56,6 +95,9 @@
               <xsl:otherwise>UnknownTypeWarning</xsl:otherwise>
             </xsl:choose>
           </componentName>
+          <label>
+            <xsl:value-of select="$captionFromMenuID(replace(data((@xml:id, @target)),'^li_?',''))"/>
+          </label>
           <xsl:choose>
             <xsl:when test="contains(@xml:id, 'avBiblGeoMarkers')">
               <query>
