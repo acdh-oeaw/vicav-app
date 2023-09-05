@@ -2,8 +2,38 @@
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:tei="http://www.tei-c.org/ns/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   exclude-result-prefixes="#all"
   version="2.0" >
+  
+  <xsl:function name="tei:getLinkAttributes" as="attribute()+">
+    <xsl:param name="target" as="xs:string"/>
+    <xsl:variable name="targetSplit" as="xs:string+">
+      <xsl:analyze-string select="$target" regex="^([^:]+):([^/]+)/([^/,]+)[,/]?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?">
+        <xsl:matching-substring>
+          <xsl:sequence select="(regex-group(1), regex-group(2),regex-group(3),regex-group(5),regex-group(7),regex-group(9),regex-group(11))[. != '']"/>
+        </xsl:matching-substring>
+        <xsl:non-matching-substring>
+          <xsl:sequence select="('external-link', .)"/>
+        </xsl:non-matching-substring>
+      </xsl:analyze-string>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="matches($targetSplit[1], 'https?')">
+        <xsl:sequence>
+          <xsl:attribute name="data-target-type"><xsl:value-of select="'external-link'"/></xsl:attribute>
+       </xsl:sequence>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence>
+          <xsl:attribute name="data-target-type"><xsl:value-of select="$targetSplit[1]"/></xsl:attribute>
+          <xsl:attribute name="data-text-id"><xsl:value-of select="$targetSplit[2]"/></xsl:attribute>
+          <xsl:attribute name="data-label"><xsl:value-of select="translate($targetSplit[3], '_', ' ')"/></xsl:attribute>
+          <xsl:for-each select="$targetSplit[position() > 3]"><xsl:attribute name="data-query-{position()}"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>      
+        </xsl:sequence>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:function>
   
     <xsl:character-map name="a">
        <xsl:output-character character="&lt;" string="&lt;"/>
@@ -190,6 +220,7 @@
   <xsl:template match="tei:ref[starts-with(@target,'http:') or starts-with(@target,'https:')]">
       <a target="_blank" class="aVicText">
           <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
+          <xsl:sequence select='tei:getLinkAttributes(@target)'/>
           <xsl:apply-templates/>
       </a>
   </xsl:template>
@@ -209,6 +240,7 @@
         starts-with(@target,'sample:')]">
         <a class="aVicText">
             <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select='@target'/>", this)</xsl:attribute>
+            <xsl:sequence select='tei:getLinkAttributes(@target)'/>
             <xsl:apply-templates/>
         </a>
     </xsl:template>
@@ -228,9 +260,11 @@
             <xsl:choose>
                 <xsl:when test="contains(@ref,'showLingFeatures')">
                     <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="translate(@ref, ' ', '&#x2005;')"/>", this)</xsl:attribute>
+                    <xsl:attribute name="data-text-id"><xsl:value-of select="translate(@ref, ' ', '&#x2005;')"/></xsl:attribute>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select='@ref'/>", this)</xsl:attribute>
+                    <xsl:sequence select='tei:getLinkAttributes(@ref)'/>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:apply-templates/>
@@ -239,6 +273,7 @@
     
     <xsl:template match="tei:ref[starts-with(@target,'func:')]">
         <a class="aVicText" href="{concat('javascript', substring-after(@target, 'func'))}">
+        <xsl:sequence select='tei:getLinkAttributes(@target)'/>
             <xsl:apply-templates/>
         </a>
     </xsl:template>
@@ -254,6 +289,7 @@
     <xsl:template match="tei:ref">
         <a target="_blank" class="aVicText">
             <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
+            <xsl:sequence select='tei:getLinkAttributes(@target)'/>
             <xsl:apply-templates/>
         </a>
     </xsl:template>
