@@ -16,7 +16,8 @@
             </xsl:if>
         </xsl:for-each>
     </xsl:function>
-    
+
+    <!-- TODO: Add links to document? -->
     
     <xsl:template match="/hits">
         <div class="corpus-search-results">
