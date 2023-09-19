@@ -96,7 +96,7 @@
             </xsl:choose>
           </componentName>
           <label>
-            <xsl:value-of select="$captionFromMenuID(replace(data((@xml:id, @target)),'^li_?',''))"/>
+            <xsl:value-of select="$captionFromMenuID(replace(data((@xml:id, @target)[1]),'^li_?',''))"/>
           </label>
           <xsl:choose>
             <xsl:when test="contains(@xml:id, 'avBiblGeoMarkers')">
