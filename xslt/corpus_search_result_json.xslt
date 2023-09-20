@@ -25,7 +25,7 @@
         <xsl:variable name="w" select="$hit/tei:u/tei:w[@xml:id = $token][1]"/>
 
         <xsl:if test="count($w) > 1">
-            Error: duplicate token ID <xsl:value-of select="token"/>
+            Error: duplicate token ID <xsl:value-of select="$hit/token"/>
         </xsl:if>
         <xsl:if test="count($w) = 1">
             <xsl:variable select="acdh:index-of-node($hit/tei:u/tei:w, $w)" name="word_pos"/>
