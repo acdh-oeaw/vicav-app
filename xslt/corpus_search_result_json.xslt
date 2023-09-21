@@ -22,12 +22,13 @@
         <xsl:param name="hit"/>
 
         <xsl:variable name="token" select="$hit/token/text()"/>
-        <xsl:variable name="w" select="$hit/tei:u/tei:w[@xml:id = $token]"/>
+        <xsl:variable name="w" select="$hit/tei:u/tei:w[@xml:id = $token][1]"/>
 
-        <xsl:if test="$w">
+        <xsl:if test="count($w) > 1">
+            Error: duplicate token ID <xsl:value-of select="$hit/token"/>
+        </xsl:if>
+        <xsl:if test="count($w) = 1">
             <xsl:variable select="acdh:index-of-node($hit/tei:u/tei:w, $w)" name="word_pos"/>
-            <xsl:message select="$w"/>
-            <xsl:message select="$word_pos"/>
             <xsl:variable select="subsequence($hit/tei:u/tei:w, $word_pos+1, 5)" name="right"/>
             <xsl:variable select="subsequence($hit/tei:u/tei:w, $word_pos - 5, 5)" name="left"/>
             <div class="corpus-search-result justify-content-between">

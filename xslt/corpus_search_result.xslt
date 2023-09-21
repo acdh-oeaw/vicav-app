@@ -27,10 +27,12 @@
             <xsl:variable name="token" select="token/text()"/>
             <xsl:variable name="w" select="./tei:u/tei:w[@xml:id = $token]"/>
             
-            <xsl:if test="$w">
+            <xsl:if test="count($w) > 1">
+                <xsl:value-of select="token"/>
+            </xsl:if>
+            <xsl:if test="count($w) = 1">
+
                 <xsl:variable select="acdh:index-of-node(./tei:u/tei:w, $w)" name="word_pos"/>
-                <xsl:message select="$w"/>
-                <xsl:message select="$word_pos"/>
                 <xsl:variable select="subsequence(./tei:u/tei:w, $word_pos+1, 5)" name="right"/>
                 <xsl:variable select="subsequence(./tei:u/tei:w, $word_pos - 5, 5)" name="left"/>
                 <div class="corpus-search-result">
