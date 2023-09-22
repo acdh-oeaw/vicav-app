@@ -74,7 +74,7 @@ jobs:
       registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
       image_tagged: ${{ needs.setup_workflow_env.outputs.image_tagged }}
       default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
-      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.default_port)}}
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _2:
     needs: [setup_workflow_env]
@@ -87,7 +87,7 @@ jobs:
       registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
       image_tagged: ${{ needs.setup_workflow_env.outputs.image_tagged }}
       default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
-      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.default_port)}}
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       herokuish_base_image: ${{ needs.setup_workflow_env.outputs.herokuish_base_image }}
       POSTGRES_ENABLED: false
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
@@ -104,5 +104,5 @@ jobs:
       PUBLIC_URL: ${{ needs.generate_workflow_vars.outputs.PUBLIC_URL }}
       POSTGRES_ENABLED: false
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
-      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.default_port)}}
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
