@@ -7,7 +7,7 @@ branch_name=$(git rev-parse --abbrev-ref HEAD)
 # Just do that again in case the user didn't remember
 git submodule update --init
 cp -Rv ./deployment/* ${1:-../../}
-npm install
+npm install --production
 pushd ${1:-../../}
 source data/credentials
 local_password=${BASEX_admin_pw:-admin}
