@@ -11,7 +11,7 @@ npm install --production
 pushd ${1:-../../}
 source data/credentials
 local_password=${BASEX_admin_pw:-admin}
-git clone $CONTENT_REPO -b $CONTENT_BRANCH
+git clone $CONTENT_REPO -b $CONTENT_BRANCH --depth=10
 cp -Rv ./*-{content,data}/deployment/* .
 mv redeploy.settings.dist redeploy.settings
 sed -e "s~local_password=.*~local_password='$local_password'~g" -i'' redeploy.settings
