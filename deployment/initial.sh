@@ -4,6 +4,8 @@ CONTENT_REPO=${CONTENT_REPO:-https://github.com/acdh-oeaw/vicav-content}
 CONTENT_BRANCH=${CONTENT_BRANCH:-master}
 PORT=${PORT:-8984}
 branch_name=$(git rev-parse --abbrev-ref HEAD)
+# Just do that again in case the user didn't remember
+git submodule update --init
 cp -Rv ./deployment/* ${1:-../../}
 npm install
 pushd ${1:-../../}
