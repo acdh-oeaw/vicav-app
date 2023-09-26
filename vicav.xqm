@@ -1046,19 +1046,19 @@ return
 declare
 %rest:path("/vicav/bibl_markers_tei")
 %rest:query-param("query", "{$query}")
-%rest:query-param("scope", "{$scope}")
+%rest:query-param("scope", "{$scope}", "geo", "reg", "diaGroup")
 %rest:GET
 %rest:produces("application/xml")
 %rest:produces("application/json")
 %rest:produces('application/problem+json')   
 %rest:produces('application/problem+xml')
-function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
+function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string+) {
   api-problem:or_result (prof:current-ns(),
     vicav:_get_bibl_markers_tei#2, [$query, $scope], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };
 
-declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
+declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:string+) {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $queries := tokenize($query, '\+')
     let $qs :=
@@ -1102,10 +1102,10 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
     let $tempresults := xquery:eval($query)
 
     let $out :=
-        for $subj at $icnt in $tempresults
+        for $subj in $tempresults
         return
             let $geos :=
-                switch ($scope)
+                $scope!(switch (.)
                     case 'geo_reg'
                         return $subj/tei:note/tei:note[(tei:name/@type = 'reg') or (tei:name/@type = 'geo') or (tei:name/@type = 'diaGroup')][tei:geo]
                     case 'geo'
@@ -1114,7 +1114,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
                         return $subj/tei:note/tei:note[tei:name/@type = 'diaGroup'][tei:geo]
                     case 'reg'
                         return $subj/tei:note/tei:note[tei:name/@type = 'reg'][tei:geo]
-            default return ()
+            default return ())
     
     for $geo in $geos
     return
