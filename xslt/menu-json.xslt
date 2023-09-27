@@ -3,6 +3,8 @@
 
     <xsl:output method="xml" indent="yes"/>
     
+    <xsl:param name="baseURIPublic"/>
+    
     <xsl:variable name="captionFromMenuID" select=" map{
     'vicavArabicTools': 'ARABIC TOOLS',
     'vicavContributeBibliography': 'CONTRIBUTE TO BIBLIOGRAPHY',
@@ -51,7 +53,7 @@
     </xsl:template>
     
     <xsl:template match="img">
-        <img><xsl:value-of select="@src"/></img>
+        <img><xsl:value-of select="$baseURIPublic||'/'||@src"/></img>
     </xsl:template>
     
     <xsl:template match="frontpage">
@@ -171,6 +173,10 @@
         <_ type="object">
             <type>separator</type>
         </_>
+    </xsl:template>
+    
+    <xsl:template match="icon">
+      <icon><xsl:value-of select="$baseURIPublic||'/'||."/></icon>
     </xsl:template>
     
     <xsl:template match="@*">

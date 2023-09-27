@@ -12,6 +12,7 @@ declare namespace response-codes = "https://tools.ietf.org/html/rfc7231#section-
 declare namespace test = "http://exist-db.org/xquery/xqsuite";
 
 import module namespace openapi="https://lab.sub.uni-goettingen.de/restxqopenapi" at "3rd-party/openapi4restxq/content/openapi.xqm";
+import module namespace util = "https://www.oeaw.ac.at/acdh/tools/vle/util" at "3rd-party/vleserver_basex/vleserver/util.xqm";
 
 (:~
  : VICAV API
@@ -119,7 +120,7 @@ function vicav:_project_config() {
     let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
     let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
     return if (matches($accept-header, '[+/]json'))
-    then let $renderedJson := xslt:transform($config, 'xslt/menu-json.xslt')
+    then let $renderedJson := xslt:transform($config, 'xslt/menu-json.xslt', map{'baseURIPublic': util:get-base-uri-public()})
     return serialize($renderedJson, map {"method": "json"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
       return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
