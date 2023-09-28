@@ -176,7 +176,7 @@
     </xsl:template>
     
     <xsl:template match="icon">
-      <icon><xsl:value-of select="$baseURIPublic||'/'||."/></icon>
+      <icon><xsl:value-of select="$baseURIPublic||'/vendor/images'||."/></icon>
     </xsl:template>
     
     <xsl:template match="@*">

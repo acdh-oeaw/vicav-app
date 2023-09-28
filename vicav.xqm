@@ -120,7 +120,7 @@ function vicav:_project_config() {
     let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
     let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
     return if (matches($accept-header, '[+/]json'))
-    then let $renderedJson := xslt:transform($config, 'xslt/menu-json.xslt', map{'baseURIPublic': util:get-base-uri-public()})
+    then let $renderedJson := xslt:transform($config, 'xslt/menu-json.xslt', map{'baseURIPublic': replace(util:get-base-uri-public(), '/project', '')})
     return serialize($renderedJson, map {"method": "json"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
       return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
@@ -625,7 +625,7 @@ declare function vicav:_get_text($id as xs:string, $xsltfn as xs:string?) {
          'Text with id '||$id||' does not exist') else ()
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
-    let $sHTML := xslt:transform-text($results, $style)
+    let $sHTML := xslt:transform-text($results, $style, map{'param-images-base-path': replace(util:get-base-uri-public()||'/images', '/text', '')})
     return $sHTML        
 };
 
