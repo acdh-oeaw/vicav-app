@@ -15,7 +15,7 @@
     </xd:doc>
     
     <xsl:template match="/">
-        <json objects="geometry properties" arrays="json coordinates">
+        <json objects="geometry properties" arrays="json coordinates" numbers="hitCount">
           <xsl:apply-templates select=".//r"/>
         </json>
     </xsl:template>
