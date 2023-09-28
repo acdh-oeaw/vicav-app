@@ -5,7 +5,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:err="http://www.w3.org/2005/xqt-errors"
     exclude-result-prefixes="xd _ xs err"
-    version="2.0">
+    version="3.1">
     <xd:doc scope="stylesheet">
         <xd:desc>
             <xd:p><xd:b>Created on:</xd:b> May 5, 2023</xd:p>
@@ -19,6 +19,13 @@
           <xsl:apply-templates select=".//r"/>
         </json>
     </xsl:template>
+    
+    <xsl:variable name="translateType" select='map {
+      "geo": "geo",
+      "reg": "reg",
+      "place": "geo",
+      "region": "reg"
+    }'/>
     
     <xd:doc>
         <xd:desc>One marker</xd:desc>
@@ -43,7 +50,7 @@
                 </coordinates>
             </geometry>
             <properties>
-                <type><xsl:value-of select="@type"/></type>
+                <type><xsl:value-of select="$translateType(@type)"/></type>
                 <name><xsl:value-of select="alt"/></name>
                 <hitCount><xsl:value-of select="freq"/></hitCount>
             </properties>
