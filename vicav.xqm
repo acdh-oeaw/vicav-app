@@ -1787,7 +1787,10 @@ declare function vicav:_get_dict_markers() {
     "type": "Feature",
     "geometry": map {
       "type": "Point",
-      "coordinates": [30.05, 31.23]
+      "coordinates": [
+        31.233333333333334,
+        30.05
+      ]
     },
     "properties": map{
       "type": "reg",
@@ -1798,7 +1801,10 @@ declare function vicav:_get_dict_markers() {
     "type": "Feature",
     "geometry": map {
       "type": "Point",
-      "coordinates": [33.51, 36.29]
+      "coordinates": [
+        36.28333333333333,
+        33.5
+      ]
     },
     "properties": map{
       "type": "reg",
@@ -1809,7 +1815,10 @@ declare function vicav:_get_dict_markers() {
     "type": "Feature",
     "geometry": map {
       "type": "Point",
-      "coordinates": [36.8, 10.18]
+      "coordinates": [
+        10.15,
+        36.81666666666667
+      ]
     },
     "properties": map{
       "type": "reg",
@@ -1820,7 +1829,10 @@ declare function vicav:_get_dict_markers() {
     "type": "Feature",
     "geometry": map {
       "type": "Point",
-      "coordinates": [33.33, 44.38]
+      "coordinates":[
+        44.4,
+        33.333333333333336
+      ] 
     },
     "properties": map{
       "type": "reg",
