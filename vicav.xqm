@@ -1435,8 +1435,14 @@ declare function vicav:_get_feature_markers() {
 declare
 %rest:path("/vicav/data_markers")
 %rest:GET
-
 function vicav:get_all_data_markers() {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_all_data_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_all_data_markers() {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $entries := for $c in ('vicav_profiles', 'vicav_samples', 'vicav_lingfeatures')
         return collection($c)/descendant::tei:TEI
 
@@ -1462,9 +1468,10 @@ function vicav:get_all_data_markers() {
                 </r>
                 else ''
 
-    return
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <rs>{$out}</rs>)
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt')
+    return serialize($renderedJson, map {"method": "json"})
+    else <rs>{$out}</rs>
 };
 
 
@@ -1783,9 +1790,9 @@ declare function vicav:_get_dict_markers() {
       "coordinates": [30.05, 31.23]
     },
     "properties": map{
-      "type": "dict",
+      "type": "reg",
       "name": "Cairo",
-      "hitCount": "1"
+      "hitCount": 1
     }},
     map {
     "type": "Feature",
@@ -1794,9 +1801,9 @@ declare function vicav:_get_dict_markers() {
       "coordinates": [33.51, 36.29]
     },
     "properties": map{
-      "type": "dict",
+      "type": "reg",
       "name": "Damascus",
-      "hitCount": "1"
+      "hitCount": 1
     }},
     map {
     "type": "Feature",
@@ -1805,9 +1812,9 @@ declare function vicav:_get_dict_markers() {
       "coordinates": [36.8, 10.18]
     },
     "properties": map{
-      "type": "dict",
+      "type": "reg",
       "name": "Tunis",
-      "hitCount": "1"
+      "hitCount": 1
     }},
     map {
     "type": "Feature",
@@ -1816,9 +1823,9 @@ declare function vicav:_get_dict_markers() {
       "coordinates": [33.33, 44.38]
     },
     "properties": map{
-      "type": "dict",
+      "type": "reg",
       "name": "Baghdad",
-      "hitCount": "1"
+      "hitCount": 1
     }}
   ], map{"method": "json"})
 };
