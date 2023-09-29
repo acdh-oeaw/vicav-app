@@ -51,7 +51,10 @@
             </geometry>
             <properties>
                 <type><xsl:value-of select="$translateType(@type)"/></type>
-                <name><xsl:value-of select="alt"/></name>
+                <name><xsl:value-of select="(locName, alt)[1]"/></name>
+                <xsl:if test="exists(alt) and exists(locName)">
+                <alt><xsl:value-of select="alt"/></alt>
+                </xsl:if>
                 <hitCount><xsl:value-of select="freq"/></hitCount>
             </properties>
         </_>
