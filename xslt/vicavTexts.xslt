@@ -6,17 +6,32 @@
   exclude-result-prefixes="#all"
   version="2.0" >
   
+  <xsl:variable name="openDictFuncToDictID" select='map{
+    "func:openDict_Damascus()": "dc_apc_eng_publ",
+    "func:openDict_Tunis()": "dc_tunico",
+    "func:openDict_Cairo()": "dc_arz_eng_publ",
+    "func:openDict_Baghdad()": "dc_acm_baghdad_eng_publ",
+    "func:openDict_MSA()": "dc_ar_eng_publ"
+  }'/>
+    
   <xsl:function name="tei:getLinkAttributes" as="attribute()+">
     <xsl:param name="target" as="xs:string"/>
     <xsl:variable name="targetSplit" as="xs:string+">
-      <xsl:analyze-string select="$target" regex="^([^:]+):([^/]+)/([^/,]+)[,/]?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?">
-        <xsl:matching-substring>
-          <xsl:sequence select="(regex-group(1), regex-group(2),regex-group(3),regex-group(5),regex-group(7),regex-group(9),regex-group(11))[. != '']"/>
-        </xsl:matching-substring>
-        <xsl:non-matching-substring>
-          <xsl:sequence select="('external-link', .)"/>
-        </xsl:non-matching-substring>
-      </xsl:analyze-string>
+      <xsl:choose>
+        <xsl:when test="starts-with($target, 'func:openDict_')">
+          <xsl:sequence select="('DictQuery', $openDictFuncToDictID($target), replace($target, 'func:openDict_([^(]+)\(.*', '$1 Dictionary Query'))"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:analyze-string select="$target" regex="^([^:]+):([^/]+)/([^/,]+)[,/]?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?">
+            <xsl:matching-substring>
+              <xsl:sequence select="(regex-group(1), regex-group(2),regex-group(3),regex-group(5),regex-group(7),regex-group(9),regex-group(11))[. != '']"/>
+            </xsl:matching-substring>
+            <xsl:non-matching-substring>
+              <xsl:sequence select="('external-link', .)"/>
+            </xsl:non-matching-substring>
+          </xsl:analyze-string>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:variable>
     <xsl:choose>
       <xsl:when test="matches($targetSplit[1], 'https?')">
