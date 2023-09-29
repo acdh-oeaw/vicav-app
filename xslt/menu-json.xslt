@@ -1,4 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs = "http://www.w3.org/2001/XMLSchema"
+    xmlns:_ = "urn:_"
     version="3.1">
 
     <xsl:output method="xml" indent="yes"/>
@@ -6,43 +8,48 @@
     <xsl:param name="baseURIPublic"/>
     
     <xsl:variable name="captionFromMenuID" select=" map{
-    'vicavArabicTools': 'ARABIC TOOLS',
-    'vicavContributeBibliography': 'CONTRIBUTE TO BIBLIOGRAPHY',
-    'vicavContributeDictionary': 'CONTRIBUTE A DICTIONARY',
-    'vicavContributeFeature': 'CONTRIBUTE A FEATURE LIST',
-    'vicavContributeProfile': 'CONTRIBUTE A PROFILE',
-    'vicavContributeSample': 'CONTRIBUTE A SAMPLE',
+    'vicavArabicTools': 'Arabic Tools',
+    'vicavContributeBibliography': 'Contribute to Bibliography',
+    'vicavContributeDictionary': 'Contribute a Dictionary',
+    'vicavContributeFeature': 'Contribute a Feature List',
+    'vicavContributeProfile': 'Contribute a Profile',
+    'vicavContributeSample': 'Contribute a Sample',
 
-    'vicavContributors': 'CONTRIBUTORS',
-    'vicavDictionaryEncoding': 'DICTIONARIES (ENCODING)',
-    'vicavDictionariesTechnicalities': 'DICTIONARIES (TECHNICALITIES)',
-    'vicavOverview_corpora_spoken': 'CORPORA OF SPOKEN ARABIC',
-    'vicavOverview_corpora_msa': 'MSA CORPORA',
-    'vicavOverview_special_corpora': 'SPECIAL CORPORA',
-    'vicavOverview_corpora_historical_varieties': 'CORPORA OF HISTORICAL LANGUAGE',
-    'vicavOverview_dictionaries': 'DICTIONARY PROJECTS',
-    'vicavOverview_nlp': 'ARABIC NLP',
-    'vicavOverview_otherStuff': 'OTHER STUFF',
-    'vicavLearning': 'LEARNING',
-    'vicavLearningTextbookDamascus': 'TEXTBOOK DAMASCUS',
-    'vicavLearningSmartphone': 'VOCABULARIES ON SMARTPHONES',
-    'vicavLearningPrograms': 'LEARNING PROGRAMS',
-    'vicavLearningData': 'LEARNING DATA',
-    'vicavKeyboards': 'KEYBOARDS',
-    'vicavVLE': 'DICTIONARY EDITOR (VLE)',
+    'vicavContributors': 'Contributors',
+    'vicavDictionaryEncoding': 'Dictionaries (Encoding)',
+    'vicavDictionariesTechnicalities': 'Dictionaries (Technicalities)',
+    'vicavOverview_corpora_spoken': 'Corpora of Spoken Arabic',
+    'vicavOverview_corpora_msa': 'MSA Corpora',
+    'vicavOverview_special_corpora': 'Special Corpora',
+    'vicavOverview_corpora_historical_varieties': 'Corpora of Historical Language',
+    'vicavOverview_dictionaries': 'Dictionary Projects',
+    'vicavOverview_nlp': 'Arabic NLP',
+    'vicavOverview_otherStuff': 'Other Websites &amp; Projects',
+    'vicavLearning': 'Learning',
+    'vicavLearningTextbookDamascus': 'Textbook Damascus',
+    'vicavLearningSmartphone': 'VOCABULARIES on Smartphones',
+    'vicavLearningPrograms': 'Learning Programs',
+    'vicavLearningData': 'Learning Data',
+    'vicavKeyboards': 'Keyboards',
+    'vicavVLE': 'Dictionary Editor (VLE)',
 
-    'vicavExplanationBibliography': 'BIBLIOGRAPHY (DETAILS)',
-    'vicavExplanationCorpusTexts': 'CORPUS TEXTS (DETAILS)',
-    'vicavExplanationFeatures': 'FEATURES (DETAILS)',
-    'vicavExplanationProfiles': 'PROFILES (DETAILS)',
-    'vicavExplanationSamples': 'SAMPLES (DETAILS)',
-    'vicavExploreFeatures': 'EXPLORE FEATURES',
+    'vicavExplanationBibliography': 'Bibliography (Details)',
+    'vicavExplanationCorpusTexts': 'Corpus Texts (Details)',
+    'vicavExplanationFeatures': 'Features (Details)',
+    'vicavExplanationProfiles': 'rofiles (Details)',
+    'vicavExplanationSamples': 'Samples (Details)',
+    'vicavExploreFeatures': 'Explore Features',
 
 
-    'vicavLinguistics': 'LINGUISTICS',
-    'vicavMission': 'MISSION',
-    'vicavNews': 'VICAV NEWS',
-    'vicavTypesOfText': 'TYPES OF TEXT'}"/>
+    'vicavLinguistics': 'Linguistics',
+    'vicavMission': 'Mission',
+    'vicavNews': 'VICAV News',
+    'vicavTypesOfText': 'Types of Text'}"/>
+    
+    <xsl:function name="_:cleanID" as="xs:string">
+      <xsl:param name="in" as="xs:string"/>
+      <xsl:value-of select="replace($in, '((sub)?[nN]av)|(li_?)', '')"/>
+    </xsl:function>
     
     <xsl:template match="/">
         <json objects="json projectConfig logo frontpage menu query map center styleSettings colors" arrays="panel param main item subnav scope" numbers="zoom lat lng"><xsl:apply-templates/></json>
@@ -88,7 +95,7 @@
               </xsl:when>
               <xsl:when test="ends-with(@xml:id, 'List')">DataList</xsl:when>
               <xsl:when test="contains(lower-case(@xml:id), 'nav')">WMap</xsl:when>
-              <xsl:when test="starts-with(@xml:id, 'liVicavDict')">DictQuery</xsl:when>
+              <xsl:when test="starts-with(@xml:id, 'liVicavDict')">Text</xsl:when>
               <xsl:when test="starts-with(@xml:id, 'li_')">Text</xsl:when>
               <xsl:when test="starts-with(@xml:id, 'liSample')">SampleText</xsl:when>
               <xsl:when test="data(@xml:id) = 'liBiblNewQuery'">BiblioQuery</xsl:when>
@@ -98,7 +105,8 @@
             </xsl:choose>
           </componentName>
           <label>
-            <xsl:value-of select="$captionFromMenuID(replace(data((@target, @xml:id)[1]),'^li_?',''))"/>
+            <xsl:variable name="caption" select="$captionFromMenuID(_:cleanID(data((@target, @xml:id)[1])))"/>
+            <xsl:value-of select="if (normalize-space($caption) eq '') then text() else $caption"/>
           </label>
           <xsl:choose>
             <xsl:when test="contains(@xml:id, 'avBiblGeoMarkers')">
@@ -173,6 +181,11 @@
         <_ type="object">
             <type>separator</type>
         </_>
+    </xsl:template>
+    
+    <xsl:template match="@xml:id|@target">
+      <id><xsl:value-of select="."/></id>
+      <target><xsl:value-of select="_:cleanID(data(.))"/></target>
     </xsl:template>
     
     <xsl:template match="icon">
