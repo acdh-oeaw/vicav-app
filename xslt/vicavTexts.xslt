@@ -6,6 +6,8 @@
   exclude-result-prefixes="#all"
   version="2.0" >
   
+  <xsl:include href="vicavIDToLabel.xslt"/>
+  
   <xsl:variable name="openDictFuncToDictID" select='map{
     "func:openDict_Damascus()": "dc_apc_eng_publ",
     "func:openDict_Tunis()": "dc_tunico",
@@ -20,6 +22,9 @@
       <xsl:choose>
         <xsl:when test="starts-with($target, 'func:openDict_')">
           <xsl:sequence select="('DictQuery', $openDictFuncToDictID($target), replace($target, 'func:openDict_([^(]+)\(.*', '$1 Dictionary Query'))"/>
+        </xsl:when>        
+        <xsl:when test="starts-with($target, 'text:')">
+          <xsl:sequence select="('Text', replace($target, '^text:', ''), $captionFromMenuID(replace($target,'^text:', '')))"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:analyze-string select="$target" regex="^([^:]+):([^/]+)/([^/,]+)[,/]?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?">
@@ -41,7 +46,7 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence>
-          <xsl:attribute name="data-target-type"><xsl:value-of select="$targetSplit[1]"/></xsl:attribute>
+          <xsl:attribute name="data-target-type"><xsl:value-of select="upper-case(substring($targetSplit[1], 1, 1))||substring($targetSplit[1], 2)"/></xsl:attribute>
           <xsl:attribute name="data-text-id"><xsl:value-of select="$targetSplit[2]"/></xsl:attribute>
           <xsl:attribute name="data-label"><xsl:value-of select="translate($targetSplit[3], '_', ' ')"/></xsl:attribute>
           <xsl:for-each select="$targetSplit[position() > 3]"><xsl:attribute name="data-query-{position()}"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>      
