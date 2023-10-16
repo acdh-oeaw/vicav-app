@@ -24,7 +24,8 @@
           <xsl:sequence select="('DictQuery', $openDictFuncToDictID($target), replace($target, 'func:openDict_([^(]+)\(.*', '$1 Dictionary Query'))"/>
         </xsl:when>        
         <xsl:when test="starts-with($target, 'text:')">
-          <xsl:sequence select="('Text', replace($target, '^text:', ''), $captionFromMenuID(replace($target,'^text:', '')))"/>
+          <xsl:sequence select="('Text', replace($target,'^text:([^/]+)(/[^/,]+)?', '$1'), $captionFromMenuID(replace($target,'^text:([^/]+)(/[^/,]+)?', '$1')))"/>
+          <!-- The part after the / is the label for the new window. We get those labels usint the lookup table.  -->
         </xsl:when>
         <xsl:otherwise>
           <xsl:analyze-string select="$target" regex="^([^:]+):([^/]+)/([^/,]+)[,/]?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?">
@@ -32,7 +33,7 @@
               <xsl:sequence select="(regex-group(1), regex-group(2),regex-group(3),regex-group(5),regex-group(7),regex-group(9),regex-group(11))[. != '']"/>
             </xsl:matching-substring>
             <xsl:non-matching-substring>
-              <xsl:sequence select="('external-link', .)"/>
+              <xsl:sequence select="('external-link')"/>
             </xsl:non-matching-substring>
           </xsl:analyze-string>
         </xsl:otherwise>
@@ -47,8 +48,12 @@
       <xsl:otherwise>
         <xsl:sequence>
           <xsl:attribute name="data-target-type"><xsl:value-of select="upper-case(substring($targetSplit[1], 1, 1))||substring($targetSplit[1], 2)"/></xsl:attribute>
-          <xsl:attribute name="data-text-id"><xsl:value-of select="$targetSplit[2]"/></xsl:attribute>
-          <xsl:attribute name="data-label"><xsl:value-of select="translate($targetSplit[3], '_', ' ')"/></xsl:attribute>
+          <xsl:if test="exists($targetSplit[2])">
+            <xsl:attribute name="data-text-id"><xsl:value-of select="$targetSplit[2]"/></xsl:attribute>
+          </xsl:if>          
+          <xsl:if test="exists($targetSplit[3])">
+            <xsl:attribute name="data-label"><xsl:value-of select="translate($targetSplit[3], '_', ' ')"/></xsl:attribute>
+          </xsl:if>
           <xsl:for-each select="$targetSplit[position() > 3]"><xsl:attribute name="data-query-{position()}"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>      
         </xsl:sequence>
       </xsl:otherwise>
