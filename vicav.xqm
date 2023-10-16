@@ -604,7 +604,7 @@ declare
 %rest:path("/vicav/text")
 %rest:query-param("id", "{$id}")
 %test:arg("id", "li_vicavMission")
-%rest:query-param("xslt", "{$xsltfn}", "vicavTexts.xslt")
+%rest:query-param("xslt", "{$xsltfn}")
 %rest:GET
 %rest:produces("application/xml")
 %rest:produces('application/problem+json')   
@@ -617,6 +617,7 @@ function vicav:get_text($id as xs:string, $xsltfn as xs:string?) {
 
 declare function vicav:_get_text($id as xs:string, $xsltfn as xs:string?) {
     let $id := replace($id, '^li_', '')
+    let $generateTeiMarker := exists($xsltfn)
     let $xsltfn := if (exists($xsltfn)) then $xsltfn else "vicavTexts.xslt" 
     let $results := collection("/vicav_texts")//tei:div[@xml:id=$id]
     let $notFound := if (not(exists($results))) then
@@ -625,7 +626,9 @@ declare function vicav:_get_text($id as xs:string, $xsltfn as xs:string?) {
          'Text with id '||$id||' does not exist') else ()
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
-    let $sHTML := xslt:transform-text($results, $style, map{'param-images-base-path': replace(util:get-base-uri-public()||'/images', '/text', '')})
+    let $sHTML := xslt:transform-text($results, $style, map{
+      'param-images-base-path': replace(util:get-base-uri-public()||'/images', '/text', ''),
+      'tei-link-marker': xs:string($generateTeiMarker)})
     return $sHTML        
 };
 

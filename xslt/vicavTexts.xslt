@@ -5,7 +5,27 @@
   xmlns:xs="http://www.w3.org/2001/XMLSchema"
   exclude-result-prefixes="#all"
   version="2.0" >
-  
+
+  <xsl:output method="html" encoding="UTF-8"/>  
+  <xsl:param name="tei-link-marker" select="'false'" as="xs:string"/>
+  <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
+  <xsl:param name="param-images-base-path">images</xsl:param>
+  <!-- we make sure that $images-base-path always has a trailing slash -->
+  <xsl:variable name="images-base-path">
+      <xsl:choose>
+          <xsl:when test="$param-images-base-path = ''"/>
+          <xsl:otherwise>
+              <xsl:choose>
+                  <xsl:when test="substring(normalize-space($param-images-base-path),string-length(normalize-space($param-images-base-path)),1) = '/'">
+                      <xsl:value-of select="$param-images-base-path"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                      <xsl:value-of select="concat($param-images-base-path,'/')"/>
+                  </xsl:otherwise>
+              </xsl:choose>
+          </xsl:otherwise>
+      </xsl:choose>
+  </xsl:variable>  
   <xsl:include href="vicavIDToLabel.xslt"/>
   
   <xsl:variable name="openDictFuncToDictID" select='map{
@@ -60,31 +80,11 @@
     </xsl:choose>
   </xsl:function>
   
-    <xsl:character-map name="a">
-       <xsl:output-character character="&lt;" string="&lt;"/>
-       <xsl:output-character character="&gt;" string="&gt;"/>
-      <xsl:output-character character="&amp;" string="&amp;"/>
-    </xsl:character-map>
-
-    <xsl:output method="html" encoding="UTF-8"/>
-  <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
-  <xsl:param name="param-images-base-path">images</xsl:param>
-  <!-- we make sure that $images-base-path always has a trailing slash -->
-    <xsl:variable name="images-base-path">
-        <xsl:choose>
-            <xsl:when test="$param-images-base-path = ''"/>
-            <xsl:otherwise>
-                <xsl:choose>
-                    <xsl:when test="substring(normalize-space($param-images-base-path),string-length(normalize-space($param-images-base-path)),1) = '/'">
-                        <xsl:value-of select="$param-images-base-path"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="concat($param-images-base-path,'/')"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
+  <xsl:character-map name="a">
+     <xsl:output-character character="&lt;" string="&lt;"/>
+     <xsl:output-character character="&gt;" string="&gt;"/>
+    <xsl:output-character character="&amp;" string="&amp;"/>
+  </xsl:character-map>
   
   <xsl:template match="/">
     <div><xsl:apply-templates/></div>
@@ -146,11 +146,20 @@
   <xsl:template match="tei:head">
     <xsl:choose>
       <xsl:when test="count(ancestor::tei:div) = 1">
-        <table class="tbHeader">
-          <tr><td><h2>
-              <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
-              <xsl:apply-templates/></h2></td><td>{teiLink}</td></tr>
-        </table>
+        <xsl:choose>
+          <xsl:when test="$tei-link-marker = 'true'">
+            <table class="tbHeader">
+              <tr><td><h2>
+                  <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+                  <xsl:apply-templates/></h2></td><td>{teiLink}</td></tr>
+            </table>
+          </xsl:when>
+          <xsl:otherwise>
+            <h2>
+                  <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+                  <xsl:apply-templates/></h2>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:when test="count(ancestor::tei:div) = 2">
         <h3>
