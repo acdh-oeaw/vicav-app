@@ -627,7 +627,7 @@ declare function vicav:_get_text($id as xs:string, $xsltfn as xs:string?) {
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
     let $sHTML := xslt:transform-text($results, $style, map{
-      'param-images-base-path': replace(util:get-base-uri-public()||'/images', '/text', ''),
+      'param-base-path': replace(util:get-base-uri-public(), '/text', ''),
       'tei-link-marker': xs:string($generateTeiMarker)})
     return $sHTML        
 };

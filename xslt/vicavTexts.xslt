@@ -9,23 +9,26 @@
   <xsl:output method="html" encoding="UTF-8"/>  
   <xsl:param name="tei-link-marker" select="'false'" as="xs:string"/>
   <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
-  <xsl:param name="param-images-base-path">images</xsl:param>
+  <xsl:param name="param-base-path">images</xsl:param>
   <!-- we make sure that $images-base-path always has a trailing slash -->
-  <xsl:variable name="images-base-path">
+  <xsl:function name="tei:concat-path" as="xs:string">
+    <xsl:param name="subdir" as="xs:string"/>
       <xsl:choose>
-          <xsl:when test="$param-images-base-path = ''"/>
+          <xsl:when test="$param-base-path = ''"/>
           <xsl:otherwise>
               <xsl:choose>
-                  <xsl:when test="substring(normalize-space($param-images-base-path),string-length(normalize-space($param-images-base-path)),1) = '/'">
-                      <xsl:value-of select="$param-images-base-path"/>
+                  <xsl:when test="$subdir = '' or substring(normalize-space($param-base-path),string-length(normalize-space($param-base-path)),1) = '/'">
+                      <xsl:value-of select="concat($param-base-path,$subdir,'/')"/>
                   </xsl:when>
                   <xsl:otherwise>
-                      <xsl:value-of select="concat($param-images-base-path,'/')"/>
+                      <xsl:value-of select="concat($param-base-path,'/',$subdir,'/')"/>
                   </xsl:otherwise>
               </xsl:choose>
           </xsl:otherwise>
-      </xsl:choose>
-  </xsl:variable>  
+      </xsl:choose>    
+  </xsl:function>
+  <xsl:variable name="images-base-path" select="tei:concat-path('images')"/>
+  <xsl:variable name="docs-base-path" select="tei:concat-path('')"/>
   <xsl:include href="vicavIDToLabel.xslt"/>
   
   <xsl:variable name="openDictFuncToDictID" select='map{
@@ -322,7 +325,7 @@
     
     <xsl:template match="tei:ref">
         <a target="_blank" class="aVicText">
-            <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
+            <xsl:attribute name="href"><xsl:value-of select="$docs-base-path||@target"/></xsl:attribute>
             <xsl:sequence select='tei:getLinkAttributes(@target)'/>
             <xsl:apply-templates/>
         </a>
