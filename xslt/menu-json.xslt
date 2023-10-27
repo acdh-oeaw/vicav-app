@@ -11,7 +11,7 @@
     
     <xsl:function name="_:cleanID" as="xs:string">
       <xsl:param name="in" as="xs:string"/>
-      <xsl:variable name="ret" select="replace($in, '((sub)?[nN]av)|(li_?)', '')"/>
+      <xsl:variable name="ret" select="replace($in, '^((sub)?[nN]av)|^(li_?)', '')"/>
       <xsl:choose>
         <xsl:when test="starts-with($ret, 'VicavDict')"><xsl:value-of select="replace($ret, 'VicavDict', 'dictFrontPage')"/></xsl:when>
         <xsl:otherwise><xsl:value-of select="$ret"/></xsl:otherwise>
