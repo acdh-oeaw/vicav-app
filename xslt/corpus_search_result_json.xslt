@@ -47,7 +47,7 @@
                         </xsl:if>
                     </xsl:for-each>
                     </xsl:variable>
-                    <xsl:value-of select="serialize($html)"/>
+                    <xsl:value-of select='serialize($html, map{"method":"html"})'/>
                 </left>
                 <kwic>
                     <xsl:variable name="html">
@@ -62,6 +62,7 @@
                     </xsl:if>
                     </xsl:variable>
                     <xsl:value-of select="serialize($html)"/>
+                    <xsl:value-of select='serialize($html, map{"method":"html"})'/>
                 </kwic>
                 <right>
                     <xsl:variable name="html">
@@ -78,6 +79,7 @@
                     </xsl:for-each>
                     </xsl:variable>
                     <xsl:value-of select="serialize($html)"/>
+                    <xsl:value-of select='serialize($html, map{"method":"html"})'/>
                 </right>
         </xsl:if>
     </xsl:function>

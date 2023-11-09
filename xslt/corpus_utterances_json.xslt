@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:acdh="http://acdh.oeaw.ac.at"
-    xmlns="http://www.w3.org/1999/xhtml" 
-    xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
+    xmlns:tei="http://www.tei-c.org/ns/1.0"
+    exclude-result-prefixes="tei acdh"
+    version="2.0">
     <xsl:preserve-space elements="span"/>
 
-    <xsl:include href="serialize-html.xslt"/>
     <xsl:param name="hits_str"/>
 
     <xsl:template match="/">
@@ -16,8 +16,8 @@
 
     <xsl:function name="acdh:render-u">
         <xsl:param name="u"/>
-        <xsl:variable name="hits" select="tokenize($hits_str, ',')" />
-
+        <xsl:variable name="hits" select="tokenize($hits_str, ',')" />        
+        <xsl:variable name="html">
         <div class="u">
             <xsl:attribute name="id" select="$u/@xml:id"/>
             <div class="xmlId">
@@ -45,6 +45,8 @@
             </xsl:for-each>
             </div>
         </div>
+        </xsl:variable>
+        <xsl:value-of select='serialize($html, map{"method":"html"})'/>
     </xsl:function>
 
     <xsl:template match="/doc">
@@ -54,7 +56,7 @@
             <_ type="object">
                 <id><xsl:value-of select="@xml:id"/></id>
                 <content>
-                    <xsl:apply-templates select="acdh:render-u(.)" mode="serialize"/>
+                    <xsl:apply-templates select="acdh:render-u(.)"/>
                 </content>
             </_>
         </xsl:for-each>
