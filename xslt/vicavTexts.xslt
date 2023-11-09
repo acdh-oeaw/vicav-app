@@ -45,9 +45,13 @@
       <xsl:choose>
         <xsl:when test="starts-with($target, 'func:openDict_')">
           <xsl:sequence select="('DictQuery', $openDictFuncToDictID($target), replace($target, 'func:openDict_([^(]+)\(.*', '$1 Dictionary Query'))"/>
-        </xsl:when>        
+        </xsl:when>
         <xsl:when test="starts-with($target, 'text:')">
           <xsl:sequence select="('Text', replace($target,'^text:([^/]+)(/[^/,]+)?', '$1'), $captionFromMenuID(replace($target,'^text:([^/]+)(/[^/,]+)?', '$1')))"/>
+          <!-- The part after the / is the label for the new window. We get those labels usint the lookup table.  -->
+        </xsl:when>
+        <xsl:when test="starts-with($target, 'corpusText:')">
+          <xsl:sequence select="('corpusText', replace($target,'^corpusText:([^/]+)(/[^/,]+)?', '$1'), replace($target,'^corpusText:([^/]+)(/[^/,]+)?', '$1'))"/>
           <!-- The part after the / is the label for the new window. We get those labels usint the lookup table.  -->
         </xsl:when>
         <xsl:otherwise>
@@ -292,7 +296,8 @@
         starts-with(@ref,'bibl:') or
         starts-with(@ref,'flashcards:') or
         starts-with(@ref,'text:') or
-        starts-with(@ref,'sample:')]">
+        starts-with(@ref,'sample:') or
+        starts-with(@ref,'corpusText:')]">
         <a class="aVicText">
             <xsl:choose>
                 <xsl:when test="contains(@ref,'showLingFeatures')">
