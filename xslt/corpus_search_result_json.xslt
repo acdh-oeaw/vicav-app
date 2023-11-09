@@ -55,7 +55,7 @@
                         <xsl:value-of select="$w" />
                     </span>
                     <xsl:if test="not($w/@join = 'right')">
-                        <span xml:space="preserve"> </span>
+                        <span xml:space="preserve">&#xa0;</span>
                     </xsl:if>
                     <xsl:if test="$w/@join = 'right' and $w/@rend='withDash'">
                         <span>-</span>
