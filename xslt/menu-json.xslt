@@ -150,6 +150,14 @@
         </_>
     </xsl:template>
     
+    <xsl:template match="@xml:id[../@target]">
+      <id><xsl:value-of select="."/></id>
+    </xsl:template>
+    
+    <xsl:template match="@target[../@xml:id]">
+      <target><xsl:value-of select="_:cleanID(data(.))"/></target>
+    </xsl:template>
+    
     <xsl:template match="@xml:id|@target">
       <id><xsl:value-of select="."/></id>
       <target><xsl:value-of select="_:cleanID(data(.))"/></target>
