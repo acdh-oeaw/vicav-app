@@ -22,64 +22,63 @@
         <xsl:param name="hit"/>
 
         <xsl:variable name="token" select="$hit/token/text()"/>
-        <xsl:variable name="w" select="$hit/tei:u/tei:w[@xml:id = $token][1]"/>
+        <xsl:variable name="w" select="$hit/tei:u/tei:w[@xml:id = $token]"/>
 
-        <xsl:if test="count($w) > 1">
-            Error: duplicate token ID <xsl:value-of select="$hit/token"/>
-        </xsl:if>
-        <xsl:if test="count($w) = 1">
-            <xsl:variable select="acdh:index-of-node($hit/tei:u/tei:w, $w)" name="word_pos"/>
-            <xsl:variable select="subsequence($hit/tei:u/tei:w, $word_pos+1, 5)" name="right"/>
-            <xsl:variable select="subsequence($hit/tei:u/tei:w, $word_pos - 5, 5)" name="left"/>
-                <!-- <xsl:attribute name="id" select="concat('corpus-w-', $hit/token)"/> -->
-                <left>
-                    <xsl:variable name="html">
-                    <xsl:for-each select="$left">
-                        <span class="w">
-                            <xsl:attribute name="id" select="@xml:id"/>
-                            <xsl:value-of select="."/>
-                        </span>
-                        <xsl:if test="not(./@join = 'right')  or following-sibling::*[1]/name() = 'pc'">
-                            <span xml:space="preserve"> </span>
-                        </xsl:if>
-                        <xsl:if test="./@join = 'right' and ./@rend='withDash'">
-                            <span>-</span>
-                        </xsl:if>
-                    </xsl:for-each>
-                    </xsl:variable>
-                    <xsl:value-of select='serialize($html, map{"method":"html"})'/>
-                </left>
-                <kwic>
-                    <xsl:variable name="html">
+        <xsl:variable select="acdh:index-of-node($hit/tei:u/tei:w, $w[1])" name="word_pos_start"/>
+        <xsl:variable select="acdh:index-of-node($hit/tei:u/tei:w, $w[last()])" name="word_pos_end"/>
+        <xsl:variable select="subsequence($hit/tei:u/tei:w, $word_pos_end+1, 5)" name="right"/>
+        <xsl:variable select="subsequence($hit/tei:u/tei:w, $word_pos_start - 5, 5)" name="left"/>
+        <!-- <xsl:attribute name="id" select="concat('corpus-w-', $hit/token)"/> -->
+        <left>
+            <xsl:variable name="html">
+                <xsl:for-each select="$left">
                     <span class="w">
-                        <xsl:value-of select="$w" />
+                        <xsl:attribute name="id" select="@xml:id"/>
+                        <xsl:value-of select="."/>
                     </span>
-                    <xsl:if test="not($w/@join = 'right')">
-                        <span xml:space="preserve">&#xa0;</span>
+                    <xsl:if test="not(./@join = 'right')  or following-sibling::*[1]/name() = 'pc'">
+                        <span xml:space="preserve"> </span>
                     </xsl:if>
-                    <xsl:if test="$w/@join = 'right' and $w/@rend='withDash'">
+                    <xsl:if test="./@join = 'right' and ./@rend='withDash'">
                         <span>-</span>
                     </xsl:if>
-                    </xsl:variable>
-                    <xsl:value-of select='serialize($html, map{"method":"html"})'/>
-                </kwic>
-                <right>
-                    <xsl:variable name="html">
-                    <xsl:for-each select="$right">
-                        <span class="w">
-                            <xsl:value-of select="."/>
-                        </span>
-                        <xsl:if test="not(./@join = 'right') or following-sibling::*[1]/name() = 'pc'">
-                            <span xml:space="preserve"> </span>
-                        </xsl:if>
-                        <xsl:if test="./@join = 'right' and ./@rend='withDash'">
-                            <span>-</span>
-                        </xsl:if>
-                    </xsl:for-each>
-                    </xsl:variable>
-                    <xsl:value-of select='serialize($html, map{"method":"html"})'/>
-                </right>
-        </xsl:if>
+                </xsl:for-each>
+            </xsl:variable>
+            <xsl:value-of select='serialize($html, map{"method":"html"})'/>
+        </left>
+        <kwic>
+            <xsl:variable name="html">
+                <xsl:for-each select="$w">
+                    <span class="w">
+                        <xsl:attribute name="id" select="@xml:id"/>
+                        <xsl:value-of select="."/>
+                    </span>
+                    <xsl:if test="not(./@join = 'right')  or following-sibling::*[1]/name() = 'pc'">
+                        <span xml:space="preserve">&#xa0;</span>
+                    </xsl:if>
+                    <xsl:if test="./@join = 'right' and ./@rend='withDash'">
+                        <span>-</span>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:variable>
+            <xsl:value-of select='serialize($html, map{"method":"html"})'/>
+        </kwic>
+        <right>
+            <xsl:variable name="html">
+                <xsl:for-each select="$right">
+                    <span class="w">
+                        <xsl:value-of select="."/>
+                    </span>
+                    <xsl:if test="not(./@join = 'right') or following-sibling::*[1]/name() = 'pc'">
+                        <span xml:space="preserve"> </span>
+                    </xsl:if>
+                    <xsl:if test="./@join = 'right' and ./@rend='withDash'">
+                        <span>-</span>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:variable>
+            <xsl:value-of select='serialize($html, map{"method":"html"})'/>
+        </right>
     </xsl:function>
 
 
