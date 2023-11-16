@@ -1539,6 +1539,13 @@ declare
 %rest:query-param("type", "{$type}")
 %rest:GET
 function vicav:get_data_list($type as xs:string*) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_data_list#1, [$type], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_data_list($type as xs:string*) {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $type := if (empty($type) or $type = '') then 'all' else $type
     let $items := if ($type = 'all') then
         for $c in ('vicav_profiles', 'vicav_samples', 'vicav_lingfeatures') return collection($c)/descendant::tei:TEI
@@ -1547,7 +1554,7 @@ function vicav:get_data_list($type as xs:string*) {
 
     let $countries := distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:country)
 
-    let $out := if (count($countries) > 1) then
+    let $out := <div>Total: {count($items)}<br/>{if (count($countries) > 1) then
         for $country in $countries
         order by $country
         let $regions := distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:country[./text() = $country]]/tei:region)
@@ -1560,11 +1567,12 @@ function vicav:get_data_list($type as xs:string*) {
         let $regions := distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:region)
         for $region in $regions
         order by $region
-             return vicav:data_list_region($type, $region, $items[./tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:region[./text() = $region]]])
+             return vicav:data_list_region($type, $region, $items[./tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:region[./text() = $region]]])}</div>
 
-    return
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <div>Total: {count($items)}<br/>{$out}</div>)
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/identity.xslt')
+    return serialize($renderedJson, map {"method": "xml"})
+    else $out
 };
 
 
@@ -1629,27 +1637,30 @@ declare
 %rest:GET
 %rest:query-param("query", "{$query}")
 %rest:query-param("print", "{$print}")
+%rest:query-param("xslt", "{$xslt}", "corpus_search_result.xslt")
 %rest:produces("application/xml")
 %rest:produces("application/json")
 %rest:produces('application/problem+json')
 %rest:produces('application/problem+xml')
-function vicav:search_corpus($query as xs:string, $print as xs:string?) {
+function vicav:search_corpus($query as xs:string, $print as xs:string?, $xslt as xs:string?) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_search_corpus#2, [$query, $print], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_search_corpus#3, [$query, $print, $xslt], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };
 
-declare function vicav:_search_corpus($query as xs:string, $print as xs:string?) {
+declare function vicav:_search_corpus($query as xs:string, $print as xs:string?, $xslt as xs:string?) {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
-
+    
+    let $query-words := tokenize($query, '\s')
+    let $query-parts := string-join(($query-words!('[word="' || encode-for-uri(.)
+        || '"]')))
 
     let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
     let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
 
     let $noske_host := $config//noskeHost,
         $request := $noske_host || '/bonito/run.cgi/first?corpname=' || vicav:get_project_name()
-        || '&amp;queryselector=cqlrow&amp;cql=[word="' || $query
-        || '"]&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=-1&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
+        || '&amp;queryselector=cqlrow&amp;cql='||$query-parts||'&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=-1&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
       , $_ := admin:write-log($request, 'INFO')
         
 
@@ -1692,7 +1703,7 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?)
         let $docId := tokenize($line/Refs/_[2], '=')[2]
         (:$docUandIds := if not((map:contains($docUandIds, $key))) then map:put($docUandIds, $key, []) else $docUandIds:)
         let $tokenId := if (count($line/Kwic/_) > 0) then
-                        $line/Kwic/_[1]/str/text()
+                        tokenize($line/Kwic/_[1]/str/text(), '\s')
                      else if (count($line/Left/_) > 0) then
                         $line/Left/_[1]/text()
                      else if (count($line/Right/_) > 0) then
@@ -1700,7 +1711,7 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?)
         let $u := collection('vicav_corpus')
           /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]         
         /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u[@xml:id = $uId]
-        return <hit u="{$uId}" doc="{$docId}">{$u}<token>{normalize-space($tokenId)}</token></hit>}</hits>
+        return <hit u="{$uId}" doc="{$docId}">{$u}{$tokenId!<token>{normalize-space(.)}</token>}</hit>}</hits>
       (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
       (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
 
@@ -1709,7 +1720,7 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?)
             let $transformedOutput := xslt:transform($hits, 'xslt/corpus_search_result_json.xslt', map{ 'query': $query})
             return serialize($transformedOutput, map {"method": "json"})
         else
-            let $out := vicav:transform($hits, 'corpus_search_result.xslt', $print, map{ 'query': $query })
+            let $out := vicav:transform($hits, $xslt, $print, map{ 'query': $query })
             return $out
 
 
