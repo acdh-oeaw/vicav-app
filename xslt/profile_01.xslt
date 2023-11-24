@@ -1,23 +1,36 @@
 <xsl:stylesheet 
    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-   xmlns="http://www.w3.org/1999/xhtml" 
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   xmlns="http://www.w3.org/1999/xhtml"
    xmlns:tei="http://www.tei-c.org/ns/1.0"
    version="2.0">
-   
-    <xsl:output method="html"/>
+ 
+    <xsl:output method="html" encoding="UTF-8"/>
+    <xsl:param name="tei-link-marker" select="'false'" as="xs:string"/>
+    <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
+    <xsl:param name="param-base-path">/vicav</xsl:param>
     <!-- we make sure that $images-base-path always has a trailing slash -->
+    <xsl:include href="concat-path-inc.xslt"/>    
+    <xsl:variable name="images-base-path" select="tei:concat-path('images')"/>
+    <xsl:variable name="docs-base-path" select="tei:concat-path('')"/>
     
     <xsl:template match="/">
                                         
         <div>
-            <table class="tbHeader">
-                <tr><td><h2><xsl:value-of select="//tei:name[@xml:lang='eng']"/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
-            </table>    
+              <xsl:choose>            
+                <xsl:when test="$tei-link-marker = 'true'">
+                  <table class="tbHeader">
+                    <tr><td><h2><xsl:value-of select="//tei:name[@xml:lang='eng']"/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
+                  </table>    
+                </xsl:when>
+                <xsl:otherwise>
+                  <h2><xsl:value-of select="//tei:name[@xml:lang='eng']"/></h2>
+                </xsl:otherwise>
+              </xsl:choose>
 
             <div class="profileHeader">
                 <div class="dvImgProfile">
-                    <img>
-                        <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure[1]/tei:graphic/@url"/></xsl:attribute>
+                    <img src="{concat($images-base-path,//tei:head/tei:figure[1]/tei:graphic/@url)}">
                     </img>
                     <xsl:if test="//tei:head/tei:figure/tei:head">
                         <div class="imgCaption">

@@ -285,21 +285,42 @@ declare function vicav:transform($doc as element(), $xsltfn as xs:string, $print
 
 declare
 %rest:path("/vicav/profile")
-%rest:query-param("coll", "{$coll}", "/vicav_profiles")
-%rest:query-param("id", "{$id}")
-%rest:query-param("xslt", "{$xsltfn}", "profile_01.xslt")
-%rest:query-param("print", "{$print}")
-
 %rest:GET
+%rest:query-param("id", "{$id}")
+%test:arg("id", "profile_amman_01")
+%rest:query-param("coll", "{$coll}", "/vicav_profiles")
+%rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("print", "{$print}")
+%rest:produces("application/xml")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
+function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:string*, $print as xs:string*) {
+  let $generateTeiMarker := exists($xsltfn)
+  let $xsltfn := if (exists($xsltfn)) then $xsltfn else "profile_01.xslt"
+  return api-problem:or_result (prof:current-ns(),
+    vicav:_get_profile#6, [$coll, $id, $xsltfn, $print, $generateTeiMarker, '/profile'], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
 
-function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:string, $print as xs:string*) {
-    let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $q := 'collection("' || $coll || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
-    let $query := $ns || $q
-    let $results := xquery:eval($query)
-    return 
-        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        vicav:transform($results, $xsltfn, $print, map{}))
+declare
+%rest:path("/vicav/ling_feature")
+%rest:GET
+%rest:query-param("id", "{$id}")
+%test:arg("id", "ling_features_baghdad")
+function vicav:get_ling_feature($id as xs:string?) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_profile#6, ['vicav_lingfeatures', $id, 'features_01.xslt', (), false(), '/ling_feature'], map:merge((cors:header(()), vicav:return_content_header())))
+};
+
+declare function vicav:_get_profile($coll as xs:string, $id as xs:string*,
+  $xsltfn as xs:string*, $print as xs:string*, $generateTeiMarker as xs:boolean,
+  $endpoint as xs:string) { 
+  vicav:transform(collection($coll || vicav:get_project_db())/descendant::tei:TEI[@xml:id=$id],
+     $xsltfn, $print, map{
+          'param-base-path': replace(util:get-base-uri-public(), $endpoint, ''),
+          'tei-link-marker': xs:string($generateTeiMarker)
+        }
+     )
 };
 
 declare

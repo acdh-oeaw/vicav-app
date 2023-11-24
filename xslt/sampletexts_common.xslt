@@ -1,11 +1,18 @@
 <xsl:stylesheet 
-xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
 xmlns="http://www.w3.org/1999/xhtml" 
 xmlns:tei="http://www.tei-c.org/ns/1.0"
 xmlns:acdh="http://acdh.oeaw.ac.at"
 version="2.0">    
-<xsl:output method="xml"/>
-
+<xsl:output method="xml" encoding="UTF-8"/>
+<xsl:param name="tei-link-marker" select="'false'" as="xs:string"/>
+<!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
+<xsl:param name="param-base-path">/vicav</xsl:param>
+<!-- we make sure that $images-base-path always has a trailing slash -->
+<xsl:include href="concat-path-inc.xslt"/>    
+<xsl:variable name="images-base-path" select="tei:concat-path('images')"/>
+<xsl:variable name="docs-base-path" select="tei:concat-path('')"/>
 <xsl:param name="highlight" select="()"></xsl:param>
     
 <xsl:template match="//tei:div[@type='sampleText']/tei:p/tei:s | //tei:div[@type='corpusText']/tei:u">

@@ -9,24 +9,9 @@
   <xsl:output method="html" encoding="UTF-8"/>  
   <xsl:param name="tei-link-marker" select="'false'" as="xs:string"/>
   <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
-  <xsl:param name="param-base-path">images</xsl:param>
+  <xsl:param name="param-base-path">/vicav</xsl:param>
   <!-- we make sure that $images-base-path always has a trailing slash -->
-  <xsl:function name="tei:concat-path" as="xs:string">
-    <xsl:param name="subdir" as="xs:string"/>
-      <xsl:choose>
-          <xsl:when test="$param-base-path = ''"/>
-          <xsl:otherwise>
-              <xsl:choose>
-                  <xsl:when test="$subdir = '' or substring(normalize-space($param-base-path),string-length(normalize-space($param-base-path)),1) = '/'">
-                      <xsl:value-of select="concat($param-base-path,$subdir,'/')"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                      <xsl:value-of select="concat($param-base-path,'/',$subdir,'/')"/>
-                  </xsl:otherwise>
-              </xsl:choose>
-          </xsl:otherwise>
-      </xsl:choose>    
-  </xsl:function>
+  <xsl:include href="concat-path-inc.xslt"/>
   <xsl:variable name="images-base-path" select="tei:concat-path('images')"/>
   <xsl:variable name="docs-base-path" select="tei:concat-path('')"/>
   <xsl:include href="vicavIDToLabel.xslt"/>
