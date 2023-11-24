@@ -5,7 +5,7 @@ describe('Profiles', function() {
 
 	    cy.get('img[alt^="Tunis"]').click({force: true})
 
-	    cy.get('img[src="images/tunis-zeituna-1988.jpg"]').should('be.visible')
+	    cy.get('img[src="http://localhost:8984/vicav/images/tunis-zeituna-1988.jpg"]').should('be.visible')
 	    cy.contains("‏تونس")    
     });
 })
