@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "chai-colors": "^1.0.1",
-    "cypress": "^10.11.0"
+    "cypress": "^12.17.4"
   },
   "scripts": {
     "cypress:open": "cypress open",
