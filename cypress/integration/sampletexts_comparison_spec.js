@@ -51,7 +51,8 @@ describe('VICAV Compare samples window', function() {
 				    })
 				});
 			});
-
+		cy.scrollTo(0, 200)
+        cy.wait(800)
 	}) 
 
 
@@ -63,6 +64,7 @@ describe('VICAV Compare samples window', function() {
 		cy.get('[data-snippetID=compare-samples-result]')
 			.contains('šrīt zūz kīlu buṛdgāna b-dīnāṛ zāda.')
 			.contains('nhāṛ li-ṯnīn baʕd il-fažr əmšīt l-is-sūq bāš nišri ʕ9am w-xu9ṛa kīma bītinžāl w-ṯūm.').should('not.exist');
+	    cy.wait(800)
 	})
 
 	it ('supports wildcards and highlights in word search', () => {
@@ -72,6 +74,7 @@ describe('VICAV Compare samples window', function() {
 		cy.scrollTo(0, 200)
 		cy.get('[data-snippetID=compare-samples-result]').contains('span', 'biḏinžǟn').should('have.css', 'color').and('be.colored', 'red')
 		cy.get('[data-snippetID=compare-samples-result]').contains('span', 'bītinžāl').should('have.css', 'color').and('be.colored', 'red')
+		cy.wait(800)
 	})
 
 	it ('supports search by gender', () => {
@@ -83,6 +86,7 @@ describe('VICAV Compare samples window', function() {
 			cy.contains('Test1/m/20').should('not.exist')
 			cy.contains('Test2/f/40')
 		})
+		cy.wait(800)
 	})
 
 	it ('supports search by age', () => {
@@ -94,6 +98,7 @@ describe('VICAV Compare samples window', function() {
 			cy.contains('Test2/f/40').should('not.exist')
 			cy.contains('Test1/m/20')
 		})
+		cy.wait(800)
 	})
 
 })
