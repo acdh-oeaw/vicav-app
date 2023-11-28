@@ -377,7 +377,7 @@ function changePanelVisibility(panel, type, expand)   {
     var currentURL = window.location.toString();
     var args = currentURL.split('#');
     var baseUrl = args[0];
-    var args = args[1].split('&');
+    var args = (args[1] || '').split('&');
 
     if (type == 'minimize' || type == 'maximize') {
         if (type == 'minimize') {

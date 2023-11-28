@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "chai-colors": "^1.0.1",
-    "cypress": "^4.12.1"
+    "cypress": "^13.6.0"
   },
   "scripts": {
     "cypress:open": "cypress open",
@@ -47,7 +47,7 @@
     "saxon": "11.3"
   },
   "basex": {
-      "parallel": "128",
-      "gzip": "true"
+    "parallel": "128",
+    "gzip": "true"
   }
 }
