@@ -7,17 +7,15 @@
  
     <xsl:output method="html" encoding="UTF-8"/>
     <xsl:param name="tei-link-marker" select="'false'" as="xs:string"/>
-    <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
-    <xsl:param name="param-base-path">/vicav</xsl:param>
-    <!-- we make sure that $images-base-path always has a trailing slash -->
-    <xsl:include href="concat-path-inc.xslt"/>    
+    <xsl:include href="concat-path-inc.xslt"/>
+    <xsl:include href="getLinkAttributes.xslt"/>
     <xsl:variable name="images-base-path" select="tei:concat-path('images')"/>
     <xsl:variable name="docs-base-path" select="tei:concat-path('')"/>
     
     <xsl:template match="/">
                                         
         <div>
-              <xsl:choose>            
+              <xsl:choose>
                 <xsl:when test="$tei-link-marker = 'true'">
                   <table class="tbHeader">
                     <tr><td><h2><xsl:value-of select="//tei:name[@xml:lang='eng']"/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
@@ -93,14 +91,22 @@
                         <td class="tdHead">Geo location</td>
                         <td class="tdProfileTableRight">
                             <i>
-                                <xsl:analyze-string select="//tei:div[@type='positioning']/tei:p" regex="[\d\.]+">
-                                    <xsl:matching-substring>
-                                        <xsl:value-of select="substring(., 1, 6)"/>
-                                    </xsl:matching-substring>
-                                    <xsl:non-matching-substring>
-                                        <xsl:value-of select="', '"/>
-                                    </xsl:non-matching-substring>
-                                </xsl:analyze-string>
+                                <xsl:variable name="geo" select="xs:string(//tei:div[@type='positioning']/tei:p)"/>
+                                <xsl:choose>                                   
+                                    <xsl:when test="matches($geo, '^\s*\d+°')">
+                                       <xsl:value-of select="$geo"/> 
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:analyze-string select="$geo" regex="[\d\.]+">
+                                            <xsl:matching-substring>
+                                                <xsl:value-of select="substring(., 1, 6)"/>
+                                            </xsl:matching-substring>
+                                            <xsl:non-matching-substring>
+                                                <xsl:value-of select="', '"/>
+                                            </xsl:non-matching-substring>
+                                        </xsl:analyze-string>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </i>
                         </td>
                     </tr>
@@ -185,7 +191,7 @@
 
     <xsl:template match="tei:div[@type='positioning']"/>
     
-    <xsl:template match="tei:div[@type and not(./tei:head)]">
+    <xsl:template match="tei:div[@type and not(./tei:head)]" priority="-1">
         <xsl:choose>
             <xsl:when test="@type='lingFeatures'">
                 <div class="h3Profile">Linguistic Features</div>
@@ -332,6 +338,7 @@
     <xsl:template match="tei:ref[starts-with(@target,'http')]">
         <a target="_blank" class="aVicText">      
             <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
+            <xsl:sequence select='tei:getLinkAttributes(@target)'/>
             <xsl:apply-templates/>
         </a>
     </xsl:template>
@@ -376,7 +383,8 @@
         starts-with(@ref,'text:') or
         starts-with(@ref,'sample:')]">
         <a class="aVicText">
-            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@ref"/>")</xsl:attribute>
+            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@ref"/>")</xsl:attribute>            
+            <xsl:sequence select='tei:getLinkAttributes(@ref)'/>
             <xsl:apply-templates/>          
         </a>
     </xsl:template>
@@ -391,7 +399,8 @@
         starts-with(@target,'text:') or
         starts-with(@target,'sample:')]">
         <a class="aVicText">
-            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@target"/>")</xsl:attribute>
+            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@target"/>")</xsl:attribute>            
+            <xsl:sequence select='tei:getLinkAttributes(@target)'/>
             <xsl:apply-templates/>          
         </a>
     </xsl:template>
