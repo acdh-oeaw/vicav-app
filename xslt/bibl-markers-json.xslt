@@ -14,6 +14,9 @@
         </xd:desc>
     </xd:doc>
     
+    <xsl:param name="target-type" as="xs:string?" select='()'/>
+    <xsl:param name="current-query" as="xs:string?" select='()'/>
+    
     <xsl:template match="/">
         <json objects="geometry properties" arrays="json coordinates" numbers="hitCount">
           <xsl:apply-templates select=".//r"/>
@@ -56,6 +59,15 @@
                 <alt><xsl:value-of select="alt"/></alt>
                 </xsl:if>
                 <hitCount><xsl:value-of select="freq"/></hitCount>
+                <xsl:if test="exists(@xml:id)">
+                    <text-id><xsl:value-of select="@xml:id"/></text-id>
+                </xsl:if>
+                <xsl:if test="exists($target-type)">
+                    <target-type><xsl:value-of select="$target-type"/></target-type>
+                </xsl:if>
+                <xsl:if test="exists($current-query)">
+                    <query><xsl:value-of select="$current-query||'+'||(locName, alt)[1]"/></query>
+                </xsl:if>
             </properties>
         </_>
     </xsl:template>

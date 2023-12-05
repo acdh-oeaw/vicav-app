@@ -1085,6 +1085,7 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string+) {
 
 declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:string+) {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+    let $current-query := $query
     let $queries := tokenize($query, '\+')
     let $qs :=
         for $query in $queries
@@ -1206,7 +1207,10 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
     (:else  ():)
         
     return if (matches($accept-header, '[+/]json'))
-    then let $renderedJson := xslt:transform(<_>{$out2}</_>, 'xslt/bibl-markers-json.xslt')
+    then let $renderedJson := xslt:transform(<_>{$out2}</_>, 'xslt/bibl-markers-json.xslt', map{
+      "target-type": "Bibl",
+      "current-query": $current-query
+    })
     return serialize($renderedJson, map {"method": "json"})
     else <rs type="{count($out2)}">{$out2}</rs>
         (: <res>{$out}</res> :)
@@ -1251,7 +1255,9 @@ declare function vicav:_get_profile_markers() {
         )
     
     return if (matches($accept-header, '[+/]json'))
-    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt')
+    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt', map{
+      "target-type": "Profile"
+    })
     return serialize($renderedJson, map {"method": "json"})
     else <rs>{$out}</rs>
 };
