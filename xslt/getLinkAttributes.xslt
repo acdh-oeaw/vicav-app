@@ -17,8 +17,19 @@
     <xsl:param name="target" as="xs:string"/>
     <xsl:variable name="targetSplit" as="xs:string+">
       <xsl:choose>
+        <xsl:when test="starts-with($target, 'func:createNewQueryBiblioPanel')">
+          <xsl:sequence select="('Bibl')"/>
+        </xsl:when>
         <xsl:when test="starts-with($target, 'func:openDict_')">
           <xsl:sequence select="('DictQuery', $openDictFuncToDictID($target), replace($target, 'func:openDict_([^(]+)\(.*', '$1 Dictionary Query'))"/>
+        </xsl:when>
+        <xsl:when test="starts-with($target, 'bibl:')">
+          <xsl:sequence select="('Bibl', '', replace($target,'^bibl:([^/]+)(/[^/,]+)?', '$1'), replace($target,'^bibl:([^/]+)(/[^/,]+)?', '$1'))"/>
+          <!-- The part after the / is the label for the new window. We get those labels usint the lookup table.  -->
+        </xsl:when>
+        <xsl:when test="starts-with($target, 'mapMarkers:')">
+          <xsl:sequence select="('WMap', 'bibl_markers_tei', replace($target,'^mapMarkers:([^/]+)(/[^/,]+)?', '$1')), replace($target,'^mapMarkers:([^/]+)(/[^/,]+)?', '$1')"/>
+          <!-- The part after the / is the label for the new window. We get those labels usint the lookup table.  -->
         </xsl:when>
         <xsl:when test="starts-with($target, 'text:')">
           <xsl:sequence select="('Text', replace($target,'^text:([^/]+)(/[^/,]+)?', '$1'), $captionFromMenuID(replace($target,'^text:([^/]+)(/[^/,]+)?', '$1')))"/>
@@ -48,11 +59,15 @@
       </xsl:when>
       <xsl:otherwise>
         <xsl:sequence>
-          <xsl:attribute name="data-target-type"><xsl:value-of select="upper-case(substring($targetSplit[1], 1, 1))||substring($targetSplit[1], 2)"/></xsl:attribute>
-          <xsl:if test="exists($targetSplit[2])">
+          <xsl:variable name="target-type" select="upper-case(substring($targetSplit[1], 1, 1))||substring($targetSplit[1], 2)"/>
+          <xsl:attribute name="data-target-type"><xsl:value-of select="$target-type"/></xsl:attribute>
+          <xsl:if test="exists($targetSplit[2]) and $targetSplit[2] != '' and $target-type != 'WMap'">
             <xsl:attribute name="data-text-id"><xsl:value-of select="$targetSplit[2]"/></xsl:attribute>
+          </xsl:if>
+          <xsl:if test="exists($targetSplit[2]) and $target-type = 'WMap'">
+            <xsl:attribute name="data-endpoint"><xsl:value-of select="$targetSplit[2]"/></xsl:attribute>
           </xsl:if>          
-          <xsl:if test="exists($targetSplit[3])">
+          <xsl:if test="exists($targetSplit[3]) and $target-type != 'WMap'">
             <xsl:attribute name="data-label"><xsl:value-of select="translate($targetSplit[3], '_', ' ')"/></xsl:attribute>
           </xsl:if>
           <xsl:for-each select="$targetSplit[position() > 3]"><xsl:attribute name="data-query-{position()}"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>      
