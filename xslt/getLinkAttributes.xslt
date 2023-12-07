@@ -18,13 +18,13 @@
     <xsl:variable name="targetSplit" as="xs:string+">
       <xsl:choose>
         <xsl:when test="starts-with($target, 'func:createNewQueryBiblioPanel')">
-          <xsl:sequence select="('Bibl')"/>
+          <xsl:sequence select="('BiblioEntries')"/>
         </xsl:when>
         <xsl:when test="starts-with($target, 'func:openDict_')">
           <xsl:sequence select="('DictQuery', $openDictFuncToDictID($target), replace($target, 'func:openDict_([^(]+)\(.*', '$1 Dictionary Query'))"/>
         </xsl:when>
         <xsl:when test="starts-with($target, 'bibl:')">
-          <xsl:sequence select="('Bibl', '', replace($target,'^bibl:([^/]+)(/[^/,]+)?', '$1'), replace($target,'^bibl:([^/]+)(/[^/,]+)?', '$1'))"/>
+          <xsl:sequence select="('BiblioEntries', '', replace($target,'^bibl:([^/]+)(/[^/,]+)?', '$1'), replace($target,'^bibl:([^/]+)(/[^/,]+)?', '$1'))"/>
           <!-- The part after the / is the label for the new window. We get those labels usint the lookup table.  -->
         </xsl:when>
         <xsl:when test="starts-with($target, 'mapMarkers:')">
