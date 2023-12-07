@@ -28,9 +28,9 @@
 
             <div class="profileHeader">
                 <div class="dvImgProfile">
-                    <img src="{concat($images-base-path,//tei:head/tei:figure[1]/tei:graphic/@url)}">
-                    </img>
                     <xsl:if test="//tei:head/tei:figure/tei:head">
+                        <img src="{concat($images-base-path,//tei:head/tei:figure[1]/tei:graphic/@url)}">
+                        </img>
                         <div class="imgCaption">
                             <xsl:apply-templates select="//tei:head/tei:figure[1]/tei:head"/>
                         </div>                                           
