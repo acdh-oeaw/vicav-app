@@ -175,9 +175,20 @@ declare
 %rest:path("/vicav/biblio_tei")
 %rest:query-param("query", "{$query}")
 %rest:query-param("xslt", "{$xsltfn}")
+%test:arg("query", "Skoura")
+%rest:produces("application/xml")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
 %rest:GET
+function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string?) {
+  let $oldUI := exists($xsltfn)
+  let $xsltfn := if (exists($xsltfn)) then $xsltfn else "biblio_tei_01.xslt"
+  return api-problem:or_result (prof:current-ns(),
+    vicav:_query_biblio_tei#2, [$query, $xsltfn], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
 
-function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
+declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
     let $queries := tokenize($query, '\+')
     let $qs :=
     for $query in $queries     
@@ -227,10 +238,7 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
         num="{$num}">{$results}</results>
     let $sHTML := xslt:transform-text($results, $style)
     return
-        (: <r>{$sHTML}</r> :)
-        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        $sHTML)
-        (: <r>{$query2}</r> :)
+        $sHTML
 };
 
 declare
