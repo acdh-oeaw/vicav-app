@@ -52,7 +52,7 @@
           <xsl:apply-templates select="@* except @type"/>
           <title><xsl:value-of select="text()"/></title>
           <type><xsl:value-of select="local-name()"/></type>
-          <componentName>
+          <targetType>
             <xsl:choose>
               <xsl:when test="@type">
                 <xsl:choose>
@@ -67,10 +67,10 @@
               <xsl:when test="starts-with(@xml:id, 'liSample')">SampleText</xsl:when>
               <xsl:when test="data(@xml:id) = 'liBiblNewQuery'">BiblioQuery</xsl:when>
               <xsl:when test="data(@xml:id) = 'liVicavCrossDictQuery'">CrossDictQuery</xsl:when>
-              <xsl:when test="@componentName"><xsl:value-of select="@componentName"/></xsl:when>
+              <xsl:when test="@targetType"><xsl:value-of select="@targetType"/></xsl:when>
               <xsl:otherwise>UnknownTypeWarning</xsl:otherwise>
             </xsl:choose>
-          </componentName>
+          </targetType>
           <label>
             <xsl:variable name="caption" select="$captionFromMenuID(_:cleanID(data((@target, @xml:id)[1])))"/>
             <xsl:value-of select="if (normalize-space($caption) eq '') then text() else $caption"/>
