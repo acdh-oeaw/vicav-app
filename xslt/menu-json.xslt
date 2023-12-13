@@ -65,7 +65,7 @@
               <xsl:when test="starts-with(@xml:id, 'liVicavDict')">Text</xsl:when>
               <xsl:when test="starts-with(@xml:id, 'li_')">Text</xsl:when>
               <xsl:when test="starts-with(@xml:id, 'liSample')">SampleText</xsl:when>
-              <xsl:when test="data(@xml:id) = 'liBiblNewQuery'">BiblioQuery</xsl:when>
+              <xsl:when test="data(@xml:id) = 'liBiblNewQuery'">BiblioEntries</xsl:when>
               <xsl:when test="data(@xml:id) = 'liVicavCrossDictQuery'">CrossDictQuery</xsl:when>
               <xsl:when test="@targetType"><xsl:value-of select="@targetType"/></xsl:when>
               <xsl:otherwise>UnknownTypeWarning</xsl:otherwise>
