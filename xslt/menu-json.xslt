@@ -77,67 +77,67 @@
           </label>
           <xsl:choose>
             <xsl:when test="contains(@xml:id, 'avBiblGeoMarkers')">
-              <queryString>
+              <query>
                 <endpoint>bibl_markers_tei</endpoint>
                 <queryString type="string">.*</queryString>
                 <scope><_>geo</_></scope>
-              </queryString>              
+              </query>              
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avBiblRegMarkers')">
-              <queryString>
+              <query>
                 <endpoint>bibl_markers_tei</endpoint>
                 <queryString type="string">.*</queryString>
                 <scope><_>reg</_></scope>
-              </queryString>
+              </query>
             </xsl:when>            
             <xsl:when test="contains(@xml:id, 'avBiblDiaGroupMarkers')">
-              <queryString>
+              <query>
                 <endpoint>bibl_markers_tei</endpoint>                
                 <queryString type="string">This feature is unused at the moment</queryString>                
                 <scope><_>diaGroup</_></scope>
-              </queryString>
+              </query>
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avDictGeoRegMarkers')">
-              <queryString>
+              <query>
                 <endpoint>bibl_markers_tei</endpoint>
                 <queryString type="string">vt:dictionary</queryString>
                 <scope><_>geo</_><_>reg</_></scope>
-              </queryString>
+              </query>
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avTextbookGeoRegMarkers')">
-              <queryString>
+              <query>
                 <endpoint>bibl_markers_tei</endpoint>
                 <queryString type="string">vt:textbook</queryString>
                 <scope><_>geo</_><_>reg</_></scope>
-              </queryString>
+              </query>
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avProfilesGeoRegMarkers')">
-              <queryString>
+              <query>
                 <endpoint>profile_markers</endpoint>
                 <queryString type="string"></queryString>
                 <scope></scope>
-              </queryString>
+              </query>
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avFeaturesGeoRegMarkers')">
-              <queryString>
+              <query>
                 <endpoint>feature_markers</endpoint>
                 <queryString type="string"></queryString>
                 <scope></scope>
-              </queryString>
+              </query>
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avSamplesGeoRegMarkers')">
-              <queryString>
+              <query>
                 <endpoint>sample_markers</endpoint>
                 <queryString type="string"></queryString>
                 <scope></scope>
-              </queryString>
+              </query>
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avVicavDictMarkers')">
-              <queryString>
+              <query>
                 <endpoint>dict_markers</endpoint>
                 <queryString type="string"></queryString>
                 <scope></scope>
-              </queryString>
+              </query>
             </xsl:when>
             <xsl:otherwise/>
           </xsl:choose>
