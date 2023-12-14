@@ -14,7 +14,7 @@
   }'/>
     
   <xsl:function name="tei:getLinkAttributes" as="attribute()+">
-    <xsl:param name="target" as="xs:string"/>
+    <xsl:param name="target" as="attribute()"/>
     <xsl:variable name="targetSplit" as="xs:string+">
       <xsl:choose>
         <xsl:when test="starts-with($target, 'func:createNewQueryBiblioPanel')">
@@ -23,21 +23,24 @@
         <xsl:when test="starts-with($target, 'func:openDict_')">
           <xsl:sequence select="('DictQuery', $openDictFuncToDictID($target), replace($target, 'func:openDict_([^(]+)\(.*', '$1 Dictionary Query'))"/>
         </xsl:when>
+        <xsl:when test="starts-with($target, 'zotid:')">
+          <xsl:sequence select="('BiblioEntries', '', $target/../text(), $target)"/>
+        </xsl:when>
         <xsl:when test="starts-with($target, 'bibl:')">
           <xsl:sequence select="('BiblioEntries', '', replace($target,'^bibl:([^/]+)(/[^/,]+)?', '$1'), replace($target,'^bibl:([^/]+)(/[^/,]+)?', '$1'))"/>
-          <!-- The part after the / is the label for the new window. We get those labels usint the lookup table.  -->
+          <!-- The part after the / is the label for the new window. We get those labels using the lookup table.  -->
         </xsl:when>
         <xsl:when test="starts-with($target, 'mapMarkers:')">
           <xsl:sequence select="('WMap', 'bibl_markers_tei', replace($target,'^mapMarkers:([^/]+)(/[^/,]+)?', '$1')), replace($target,'^mapMarkers:([^/]+)(/[^/,]+)?', '$1')"/>
-          <!-- The part after the / is the label for the new window. We get those labels usint the lookup table.  -->
+          <!-- The part after the / is the label for the new window. We get those labels using the lookup table.  -->
         </xsl:when>
         <xsl:when test="starts-with($target, 'text:')">
           <xsl:sequence select="('Text', replace($target,'^text:([^/]+)(/[^/,]+)?', '$1'), $captionFromMenuID(replace($target,'^text:([^/]+)(/[^/,]+)?', '$1')))"/>
-          <!-- The part after the / is the label for the new window. We get those labels usint the lookup table.  -->
+          <!-- The part after the / is the label for the new window. We get those labels using the lookup table.  -->
         </xsl:when>
         <xsl:when test="starts-with($target, 'corpusText:')">
           <xsl:sequence select="('corpusText', replace($target,'^corpusText:([^/]+)(/[^/,]+)?', '$1'), replace($target,'^corpusText:([^/]+)(/[^/,]+)?', '$1'))"/>
-          <!-- The part after the / is the label for the new window. We get those labels usint the lookup table.  -->
+          <!-- The part after the / is the label for the new window. We get those labels using the lookup table.  -->
         </xsl:when>
         <xsl:otherwise>
           <xsl:analyze-string select="$target" regex="^([^:]+):([^/]+)/([^/,]+)[,/]?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?(([^/,]+)[,/]?)?">
@@ -70,7 +73,10 @@
           <xsl:if test="exists($targetSplit[3]) and $target-type != 'WMap'">
             <xsl:attribute name="data-label"><xsl:value-of select="translate($targetSplit[3], '_', ' ')"/></xsl:attribute>
           </xsl:if>
-          <xsl:for-each select="$targetSplit[position() > 3]"><xsl:attribute name="data-query-{position()}"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>      
+          <xsl:if test="exists($targetSplit[4])">
+            <xsl:attribute name="data-query-string"><xsl:value-of select="$targetSplit[4]"/></xsl:attribute>
+          </xsl:if>
+          <xsl:for-each select="$targetSplit[position() > 4]"><xsl:attribute name="data-query-string-{position() + 1}"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>      
         </xsl:sequence>
       </xsl:otherwise>
     </xsl:choose>
