@@ -181,14 +181,14 @@ declare
 %rest:produces('application/problem+xml')
 %rest:GET
 function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string?) {
-  let $oldUI := exists($xsltfn)
-  let $xsltfn := if (exists($xsltfn)) then $xsltfn else "biblio_tei_01.xslt"
+  let $generateQuery := not(empty($xsltfn))
+  let $xsltfn := if (empty($xsltfn)) then "biblio_tei_01.xslt" else $xsltfn
   return api-problem:or_result (prof:current-ns(),
-    vicav:_query_biblio_tei#2, [$query, $xsltfn], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_query_biblio_tei#3, [$query, $xsltfn, $generateQuery], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };
 
-declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
+declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:string, $generateQuery as xs:boolean) {
     let $queries := tokenize($query, '\+')
     let $qs :=
     for $query in $queries     
@@ -230,15 +230,16 @@ declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:str
     let $query2 := $ns || $q
     let $results := xquery:eval($query2)
     
-    let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
-    let $style := doc($stylePath)
     let $num := count($results)
     
     let $results := <results
         num="{$num}">{$results}</results>
-    let $sHTML := xslt:transform-text($results, $style)
+    let $sHTML := vicav:transform($results, $xsltfn, (), map{
+      'generateQuery': xs:string($generateQuery)
+    })
     return
-        $sHTML
+      $sHTML
+        
 };
 
 declare
