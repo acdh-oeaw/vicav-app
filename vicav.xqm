@@ -207,6 +207,8 @@ declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:str
            '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else if (contains($query, 'prj:')) then
            '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+        else if (starts-with($query, 'zotid:')) then
+           '[@corresp = "http://zotero.org/groups/2165756/items/' || substring-after($query, ':') ||'"]'
         else
            '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'  
     
