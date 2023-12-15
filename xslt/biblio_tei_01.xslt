@@ -9,7 +9,7 @@
     <xsl:output method="xml"/>    
     <xsl:param name="generateQuery" select="'true'" as="xs:string"/>
     <xsl:template match="/">        
-        <div data-generate-query="{$generateQuery}">
+        <div>
            <xsl:if test="$generateQuery = 'true'">
            <div class="dvStats">
               Query:  <span class="spQueryText">{query}</span>
