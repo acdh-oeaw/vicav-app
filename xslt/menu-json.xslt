@@ -19,7 +19,7 @@
     </xsl:function>
     
     <xsl:template match="/">
-        <json objects="json projectConfig logo frontpage menu query map center styleSettings colors" arrays="panel param main item subnav scope" numbers="zoom lat lng"><xsl:apply-templates/></json>
+        <json objects="json projectConfig logo frontpage menu params map center styleSettings colors" arrays="panel param main item subnav scope" numbers="zoom lat lng"><xsl:apply-templates/></json>
     </xsl:template>
     
     <xsl:template match="text()[parent::logo]">
@@ -77,69 +77,74 @@
           </label>
           <xsl:choose>
             <xsl:when test="contains(@xml:id, 'avBiblGeoMarkers')">
-              <query>
+              <params>
                 <endpoint>bibl_markers_tei</endpoint>
                 <queryString type="string">.*</queryString>
                 <scope><_>geo</_></scope>
-              </query>              
+              </params>              
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avBiblRegMarkers')">
-              <query>
+              <params>
                 <endpoint>bibl_markers_tei</endpoint>
                 <queryString type="string">.*</queryString>
                 <scope><_>reg</_></scope>
-              </query>
+              </params>
             </xsl:when>            
             <xsl:when test="contains(@xml:id, 'avBiblDiaGroupMarkers')">
-              <query>
+              <params>
                 <endpoint>bibl_markers_tei</endpoint>                
                 <queryString type="string">This feature is unused at the moment</queryString>                
                 <scope><_>diaGroup</_></scope>
-              </query>
+              </params>
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avDictGeoRegMarkers')">
-              <query>
+              <params>
                 <endpoint>bibl_markers_tei</endpoint>
                 <queryString type="string">vt:dictionary</queryString>
                 <scope><_>geo</_><_>reg</_></scope>
-              </query>
+              </params>
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avTextbookGeoRegMarkers')">
-              <query>
+              <params>
                 <endpoint>bibl_markers_tei</endpoint>
                 <queryString type="string">vt:textbook</queryString>
                 <scope><_>geo</_><_>reg</_></scope>
-              </query>
+              </params>
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avProfilesGeoRegMarkers')">
-              <query>
+              <params>
                 <endpoint>profile_markers</endpoint>
                 <queryString type="string"></queryString>
                 <scope></scope>
-              </query>
+              </params>
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avFeaturesGeoRegMarkers')">
-              <query>
+              <params>
                 <endpoint>feature_markers</endpoint>
                 <queryString type="string"></queryString>
                 <scope></scope>
-              </query>
+              </params>
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avSamplesGeoRegMarkers')">
-              <query>
+              <params>
                 <endpoint>sample_markers</endpoint>
                 <queryString type="string"></queryString>
                 <scope></scope>
-              </query>
+              </params>
             </xsl:when>
             <xsl:when test="contains(@xml:id, 'avVicavDictMarkers')">
-              <query>
+              <params>
                 <endpoint>dict_markers</endpoint>
                 <queryString type="string"></queryString>
                 <scope></scope>
-              </query>
+              </params>
             </xsl:when>
-            <xsl:otherwise/>
+            <xsl:otherwise>
+              <params>
+                <textId><xsl:value-of select="_:cleanID(data((@target,@xml:id)[1]))"/></textId>
+                <teiSource>https://github.com/acdh-oeaw/vicav-content</teiSource>
+              </params>
+            </xsl:otherwise>
           </xsl:choose>
         </_>
     </xsl:template>
