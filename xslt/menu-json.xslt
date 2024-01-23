@@ -6,6 +6,7 @@
     <xsl:output method="xml" indent="yes"/>
     
     <xsl:param name="baseURIPublic"/>
+    <xsl:param name="teiSource">https://github.com/acdh-oeaw/vicav-content</xsl:param>
   
     <xsl:include href="vicavIDToLabel.xslt"/>
     
@@ -139,10 +140,15 @@
                 <scope></scope>
               </params>
             </xsl:when>
+            <xsl:when test="contains(@xml:id, 'liBiblNewQuery')">
+              <params>
+                <queryString type="string"></queryString>
+              </params>
+            </xsl:when>
             <xsl:otherwise>
               <params>
                 <textId><xsl:value-of select="_:cleanID(data((@target,@xml:id)[1]))"/></textId>
-                <teiSource>https://github.com/acdh-oeaw/vicav-content</teiSource>
+                <teiSource><xsl:value-of select="$teiSource"/></teiSource>
               </params>
             </xsl:otherwise>
           </xsl:choose>
