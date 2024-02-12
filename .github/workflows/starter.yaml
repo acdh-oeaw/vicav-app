@@ -139,6 +139,19 @@ jobs:
       default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+  _1-wibarab:
+    needs: [setup_workflow_env]
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
+    secrets: inherit
+# if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
+    with:
+      environment: ${{ needs.setup_workflow_env.outputs.environment}}-wibarab
+      BUILDPACK_URL: ${{ needs.setup_workflow_env.outputs.BUILDPACK_URL }}
+      registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
+      image_tagged: ${{ needs.setup_workflow_env.outputs.image_tagged }}-wibarab
+      default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
+      submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _2:
     needs: [setup_workflow_env]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/herokuish-tests-db-url.yaml@main
@@ -192,6 +205,21 @@ jobs:
       environment: ${{ needs.setup_workflow_env.outputs.environment}}-shawi
       DOCKER_TAG: ${{ needs.setup_workflow_env.outputs.registry_root }}${{ needs.setup_workflow_env.outputs.image_tagged }}-shawi
       APP_NAME: shawi-app-${{ needs.setup_workflow_env.outputs.environment_short }}
+      APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
+      SERVICE_ID: ${{ needs.setup_workflow_env.outputs.SERVICE_ID }}
+      PUBLIC_URL: ${{ needs.generate_workflow_vars.outputs.PUBLIC_URL }}
+      POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
+      default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
+      submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+  _3-wibarab:
+    needs: [setup_workflow_env, generate_workflow_vars-shawi, _1-shawi, _2]
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy-cluster-2.yml@main
+    secrets: inherit
+    with:
+      environment: ${{ needs.setup_workflow_env.outputs.environment}}-wibarab
+      DOCKER_TAG: ${{ needs.setup_workflow_env.outputs.registry_root }}${{ needs.setup_workflow_env.outputs.image_tagged }}-wibarab
+      APP_NAME: wibarab-app-${{ needs.setup_workflow_env.outputs.environment_short }}
       APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
       SERVICE_ID: ${{ needs.setup_workflow_env.outputs.SERVICE_ID }}
       PUBLIC_URL: ${{ needs.generate_workflow_vars.outputs.PUBLIC_URL }}
