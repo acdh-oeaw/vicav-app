@@ -233,7 +233,7 @@ jobs:
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _3-wibarab:
-    needs: [setup_workflow_env, generate_workflow_vars-wibarab, _1-shawi, _2]
+    needs: [setup_workflow_env, generate_workflow_vars-wibarab, _1-wibarab, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy-cluster-2.yml@main
     secrets: inherit
     with:
