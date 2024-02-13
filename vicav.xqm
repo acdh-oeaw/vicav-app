@@ -120,12 +120,18 @@ function vicav:_project_config() {
     let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
     let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
     return if (matches($accept-header, '[+/]json'))
-    then let $renderedJson := xslt:transform($config, 'xslt/menu-json.xslt', map{'baseURIPublic': replace(util:get-base-uri-public(), '/project', '')})
-    return serialize($renderedJson, map {"method": "json"})
+    then 
+      let $renderedJson := xslt:transform($config, 'xslt/menu-json.xslt', map{'baseURIPublic': replace(util:get-base-uri-public(), '/project', '')})
+      return serialize($renderedJson update {
+        .//insert_variety_data!(replace node . with vicav:get_variety_data())
+      }, map {"method": "json"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
       return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
 };
 
+declare function vicav:get_variety_data() {
+  <_ type="object">{collection("wibarab_varieties")//json/*}</_>
+};
 
 declare
 %rest:path("/vicav/biblio")
