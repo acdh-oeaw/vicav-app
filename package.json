@@ -40,11 +40,11 @@
   },
   "homepage": "https://github.com/acdh-oeaw/vicav-app#readme",
   "engines": {
-    "node": "18.x",
+    "node": "20.x",
     "npm": "9.5.x",
     "jvm": "17",
-    "basex": "9.7.3",
-    "saxon": "11.3"
+    "basex": "10.2.4",
+    "saxon": "12.4"
   },
   "basex": {
     "parallel": "128",
