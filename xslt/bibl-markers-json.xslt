@@ -60,10 +60,10 @@
                 </xsl:if>
                 <hitCount><xsl:value-of select="freq"/></hitCount>
                 <xsl:if test="exists(@xml:id)">
-                    <text-id><xsl:value-of select="@xml:id"/></text-id>
+                    <textId><xsl:value-of select="@xml:id"/></textId>
                 </xsl:if>
                 <xsl:if test="exists($target-type)">
-                    <target-type><xsl:value-of select="$target-type"/></target-type>
+                    <targetType><xsl:value-of select="$target-type"/></targetType>
                 </xsl:if>
                 <xsl:if test="exists($current-query)">
                     <query><xsl:value-of select="$current-query||'+'||(locName, alt)[1]"/></query>
