@@ -349,9 +349,11 @@ declare
 
 %rest:GET
 
-function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:string, $print as xs:string*) {
+function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:string*, $print as xs:string*) {
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $q := 'collection("' || $coll || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
+    let $xsltfn := if (exists($xsltfn)) then $xsltfn else "sampletext_01.xslt"
+
+    let $q := 'collection("/vicav_samples' || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
     let $query := $ns || $q
     let $results := xquery:eval($query)
     return 
@@ -1354,7 +1356,9 @@ declare function vicav:_get_sample_markers() {
             else ()
     
     return if (matches($accept-header, '[+/]json'))
-    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt')
+    then let $renderedJson := xslt:transform(<_>{$out}</_>,
+        'xslt/bibl-markers-json.xslt',
+        map{"target-type": "SampleText"})
     return serialize($renderedJson, map {"method": "json"})
     else <rs>{$out}</rs>
 };
@@ -1472,7 +1476,9 @@ declare function vicav:_get_feature_markers() {
                 else ''
     
     return if (matches($accept-header, '[+/]json'))
-    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt')
+    then let $renderedJson := xslt:transform(<_>{$out}</_>,
+        'xslt/bibl-markers-json.xslt',
+        map{"target-type": "Feature"})
     return serialize($renderedJson, map {"method": "json"})
     else <rs>{$out}</rs>
 };
