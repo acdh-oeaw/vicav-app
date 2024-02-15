@@ -1348,7 +1348,9 @@ declare function vicav:_get_sample_markers() {
             else ()
     
     return if (matches($accept-header, '[+/]json'))
-    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt')
+    then let $renderedJson := xslt:transform(<_>{$out}</_>,
+        'xslt/bibl-markers-json.xslt',
+        map{"target-type": "SampleText"})
     return serialize($renderedJson, map {"method": "json"})
     else <rs>{$out}</rs>
 };

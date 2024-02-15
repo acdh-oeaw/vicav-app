@@ -29,12 +29,18 @@
       "place": "geo",
       "region": "reg"
     }'/>
+
+    <xsl:variable name="translateTargetType" select='map {
+        "linguistic feature list": "Feature",
+        "profile": "Profile",
+        "sample text": "SampleText"
+    }'/>
     
     <xd:doc>
         <xd:desc>One marker</xd:desc>
     </xd:doc>
     <xsl:template match="r">
-        <xsl:variable name="coords" select="tokenize((geo,loc)[1], ',? ')"/>
+        <xsl:variable name="coords" select="tokenize((geo,loc)[1], '(,? |,)')"/>
         <xsl:variable name="coords" as="xs:double+">
             <xsl:try>
                 <xsl:sequence select="(xs:double($coords[1]), xs:double($coords[2]))"/>
@@ -65,9 +71,16 @@
                 <xsl:if test="exists(@xml:id)">
                     <textId><xsl:value-of select="@xml:id"/></textId>
                 </xsl:if>
-                <xsl:if test="exists($target-type)">
-                    <targetType><xsl:value-of select="$target-type"/></targetType>
-                </xsl:if>
+                <targetType>
+                    <xsl:choose>
+                        <xsl:when test="exists(taxonomy)">
+                            <xsl:value-of select="$translateTargetType(taxonomy)"/>
+                        </xsl:when>
+                        <xsl:when test="exists($target-type)">
+                            <xsl:value-of select="$target-type"/>
+                        </xsl:when>
+                    </xsl:choose>
+                </targetType>
                 <xsl:if test="exists($current-query)">
                     <query><xsl:value-of select="$current-query||'+'||(locName, alt)[1]"/></query>
                 </xsl:if>
