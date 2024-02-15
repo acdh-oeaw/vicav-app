@@ -55,6 +55,9 @@
             <properties>
                 <type><xsl:value-of select="$translateType(@type)"/></type>
                 <name><xsl:value-of select="(locName, alt)[1]"/></name>
+                <!-- Keep name consistent with menu items,
+                     @todo deprecate when moved everythings to new frontend. -->
+                <label><xsl:value-of select="(locName, alt)[1]"/></label>
                 <xsl:if test="exists(alt) and exists(locName)">
                 <alt><xsl:value-of select="alt"/></alt>
                 </xsl:if>
