@@ -347,7 +347,7 @@ function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $xsltfn := if (exists($xsltfn)) then $xsltfn else "sampletext_01.xslt"
 
-    let $q := 'collection("' || $coll || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
+    let $q := 'collection("/vicav_samples' || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
     let $query := $ns || $q
     let $results := xquery:eval($query)
     return 
