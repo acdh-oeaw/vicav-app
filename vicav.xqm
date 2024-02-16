@@ -1227,7 +1227,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
         
     return if (matches($accept-header, '[+/]json'))
     then let $renderedJson := xslt:transform(<_>{$out2}</_>, 'xslt/bibl-markers-json.xslt', map{
-      "target-type": "Bibl",
+      "target-type": "BiblioEntries",
       "current-query": $current-query
     })
     return serialize($renderedJson, map {"method": "json"})
