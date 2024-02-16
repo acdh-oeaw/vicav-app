@@ -82,7 +82,7 @@
                     </xsl:choose>
                 </targetType>
                 <xsl:if test="exists($current-query)">
-                    <query><xsl:value-of select="$current-query||'+'||(locName, alt)[1]"/></query>
+                    <queryString><xsl:value-of select="$current-query||'+'||(locName, alt)[1]"/></queryString>
                 </xsl:if>
             </properties>
         </_>
