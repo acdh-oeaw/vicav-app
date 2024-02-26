@@ -1,0 +1,4210 @@
+[
+  {
+    "ft_djim": {
+      "values": [
+        {
+          "ǧ_ǧ": "ǧ → ǧ"
+        },
+        {
+          "ǧ_ž": "ǧ → ž"
+        },
+        {
+          "ǧ_ź": "ǧ → ź"
+        },
+        {
+          "ǧ_ʐ": "ǧ → ʐ (voiced retroflex fricative) \/ʐ\/~ř"
+        },
+        {
+          "ǧ_j": "ǧ → j (voiced palatal plosive) \/ɟ\/"
+        },
+        {
+          "ǧ_d": "ǧ → d"
+        },
+        {
+          "ǧ_y": "ǧ → y"
+        },
+        {
+          "ǧ_gy": "ǧ → gy"
+        },
+        {
+          "ǧ_dy": "ǧ → dy"
+        },
+        {
+          "ǧ_g": "ǧ → g"
+        },
+        {
+          "ǧ_č": "ǧ → č"
+        },
+        {
+          "ǧ_š": "ǧ → š"
+        }
+      ],
+      "title": "Treatment of Ǧīm"
+    }
+  },
+  {
+    "ft_exst_particle": {
+      "values": [
+        {
+          "ep_fii": "fī"
+        },
+        {
+          "ep_fiih": "fīh"
+        },
+        {
+          "ep_bii": "bī"
+        },
+        {
+          "ep_bee": "bē"
+        },
+        {
+          "ep_ihnaak": "ihnāk"
+        },
+        {
+          "ep_beh": "beh"
+        },
+        {
+          "ep_bih": "bih"
+        },
+        {
+          "ep_kayen": "kāyən, kāyn, kəyn, kayn,kēyn, kān"
+        },
+        {
+          "ep_boo": "bō"
+        },
+        {
+          "ep_ahal_boo": "ahal bō"
+        },
+        {
+          "ep_buu": "bū \/ buh"
+        },
+        {
+          "ep_xaleg": "xāləg"
+        },
+        {
+          "ep_bah": "bah"
+        },
+        {
+          "ep_buuwa": "būwa"
+        },
+        {
+          "ep_hna": "hna"
+        },
+        {
+          "ep_shii": "šī\/šayy"
+        },
+        {
+          "ep_mish": "miš"
+        },
+        {
+          "ep_thamma": "ṯamma"
+        },
+        {
+          "ep_tamma": "tamma"
+        },
+        {
+          "ep_hast": "hast"
+        },
+        {
+          "ep_thamm": "ṯamm"
+        },
+        {
+          "ep_famma": "famma"
+        },
+        {
+          "ep_aku": "aku"
+        },
+        {
+          "ep_kiiku": "kīku"
+        },
+        {
+          "ep_awn": "awn"
+        },
+        {
+          "ep_emm": "emm"
+        },
+        {
+          "ep_chemma": "čəmma"
+        }
+      ],
+      "title": "Variants of the existential particle"
+    }
+  },
+  {
+    "ft_ghayn": {
+      "values": [
+        {
+          "gh_gh": "ġ → ġ"
+        },
+        {
+          "gh_q": "ġ → q"
+        },
+        {
+          "gh_0": "ġ → ø"
+        },
+        {
+          "gh_g": "ġ → g"
+        },
+        {
+          "gh_x": "ġ → x"
+        },
+        {
+          "gh_ayn": "ġ → ʕ"
+        },
+        {
+          "gh_g2": "ġ → G"
+        },
+        {
+          "gh_rh": "ġ → ʁ"
+        },
+        {
+          "gh_hamza": "ġ → ʔ"
+        },
+        {
+          "gh_q_emph": "ġ → emphatic q"
+        },
+        {
+          "gh_q_hamza": "ġ → qʔ (voiceless postvelar, uvular stop)"
+        }
+      ],
+      "title": "ghayn file."
+    }
+  },
+  {
+    "ft_interdentals": {
+      "values": [
+        {
+          "kept": "interdentals totally kept"
+        },
+        {
+          "partially1": "Partially kept: ḏ and ṯ kept"
+        },
+        {
+          "partially2": "Partially kept: ḏ and  ḏ̣  kept"
+        },
+        {
+          "postdentals": "Reflected as postdentals"
+        },
+        {
+          "postdentals_vestigial_ḏ̣": "Reflected as postdentals with retention of ḏ̣  in some lexical items"
+        },
+        {
+          "labiodentals": "Reflected as labiodentals"
+        },
+        {
+          "sibilants": "Reflected as sibilants"
+        },
+        {
+          "labiodentals_and_postdentals": "ṯ is reflected as labiodental f but ḏ and ḏ̣ are reflected as postdentals d and ḍ"
+        }
+      ],
+      "title": "Variants of the retention or changes in the interdentals"
+    }
+  },
+  {
+    "ft_k": {
+      "values": [
+        {
+          "k_k": "k → \/k\/"
+        },
+        {
+          "k_ky": "k → \/ky\/"
+        },
+        {
+          "k_affr1": "k + affrication (in the environment of anterior vowel) \/ć\/"
+        },
+        {
+          "k_affr2": "k + affrication (in the environment of anterior vowel) \/č\/"
+        },
+        {
+          "k_affr3": "k is always affricated to \/č\/"
+        },
+        {
+          "k_affr4": "ḳ + affrication to \/č\/"
+        },
+        {
+          "k_x": "k → \/x\/"
+        },
+        {
+          "k_hamza": "k → \/ʔ\/"
+        }
+      ],
+      "title": "Treatment of Kāf"
+    }
+  },
+  {
+    "ft_neg_exst_particle": {
+      "values": [
+        {
+          "nep_fiish": "fīš"
+        },
+        {
+          "nep_fishsh": "fišš"
+        },
+        {
+          "nep_bishsh": "bišš"
+        },
+        {
+          "nep_maa_bishsh": "mā bišš"
+        },
+        {
+          "nep_ma_fii": "mā fī"
+        },
+        {
+          "nep_a_fii": "ā fī"
+        },
+        {
+          "nep_a_fiish": "ā fīš"
+        },
+        {
+          "nep_abiish": "abīš"
+        },
+        {
+          "nep_ma_fiih": "mā fīh"
+        },
+        {
+          "nep_ma_fiish": "mā fīš"
+        },
+        {
+          "nep_ma_fishsh": "mā fišš"
+        },
+        {
+          "nep_ma_bii": "mā bī"
+        },
+        {
+          "nep_biish": "bīš"
+        },
+        {
+          "nep_maa_biish": "mā bīš \/ mā biš"
+        },
+        {
+          "nep_maa_bihshi": "mā bihši"
+        },
+        {
+          "nep_maabishsh": "mā bišš"
+        },
+        {
+          "nep_ma_buu": "mā bū"
+        },
+        {
+          "nep_ma_buushi": "mā būši"
+        },
+        {
+          "nep_ma_buh": "mā buh"
+        },
+        {
+          "nep_maa_buush": "mā būš"
+        },
+        {
+          "nep_maa_boosh": "mā bōš"
+        },
+        {
+          "nep_maa_buuwa": "mā būwa"
+        },
+        {
+          "nep_ma_bah": "mā bah"
+        },
+        {
+          "nep_maa_shii": "mā šī"
+        },
+        {
+          "nep_maa_halsh": "mā halš"
+        },
+        {
+          "nep_maashay": "māšay"
+        },
+        {
+          "nep_laashay": "lāšay"
+        },
+        {
+          "nep_maaku": "mākū"
+        },
+        {
+          "nep_maash": "māš"
+        },
+        {
+          "nep_fiishi": "fīši"
+        },
+        {
+          "nep_shiishi": "šīši"
+        },
+        {
+          "nep_maa_xaleg": "mā-hu xālǝg"
+        },
+        {
+          "nep_maa_fiishi": "mā fīši"
+        },
+        {
+          "nep_mamesh": "māməš, māmiš"
+        },
+        {
+          "nep_mamen": "māmən, māmin"
+        },
+        {
+          "nep_ma_fammaa_sh": "mā-fammǟ-š, mā-fammā-š"
+        },
+        {
+          "nep_ma_thammaa_sh": "mā-ṯammǟ-š, mā-ṯammā-š"
+        },
+        {
+          "nep_ma_kayen_sh": "mā-kāyən-š, mā-kəyn-š, mā-kāyn-š"
+        },
+        {
+          "nep_ma_tammaa_sh": "mā-tammā-š"
+        },
+        {
+          "nep_ma_thamm_sh": "mā-ṯamm-š"
+        },
+        {
+          "nep_m_emm_sh": "m-emm-š"
+        },
+        {
+          "nep_m_awn_sh": "m-awn-š"
+        },
+        {
+          "nep_ma_hna": "ma-hna"
+        },
+        {
+          "nep_ma_kan_sh": "ma-kan-š"
+        },
+        {
+          "nep_ma_chemma_sh": "ma-čəmma-š"
+        },
+        {
+          "nep_ma_hast": "mā-hast"
+        }
+      ],
+      "title": "Variants of the negated existential particle"
+    }
+  },
+  {
+    "ft_pr_pl_p1_c": {
+      "values": [
+        {
+          "pr_p1c_nihna": "niḥna\/nəḥna"
+        },
+        {
+          "pr_p1c_ihna": "iḥna\/əḥnä"
+        },
+        {
+          "pr_p1c_ihnaa": "iḥnā"
+        },
+        {
+          "pr_p1c_hnee": "ḥnē \/ ḥne"
+        },
+        {
+          "pr_p1c_nahna": "naḥna"
+        },
+        {
+          "pr_p1c_ahan": "aḥán\/aḥín"
+        },
+        {
+          "pr_p1c_ahna": "aḥna"
+        },
+        {
+          "pr_p1c_hna": "ḥna\/ḥnā"
+        },
+        {
+          "pr_p1c_nahnu": "naḥnu"
+        },
+        {
+          "pr_p1c_hnaaya": "ḥnāya"
+        },
+        {
+          "pr_p1c_nihin": "niḥin\/niḥən"
+        },
+        {
+          "pr_p1c_inhin": "inḥin"
+        },
+        {
+          "pr_p1c_anhin": "anḥin"
+        },
+        {
+          "pr_p1c_anhim": "anḥim"
+        },
+        {
+          "pr_p1c_han": "ḥan"
+        },
+        {
+          "pr_p1c_hin": "ḥin"
+        },
+        {
+          "pr_p1c_hinna": "ḥinna\/ḥənna"
+        },
+        {
+          "pr_p1c_hina": "ḥina"
+        },
+        {
+          "pr_p1c_hinat": "ḥínat"
+        },
+        {
+          "pr_p1c_nahni": "naḥni"
+        },
+        {
+          "pr_p1c_hnan": "ḥnan\/ḥnān"
+        },
+        {
+          "pr_p1c_aniina": "anīna"
+        },
+        {
+          "pr_p1c_an_a": "anná"
+        },
+        {
+          "pr_p1c_ina": "ina"
+        },
+        {
+          "pr_p1c_aniihna": "anīḥna"
+        },
+        {
+          "pr_p1c_hnaayatha": "ḥnāyatha"
+        },
+        {
+          "pr_p1c_anihna": "aniḥna\/anaḥna"
+        },
+        {
+          "pr_p1c_anhaa": "anḥā"
+        },
+        {
+          "pr_p1c_rahna": "raḥna"
+        },
+        {
+          "pr_p1c_hnu": "ḥnu"
+        },
+        {
+          "pr_p1c_heene": "ḥēne"
+        },
+        {
+          "pr_p1c_hene": "ḥene"
+        },
+        {
+          "pr_p1c_nahan": "naḥan"
+        },
+        {
+          "pr_p1c_nihnaa": "niḥnā\/nəḥnē"
+        },
+        {
+          "pr_p1c_lihne": "liḥne"
+        },
+        {
+          "pr_p1c_lihna": "liḥna"
+        },
+        {
+          "pr_p1c_nihne": "niḥne"
+        },
+        {
+          "pr_p1c_ihne": "iḥne"
+        },
+        {
+          "pr_p1c_hnah": "hnah"
+        }
+      ],
+      "title": "Variants of 1st person plural communis pronoun"
+    }
+  },
+  {
+    "ft_pr_pl_p2c": {
+      "values": [
+        {
+          "pr_p2c_intuuma": "(i)ntūma"
+        },
+        {
+          "pr_p2c_intum": "intum"
+        },
+        {
+          "pr_p2c_entum": "entum"
+        },
+        {
+          "pr_p2c_entuman": "entuman"
+        },
+        {
+          "pr_p2c_intuu": "(i)ntū"
+        },
+        {
+          "pr_p2c_antum": "antum"
+        },
+        {
+          "pr_p2c_antu": "antu"
+        },
+        {
+          "pr_p2c_ittu": "ittu"
+        },
+        {
+          "pr_p2c_entu": "entu"
+        },
+        {
+          "pr_p2c_hinto": "hinto"
+        },
+        {
+          "pr_p2c_intuma": "intuma"
+        },
+        {
+          "pr_p2c_eentuumata": "ēntūmata"
+        },
+        {
+          "pr_p2c_ntuumaha": "ntūmaha"
+        },
+        {
+          "pr_p2c_untum": "untum"
+        },
+        {
+          "pr_p2c_antun": "antun"
+        },
+        {
+          "pr_p2c_intu": "(i)ntu"
+        },
+        {
+          "pr_p2c_intuun": "intūn"
+        },
+        {
+          "pr_p2c_intom": "intom"
+        },
+        {
+          "pr_p2c_ntuma": "ntuma, ntūma, nțūma"
+        },
+        {
+          "pr_p2c_ntum": "ntum, nțum"
+        },
+        {
+          "pr_p2c_intaw": "intaw"
+        },
+        {
+          "pr_p2c_intem": "intem"
+        },
+        {
+          "pr_p2c_ntumaan": "ntumān"
+        },
+        {
+          "pr_p2c_əntem": "əntem"
+        },
+        {
+          "pr_p2c_ntina": "ntina"
+        },
+        {
+          "pr_p2c_intun": "intun"
+        },
+        {
+          "pr_p2c_ənten": "ənten"
+        },
+        {
+          "pr_p2c_nchem": "nčəm"
+        },
+        {
+          "pr_p2c_ntumaya": "ntumaya"
+        },
+        {
+          "pr_p2c_ttuma": "ttuma"
+        }
+      ],
+      "title": "Variants of the 2nd person plural comunis pronoun"
+    }
+  },
+  {
+    "ft_pr_pl_p2_f": {
+      "values": [
+        {
+          "pr_p2f_intin": "intin"
+        },
+        {
+          "pr_p2f_antin": "antin"
+        },
+        {
+          "pr_p2f_intinna": "intinna"
+        },
+        {
+          "pr_p2f_antinna": "antinna"
+        },
+        {
+          "pr_p2f_intunnah": "intunnah"
+        },
+        {
+          "pr_p2f_ntuumaati": "ntūmāti"
+        },
+        {
+          "pr_p2f_antunna": "antunna"
+        },
+        {
+          "pr_p2f_antayn": "antayn"
+        },
+        {
+          "pr_p2f_intayn": "intayn"
+        },
+        {
+          "pr_p2f_hintin": "hintin"
+        },
+        {
+          "pr_p2f_intan": "intan"
+        },
+        {
+          "pr_p2f_antan": "antan"
+        },
+        {
+          "pr_p2f_intən": "intən"
+        },
+        {
+          "pr_p2f_intni": "intni"
+        },
+        {
+          "pr_p2f_ittan": "ittan"
+        },
+        {
+          "pr_p2f_intam": "inṭaṃ"
+        },
+        {
+          "pr_p2f_ntan": "ntan\/nten"
+        }
+      ],
+      "title": "Variants of 2nd person plural feminine pronoun"
+    }
+  },
+  {
+    "ft_pr_pl_p2_m": {
+      "values": [
+        {
+          "pr_p2m_inti": "inti\/enti"
+        },
+        {
+          "pr_p2m_intu": "intu"
+        },
+        {
+          "pr_p2m_intum": "intum"
+        },
+        {
+          "pr_p2m_intəm": "intəm"
+        },
+        {
+          "pr_p2m_antum": "antum"
+        },
+        {
+          "pr_p2m_ntuuma": "ntūma \/ ntūmä"
+        },
+        {
+          "pr_p2m_ntuum": "ntūm"
+        },
+        {
+          "pr_p2m_hintu": "hintu"
+        },
+        {
+          "pr_p2m_untum": "untum"
+        },
+        {
+          "pr_p2m_entum": "entum"
+        },
+        {
+          "pr_p2m_intuuwaat": "intūwāt"
+        },
+        {
+          "pr_p2m_intaw": "intaw"
+        },
+        {
+          "pr_p2m_intuu": "intū, intuw"
+        },
+        {
+          "pr_p2m_ittu": "ittu"
+        },
+        {
+          "pr_p2m_intun": "intun"
+        },
+        {
+          "pr_p2m_intan": "intan"
+        },
+        {
+          "pr_p2m_itte": "itte"
+        },
+        {
+          "pr_p2m_antu": "antu"
+        },
+        {
+          "pr_p2m_uttu": "uttu"
+        },
+        {
+          "pr_p2m_ntuumaha": "ntūmaha"
+        },
+        {
+          "pr_p2m_ntuumata": "ntūmata"
+        },
+        {
+          "pr_p2m_intam": "intam"
+        },
+        {
+          "pr_p2m_intem": "intem"
+        },
+        {
+          "pr_p2m_ntuuh": "ntūh"
+        },
+        {
+          "pr_p2m_ntuu": "ntū"
+        },
+        {
+          "pr_p2m_ntu": "ntu"
+        }
+      ],
+      "title": "Variants of 2nd person plural masculine pronoun"
+    }
+  },
+  {
+    "ft_pr_pl_p3_c": {
+      "values": [
+        {
+          "pr_p3c_hum": "hum"
+        },
+        {
+          "pr_p3c_əhmə": "əhmə, əhummə"
+        },
+        {
+          "pr_p3c_him": "him"
+        },
+        {
+          "pr_p3c_humman": "humman"
+        },
+        {
+          "pr_p3c_humma": "humma , huṃṃa"
+        },
+        {
+          "pr_p3c_humme": "humme"
+        },
+        {
+          "pr_p3c_hummen": "hummen"
+        },
+        {
+          "pr_p3c_hummaan": "hummān"
+        },
+        {
+          "pr_p3c_hunne": "hunne"
+        },
+        {
+          "pr_p3c_himma": "himma , həmma"
+        },
+        {
+          "pr_p3c_umma": "umma"
+        },
+        {
+          "pr_p3c_umaan": "umān"
+        },
+        {
+          "pr_p3c_huma": "huma, hūma"
+        },
+        {
+          "pr_p3c_uma": "ūma"
+        },
+        {
+          "pr_p3c_human": "human"
+        },
+        {
+          "pr_p3c_humaya": "hūmāya"
+        },
+        {
+          "pr_p3c_hun": "hun"
+        },
+        {
+          "pr_p3c_hinnen": "hinnen"
+        },
+        {
+          "pr_p3c_hinna": "hinna"
+        },
+        {
+          "pr_p3c_hinne": "hinne , hənne , ənne"
+        },
+        {
+          "pr_p3c_hinni": "hinni"
+        },
+        {
+          "pr_p3c_innen": "innen"
+        },
+        {
+          "pr_p3c_hinniin": "hinnīn"
+        },
+        {
+          "pr_p3c_hin": "hin"
+        },
+        {
+          "pr_p3c_ham": "ham"
+        },
+        {
+          "pr_p3c_hũ": "hũ"
+        },
+        {
+          "pr_p3c_hunnun": "hunnun"
+        }
+      ],
+      "title": "Variants of 3rd person plural comunis pronoun"
+    }
+  },
+  {
+    "ft_pr_pl_p3_f": {
+      "values": [
+        {
+          "pr_p3f_hin": "hin, hen"
+        },
+        {
+          "pr_p3f_hennah": "hennah, hinnih"
+        },
+        {
+          "pr_p3f_hinna": "hinna, henna"
+        },
+        {
+          "pr_p3f_ihinna": "ihinna"
+        },
+        {
+          "pr_p3f_han": "han"
+        },
+        {
+          "pr_p3f_heen": "hēn"
+        },
+        {
+          "pr_p3f_hənna": "hənna"
+        },
+        {
+          "pr_p3f_humati": "hūmāti"
+        },
+        {
+          "pr_p3f_hunna": "hunna"
+        },
+        {
+          "pr_p3f_hunne": "hunne"
+        },
+        {
+          "pr_p3f_hinni": "hinni, hinne, henne, hönne"
+        },
+        {
+          "pr_p3f_hunnat": "hunnat"
+        },
+        {
+          "pr_p3f_duklan": "duklan"
+        },
+        {
+          "pr_p3f_dukalan": "dukālān"
+        },
+        {
+          "pr_p3f_ziklanna": "ziklanna"
+        },
+        {
+          "pr_p3f_hun": "hun"
+        },
+        {
+          "pr_p3f_ihna": "ihna , əhna"
+        },
+        {
+          "pr_p3f_ihin": "ihin"
+        }
+      ],
+      "title": "Variants of 3rd person plural feminine pronoun"
+    }
+  },
+  {
+    "ft_pr_pl_p3_m": {
+      "values": [
+        {
+          "pr_p3m_hum": "hum, humm, homm"
+        },
+        {
+          "pr_p3m_hummah": "hummah"
+        },
+        {
+          "pr_p3m_humma": "humma, huṃṃa, hoṃṃa"
+        },
+        {
+          "pr_p3m_humme": "humme"
+        },
+        {
+          "pr_p3m_himma": "himma, həmma"
+        },
+        {
+          "pr_p3m_hun": "hun"
+        },
+        {
+          "pr_p3m_hoon": "hōn"
+        },
+        {
+          "pr_p3m_ihmah": "ihmah"
+        },
+        {
+          "pr_p3m_him": "him"
+        },
+        {
+          "pr_p3m_ihim": "ihim"
+        },
+        {
+          "pr_p3m_əhma": "əhma"
+        },
+        {
+          "pr_p3m_əhəma": "əhəma"
+        },
+        {
+          "pr_p3m_uhma": "uhma"
+        },
+        {
+          "pr_p3m_uhum": "uhum"
+        },
+        {
+          "pr_p3m_hummu": "hummu"
+        },
+        {
+          "pr_p3m_duklo": "duklo"
+        },
+        {
+          "pr_p3m_dukola": "dukōla"
+        },
+        {
+          "pr_p3m_ziklon": "ziklōn"
+        },
+        {
+          "pr_p3m_ziklonat": "ziklōnāt"
+        },
+        {
+          "pr_p3m_zokat": "zōkāt"
+        },
+        {
+          "pr_p3m_ham": "ham"
+        },
+        {
+          "pr_p3m_huma": "hūma, hūmä"
+        },
+        {
+          "pr_p3m_humat": "humat"
+        },
+        {
+          "pr_p3m_humman": "humman"
+        },
+        {
+          "pr_p3m_himme": "himme"
+        },
+        {
+          "pr_p3m_humi": "humi"
+        },
+        {
+          "pr_p3m_huw": "huw"
+        },
+        {
+          "pr_p3m_hummwa": "huṃṃwa"
+        },
+        {
+          "pr_p3m_huwwa": "huwwa"
+        }
+      ],
+      "title": "Variants of 3rd person plural masculine pronoun"
+    }
+  },
+  {
+    "ft_pr_sg_p1_c": {
+      "values": [
+        {
+          "pr_s1mf_ana_ani": "Gender distinction:ana (m)\/ani (f)"
+        },
+        {
+          "pr_s1mf_naa_nii": "Gender distinction:nā (m)\/nī (f)"
+        },
+        {
+          "pr_s1c_ana": "ana\/ane"
+        },
+        {
+          "pr_s1c_ani": "ani"
+        },
+        {
+          "pr_s1c_anii": "anī"
+        },
+        {
+          "pr_s1c_anaa": "anā\/anē"
+        },
+        {
+          "pr_s1c_naa": "nā\/nē"
+        },
+        {
+          "pr_s1c_naaya": "nāya"
+        },
+        {
+          "pr_s1c_aana": "āna \/ āne"
+        },
+        {
+          "pr_s1c_aanaaya": "ānāya"
+        },
+        {
+          "pr_s1c_iinaayatha": "īnāyatha"
+        },
+        {
+          "pr_s1c_yiina": "yīn(a)"
+        },
+        {
+          "pr_s1c_aani": "āni"
+        },
+        {
+          "pr_s1c_eeni": "ēni"
+        },
+        {
+          "pr_s1c_eanii": "ənī"
+        },
+        {
+          "pr_s1c_ina": "ina"
+        },
+        {
+          "pr_s1c_haenae": "hana\/hänä"
+        }
+      ],
+      "title": "Variants of 1st person singular communis pronoun"
+    }
+  },
+  {
+    "ft_pr_sg_p2_c": {
+      "values": [
+        {
+          "pr_s2c_inti": "inti\/enti"
+        },
+        {
+          "pr_s2c_int": "int"
+        },
+        {
+          "pr_s2c_nta": "nta"
+        },
+        {
+          "pr_s2c_anta": "anta"
+        },
+        {
+          "pr_s2c_anti": "anti"
+        },
+        {
+          "pr_s2c_ntinak": "ntinak"
+        },
+        {
+          "pr_s2c_inta": "inta"
+        },
+        {
+          "pr_s2c_inte": "inte"
+        },
+        {
+          "pr_s2c_ant": "ant"
+        },
+        {
+          "pr_s2c_att": "att"
+        },
+        {
+          "pr_s2c_atta": "atta"
+        },
+        {
+          "pr_s2c_haate": "hāt(e)"
+        },
+        {
+          "pr_s2c_ntin": "nţin, ntin"
+        },
+        {
+          "pr_s2c_ntuma": "ntuma"
+        },
+        {
+          "pr_s2c_ntina": "nţina"
+        },
+        {
+          "pr_s2c_əntina": "əntina"
+        },
+        {
+          "pr_s2c_ntaya": "ntaya"
+        },
+        {
+          "pr_s2c_ta": "ta"
+        },
+        {
+          "pr_s2c_taya": "taya"
+        },
+        {
+          "pr_s2c_nti": "nti, nți"
+        }
+      ],
+      "title": "Variants of 2nd person singular communis pronoun"
+    }
+  },
+  {
+    "ft_pr_sg_p2_f": {
+      "values": [
+        {
+          "pr_s2f_inti": "inti\/enti"
+        },
+        {
+          "pr_s2f_intii": "intī\/intiy"
+        },
+        {
+          "pr_s2f_inte": "inte"
+        },
+        {
+          "pr_s2f_ntii": "ntī"
+        },
+        {
+          "pr_s2f_nchi": "nči"
+        },
+        {
+          "pr_s2f_ntiih": "ntīh"
+        },
+        {
+          "pr_s2f_nti": "nti"
+        },
+        {
+          "pr_s2f_intay": "intay"
+        },
+        {
+          "pr_s2f_intiina": "intīna"
+        },
+        {
+          "pr_s2f_ntiiya": "ntīya"
+        },
+        {
+          "pr_s2f_ntin": "ntin"
+        },
+        {
+          "pr_s2f_anshi": "anši"
+        },
+        {
+          "pr_s2f_anti": "anti"
+        },
+        {
+          "pr_s2f_antii": "antī"
+        },
+        {
+          "pr_s2f_hinti": "hinti"
+        },
+        {
+          "pr_s2f_antin": "antin"
+        },
+        {
+          "pr_s2f_haate": "hāt(e)"
+        },
+        {
+          "pr_s2f_ntina": "nţīna"
+        },
+        {
+          "pr_s2f_intiin": "əntīn"
+        },
+        {
+          "pr_s2f_entina": "enţīna"
+        },
+        {
+          "pr_s2f_tti": "tta"
+        },
+        {
+          "pr_s2f_itti": "itti"
+        },
+        {
+          "pr_s2f_tiya": "tiya"
+        }
+      ],
+      "title": "Variants of 2nd person singular female pronoun"
+    }
+  },
+  {
+    "ft_pr_sg_p2_m": {
+      "values": [
+        {
+          "pr_s2m_inti": "inti\/enti\/ənti"
+        },
+        {
+          "pr_s2m_inta": "inta"
+        },
+        {
+          "pr_s2m_intaa": "intā"
+        },
+        {
+          "pr_s2m_inte": "inte"
+        },
+        {
+          "pr_s2m_ntaa": "ntā"
+        },
+        {
+          "pr_s2m_ntaah": "ntāh"
+        },
+        {
+          "pr_s2m_nta": "nta"
+        },
+        {
+          "pr_s2m_nča": "nča"
+        },
+        {
+          "pr_s2m_ntaaya": "ntāya"
+        },
+        {
+          "pr_s2m_ntin": "ntin"
+        },
+        {
+          "pr_s2m_entin": "ențin"
+        },
+        {
+          "pr_s2m_int": "int"
+        },
+        {
+          "pr_s2m_ant": "ant"
+        },
+        {
+          "pr_s2m_anta": "anta"
+        },
+        {
+          "pr_s2m_anti": "anti"
+        },
+        {
+          "pr_s2m_hint": "hint"
+        },
+        {
+          "pr_s2m_intah": "intah"
+        },
+        {
+          "pr_s2m_intih": "intih"
+        },
+        {
+          "pr_s2m_itt": "itt"
+        },
+        {
+          "pr_s2m_enta": "enta"
+        },
+        {
+          "pr_s2m_itte": "itte"
+        },
+        {
+          "pr_s2m_itta": "itta"
+        },
+        {
+          "pr_s2m_haate": "hāt(e)"
+        },
+        {
+          "pr_s2m_tta": "tta"
+        },
+        {
+          "pr_s2m_taya": "tāya"
+        },
+        {
+          "pr_s2m_ntiyya": "ntiyya"
+        },
+        {
+          "pr_s2m_entina": "əntina"
+        }
+      ],
+      "title": "Variants of 2nd person singular masculine independent pronoun"
+    }
+  },
+  {
+    "ft_pr_sg_p3_c": {
+      "values": [
+        {
+          "pr_s3c_hu": "hu"
+        },
+        {
+          "pr_s3c_huwa": "huwa"
+        },
+        {
+          "pr_s3c_hi": "hi"
+        },
+        {
+          "pr_s3c_hiya": "hiya"
+        }
+      ],
+      "title": "Variants of 3rd person singular communis pronoun"
+    }
+  },
+  {
+    "ft_pr_sg_p3_f": {
+      "values": [
+        {
+          "pr_s3f_hiyya": "hiyya \/ hīya \/ hiyyä \/ hīyä"
+        },
+        {
+          "pr_s3f_hiyyi": "hiyyi \/ hiyye"
+        },
+        {
+          "pr_s3f_hiyyeh": "hiyyeh\/hiyyah"
+        },
+        {
+          "pr_s3f_hii": "hī \/ hiy"
+        },
+        {
+          "pr_s3f_hi": "hi"
+        },
+        {
+          "pr_s3f_ii": "ī"
+        },
+        {
+          "pr_s3f_hiya": "hiya"
+        },
+        {
+          "pr_s3f_heiya": "heiya"
+        },
+        {
+          "pr_s3f_hiyat": "hiyat"
+        },
+        {
+          "pr_s3f_iyya": "iyya"
+        },
+        {
+          "pr_s3f_ihiy": "ihiy"
+        },
+        {
+          "pr_s3f_iyye": "iyye \/ iyyi"
+        },
+        {
+          "pr_s3f_ie": "ie"
+        },
+        {
+          "pr_s3f_əhyə": "əhyə, əhiyyə"
+        },
+        {
+          "pr_s3f_hay": "hay"
+        },
+        {
+          "pr_s3f_ziika": "zīka"
+        },
+        {
+          "pr_s3f_diki": "diki"
+        },
+        {
+          "pr_s3f_hiita": "hīta"
+        },
+        {
+          "pr_s3f_hiite": "hīte"
+        },
+        {
+          "pr_s3f_ahaa": "ahǟ"
+        },
+        {
+          "pr_s3f_ahii": "ahī"
+        },
+        {
+          "pr_s3f_uuwa": "ūwa\/ōwa"
+        },
+        {
+          "pr_s3f_ihya": "ihya, ihyah , əhya, íhya"
+        },
+        {
+          "pr_s3f_hiiye": "hīye, hīyi"
+        }
+      ],
+      "title": "Variants of 3rd person singular feminine pronoun"
+    }
+  },
+  {
+    "ft_pr_sg_p3_m": {
+      "values": [
+        {
+          "pr_s3m_huwwa": "huwwa \/ hūwa \/ huwa \/ huwwä \/ hōwwa \/ hóuwạ \/ huwah"
+        },
+        {
+          "pr_s3m_huwwi": "huwwi\/ huwwe\/ hūwi\/ hūwe \/ huwe"
+        },
+        {
+          "pr_s3m_huwweh": "huwweh\/huwwah"
+        },
+        {
+          "pr_s3m_uu": "ū"
+        },
+        {
+          "pr_s3m_uwwa": "uwwa"
+        },
+        {
+          "pr_s3m_uuwa": "ūwa\/ōwa"
+        },
+        {
+          "pr_s3m_hiwwa": "hiwwa"
+        },
+        {
+          "pr_s3m_ahā": "ʔahā"
+        },
+        {
+          "pr_s3m_huu": "hū \/ huw \/ hūw"
+        },
+        {
+          "pr_s3m_hu": "hu"
+        },
+        {
+          "pr_s3m_huwat": "húwat"
+        },
+        {
+          "pr_s3m_haw": "haw"
+        },
+        {
+          "pr_s3m_zook": "zōk"
+        },
+        {
+          "pr_s3m_uo": "uo"
+        },
+        {
+          "pr_s3m_duk": "duk"
+        },
+        {
+          "pr_s3m_dük": "dük"
+        },
+        {
+          "pr_s3m_huute": "hūte"
+        },
+        {
+          "pr_s3m_huuta": "hūta"
+        },
+        {
+          "pr_s3m_ihwa": "ihwa, ihwah"
+        },
+        {
+          "pr_s3m_uhwa": "uhwa"
+        },
+        {
+          "pr_s3m_uhuw": "uhuw"
+        },
+        {
+          "pr_s3m_əhwə": "əhwə, əhuwwə"
+        }
+      ],
+      "title": "Variants of 3rd person singular masculine pronoun"
+    }
+  },
+  {
+    "ft_q": {
+      "values": [
+        {
+          "q_g": "\/g\/"
+        },
+        {
+          "q_g_affr1": "\/ǵ\/&gt;\/g\/"
+        },
+        {
+          "q_g_affr2": "\/ǧ\/&gt;\/g\/"
+        },
+        {
+          "q_hamza": "\/ʔ\/"
+        },
+        {
+          "q_gh": "\/ġ\/"
+        },
+        {
+          "q_q": "\/q\/"
+        },
+        {
+          "q_k_emph": "\/ḳ\/"
+        },
+        {
+          "q_k": "\/k\/"
+        },
+        {
+          "q_x": "\/x\/"
+        }
+      ],
+      "title": "Treatment of Qāf"
+    }
+  },
+  {
+    "ft_resyllabification": {
+      "values": [
+        {
+          "resyll_CaCaCa": "CaCaCa stays CaCaCa"
+        },
+        {
+          "resyll_CaCCa": "CaCaCa &gt; CaCCa"
+        },
+        {
+          "resyll_CCaCa": "CaCaCa &gt; CCaCa"
+        }
+      ],
+      "title": "Resyllabification"
+    }
+  },
+  {
+    "ft_template": {
+      "values": [
+        {
+          "pr_s2f_inti": "inti\/enti"
+        }
+      ],
+      "title": "Variants of 1st person plural communis pronoun"
+    }
+  },
+  {
+    "ft_template_anas_fieldwork": {
+      "values": [
+        {
+          "pr_s2f_inti": "inti\/enti"
+        },
+        {
+          "pr_s2f_intii": "intī"
+        },
+        {
+          "pr_s2f_inte": "inte"
+        },
+        {
+          "pr_s2f_ntii": "ntī"
+        },
+        {
+          "pr_s2f_ntiiya": "ntīya"
+        },
+        {
+          "pr_s2f_ntin": "ntin"
+        },
+        {
+          "pr_s2f_anshi": "anši"
+        },
+        {
+          "pr_s2f_anti": "anti"
+        },
+        {
+          "pr_s2f_hinti": "hinti"
+        }
+      ],
+      "title": "Variants of 1st person plural communis pronoun"
+    }
+  },
+  {
+    "ft_act_part_suff": {
+      "values": [
+        {
+          "act_part_suff_kaatibt": "kātibt-o \/ mġassilt-o"
+        },
+        {
+          "act_part_suff_kaatbit": "kātbit-o \/ mġásslit-o"
+        },
+        {
+          "act_part_suff_kaatbiit": "kātbīt-o \/ mġasslīt-o"
+        }
+      ],
+      "title": "Variants of active participle f.sg. + suffix"
+    }
+  },
+  {
+    "ft_akl_3sgm_pfv_ipv": {
+      "values": [
+        {
+          "AKL_3sgm_pfvipv_yaakil": "yākul, yākol, yākil, yākel, yākəl"
+        },
+        {
+          "AKL_3sgm_pfvipv_baakul": "biʔākul, bākul"
+        },
+        {
+          "AKL_3sgm_pfvipv_yookil": "yōkil, yōkel, yōkul"
+        },
+        {
+          "AKL_3sgm_pfvipv_yakil": "yakil (yačil), yakul, yákəl"
+        },
+        {
+          "AKL_3sgm_pfvipv_yawkul": "yawkul\/yowkul"
+        },
+        {
+          "AKL_3sgm_pfvipv_yikul": "yikul"
+        },
+        {
+          "AKL_3sgm_pfvipv_ya_kul": "yaʔkul"
+        },
+        {
+          "AKL_3sgm_pfvipv_yatl": "yatl"
+        },
+        {
+          "AKL_3sgm_pfvipv_yiikol": "yīkol"
+        },
+        {
+          "AKL_3sgm_pfvipv_yawkal": "yawkal"
+        }
+      ],
+      "title": "Variants of ʔ-k-l inflection: 3sg.m in ipfv"
+    }
+  },
+  {
+    "ft_akl_3sgm_pfv_ipv": {
+      "values": [
+        {
+          "AKL_3sgm_pfvipv_akal": "akal"
+        },
+        {
+          "AKL_3sgm_pfvipv_kala": "kala, čala, ćala"
+        },
+        {
+          "AKL_3sgm_pfvipv_kal": "kal"
+        },
+        {
+          "AKL_3sgm_pfvipv_akil": "akil"
+        },
+        {
+          "AKL_3sgm_pfvipv_kila": "kila, čila"
+        },
+        {
+          "AKL_3sgm_pfvipv_akla": "akla"
+        },
+        {
+          "AKL_3sgm_pfvipv_akl": "ʔakl"
+        },
+        {
+          "AKL_3sgm_pfvipv_kil": "kil, kel, kəl"
+        },
+        {
+          "AKL_3sgm_pfvipv_ikil": "ikil"
+        },
+        {
+          "AKL_3sgm_pfvipv_tal": "tal"
+        },
+        {
+          "AKL_3sgm_pfvipv_akál": "akál"
+        },
+        {
+          "AKL_3sgm_pfvipv_kiil": "kīl"
+        },
+        {
+          "AKL_3sgm_pfvipv_k_il": "kʔil"
+        },
+        {
+          "AKL_3sgm_pfvipv_kle": "klə"
+        },
+        {
+          "AKL_3sgm_pfvipv_kla": "kla"
+        },
+        {
+          "AKL_3sgm_pfvipv_klaa": "klā"
+        },
+        {
+          "AKL_3sgm_pfvipv_kalaa": "kalā -  yākil"
+        },
+        {
+          "AKL_3sgm_pfvipv_ikal": "ikal"
+        }
+      ],
+      "title": "Variants of ʔ-k-l inflection: 3sg.m in pfv"
+    }
+  },
+  {
+    "ft_apophonic_passive": {
+      "values": [
+        {
+          "apophonic_passive_yes": "yes"
+        },
+        {
+          "apophonic_passive_no": "no"
+        },
+        {
+          "apophonic_passive_only_pfv": "only in pfv"
+        },
+        {
+          "apophonic_passive_only_ipfv": "only in ipfv"
+        }
+      ],
+      "title": "Variants of This is the feature-file for apophonic passive"
+    }
+  },
+  {
+    "ft_bnd_pr_1ps_pl": {
+      "values": [
+        {
+          "bp_p1_na": "-na"
+        },
+        {
+          "bp_p1_ni": "-ni(ʔ)"
+        },
+        {
+          "bp_p1_naa": "-nā"
+        },
+        {
+          "bp_p1_ne": "-ne -nä"
+        },
+        {
+          "bp_p1_nae": "-nä"
+        },
+        {
+          "bp_p1_no": "-nạ"
+        },
+        {
+          "bp_p1_nihna": " -niḥnā \/ -naḥna"
+        },
+        {
+          "bp_p1_hna": "-ḥna"
+        }
+      ],
+      "title": "Variants of the bound pronoun 1st person plural"
+    }
+  },
+  {
+    "ft_bnd_pr_1ps_sg_after_cons": {
+      "values": [
+        {
+          "bp_s1c_i": "-i\/-ī"
+        },
+        {
+          "bp_s1c_í": "-´ī (stressed)"
+        },
+        {
+          "bp_s1c_ni": "-ni"
+        },
+        {
+          "bp_s1c_an_object_pronoun": "-an (object pronoun)"
+        },
+        {
+          "bp_s1c_anyeh_object_pronoun": "-anyeh (object pronoun)"
+        },
+        {
+          "bp_s1c_ínyah_object_pronoun": "-ínyah (object pronoun)"
+        },
+        {
+          "bp_s1c_ya_yi": "-ya(h)~yi(h)"
+        },
+        {
+          "bp_s1c_iyya": "-iyya"
+        },
+        {
+          "bp_s1c_ey": "-ey"
+        },
+        {
+          "bp_s1c_iy": "-i\/-iy"
+        },
+        {
+          "bp_s1c_e": "-e"
+        }
+      ],
+      "title": "Variants of the bound pronoun 1st person singular communis after a consonant"
+    }
+  },
+  {
+    "ft_bnd_pr_1ps_sg_after_vow": {
+      "values": [
+        {
+          "bp_s1cv_y": "-y"
+        },
+        {
+          "bp_s1cv_ey": "-ey"
+        },
+        {
+          "bp_s1cv_ye": "-ye, -yä"
+        },
+        {
+          "bp_s1cv_yeh": "-yeh"
+        },
+        {
+          "bp_s1cv_ni": "-ni"
+        },
+        {
+          "bp_s1cv_nan_object_pronoun": "-nan (object pronoun)"
+        },
+        {
+          "bp_s1cv_ya": "-ya"
+        },
+        {
+          "bp_s1cv_ya_yi": "-ya(h)~yi(h)"
+        },
+        {
+          "bp_s1cv_nya_nyi_object_pronoun": "-nya(h)~nyi(h)(object pronoun)"
+        },
+        {
+          "bp_s1cv_ínyah_object_pronoun": "-ínyah (object pronoun)"
+        },
+        {
+          "bp_s1cv_a": "-a"
+        },
+        {
+          "bp_s1cv_i": "-i"
+        },
+        {
+          "bp_s1cv_í": "-í"
+        },
+        {
+          "bp_s1cv_iyya": "-iyya \/ -yya"
+        },
+        {
+          "bp_s1cv_yi": "-yi \/ -yí"
+        },
+        {
+          "bp_s1cv_yu": "-yu"
+        },
+        {
+          "bp_s1cv_ih": "-ih"
+        }
+      ],
+      "title": "Variants of 1st person singular communis bound pronoun after vowel"
+    }
+  },
+  {
+    "ft_bnd_pr_2ps_pl_c": {
+      "values": [
+        {
+          "bp_p2c_kam": "-kam"
+        },
+        {
+          "bp_p2c_kum": "-kum"
+        },
+        {
+          "bp_p2c_ko": "-ko"
+        },
+        {
+          "bp_p2c_kom": "-kom"
+        },
+        {
+          "bp_p2c_kim": "-kim, -kəm"
+        },
+        {
+          "bp_p2c_chim": "-čim"
+        },
+        {
+          "bp_p2c_kem": "-kəm"
+        },
+        {
+          "bp_p2c_ken": "-kən"
+        },
+        {
+          "bp_p2c_kin": "-kin"
+        },
+        {
+          "bp_p2c_kan": "-kan"
+        },
+        {
+          "bp_p2c_ku": "-ku"
+        },
+        {
+          "bp_p2c_tum": "-tum"
+        },
+        {
+          "bp_p2c_ukum": "-ukum"
+        },
+        {
+          "bp_p2c_kun": "-kun"
+        },
+        {
+          "bp_p2c_kon": "-kon"
+        }
+      ],
+      "title": "Variants of the bound pronoun 2nd person plural communis"
+    }
+  },
+  {
+    "ft_bnd_pr_2ps_pl_f": {
+      "values": [
+        {
+          "bp_p2f_kan": "-kan"
+        },
+        {
+          "bp_p2f_kin": "-kin \/ -ken"
+        },
+        {
+          "bp_p2f_tsin": "-ʨin"
+        },
+        {
+          "bp_p2f_kun": "-kun"
+        },
+        {
+          "bp_p2f_kinna": "-kinna"
+        },
+        {
+          "bp_p2f_kunna": "-kunna"
+        },
+        {
+          "bp_p2f_chinna": "-činna"
+        },
+        {
+          "bp_p2f_chan": "-čan"
+        },
+        {
+          "bp_p2f_chin": "-čin, -čen, -činn, -čenn"
+        },
+        {
+          "bp_p2f_tsin_2": "-ćin, -ćen, -ćinn, -ćenn"
+        },
+        {
+          "bp_p2f_ku": "-ku"
+        }
+      ],
+      "title": "Variants of the bound pronoun 2nd person plural feminine"
+    }
+  },
+  {
+    "ft_bnd_pr_2ps_pl_m": {
+      "values": [
+        {
+          "bp_p2m_kum": "-kum"
+        },
+        {
+          "bp_p2m_kom": "-kom"
+        },
+        {
+          "bp_p2m_ḳuṃ": "-ḳuṃ"
+        },
+        {
+          "bp_p2m_ḳum": "-ḳum "
+        },
+        {
+          "bp_p2m_ḳom": "-ḳom "
+        },
+        {
+          "bp_p2m_ḳuw": "-ḳuw"
+        },
+        {
+          "bp_p2m_ku": "-ku"
+        },
+        {
+          "bp_p2m_ko": "-ko"
+        },
+        {
+          "bp_p2m_kuw": "-kuw"
+        },
+        {
+          "bp_p2m_ku_w": "-ku(w)"
+        },
+        {
+          "bp_p2m_kam": "-kam"
+        },
+        {
+          "bp_p2m_ḳam": "-ḳam"
+        },
+        {
+          "bp_p2m_kəm": "-kəm"
+        },
+        {
+          "bp_p2m_kun": "-kun"
+        },
+        {
+          "bp_p2m_kon": "-kon"
+        },
+        {
+          "bp_p2m_chum": "-čum"
+        },
+        {
+          "bp_p2m_chim": "-čim"
+        }
+      ],
+      "title": "Variants of the bound pronoun 2nd person plural masculine"
+    }
+  },
+  {
+    "ft_bnd_pr_2ps_sg_c_after_cons": {
+      "values": [
+        {
+          "bp_s2cc_ik": "-ik"
+        },
+        {
+          "bp_s2cc_k": "-k"
+        },
+        {
+          "bp_s2cc_it": "-it"
+        },
+        {
+          "bp_s2cc_ak": "-ak"
+        },
+        {
+          "bp_s2cc_ək": "-ək"
+        },
+        {
+          "bp_s2cc_ek": "-ek"
+        }
+      ],
+      "title": "Variants of 2nd person singular communis bound pronoun after a consonant."
+    }
+  },
+  {
+    "ft_bnd_pr_2ps_sg_c_after_vow": {
+      "values": [
+        {
+          "bp_s2cv_ki": "-ki"
+        },
+        {
+          "bp_s2cv_c": "-č"
+        },
+        {
+          "bp_s2cv_k": "-k"
+        },
+        {
+          "bp_s2cv_t": "-t"
+        },
+        {
+          "bp_s2cv_ka": "-ka"
+        }
+      ],
+      "title": "Variants of 2nd person singular communis bound pronoun after a vowel."
+    }
+  },
+  {
+    "ft_bnd_pr_2ps_sg_f_after_conss": {
+      "values": [
+        {
+          "bp_s2fc_ish": "-iš"
+        },
+        {
+          "bp_s2fc_sh": "-š"
+        },
+        {
+          "bp_s2fc_ash": "-aš"
+        },
+        {
+          "bp_s2fc_iʨ": "-iʨ"
+        },
+        {
+          "bp_s2fc_ic": "-ić"
+        },
+        {
+          "bp_s2fc_ec": "-eć"
+        },
+        {
+          "bp_s2fc_c": "-ć"
+        },
+        {
+          "bp_s2fc_ik": "-ik, -ək"
+        },
+        {
+          "bp_s2fc_ek": "-ek"
+        },
+        {
+          "bp_s2fc_ech": "-eč"
+        },
+        {
+          "bp_s2fc_ikj": "-ik' (palatalised)"
+        },
+        {
+          "bp_s2fc_ki": "-ki"
+        },
+        {
+          "bp_s2fc_kiy": "-kiy"
+        },
+        {
+          "bp_s2fc_ich": "-ič, -əč"
+        },
+        {
+          "bp_s2fc_ach": "-ač"
+        },
+        {
+          "bp_s2fc_chi": "-či"
+        }
+      ],
+      "title": "Variants of the bound pronoun 2nd person singular feminine after a consonant"
+    }
+  },
+  {
+    "ft_bnd_pr_2ps_sg_f_after_vow": {
+      "values": [
+        {
+          "bp_s2fv_k": "-k"
+        },
+        {
+          "bp_s2fv_kh": "-ḵ"
+        },
+        {
+          "bp_s2fv_yk": "-yk"
+        },
+        {
+          "bp_s2fv_sh": "-š"
+        },
+        {
+          "bp_s2fv_c": "-ć"
+        },
+        {
+          "bp_s2fv_ch": "-č"
+        },
+        {
+          "bp_s2fv_chi": "-či"
+        },
+        {
+          "bp_s2fv_ki": "-ki"
+        },
+        {
+          "bp_s2fv_ky": "-ky"
+        },
+        {
+          "bp_s2fv_kiy": "-kiy"
+        }
+      ],
+      "title": "Variants of the bound pronoun 2nd person singular feminine after a vowel"
+    }
+  },
+  {
+    "ft_bnd_pr_2ps_sg_m_after_cons": {
+      "values": [
+        {
+          "bp_s2mc_ak": "-ak"
+        },
+        {
+          "bp_s2mc_k": "-k"
+        },
+        {
+          "bp_s2mc_ik": "-ək, -ik"
+        },
+        {
+          "bp_s2mc_aak": "-ạk"
+        },
+        {
+          "bp_s2mc_ek": "-ek"
+        },
+        {
+          "bp_s2mc_uk": "-uk"
+        },
+        {
+          "bp_s2mc_ch": "-č"
+        },
+        {
+          "bp_s2mc_cha": "-ča"
+        },
+        {
+          "bp_s2mc_aek": "-äk"
+        }
+      ],
+      "title": "Variants of the bound pronoun 2nd person singular masculine after a consonant"
+    }
+  },
+  {
+    "ft_bnd_pr_2ps_sg_m_after_vow": {
+      "values": [
+        {
+          "bp_s2mv_k": "-k"
+        },
+        {
+          "bp_s2mv_c": "-ć"
+        },
+        {
+          "bp_s2mv_ch": "-č"
+        },
+        {
+          "bp_s2mv_ka": "-ka"
+        },
+        {
+          "bp_s2mv_": ""
+        },
+        {
+          "bp_s2mv_1": ""
+        }
+      ],
+      "title": "Variants of the bound pronoun 2nd person singular masculine after a vowel"
+    }
+  },
+  {
+    "ft_bnd_pr_3ps_pl_c": {
+      "values": [
+        {
+          "bp_p3c_him": "-him, -həm"
+        },
+        {
+          "bp_p3c_hum": "-hum"
+        },
+        {
+          "bp_p3c_ham": "-ham"
+        },
+        {
+          "bp_p3c_hom": "-hom"
+        },
+        {
+          "bp_p3c_hem": "-həm"
+        },
+        {
+          "bp_p3c_hon": "-hon"
+        },
+        {
+          "bp_p3c_hun": "-hun"
+        },
+        {
+          "bp_p3c_hen": "-hən"
+        },
+        {
+          "bp_p3c_hin": "-hin"
+        },
+        {
+          "bp_p3c_om": "-om"
+        },
+        {
+          "bp_p3c_on": "-on"
+        },
+        {
+          "bp_p3c_un": "-un"
+        },
+        {
+          "bp_p3c_an": "-an"
+        },
+        {
+          "bp_p3c_en": "-ən"
+        },
+        {
+          "bp_p3c_em": "-əm"
+        },
+        {
+          "bp_p3c_um": "-um, -əm"
+        },
+        {
+          "bp_p3c_yen": "-yən"
+        },
+        {
+          "bp_p3c_wen": "-wən"
+        }
+      ],
+      "title": "Variants of the bound pronoun 3rd person plural communis"
+    }
+  },
+  {
+    "ft_bnd_pr_3ps_pl_f": {
+      "values": [
+        {
+          "bp_p3f_hin": "-hin"
+        },
+        {
+          "bp_p3f_in": "-in"
+        },
+        {
+          "bp_p3f_hən": "-hən"
+        },
+        {
+          "bp_p3f_hen": "-hen(n)"
+        },
+        {
+          "bp_p3f_han": "-han"
+        },
+        {
+          "bp_p3f_hun": "-hun"
+        },
+        {
+          "bp_p3f_hinna": "-hinna \/ -henna"
+        },
+        {
+          "bp_p3f_hunnah": "-hunnah\/ -hunna"
+        },
+        {
+          "bp_p3f_oon": "-ōn (after vowel: -hin)"
+        }
+      ],
+      "title": "Variants of the bound pronoun 3rd person plural feminine"
+    }
+  },
+  {
+    "ft_bnd_pr_3ps_pl_m": {
+      "values": [
+        {
+          "bp_p3m_hum": "-hum, -huṃ"
+        },
+        {
+          "bp_p3m_hun": "-hun"
+        },
+        {
+          "bp_p3m_un": "-un"
+        },
+        {
+          "bp_p3m_um": "-um"
+        },
+        {
+          "bp_p3m_hūn": "-hūn"
+        },
+        {
+          "bp_p3m_hū": "-hū"
+        },
+        {
+          "bp_p3m_hu": "-hu"
+        },
+        {
+          "bp_p3m_huw": "-huw"
+        },
+        {
+          "bp_p3m_huwwa": "-huwwa"
+        },
+        {
+          "bp_p3m_hem": "-həm"
+        },
+        {
+          "bp_p3m_əm": "-əm"
+        },
+        {
+          "bp_p3m_ham": "-ham"
+        },
+        {
+          "bp_p3m_him": "-him"
+        },
+        {
+          "bp_p3m_hom": "-hom"
+        },
+        {
+          "bp_p3m_hon": "-hon"
+        },
+        {
+          "bp_p3m_aam": "-ām (after vowel: -him)"
+        }
+      ],
+      "title": "Variants of the bound pronoun 3rd person plural masculine"
+    }
+  },
+  {
+    "ft_bnd_pr_3ps_sg_c": {
+      "values": [
+        {
+          "bp_s3f_": ""
+        },
+        {
+          "bp_s3c_": ""
+        },
+        {
+          "bp_s3c_1": ""
+        },
+        {
+          "bp_s3c_2": ""
+        },
+        {
+          "bp_s3c_3": ""
+        }
+      ],
+      "title": "Variants of the bound pronoun 3rd person singular communis"
+    }
+  },
+  {
+    "ft_bnd_pr_3ps_sg_f_after_cons": {
+      "values": [
+        {
+          "bp_s3f_ha": "-ha"
+        },
+        {
+          "bp_s3f_h-a": "-(h)a"
+        },
+        {
+          "bp_s3f_he": "-he"
+        },
+        {
+          "bp_s3f_hae": "-hä"
+        },
+        {
+          "bp_s3f_ah": "-ah"
+        },
+        {
+          "bp_s3f_ih": "-ih"
+        },
+        {
+          "bp_s3f_a": "-a"
+        },
+        {
+          "bp_s3f_ae": "-ä"
+        },
+        {
+          "bp_s3f_e": "-e"
+        },
+        {
+          "bp_s3f_i": "-i"
+        },
+        {
+          "bp_s3f_aa": "-ā\/-āh"
+        },
+        {
+          "bp_s3f_ee": "-ē\/-ēh\/-i\/ -ih"
+        },
+        {
+          "bp_s3f_haa": "-hā"
+        },
+        {
+          "bp_s3f_hiy": "-hiy"
+        },
+        {
+          "bp_s3f_hi": "-hi"
+        },
+        {
+          "bp_s3f_ya": "-ya"
+        },
+        {
+          "bp_s3f_wa": "-wa"
+        }
+      ],
+      "title": "Variants of the bound pronoun 3rd person singular feminine after consonant"
+    }
+  },
+  {
+    "ft_bnd_pr_3ps_sg_f_after_vow": {
+      "values": [
+        {
+          "bp_s3fv_ha": "-ha"
+        },
+        {
+          "bp_s3fv_xa": "-xa"
+        },
+        {
+          "bp_s3fv_he": "-he"
+        },
+        {
+          "bp_s3fv_hae": "-hä"
+        },
+        {
+          "bp_s3fv_a": "-a"
+        },
+        {
+          "bp_s3fv_ya": "-ya"
+        },
+        {
+          "bp_s3fv_wa": "-wa"
+        },
+        {
+          "bp_s3fv_ah": "-ah"
+        },
+        {
+          "bp_s3fv_aa": "-aa"
+        },
+        {
+          "bp_s3fv_haa": "-haa"
+        },
+        {
+          "bp_s3fv_hi": "-hi"
+        },
+        {
+          "bp_s3fv_hiy": "-hiy"
+        },
+        {
+          "bp_s3fv_i": "-i"
+        },
+        {
+          "bp_s3fv_ih": "-ih"
+        },
+        {
+          "bp_s3fv_ee": "-ee"
+        }
+      ],
+      "title": "Variants of the bound pronoun 3rd person singular feminine after vowel"
+    }
+  },
+  {
+    "ft_bnd_pr_3ps_sg_m_after_cons": {
+      "values": [
+        {
+          "bp_s3mc_u": "-u"
+        },
+        {
+          "bp_s3mc_uu": "-ū"
+        },
+        {
+          "bp_s3mc_a": "-a"
+        },
+        {
+          "bp_s3mc_ah": "-ah"
+        },
+        {
+          "bp_s3mc_aeh": "-äh"
+        },
+        {
+          "bp_s3mc_o": "-o"
+        },
+        {
+          "bp_s3mc_oh": "-oh"
+        },
+        {
+          "bp_s3mc_oo": "-ō"
+        },
+        {
+          "bp_s3mc_uh": "-uh"
+        },
+        {
+          "bp_s3mc_u_h": "-u(h)"
+        },
+        {
+          "bp_s3mc_o_h": "-o(h)"
+        },
+        {
+          "bp_s3mc_hu": "-hu"
+        },
+        {
+          "bp_s3mc_e": "-e"
+        },
+        {
+          "bp_s3mc_ih": "-ih\/ -ǝh"
+        }
+      ],
+      "title": "Variants of the bound pronoun 3rd person singular masculine after a consonant"
+    }
+  },
+  {
+    "ft_bnd_pr_3ps_sg_m_after_vow": {
+      "values": [
+        {
+          "bp_s3mv_h": "-h"
+        },
+        {
+          "bp_s3mv_x": "-x"
+        },
+        {
+          "bp_s3mv_zero": "-´"
+        },
+        {
+          "bp_s3mv_ah": "-ah"
+        },
+        {
+          "bp_s3mv_w": "-w"
+        },
+        {
+          "bp_s3mv_long_vowel": "-vowel is lengthened"
+        },
+        {
+          "bp_s3mv_long_vowel_h_opt": "-vowel is lengthened, h is optional"
+        },
+        {
+          "bp_s3mv_long_vowelh": "-vowel is lengthened\/stressed + h"
+        },
+        {
+          "bp_s3mv_hu": "-hu"
+        },
+        {
+          "bp_s3mv_ú": "-´ū"
+        },
+        {
+          "bp_s3mv_aakzent": "-´ā"
+        },
+        {
+          "bp_s3mv_huu": "-hū"
+        },
+        {
+          "bp_s3mv_ho": "-ho"
+        },
+        {
+          "bp_s3mv_o": "-o"
+        },
+        {
+          "bp_s3mv_hoo": "-hō"
+        },
+        {
+          "bp_s3mv_wh": "-wh"
+        },
+        {
+          "bp_s3mv_wu": "-wu"
+        },
+        {
+          "bp_s3mv_yi": "-yi"
+        },
+        {
+          "bp_s3mv_yu": "-yu"
+        },
+        {
+          "bp_s3mv_yo": "-yo"
+        },
+        {
+          "bp_s3mv_ya": "-ya"
+        },
+        {
+          "bp_s3mv_wa": "-wa"
+        },
+        {
+          "bp_s3mv_stress": "-´: (last vowel is stressed and long)"
+        },
+        {
+          "bp_s3mv_stress_long_raising": "last vowel is long, stressed and raised (a - e, o - u, e - i)"
+        }
+      ],
+      "title": "Variants of the bound pronoun 3rd person singular masculine after a vowel"
+    }
+  },
+  {
+    "ft_cond_part": {
+      "values": [
+        {
+          "cond_part_in": "ʔin"
+        },
+        {
+          "cond_part_inkaan": "ʔinkān (inčān)"
+        },
+        {
+          "cond_part_idha": "ʔiḏa"
+        }
+      ],
+      "title": "Variants of the conditional particles"
+    }
+  },
+  {
+    "ft_fem_end": {
+      "values": [
+        {
+          "fem_end_a": "-a"
+        },
+        {
+          "fem_end_i": "-i"
+        },
+        {
+          "fem_end_e": "-e"
+        },
+        {
+          "fem_end_ae": "-ä"
+        }
+      ],
+      "title": "Variants of the feminine ending (final -a) in the environment of emphatic and back consonants."
+    }
+  },
+  {
+    "ft_fem_end_ne": {
+      "values": [
+        {
+          "fem_end_ne_a": "-a"
+        },
+        {
+          "fem_end_ne_i": "-i"
+        },
+        {
+          "fem_end_ne_e": "-e"
+        },
+        {
+          "fem_end_ne_ae": "-ä"
+        }
+      ],
+      "title": "Variants of the feminine ending (final -a) in the environment of non-emphatic and non-back consonants."
+    }
+  },
+  {
+    "ft_formIV": {
+      "values": [
+        {
+          "formIV_yes": "yes"
+        },
+        {
+          "formIV_onlyvestigial": "yes but only vestigial forms (this does not include MSA loanwords)"
+        },
+        {
+          "formIV_no": "no"
+        },
+        {
+          "formIV_no_exceptfewMSAloans": "no except some few loans from MSA"
+        }
+      ],
+      "title": "Variants of derived form IV"
+    }
+  },
+  {
+    "ft_formIX": {
+      "values": [
+        {
+          "formIX_yes": "yes"
+        },
+        {
+          "formIX_no_II": "no but form II instead"
+        },
+        {
+          "formIX_no_XI": "no but form XI instead"
+        },
+        {
+          "formIX_no_V": "no but form V instead"
+        },
+        {
+          "formIX_no": "no"
+        }
+      ],
+      "title": "Variants of derived forms V and VI PFV sound verbs"
+    }
+  },
+  {
+    "ft_frmVII-VIIIipfv": {
+      "values": [
+        {
+          "formVII-VIII_ipf_yi_CtiCiC": "yínCiCiC and yíCtiCiC"
+        },
+        {
+          "formVII-VIII_ipf_yi_CtCiC": "yínCCiC and yíCtCiC"
+        },
+        {
+          "formVII-VIII_ipf_yeCtCeC": "yənCCəC and yəCtCəC no stress indicated"
+        },
+        {
+          "formVII-VIII_ipf_yeCtCeC_stress": "yə́nCCəC and yə́CtCəC"
+        },
+        {
+          "formVII-VIII_ipf_yiCti_CiC": "yinCíCiC and yiCtíCiC"
+        },
+        {
+          "formVII-VIII_ipf_yCteCC": "yCtəC(ə)C"
+        },
+        {
+          "formVII-VIII_ipf_yi_CtaCiC": "yínCaCiC and yíCtaCiC"
+        },
+        {
+          "formVII-VIII_ipf_ya_CtaCiC": "yánCaCiC and yáCtaCiC"
+        },
+        {
+          "formVII-VIII_ipf_yi_CtiCaC_only": "yínCiCaC only"
+        },
+        {
+          "formVII-VIII_ipf_yiCta_CiC": "yinCáCiC and yiCtáCiC"
+        },
+        {
+          "formVII-VIII_ipf_yaCtaCa_C": "yanCaCáC and yaCtaCáC, yinCaCáC and yiCtaCáC"
+        },
+        {
+          "formVII-VIII_ipf_yiCtaCaC": "yinCaCaC and yiCtaCaC"
+        },
+        {
+          "formVII-VIII_ipf_yiCtaCiC_nostress": "yinCaCiC and yiCtaCiC no stress indicated"
+        },
+        {
+          "formVII-VIII_ipf_yiCtiCiC_nostress": "yinCiCiC and yiCtiCiC no stress indicated"
+        },
+        {
+          "formVII-VIII_ipf_yinCCaC_nostress": "yinCCaC no stress indicated"
+        },
+        {
+          "formVII-VIII_ipf_yinCuCuC_nostress": "yinCuCuC and yiCtiCiC no stress indicated"
+        },
+        {
+          "formVII-VIII_ipf_iinCvCvC": "īnCv´CvC and īCtv´CvC"
+        },
+        {
+          "formVII-VIII_ipf_yinCvCvC": "yinCvCvC and yiCtvCvC"
+        },
+        {
+          "formVII-VIII_ipf_yenCeCaC": "yənCəCaC and yəCtəCəC"
+        },
+        {
+          "formVII-no-VIII_yiCtaCaC": "VII not in use, VIII yiCtaCaC or yiCtCar"
+        },
+        {
+          "formVII-VIII_no-in-use": "VII and VIII not in use"
+        },
+        {
+          "formVII-VIII_ipf_yi_CtaCaC": "yínCaCaC and yíCtaCaC"
+        },
+        {
+          "formVII-VIII_ipf_yiCta_CaC": "yinCáCaC and yiCtáCaC"
+        },
+        {
+          "formVII-VIII_ipf_yiCtiCaC_nostress": "yinCiCaC and yiCtiCaC no stress indicated"
+        },
+        {
+          "formVII-VIII_ipf_yiCtCa_C": "yinCCáC and yiCtCáC"
+        }
+      ],
+      "title": "Variants of derived forms VII AND VIII IPFV in sound verbs"
+    }
+  },
+  {
+    "ft_frmV-VIipfv": {
+      "values": [
+        {
+          "formV-VI_ipf_yvtC": "yvtCaCCaC - yvtCāCaC"
+        },
+        {
+          "formV-VI_ipf_yvtCaCCiC": "yvtCaCCiC - yvtCāCiC"
+        },
+        {
+          "formV-VI_ipf_yvC": "yvCaCCaC - yvCāCaC"
+        },
+        {
+          "formV-VI_ipf_ytvC": "y(ə)tvCaCCaC - y(ə)tvCāCaC"
+        },
+        {
+          "formV-VI_ipf_iytvC": "iytvCaCCaC - iytvCāCaC"
+        },
+        {
+          "formV-VI_ipf_iitvC": "ītvCaCCvC - ītCāCvC"
+        },
+        {
+          "formV-VI_ipf_no_form_V_yitCaatab": "yitCātab"
+        },
+        {
+          "formV-VI_ipf_yitCiCCaC_maltese": "yitCiCCaC for Maltese"
+        },
+        {
+          "formV-VI_ipf_yetCaCCeC": "yətCaCCeC"
+        },
+        {
+          "formV-VI_ipf_yitCaCCiC-aC_conditioned": "yitCaCCiC\/yitCaCCaC and yitCāCiC\/yitCāCaC conditioned by adjacent consonants"
+        }
+      ],
+      "title": "Variants of derived forms V and VI PFV sound verbs"
+    }
+  },
+  {
+    "ft_frmV-VIpfv": {
+      "values": [
+        {
+          "formV-VI_tvC": "tiCaCCaC \/ tiCāCaC or taCaCCaC \/ taCāCaC "
+        },
+        {
+          "formV-VI_atC": "ʔatCaCCaC \/ ʔatCāCaC"
+        },
+        {
+          "formV-VI_tC": "tCaCCaC \/ tCāCaC"
+        },
+        {
+          "formV-VI_tC_a-i": "tCaCCaC \/ tCāCiC"
+        },
+        {
+          "formV-VI_tC_i-i_aa-i": "tCəCCəC \/ tCāCəC"
+        },
+        {
+          "formV-VI_tC_a-i_conditioned": "tCaCCaC ~ tCaCCiC\/ tCāCaC ~ tCāCiC"
+        },
+        {
+          "formV-VI_vtC": "itCaCCaC \/ itCāCaC or atCaCCaC \/ atCāCaC"
+        },
+        {
+          "formV_tCiCCaC_maltese": "tCiCCaC for Maltese"
+        }
+      ],
+      "title": "Variants of derived forms V and VI PFV sound verbs"
+    }
+  },
+  {
+    "ft_fut_mar": {
+      "values": [
+        {
+          "fut_mar_b": "b-"
+        },
+        {
+          "fut_mar_baa": "bā-"
+        },
+        {
+          "fut_mar_baash": "bāš"
+        },
+        {
+          "fut_mar_bgha_ba": "bġa ~ ba ~ naba"
+        },
+        {
+          "fut_mar_ser": "ser, se, sa"
+        },
+        {
+          "fut_mar_ghadi": "ġadi"
+        },
+        {
+          "fut_mar_aa": "ʕa-"
+        },
+        {
+          "fut_mar_a": "a-"
+        },
+        {
+          "fut_mar_mashi": "maši"
+        },
+        {
+          "fut_mar_maash": "māš"
+        },
+        {
+          "fut_mar_mish": "miš məš"
+        },
+        {
+          "fut_mar_sh": "sh- \/sha-"
+        },
+        {
+          "fut_mar_rah": "raḥ"
+        },
+        {
+          "fut_mar_raah": "rāḥ"
+        },
+        {
+          "fut_mar_lah": "laḥ"
+        },
+        {
+          "fut_mar_lahi": "lāhi"
+        },
+        {
+          "fut_mar_yah": "yaḥ"
+        },
+        {
+          "fut_mar_ya": "ya"
+        },
+        {
+          "fut_mar_raayih": "rāyiḥ"
+        },
+        {
+          "fut_mar_rah_rayeh": "rā- + rāyəḥ"
+        },
+        {
+          "fut_mar_h": "ḥ-"
+        },
+        {
+          "fut_mar_haa": "ḥā-, ḥa-"
+        },
+        {
+          "fut_mar_normalh": "h- \/ ha-"
+        },
+        {
+          "fut_mar_de": "də-"
+        },
+        {
+          "fut_mar_te": "tə-"
+        },
+        {
+          "fut_mar_ta": "ta- tā"
+        },
+        {
+          "fut_mar_taww": "taww"
+        },
+        {
+          "fut_mar_da": "da-"
+        },
+        {
+          "fut_mar_biddo": "biddo"
+        },
+        {
+          "fut_mar_badd": "badd + Suffix"
+        },
+        {
+          "fut_mar_bidd": "bidd + Suffix"
+        },
+        {
+          "fut_mar_widd": "widd + Suffix"
+        },
+        {
+          "fut_mar_yriid": "yrīd"
+        },
+        {
+          "fut_mar_greyb": "greyb"
+        },
+        {
+          "fut_mar_yibbi": "yibbi"
+        },
+        {
+          "fut_mar_hassa": "hassa"
+        },
+        {
+          "fut_mar_yḥibb": "yḥibb"
+        },
+        {
+          "fut_mar_no": "no future marker"
+        },
+        {
+          "fut_mar_aad": "għad_maltese"
+        },
+        {
+          "fut_mar_seyyer_seyra_seyriin": "seyyer, seyra, seyrīn"
+        }
+      ],
+      "title": "Variants of the Future Marker"
+    }
+  },
+  {
+    "ft_gahawa1_agcac": {
+      "values": [
+        {
+          "gahawa1b_a_GaCaC": "ʔáGaCaC "
+        },
+        {
+          "gahawa1b_aGa_CaC": "ʔaGáCaC"
+        },
+        {
+          "gahawa1b_GaCaC": "GaCaC"
+        }
+      ],
+      "title": "Variants of the Gahawa syndrome type 1 ʔaGCaC"
+    }
+  },
+  {
+    "ft_gahawa1_cagcvc": {
+      "values": [
+        {
+          "gahawa1a_Ca_GaCv": "CáGaCv"
+        },
+        {
+          "gahawa1a_CaGa_Cv": "CaGáCv"
+        },
+        {
+          "gahawa1a_CGaCv": "CGaCv"
+        }
+      ],
+      "title": "Variants of the Gahawa syndrome type 1 CaGCv(C)"
+    }
+  },
+  {
+    "ft_gahawa1_magcuuc": {
+      "values": [
+        {
+          "gahawa1c_ma_GaCuuC": "máGaCūC"
+        },
+        {
+          "gahawa1c_maGa_CuuC": "maGáCūC"
+        },
+        {
+          "gahawa1c_mGaCuuC": "mGaCūC"
+        }
+      ],
+      "title": "Variants of the Gahawa syndrome type 1 maGCūC"
+    }
+  },
+  {
+    "ft_gahawa1_yagcvc": {
+      "values": [
+        {
+          "gahawa1d_ya_GaCvC": "yáGaCvC"
+        },
+        {
+          "gahawa1d_yaGa_CvC": "yGáCvC"
+        },
+        {
+          "gahawa1d_yGaCvC": "yGaCvC"
+        }
+      ],
+      "title": "Variants of the Gahawa syndrome type 1 Verb yaGCvC (Form I)"
+    }
+  },
+  {
+    "ft_gahawa2": {
+      "values": [
+        {
+          "gahawa2_Ca_GaC": "|Cá|-|GaC|#"
+        },
+        {
+          "gahawa2_CaGa_C": "|Ca|-|GáC|#"
+        },
+        {
+          "gahawa2_CiGa_C": "|Ci\/u|-|GáC|#"
+        },
+        {
+          "gahawa2_CCaC": "|CCaC|"
+        }
+      ],
+      "title": "Variants of the Gahawa syndrome type 2"
+    }
+  },
+  {
+    "ft_gen_ex": {
+      "values": [
+        {
+          "gen_taba3_notinflected": "tabaʕ, tibaʕ, tbaʕ"
+        },
+        {
+          "gen_bitaa3_inflected": "btāʕ, bitāʕ, btāʕit, etc."
+        }
+      ],
+      "title": "Variants of the genitive exponent"
+    }
+  },
+  {
+    "ft_imp_neg": {
+      "values": [
+        {
+          "imp_neg_laa_verb": "lā + verb"
+        },
+        {
+          "imp_neg_laa_verb_sh": "lā + verb + š"
+        },
+        {
+          "imp_neg_verb_sh": "verb + š"
+        },
+        {
+          "imp_neg_verb_shi": "verb + ši"
+        },
+        {
+          "imp_neg_baa_laa_verb": "bā + lā + verb"
+        },
+        {
+          "imp_neg_maa_verb_sh": "mā + verb # š"
+        },
+        {
+          "imp_neg_maa_verb": "mā + verb"
+        },
+        {
+          "imp_neg_wala_impverb": "wala + imperative verb"
+        }
+      ],
+      "title": "Variants of Imperative Negation"
+    }
+  },
+  {
+    "ft_imp_2sg_m_3weak": {
+      "values": [
+        {
+          "imp_2sgm_3w_CCii": "CCī"
+        },
+        {
+          "imp_2sgm_3w_CiC": "CiC"
+        },
+        {
+          "imp_2sgm_3w_CvvCv": "CvvCv"
+        },
+        {
+          "imp_2sgm_3w_CCi": "CCi"
+        },
+        {
+          "imp_2sgm_3w_vCvC": "ʔvCvC"
+        },
+        {
+          "imp_2sgm_3w_aCiC": "ʔaCiC"
+        },
+        {
+          "imp_2sgm_3w_eCCa": "ʔəCCa, əCCa"
+        },
+        {
+          "imp_2sgm_3w_aCCv": "ʔaCCv, aCCv(h)"
+        },
+        {
+          "imp_2sgm_3w_aCCi": "ʔaCCi"
+        },
+        {
+          "imp_2sgm_3w_eCCv": "ʔəCCv, əCCv"
+        },
+        {
+          "imp_2sgm_3w_eCCyv": "eCCyv, əCCyv"
+        },
+        {
+          "imp_2sgm_3w_eCCi": "ʔəCCi, əCCi"
+        },
+        {
+          "imp_2sgm_3w_iiCCa": "īCCa"
+        },
+        {
+          "imp_2sgm_3w_aaCCa": "āCCa"
+        },
+        {
+          "imp_2sgm_3w_aCCaa": "aCCā"
+        },
+        {
+          "imp_2sgm_3w_aaCCi": "āCCi"
+        },
+        {
+          "imp_2sgm_3w_iCC": "iCC"
+        },
+        {
+          "imp_2sgm_3w_iCCiy": "iCCiy"
+        },
+        {
+          "imp_2sgm_3w_CCee": "CCē"
+        },
+        {
+          "imp_2sgm_3w_iCCv": "iCCi, iCCa"
+        },
+        {
+          "imp_2sgm_3w_eCCvv": "əCCā"
+        },
+        {
+          "imp_2sgm_3w_CCaa": "CCā"
+        },
+        {
+          "imp_2sgm_3w_CCa": "CCa"
+        },
+        {
+          "imp_2sgm_3w_CvC": "CvC"
+        },
+        {
+          "imp_2sgm_3w_vCCv": "vCCv"
+        },
+        {
+          "imp_2sgm_3w_vCvCv": "ʔvCvCv"
+        },
+        {
+          "imp_2sgm_3w_CvvC": "CvvC (long vowel in the middle)"
+        },
+        {
+          "imp_2sgm_3w_iCvC": "iCvC"
+        }
+      ],
+      "title": "Variants of imperative of final-weak verbs (2sg.m in a pattern)"
+    }
+  },
+  {
+    "ft_indic_pref": {
+      "values": [
+        {
+          "indic_pref_b": "b-"
+        },
+        {
+          "indic_pref_a": "ā-"
+        },
+        {
+          "indic_pref_k": "k-"
+        },
+        {
+          "indic_pref_m": "m-"
+        },
+        {
+          "indic_pref_ka": "ka-, kā-"
+        },
+        {
+          "indic_pref_ta": "ta-"
+        },
+        {
+          "indic_pref_la": "lā-"
+        },
+        {
+          "indic_pref_no": "no indicative prefix"
+        }
+      ],
+      "title": "Variants of the indicative prefix"
+    }
+  },
+  {
+    "ft_ipfv_2sg_f": {
+      "values": [
+        {
+          "ipfv_2sgf_": "-"
+        },
+        {
+          "ipfv_2sgf_i": "-i"
+        },
+        {
+          "ipfv_2sgf_e": "-e"
+        },
+        {
+          "ipfv_2sgf_iy": "-iy"
+        },
+        {
+          "ipfv_2sgf_ey": "-ey"
+        },
+        {
+          "ipfv_2sgf_ay": "-ay"
+        },
+        {
+          "ipfv_2sgf_ii": "-ī"
+        },
+        {
+          "ipfv_2sgf_iin": "-īn"
+        },
+        {
+          "ipfv_2sgf_een": "-ēn"
+        },
+        {
+          "ipfv_2sgf_in": "-in"
+        }
+      ],
+      "title": "Variants of IPFV inflection: 2sg.f in sound verbs"
+    }
+  },
+  {
+    "ft_ipfv_3pl_m_c": {
+      "values": [
+        {
+          "ipfv_3plmc_un": "-un"
+        },
+        {
+          "ipfv_3plmc_u": "-u"
+        },
+        {
+          "ipfv_3plmc_uu": "-ū"
+        },
+        {
+          "ipfv_3plmc_oo": "-ō"
+        },
+        {
+          "ipfv_3plmc_o": "-o"
+        },
+        {
+          "ipfv_3plmc_uun": "-ūn"
+        },
+        {
+          "ipfv_3plmc_oon": "-ōn"
+        },
+        {
+          "ipfv_3plmc_um": "-um"
+        },
+        {
+          "ipfv_3plmc_am": "-am"
+        },
+        {
+          "ipfv_3plmc_uw": "-uw"
+        },
+        {
+          "ipfv_3plmc_ow": "-ow"
+        },
+        {
+          "ipfv_3plmc_iw": "-iw"
+        },
+        {
+          "ipfv_3plmc_aw": "-aw"
+        }
+      ],
+      "title": "Variants of IPFV inflection: 3pl.m\/c in sound verbs "
+    }
+  },
+  {
+    "ft_ipfv_3sg_m_1w": {
+      "values": [
+        {
+          "ipfv_3sgm_1w_yuuCvC": "yūCvC"
+        },
+        {
+          "ipfv_3sgm_1w_yooCvC": "yōCvC"
+        },
+        {
+          "ipfv_3sgm_1w_yawCvC": "yawCvC"
+        },
+        {
+          "ipfv_3sgm_1w_yiwCvC": "yiwCvC"
+        },
+        {
+          "ipfv_3sgm_1w_yiCvC": "yiCvC"
+        },
+        {
+          "ipfv_3sgm_1w_yiiCvC": "yīCvC"
+        },
+        {
+          "ipfv_3sgm_1w_yaCvvC": "yvCīC"
+        },
+        {
+          "ipfv_3sgm_1w_yiCvvC": "yiCvvC"
+        },
+        {
+          "ipfv_3sgm_1w_yCvvC": "yCvvC"
+        },
+        {
+          "ipfv_3sgm_1w_yowCvC": "yowCvC, yŭwCvC"
+        },
+        {
+          "ipfv_3sgm_1w_yuwCvC": "yŭwCvC"
+        },
+        {
+          "ipfv_3sgm_1w_yaCvC": "yaCvC"
+        },
+        {
+          "ipfv_3sgm_1w_yaaCvC": "yaaCvC"
+        },
+        {
+          "ipfv_3sgm_1w_yuCvC": "yuCvC"
+        },
+        {
+          "ipfv_3sgm_1w_bvCvC": "bvCvC"
+        },
+        {
+          "ipfv_3sgm_1w_bvCvvC": "bvCvvC, biCīC"
+        },
+        {
+          "ipfv_3sgm_1w_bvwCvC": "bvwCvC"
+        },
+        {
+          "ipfv_3sgm_1w_bvvCvC": "bvvCvC"
+        },
+        {
+          "ipfv_3sgm_1w_biwvCvC": "biwvCvC"
+        },
+        {
+          "ipfv_3sgm_1w_iiCaC": "īCaC"
+        },
+        {
+          "ipfv_3sgm_1w_iiCiC": "īCiC"
+        },
+        {
+          "ipfv_3sgm_1w_iiwCeC": "īwCəC"
+        },
+        {
+          "ipfv_3sgm_1w_yeCaC": "yəCaC, yəCeC"
+        },
+        {
+          "ipfv_3sgm_1w_yewCeC": "yəwCəC"
+        }
+      ],
+      "title": "Variants of IPFV of I-w verbs (3sg.m in a pattern)"
+    }
+  },
+  {
+    "ft_jaa_3pl_mc": {
+      "values": [
+        {
+          "JAA_3plmc_pfv_gum": "gum"
+        },
+        {
+          "JAA_3plmc_pfv_jaw": "ǧaw"
+        },
+        {
+          "JAA_3plmc_pfv_ajuu": "ažū"
+        },
+        {
+          "JAA_3plmc_pfv_jaaw": "ǧāw"
+        },
+        {
+          "JAA_3plmc_pfv_jaww": "ǧaww"
+        },
+        {
+          "JAA_3plmc_pfv_yaw": "yaw"
+        },
+        {
+          "JAA_3plmc_pfv_iju": "iǧu,əǧu, iǧo, igū"
+        },
+        {
+          "JAA_3plmc_pfv_iiju": "īǧu"
+        },
+        {
+          "JAA_3plmc_pfv_jam": "ǧam"
+        },
+        {
+          "JAA_3plmc_pfv_jum": "ǧum"
+        },
+        {
+          "JAA_3plmc_pfv_ju": "ǧū, ǧu"
+        },
+        {
+          "JAA_3plmc_pfv_jayyuu": "ǧayyū"
+        },
+        {
+          "JAA_3plmc_pfv_jaayuu": "ǧāyū"
+        },
+        {
+          "JAA_3plmc_pfv_jaauu": "ǧāʔū"
+        },
+        {
+          "JAA_3plmc_pfv_aju": "aǧu"
+        },
+        {
+          "JAA_3plmc_pfv_eju": "eǧu"
+        },
+        {
+          "JAA_3plmc_pfv_ajaw": "aǧaw"
+        },
+        {
+          "JAA_3plmc_pfv_ajaauu": "ʔaǧāʔū"
+        },
+        {
+          "JAA_3plmc_pfv_jow": "ǧow"
+        },
+        {
+          "JAA_3plmc_pfv_juw": "ǧuw"
+        },
+        {
+          "JAA_3plmc_pfv_joo": "ǧō"
+        },
+        {
+          "JAA_3plmc_pfv_jo": "jo"
+        },
+        {
+          "JAA_3plmc_pfv_ataw": "ʔataw"
+        },
+        {
+          "JAA_3plmc_pfv_atu": "ʔatu"
+        },
+        {
+          "JAA_3plmc_pfv_atoo": "ʔatō"
+        },
+        {
+          "JAA_3plmc_pfv_eyaw": "ʔəyaw"
+        },
+        {
+          "JAA_3plmc_pfv_ejaw": "eǧaw"
+        }
+      ],
+      "title": "Variants of ǧāʔ inflection: 3.PL.M\/C  in PFV "
+    }
+  },
+  {
+    "ft_jaa_3sg_f": {
+      "values": [
+        {
+          "JAA_3sgmf_pfv_jitt": "ǧett"
+        },
+        {
+          "JAA_3sgmf_pfv_jah": "ǧah"
+        },
+        {
+          "JAA_3sgmf_pfv_jaa_ah": "ǧāʔah"
+        },
+        {
+          "JAA_3sgmf_pfv_jaa": "ǧā"
+        },
+        {
+          "JAA_3sgmf_pfv_jaaet": "ǧā́ʔet, ǧāʔat"
+        },
+        {
+          "JAA_3sgmf_pfv_jaat": "ǧāt žǟt jāt, ǧēt"
+        },
+        {
+          "JAA_3sgmf_pfv_jat": "ǧat - žat - yat"
+        },
+        {
+          "JAA_3sgmf_pfv_jit": "ǧit, ǧət"
+        },
+        {
+          "JAA_3sgmf_pfv_jiitiy": "ǧītiy"
+        },
+        {
+          "JAA_3sgmf_pfv_jan": "ǧan"
+        },
+        {
+          "JAA_3sgmf_pfv_not.available": "not available"
+        },
+        {
+          "JAA_3sgmf_pfv_jiit": "ǧīt"
+        },
+        {
+          "JAA_3sgmf_pfv_ajat": "aǧat"
+        },
+        {
+          "JAA_3sgmf_pfv_ajaa_ah": "ʔaǧāʔah"
+        },
+        {
+          "JAA_3sgmf_pfv_ijit": "iǧit \/ əǧət"
+        },
+        {
+          "JAA_3sgmf_pfv_ijiit": "iǧīt"
+        },
+        {
+          "JAA_3sgmf_pfv_ijat": "iǧat"
+        },
+        {
+          "JAA_3sgmf_pfv_iijat": "īǧat"
+        },
+        {
+          "JAA_3sgmf_pfv_jaach": "ǧāč"
+        },
+        {
+          "JAA_3sgmf_pfv_jayt": "ǧayt"
+        },
+        {
+          "JAA_3sgmf_pfv_atan": "atan"
+        }
+      ],
+      "title": "Variants of ǧāʔ inflection: 3SG.M 3.SG.F in PFV "
+    }
+  },
+  {
+    "ft_jaa_3sg_m": {
+      "values": [
+        {
+          "JAA_3sgmf_pfv_ajaa": "aǧa\/aǧā"
+        },
+        {
+          "JAA_3sgmf_pfv_ja": "ǧa - ža - ya - ga \/ ǧā etc"
+        },
+        {
+          "JAA_3sgmf_pfv_iji": "əǧi"
+        },
+        {
+          "JAA_3sgmf_pfv_jaa": "ǧaʕ"
+        },
+        {
+          "JAA_3sgmf_pfv_ji": "ǧī\/ǧi"
+        },
+        {
+          "JAA_3sgmf_pfv_jih": "ǧih"
+        },
+        {
+          "JAA_3sgmf_pfv_ji_hamza": "ǧiʔ"
+        },
+        {
+          "JAA_3sgmf_pfv_eje": "eǧe"
+        },
+        {
+          "JAA_3sgmf_pfv_je": "ǧe\/ǧē"
+        },
+        {
+          "JAA_3sgmf_pfv_ija": "iǧa"
+        },
+        {
+          "JAA_3sgmf_pfv_iija": "īǧa"
+        },
+        {
+          "JAA_3sgmf_pfv_jak": "ǧak"
+        },
+        {
+          "JAA_3sgmf_pfv_jakin": "ǧakin"
+        },
+        {
+          "JAA_3sgmf_pfv_ata": "ʔata"
+        }
+      ],
+      "title": "Variants of ǧāʔ inflection: 3SG.M in PFV "
+    }
+  },
+  {
+    "ft_lma_emph": {
+      "values": [
+        {
+          "lma_emph_aa": "ā"
+        },
+        {
+          "lma_emph_ii": "ī"
+        },
+        {
+          "lma_emph_ee": "ē"
+        },
+        {
+          "lma_emph_yee": "(y)ē"
+        },
+        {
+          "lma_emph_ae": "ǟ"
+        },
+        {
+          "lma_emph_oo": "ō"
+        }
+      ],
+      "title": "Variants of the long medial ā in the environment of emphatic and back consonants."
+    }
+  },
+  {
+    "ft_lma_ne_av": {
+      "values": [
+        {
+          "lma_ne_av_aa": "ā"
+        },
+        {
+          "lma_ne_av_ii": "ī"
+        },
+        {
+          "lma_ne_av_ee": "ē"
+        },
+        {
+          "lma_ne_av_yee": "(y)ē"
+        },
+        {
+          "lma_ne_av_ae": "ǟ"
+        }
+      ],
+      "title": "Variants of the long medial ā in the environment of non-emphatic and non-back consonants and all vowels excluding i."
+    }
+  },
+  {
+    "ft_lma_ne_i": {
+      "values": [
+        {
+          "lma_ne_i_aa": "ā"
+        },
+        {
+          "lma_ne_i_ii": "ī"
+        },
+        {
+          "lma_ne_i_ee": "ē"
+        },
+        {
+          "lma_ne_i_yee": "(y)ē"
+        },
+        {
+          "lma_ne_i_ae": "ǟ"
+        }
+      ],
+      "title": "Variants of the long medial ā in the environment of non-emphatic and non-back consonants and only i."
+    }
+  },
+  {
+    "ft_passive": {
+      "values": [
+        {
+          "passive_apophonic": "apophonic passive, futiḥ, fitiḥ"
+        },
+        {
+          "passive_t-prefix": "t- prefix passive \/ tt- prefix passive - tfataḥ or ttəfataḥ"
+        },
+        {
+          "passive_t-infix": "t- infix passive – ntaqal (normally for verbs that have n as a first radical)"
+        },
+        {
+          "passive_n-prefix": "n-passive - nfataḥ"
+        },
+        {
+          "passive_analytic": "Analytic passive - ǧi + participle"
+        },
+        {
+          "passive_nt-prefix": "nCtvCvC \/ ntCvCvC - mostly for Maltese "
+        }
+      ],
+      "title": "Variants of the passive forms"
+    }
+  },
+  {
+    "ft_pfv_3pl_m_c": {
+      "values": [
+        {
+          "pfv_3plmc_uu": "-ū"
+        },
+        {
+          "pfv_3plmc_u": "-u"
+        },
+        {
+          "pfv_3plmc_o": "-o \/ -ō"
+        },
+        {
+          "pfv_3plmc_aw": "-aw, -āw"
+        },
+        {
+          "pfv_3plmc_ew": "-ew"
+        },
+        {
+          "pfv_3plmc_iw": "-iw"
+        },
+        {
+          "pfv_3plmc_ow": "-ow"
+        },
+        {
+          "pfv_3plmc_uw": "-uw"
+        },
+        {
+          "pfv_3plmc_am": "-am"
+        },
+        {
+          "pfv_3plmc_om": "-om"
+        },
+        {
+          "pfv_3plmc_um": "-um"
+        }
+      ],
+      "title": "Variants of PFV inflection: 3pl.m\/c in sound verbs"
+    }
+  },
+  {
+    "ft_pfv_3pl_m_c_3wy": {
+      "values": [
+        {
+          "pfv_3plmcwy_uu": "-ū"
+        },
+        {
+          "pfv_3plmcwy_aw": "-aw"
+        },
+        {
+          "pfv_3plmcwy_am": "-am"
+        },
+        {
+          "pfv_3plmcwy_um": "-um"
+        },
+        {
+          "pfv_3plmcwy_yum": "-yum"
+        },
+        {
+          "pfv_3plmcwy_u": "-u"
+        },
+        {
+          "pfv_3plmcwy_yu": "-yu"
+        },
+        {
+          "pfv_3plmcwy_o": "-o"
+        },
+        {
+          "pfv_3plmcwy_oo": "-ō"
+        },
+        {
+          "pfv_3plmcwy_yo": "-yo"
+        },
+        {
+          "pfv_3plmcwy_yaw": "-yaw"
+        },
+        {
+          "pfv_3plmcwy_aaw": "-āw"
+        },
+        {
+          "pfv_3plmcwy_ew": "-ew"
+        },
+        {
+          "pfv_3plmcwy_ow": "-ow"
+        },
+        {
+          "pfv_3plmcwy_uw": "-uw"
+        },
+        {
+          "pfv_3plmcwy_yow": "-yow"
+        },
+        {
+          "pfv_3plmcwy_yam": "-yam"
+        },
+        {
+          "pfv_3plmcwy_yuu": "-yū"
+        },
+        {
+          "pfv_3plmcwy_yuw": "-yuw"
+        }
+      ],
+      "title": "Variants of PFV inflection: 3pl.m\/c in III w\/y verbs"
+    }
+  },
+  {
+    "ft_pfv_3sg_f": {
+      "values": [
+        {
+          "pfv_3sgf_ət": "-ət, -əţ, əṯ"
+        },
+        {
+          "pfv_3sgf_at": "-at, -āt"
+        },
+        {
+          "pfv_3sgf_ech": "-əč"
+        },
+        {
+          "pfv_3sgf_ch": "-č"
+        },
+        {
+          "pfv_3sgf_it": "-it"
+        },
+        {
+          "pfv_3sgf_et": "-et"
+        },
+        {
+          "pfv_3sgf_an": "-an"
+        },
+        {
+          "pfv_3sgf_ah": "-ah"
+        },
+        {
+          "pfv_3sgf_eh": "-eh"
+        },
+        {
+          "pfv_3sgf_t": "-t, -ţ"
+        },
+        {
+          "pfv_3sgf_a": "-a"
+        }
+      ],
+      "title": "Variants of PFV inflection: 3sg.f in sound verbs"
+    }
+  },
+  {
+    "ft_pfv_3sg_f_3wy": {
+      "values": [
+        {
+          "pfv_3sgfwy_ah": "-ah"
+        },
+        {
+          "pfv_3sgfwy_eh": "-eh, -ēh"
+        },
+        {
+          "pfv_3sgfwy_yeh": "-yeh"
+        },
+        {
+          "pfv_3sgfwy_at": "-at, -aţ, -aṯ, -át"
+        },
+        {
+          "pfv_3sgfwy_aat": "-āt"
+        },
+        {
+          "pfv_3sgfwy_aach": "-āč"
+        },
+        {
+          "pfv_3sgfwy_iyat": "-iyat"
+        },
+        {
+          "pfv_3sgfwy_yat": "-yat"
+        },
+        {
+          "pfv_3sgfwy_iiyit": "-īyit"
+        },
+        {
+          "pfv_3sgfwy_iiyah": "-īyah"
+        },
+        {
+          "pfv_3sgfwy_yit": "-yit"
+        },
+        {
+          "pfv_3sgfwy_it": "-it"
+        },
+        {
+          "pfv_3sgfwy_et": "-ət, -et"
+        },
+        {
+          "pfv_3sgfwy_iit": "-īt"
+        },
+        {
+          "pfv_3sgfwy_iyan": "-iyan"
+        },
+        {
+          "pfv_3sgfwy_yan": "-yan"
+        },
+        {
+          "pfv_3sgfwy_an": "-an"
+        },
+        {
+          "pfv_3sgfwy_a": "-a"
+        },
+        {
+          "pfv_3sgfwy_ya": "-ya"
+        },
+        {
+          "pfv_3sgfwy_yet": "-yet"
+        }
+      ],
+      "title": "Variants of PFV inflection: 3sg.f in iii w\/y verbs"
+    }
+  },
+  {
+    "ft_pred_neg": {
+      "values": [
+        {
+          "pred_neg_mish": "miš məš"
+        },
+        {
+          "pred_neg_mush": "muš"
+        },
+        {
+          "pred_neg_la": "la"
+        },
+        {
+          "pred_neg_muu": "mū"
+        },
+        {
+          "pred_neg_muush": "mūš"
+        },
+        {
+          "pred_neg_ma": "ma"
+        },
+        {
+          "pred_neg_mub": "mub"
+        },
+        {
+          "pred_neg_ma_hu": "ma hu \/ mā hu"
+        },
+        {
+          "pred_neg_m_pron": "mūhu \/ mīhi etc."
+        },
+        {
+          "pred_neg_muhu": "muhu"
+        },
+        {
+          "pred_neg_mashi": "maši ~ māši"
+        },
+        {
+          "pred_neg_mash": "maš ~ māš"
+        },
+        {
+          "pred_neg_muhub": "muhub"
+        },
+        {
+          "pred_neg_hub": "hub"
+        },
+        {
+          "pred_neg_humb": "humb"
+        },
+        {
+          "pred_neg_maww": "maww"
+        },
+        {
+          "pred_neg_mayy": "mayy"
+        }
+      ],
+      "title": "Variants of Predicate Negation"
+    }
+  },
+  {
+    "ft_prg_mar": {
+      "values": [
+        {
+          "prog_mark_ga3ad": "gaʕad, ǧaʕad"
+        },
+        {
+          "prog_mark_qaa3id": "qēʔəd, gāʕid, gāʕda, gāʕdä, gāʕdīn, kāʕid, gāʕəd, ǧāʕid"
+        },
+        {
+          "prog_mark_3a": "ʕa-"
+        },
+        {
+          "prog_mark_ka": "ka-"
+        },
+        {
+          "prog_mark_a": "ā-"
+        },
+        {
+          "prog_mark_ta": "ta-"
+        },
+        {
+          "prog_mark_ra": "ra+PersPron suffix"
+        },
+        {
+          "prog_mark_gales": "galəs, galsa, galsin"
+        },
+        {
+          "prog_mark_3ab": "ʕab-"
+        },
+        {
+          "prog_mark_3am": "ʕam-"
+        },
+        {
+          "prog_mark_3amb": "ʕamb-"
+        },
+        {
+          "prog_mark_3an": "ʕan-"
+        },
+        {
+          "prog_mark_3amma": "ʕamma"
+        },
+        {
+          "prog_mark_ku": "ku-, kū-"
+        },
+        {
+          "prog_mark_3ammaal": "ʕammāl"
+        },
+        {
+          "prog_mark_nayim": "nāyim + PersPron suffix"
+        },
+        {
+          "prog_mark_da": "da"
+        },
+        {
+          "prog_mark_da3d": "daʕd"
+        },
+        {
+          "prog_mark_d": "d-"
+        },
+        {
+          "prog_mark_kaa3": "kāʕ"
+        },
+        {
+          "prog_mark_taa3": "tāʕ"
+        },
+        {
+          "prog_mark_no": "no progressive marker"
+        },
+        {
+          "prog_mark_bi": "bi-"
+        },
+        {
+          "prog_mark_been": "bēn-"
+        },
+        {
+          "prog_mark_dhii": "ḏī-"
+        },
+        {
+          "prog_mark_qa": "qa-"
+        },
+        {
+          "prog_mark_ed": "ʔed"
+        },
+        {
+          "prog_mark_iied": "ʔīed, ʔēda, ʔēdin"
+        },
+        {
+          "prog_mark_ma": "ma-"
+        }
+      ],
+      "title": "Variants of Progressive markers"
+    }
+  },
+  {
+    "ft_rais_a_prtnc_closed": {
+      "values": [
+        {
+          "raisinga_pc_a_to_i": "a &gt; i\tfillāḥ - ḥimmām "
+        },
+        {
+          "raisinga_pc_a_to_a": "a &gt; a  fallāḥ - ḥammām"
+        },
+        {
+          "raisinga_pc_a_to_schwa": "a &gt; ə   fəllāḥ - ḥammām"
+        },
+        {
+          "raisinga_pc_a_and_i_become_schwa": "a &amp;gt; a and i become schwa for the Maghreb"
+        }
+      ],
+      "title": "Variants of Raising of a in pre-tonic (unstressed) closed syllable before ā - CaCCāC "
+    }
+  },
+  {
+    "ft_rais_a_prtnc_cl_i": {
+      "values": [
+        {
+          "raisinga_pci_a_to_i": "a &gt; i tinsīq - tiḥmīṣ"
+        },
+        {
+          "raisinga_pci_a_to_a": "a &gt; a tansīq - taḥmīṣ"
+        },
+        {
+          "raisinga_pci_a_to_schwa": "a &gt; a tənsīq - təḥmīṣ"
+        },
+        {
+          "raisinga_pc_pattern_not_attested": "a &gt; the pattern is not used in the dialect"
+        },
+        {
+          "raisinga_pci_a_and_i_to_schwa": "a and i become schwa"
+        }
+      ],
+      "title": "Variants of Raising of a in pre-tonic (unstressed) closed syllable before ī- taCCīC"
+    }
+  },
+  {
+    "ft_rais_a_prtnc_open": {
+      "values": [
+        {
+          "raisinga_po_a_to_i": "a &gt; i zimān"
+        },
+        {
+          "raisinga_po_a_to_a": "a &gt; a\tzamān"
+        },
+        {
+          "raisinga_pc_a_to_zero": "a &gt; Ø zmān"
+        },
+        {
+          "raisinga_pc_a_and_i_become_schwa": "a &gt; a and i become schwa for the Maghreb"
+        }
+      ],
+      "title": "Variants of Raising of a in pre-tonic (unstressed) closed syllable before ā - CaCāC "
+    }
+  },
+  {
+    "ft_rais_a_prtnc_op_i": {
+      "values": [
+        {
+          "raisinga_poi_a_to_i": "a &gt; i\tkibīr"
+        },
+        {
+          "raisinga_poi_a_to_a": "a &gt; a   kabīr"
+        },
+        {
+          "raisinga_poi_a_to_zero": "a &gt; -\tkbīr"
+        },
+        {
+          "raisinga_pc_a_and_i_become_schwa": "a &amp;gt; a and i become schwa for the Maghreb"
+        }
+      ],
+      "title": "Variants of Raising of a in pre-tonic (unstressed) open syllable before ī - CaCīC"
+    }
+  },
+  {
+    "ft_rais_a_strss_closed": {
+      "values": [
+        {
+          "raisinga_so_a_to_i": "a &gt; i\tmidrasa - minsaf"
+        },
+        {
+          "raisinga_so_a_to_a": "a &gt; a  madrasa"
+        },
+        {
+          "raisinga_pc_a_and_i_become_schwa": "a &gt; a and i become schwa for the Maghreb"
+        }
+      ],
+      "title": "Variants of Raising of a in stressed closed syllable before a - maCCaC"
+    }
+  },
+  {
+    "ft_rais_a_strss_open": {
+      "values": [
+        {
+          "raisinga_so_a_to_i": "a &lt; i sikat and a &lt; u gumar"
+        },
+        {
+          "raisinga_so_a_to_i1": "a &lt; gt; i\tsikat and a &lt; a qamar"
+        },
+        {
+          "raisinga_so_A_to_I2": "A &lt; I   sikát and a - u "
+        },
+        {
+          "raisinga_so_A_to_A1": "A &lt; a sakát"
+        },
+        {
+          "raisinga_so_a_to_a": "a &lt; a   sakat"
+        },
+        {
+          "raisinga_so_a_to_zero": "A &lt; 0   skat"
+        },
+        {
+          "raisinga_so_a_to_schwa": "A &lt; ə səkat"
+        },
+        {
+          "raisinga_a_i_become_schwa": "a &lt; a and i become schwa for the Maghreb"
+        }
+      ],
+      "title": "Variants of Raising of a in stressed open syllable before a - CaCaC"
+    }
+  },
+  {
+    "ft_strs_def_art": {
+      "values": [
+        {
+          "stress_defart_yes": "yes"
+        },
+        {
+          "stress_defart_no": "no"
+        }
+      ],
+      "title": "Variants of the stressed definite article"
+    }
+  },
+  {
+    "ft_traditional_classification": {
+      "values": [
+        {
+          "classification_bedouin": "traditionally classified as bedouin"
+        },
+        {
+          "classification_sedentary": "traditionally classified as sedentary"
+        },
+        {
+          "classification_mixed": "traditionally classified as mixed"
+        }
+      ],
+      "title": "Traditional Classification"
+    }
+  },
+  {
+    "ft_t_form_passive": {
+      "values": [
+        {
+          "tformpassive_itCvCvC": "(i)tCvCvC"
+        },
+        {
+          "tformpassive_t_teCCeC": "(t)təCCəC"
+        },
+        {
+          "tformpassive_aCtaCaC": "(a)CtaCaC"
+        }
+      ],
+      "title": "Variants of the t-Form for passive"
+    }
+  },
+  {
+    "ft_verb_neg": {
+      "values": [
+        {
+          "verb_neg_verb-sh": "verb-š"
+        },
+        {
+          "verb_neg_ma_verb-sh": "ma verb-š"
+        },
+        {
+          "verb_neg_a_verb-sh": "ʔa verb-š"
+        },
+        {
+          "verb_neg_a_verb": "ʔa verb"
+        },
+        {
+          "verb_neg_ma_verb": "ma verb"
+        },
+        {
+          "verb_neg_la_verb": "la verb"
+        },
+        {
+          "verb_neg_moo_verb": "mō verb"
+        },
+        {
+          "verb_neg_lisa_verb": "lisa verb"
+        }
+      ],
+      "title": "Variants of the Verbal Negation"
+    }
+  }
+]
