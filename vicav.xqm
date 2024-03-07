@@ -123,14 +123,38 @@ function vicav:_project_config() {
     then 
       let $renderedJson := xslt:transform($config, 'xslt/menu-json.xslt', map{'baseURIPublic': replace(util:get-base-uri-public(), '/project', '')})
       return serialize($renderedJson update {
-        .//insert_variety_data!(replace node . with vicav:get_variety_data())
+        .//insert_variety_data!(replace node . with vicav:get_variety_data()),
+        .//insert_featurelist!(replace node . with vicav:get_featurelist())
       }, map {"method": "json"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
       return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
 };
 
-declare function vicav:get_variety_data() {
+declare function vicav:get_variety_data() as element(_) {
   <_ type="object">{collection("wibarab_varieties")//json/*}</_>
+};
+
+declare function vicav:get_featurelist() as element(_) {
+  let $docs := collection('wibarab_features')//tei:TEI
+  let $result :=
+  map:merge((
+    for $doc in $docs
+    let $filename := fn:tokenize(base-uri($doc), '/')[last()]
+    where starts-with($filename, 'feature')
+    return
+        map {
+           string($doc/@xml:id): 
+                map {
+                    "title": string($doc//tei:title),
+                    "values": map:merge((
+                        let $items := $doc//tei:list[@type = "featureValues"]/tei:item
+                        for $item in $items
+                        return map {string($item/@xml:id): string($item/tei:label)}))
+                    }
+                }
+          ))
+        
+   return <_ type="object">{json:parse(serialize($result, map {"method": "json"}), map {"format": "direct"})/json/*}</_>
 };
 
 declare
