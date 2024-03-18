@@ -1814,8 +1814,13 @@ declare function vicav:_corpus_text(
 
     let $hits_str := if (not(empty($hits))) then $hits else ""
 
-    let $doc := <doc id="${$docId}">{subsequence(collection('vicav_corpus')
-        /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]
+    let $teiDoc := collection('vicav_corpus')
+        //tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId],
+        $notFound := if (not(exists($teiDoc))) then
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'Text with id '||$docId||' does not exist') else (),
+        $doc := <doc id="${$docId}">{subsequence($teiDoc
         /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s)}</doc>
       (: , $_ := file:write(file:resolve-path('doc.xml', file:base-dir()), $doc, map { "method": "xml"}) :)
 
