@@ -1820,8 +1820,13 @@ declare function vicav:_corpus_text(
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
          'Text with id '||$docId||' does not exist') else (),
-        $doc := <doc id="${$docId}">{subsequence($teiDoc
-        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s)}</doc>
+        $utterances := subsequence($teiDoc
+        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s),
+        $notFound := if (not(exists($utterances))) then
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'Text with id '||$docId||' does not have page '||$p) else (),
+        $doc := <doc id="${$docId}">{$utterances}</doc>
       (: , $_ := file:write(file:resolve-path('doc.xml', file:base-dir()), $doc, map { "method": "xml"}) :)
 
     return if (matches($accept-header, '[+/]json'))
