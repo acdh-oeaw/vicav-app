@@ -21,7 +21,11 @@ version="2.0">
                 <xsl:variable name="nn" select="@n"/>
                 <xsl:value-of select="(//tei:s[@type='translationSentence'][@n=$nn] | //tei:div[@type='dvTranslations']/tei:u[@n=$nn])[1]"/>
             </xsl:attribute>
-            <i class="fa fa-commenting-o" aria-hidden="true">
+            <xsl:attribute name="data-tooltip">                    
+                <xsl:variable name="nn" select="@n"/>
+                <xsl:value-of select="(//tei:s[@type='translationSentence'][@n=$nn] | //tei:div[@type='dvTranslations']/tei:u[@n=$nn])[1]"/>
+            </xsl:attribute>
+            <i class="fa fa-comment" aria-hidden="true">
                 <span/>
             </i>
         </span>
@@ -104,6 +108,9 @@ version="2.0">
         <xsl:if test="$w/tei:fs">
             <xsl:if test="not($title = '')">
                 <xsl:attribute name="title">
+                    <xsl:value-of select="$title"/>
+                </xsl:attribute>
+                <xsl:attribute name="data-tooltip">
                     <xsl:value-of select="$title"/>
                 </xsl:attribute>
             </xsl:if>
