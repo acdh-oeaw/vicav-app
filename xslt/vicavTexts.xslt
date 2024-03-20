@@ -153,8 +153,8 @@
           <xsl:analyze-string select="." regex="href=&quot;(http.*?\.jpe?g).*?&quot;.*?src=&quot;(http.*?\.jpe?g).*?&quot;.*? alt=&quot;(.*?)&quot;">
           <xsl:matching-substring>
             <div class="gallery-item">
-            <a href="{replace(regex-group(1), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}" title="{regex-group(3)}">
-              <img src="{replace(regex-group(2), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}"/>
+            <a href="{replace(regex-group(1), '^https?://.*/(.*?)\.(jpe?g)$', concat($images-base-path, '$1.jpg'))}" title="{regex-group(3)}">
+              <img src="{replace(regex-group(2), '^https?://.*/(.*?)\.(jpe?g)$', concat($images-base-path, '$1.jpg'))}"/>
             </a>
             </div>
           </xsl:matching-substring>
@@ -166,8 +166,8 @@
           <xsl:matching-substring>
             <div class="gallery {regex-group(2)}">
             <div class="gallery-item">
-              <a href="{replace(regex-group(1), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}" title="{regex-group(4)}">
-                <img src="{replace(regex-group(3), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}"/>
+              <a href="{replace(regex-group(1), '^https?://.*/(.*?)\.(jpe?g)$', concat($images-base-path, '$1.jpg'))}" title="{regex-group(4)}">
+                <img src="{replace(regex-group(3), '^https?://.*/(.*?)\.(jpe?g)$', concat($images-base-path, '$1.jpg'))}"/>
               </a>
               </div>
             </div>
