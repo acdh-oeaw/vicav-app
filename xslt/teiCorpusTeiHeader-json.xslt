@@ -5,41 +5,95 @@
     exclude-result-prefixes="#all"
     version="3.1">
     
-    <!--xsl:mode on-no-match="shallow-copy"/ -->
-    <xsl:output method="xml" indent="yes"/>
+    <xsl:output method="xml" indent="no"/>
     
     <xsl:template match="t:teiCorpus">
-        <json object="teiHeader fileDesc titleStmt publicationStmt persName
-            encodingDesc classDecl availability address"
-              array="TEIs categories respStmts">
+        <json type="object">
             <xsl:apply-templates select="@*|* except t:TEI"/>
-            <TEIs>
-                <xsl:apply-templates select="t:TEI"/>
+            <TEIs type="array">
+                <xsl:apply-templates select="t:TEI" mode="arrayItem"/>
             </TEIs>
         </json>
     </xsl:template>
     
     <xsl:template match="t:titleStmt">
-        <titleStmt>
+        <titleStmt type="object">
             <xsl:apply-templates select="@*|* except t:respStmt"/>
-            <respStmts><xsl:apply-templates select="t:respStmt"/></respStmts>
+            <respStmts type="array"><xsl:apply-templates select="t:respStmt" mode="arrayItem"/></respStmts>
         </titleStmt>
+    </xsl:template>    
+    
+    <xsl:template match="t:publicationStmt">
+        <publicationStmt type="object">
+            <xsl:apply-templates select="@*|* except t:publisher"/>
+            <publishers type="array"><xsl:apply-templates select="t:publisher" mode="arrayItem"/></publishers>
+        </publicationStmt>
+    </xsl:template>
+    
+    <xsl:template match="t:revisionDesc">
+        <revisionDesc type="object">
+            <xsl:apply-templates select="@*|* except t:change"/>
+            <changes type="array"><xsl:apply-templates select="t:change" mode="arrayItem"/></changes>
+        </revisionDesc>
+    </xsl:template>
+    
+    <xsl:template match="t:tagsDecl">
+        <tagsDecl type="object">
+            <xsl:apply-templates select="@*|* except t:rendition"/>
+            <renditions type="array"><xsl:apply-templates select="t:rendition" mode="arrayItem"/></renditions>
+        </tagsDecl>
     </xsl:template>
     
     <xsl:template match="t:taxonomy">
-        <taxonomy><categories><xsl:for-each select="t:category"><xsl:apply-templates/></xsl:for-each></categories></taxonomy>
+        <taxonomy type="object">
+            <categories type="array"><xsl:apply-templates select="t:category" mode="arrayItem"/></categories>
+        </taxonomy>
     </xsl:template>
     
-    <xsl:template match="t:TEI|t:respStmt|t:category">
-        <_><xsl:apply-templates select="@*|*"/></_>
+    <xsl:template match="t:listPrefixDef">
+        <listPrefixDef type="array">
+            <xsl:apply-templates select="t:prefixDef" mode="arrayItem"/>
+        </listPrefixDef>
+    </xsl:template>    
+    
+    <xsl:template match="t:listPerson">
+        <listPerson type="array">
+            <xsl:apply-templates select="t:person|t:head" mode="arrayItem"/>
+        </listPerson>
+    </xsl:template>
+    
+    <xsl:template match="t:*" mode="arrayItem">
+        <_ type="object">
+            <xsl:apply-templates select="@*|*"/>
+            <xsl:if test="normalize-space(string-join(./text(), ' ')) ne '' and normalize-space(string-join(.//text(), ' ')) ne ''">
+                <_0023text type="string"><xsl:value-of select="normalize-space(string-join(.//text(), ' '))"/></_0023text>
+            </xsl:if>
+        </_>
     </xsl:template>
     
     <xsl:template match="t:*">
-        <xsl:element name="{local-name()}"><xsl:apply-templates select="@*|*"/></xsl:element>
+        <xsl:element name="{local-name()}">
+            <xsl:attribute name="type">object</xsl:attribute>
+            <xsl:apply-templates select="@*|*"/>
+            <xsl:if test="normalize-space(string-join(./text(), ' ')) ne '' and normalize-space(string-join(.//text(), ' ')) ne ''">
+                <_0023text type="string"><xsl:value-of select="normalize-space(string-join(.//text(), ' '))"/></_0023text>
+            </xsl:if>
+        </xsl:element>
     </xsl:template>
     
+    <xsl:template match="t:text"/> <!-- not interested in content -->
+    
     <xsl:template match="@*">
-        <xsl:element name="_0040{local-name()}"><xsl:value-of select="."/></xsl:element>
+        <xsl:element name="_0040{local-name()}">
+            <xsl:attribute name="type">string</xsl:attribute>
+            <xsl:value-of select="."/>
+        </xsl:element>
+    </xsl:template>
+    
+    <xsl:template match="text()">
+        <xsl:if test="normalize-space(.) ne ''">
+            <_0023text type="string"><xsl:value-of select="."/></_0023text>
+        </xsl:if>
     </xsl:template>
 
 </xsl:stylesheet>

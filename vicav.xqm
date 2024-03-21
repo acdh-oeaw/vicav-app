@@ -683,11 +683,7 @@ declare function vicav:_get_text($id as xs:string, $xsltfn as xs:string?) {
     let $id := replace($id, '^li_', '')
     let $generateTeiMarker := exists($xsltfn)
     let $xsltfn := if (exists($xsltfn)) then $xsltfn else "vicavTexts.xslt" 
-    let $results := collection("/vicav_texts")//tei:div[@xml:id=$id]
-    let $notFound := if (not(exists($results))) then
-        error(xs:QName('response-codes:_404'), 
-         $api-problem:codes_to_message(404),
-         'Text with id '||$id||' does not exist') else ()
+    let $results := collection("/vicav_texts")//tei:div[@xml:id=$id] 
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
     let $sHTML := xslt:transform-text($results, $style, map{
@@ -1649,6 +1645,32 @@ declare function vicav:_get_data_list($type as xs:string*) {
     else $out
 };
 
+declare
+%rest:path("/vicav/tei_doc_list")
+%rest:query-param("type", "{$type}")
+%rest:produces('application/json')
+%rest:GET
+function vicav:get_tei_doc_list($type as xs:string*) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_tei_doc_list#1, [$type], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_tei_doc_list($type as xs:string*) {
+  let $noType := if (not(exists($type))) then
+        error(xs:QName('response-codes:_422'), 
+         $api-problem:codes_to_message(422),
+         'You need to specify a type') else (),
+      $corpus := collection($type)//tei:teiCorpus,
+      $corpus := if (not(exists($corpus)) and exists(collection($type)//tei:TEI))
+        then <teiCorpus xmlns="http://www.tei-c.org/ns/1.0">{collection($type)//tei:TEI}</teiCorpus>
+        else $corpus,
+      $notFound := if (not(exists($corpus))) then
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'There are no TEI documents of type '||$type||' does not exist') else ()
+  return serialize(xslt:transform($corpus, 'xslt/teiCorpusTeiHeader-json.xslt'), map {'method': 'json'})
+};
 
 (:****************************************************************************:)
 (:** MANAGEMENT FUNCS ********************************************************:)
