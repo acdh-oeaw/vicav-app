@@ -468,7 +468,7 @@
                 <xsl:attribute name="class" select="'figure small'"></xsl:attribute>
             </xsl:if>
             <div  class="gallery-item">
-                <a href="concat($images-base-path, {./tei:link/@target})" title="{./tei:head}">
+                <a href="{concat($images-base-path, ./tei:link/@target)}" title="{./tei:head}">
                     <img>
                         <xsl:attribute name="src">
                             <xsl:value-of select="concat($images-base-path, tei:graphic/@url)"/>
