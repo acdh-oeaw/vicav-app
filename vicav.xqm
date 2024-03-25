@@ -1890,6 +1890,45 @@ function vicav:corpus_text($docId as xs:string, $page as xs:integer?, $size as x
   )
 };
 
+declare variable $vicav:dict-alias-to-dict := map {
+  "ar_de__v001": "dc_ar_en_publ",
+  "aeb_eng_001__v001": "dc_tunico",
+  "apc_eng_002": "dc_apc_eng_publ"
+};
+
+declare
+%rest:path("/vicav/dict_csv")
+%rest:GET
+%rest:produces("text/csv")
+%rest:query-param("unit","{$unit}")
+%rest:query-param("x-format","{$format}")
+%rest:query-param("x-context", "{$dict-alias}")
+function vicav:get_dict_csv($unit as xs:string, $format as xs:string, $dict-alias as xs:string) {
+  let $dict := $vicav:dict-alias-to-dict($dict-alias),
+      $notFound := if (not(exists($dict))) then
+      error(xs:QName('response-codes:_404'), 
+       $api-problem:codes_to_message(404),
+       'There is no dict for x-context '||$dict-alias) else () 
+  return api-problem:or_result (prof:current-ns(),
+    vicav:_get_dict_csv#3, [$unit, $format, $dict], map:merge((cors:header(()), map{
+      'Content-Type': 'text/csv;charset=UTF-8',
+      'Content-Disposition': 'attachment; filename="vocabulary_L'||$unit||'.csv"'
+    }))
+  )
+};
+
+declare function vicav:_get_dict_csv($unit as xs:string, $format as xs:string, $dict as xs:string) {
+  let $data := <sru:records xmlns:sru="http://www.loc.gov/zing/srw/">{collection($dict)//(tei:cit[@type="example"]|tei:entry)[tei:fs/tei:f/tei:symbol/@value="released"][.//tei:bibl[@type=("damascCourse","tunisCourse","course") and .= $unit]]}</sru:records>,
+      $notFound := if (not(exists($data))) then
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'There are no TEI entries for dict/x-context '||$dict) else (),
+      $wrongFormat := if ($format = ("csv-anki", "csv-fcdeluxe")) then () else
+        error(xs:QName('response-codes:_422'), 
+         $api-problem:codes_to_message(422),
+         'Valid formats are csv-anki and csv-fcdeluxe')
+  return xslt:transform-text($data, 'xslt/csv-table-export.xsl', map {"format": $format, "unit": $unit})
+};
 
 declare
 %rest:path("/vicav/dict_markers")
