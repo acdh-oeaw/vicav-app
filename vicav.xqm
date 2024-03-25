@@ -1652,7 +1652,7 @@ declare
 %rest:GET
 function vicav:get_tei_doc_list($type as xs:string*) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_get_tei_doc_list#1, [$type], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_get_tei_doc_list#1, [$type], map:merge((cors:header(()), map{'Content-Type': 'application/json;charset=UTF-8'}))
   )
 };
 
@@ -1663,7 +1663,7 @@ declare function vicav:_get_tei_doc_list($type as xs:string*) {
          'You need to specify a type') else (),
       $corpus := collection($type)//tei:teiCorpus,
       $corpus := if (not(exists($corpus)) and exists(collection($type)//tei:TEI))
-        then <teiCorpus xmlns="http://www.tei-c.org/ns/1.0">{collection($type)//tei:TEI}</teiCorpus>
+        then <teiCorpus xmlns="http://www.tei-c.org/ns/1.0">{collection($type)//tei:TEI!. update {delete node ./tei:text}}</teiCorpus>
         else $corpus,
       $notFound := if (not(exists($corpus))) then
         error(xs:QName('response-codes:_404'), 
