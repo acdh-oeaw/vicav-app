@@ -1675,7 +1675,7 @@ declare function vicav:_get_tei_doc_list($type as xs:string*) {
       $notFound := if (not(exists($corpus))) then
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
-         'There are no TEI documents of type '||$type||' does not exist') else ()
+         'There are no TEI documents of type '||$type) else ()
   return serialize(xslt:transform($corpus, 'xslt/teiCorpusTeiHeader-json.xslt'), map {'method': 'json'})
 };
 
