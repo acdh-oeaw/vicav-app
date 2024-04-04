@@ -66,7 +66,7 @@
         <_ type="object">
             <xsl:apply-templates select="@*|*"/>
             <xsl:if test="normalize-space(string-join(./text(), ' ')) ne '' and normalize-space(string-join(.//text(), ' ')) ne ''">
-                <_0023text type="string"><xsl:value-of select="normalize-space(string-join(.//text(), ' '))"/></_0023text>
+                <_0024 type="string"><xsl:value-of select="normalize-space(string-join(.//text(), ' '))"/></_0024>
             </xsl:if>
         </_>
     </xsl:template>
@@ -76,7 +76,7 @@
             <xsl:attribute name="type">object</xsl:attribute>
             <xsl:apply-templates select="@*|*"/>
             <xsl:if test="normalize-space(string-join(./text(), ' ')) ne '' and normalize-space(string-join(.//text(), ' ')) ne ''">
-                <_0023text type="string"><xsl:value-of select="normalize-space(string-join(.//text(), ' '))"/></_0023text>
+                <_0024 type="string"><xsl:value-of select="normalize-space(string-join(.//text(), ' '))"/></_0024>
             </xsl:if>
         </xsl:element>
     </xsl:template>
@@ -92,7 +92,7 @@
     
     <xsl:template match="text()">
         <xsl:if test="normalize-space(.) ne ''">
-            <_0023text type="string"><xsl:value-of select="."/></_0023text>
+            <_0024 type="string"><xsl:value-of select="."/></_0024>
         </xsl:if>
     </xsl:template>
 
