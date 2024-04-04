@@ -123,15 +123,21 @@ function vicav:_project_config() {
     then 
       let $renderedJson := xslt:transform($config, 'xslt/menu-json.xslt', map{'baseURIPublic': replace(util:get-base-uri-public(), '/project', '')})
       return serialize($renderedJson update {
-        .//insert_variety_data!(replace node . with vicav:get_variety_data()),
-        .//insert_featurelist!(replace node . with vicav:get_featurelist())
+        .//*[starts-with(local-name(), "insert_")]!(replace node . with <_ type="object">{vicav:get_insert_data(local-name())}</_>)
       }, map {"method": "json"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
       return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
 };
 
+declare function vicav:get_insert_data($type as xs:string) {
+  switch ($type)
+    case "insert_featurelist" return vicav:get_featurelist()
+    case "insert_variety_data" return vicav:get_variety_data()
+    default return json:parse(vicav:_get_tei_doc_list(replace($type, '^insert_', '')))/json/*
+};
+
 declare function vicav:get_variety_data() as element(_) {
-  <_ type="object">{collection("wibarab_varieties")//json/*}</_>
+  collection("wibarab_varieties")//json/*
 };
 
 declare function vicav:get_featurelist() as element(_) {
@@ -154,7 +160,7 @@ declare function vicav:get_featurelist() as element(_) {
                 }
           ))
         
-   return <_ type="object">{json:parse(serialize($result, map {"method": "json"}), map {"format": "direct"})/json/*}</_>
+   return json:parse(serialize($result, map {"method": "json"}), map {"format": "direct"})/json/*
 };
 
 declare
