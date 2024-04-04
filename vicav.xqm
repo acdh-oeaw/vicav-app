@@ -136,11 +136,11 @@ declare function vicav:get_insert_data($type as xs:string) {
     default return json:parse(vicav:_get_tei_doc_list(replace($type, '^insert_', '')))/json/*
 };
 
-declare function vicav:get_variety_data() as element(_) {
+declare function vicav:get_variety_data() {
   collection("wibarab_varieties")//json/*
 };
 
-declare function vicav:get_featurelist() as element(_) {
+declare function vicav:get_featurelist() {
   let $docs := collection('wibarab_features')//tei:TEI
   let $result :=
   map:merge((
