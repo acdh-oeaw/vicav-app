@@ -123,10 +123,10 @@
             <xsl:if test="count(//tei:head/tei:figure) = 2">
                 <div>
                     <a>
-                      <xsl:attribute name="href" select="concat($images-base-path, //tei:head/tei:figure[2]/tei:graphic/@url)"/>
+                        <xsl:attribute name="href" select="concat($images-base-path, //tei:head/tei:figure[2]/tei:graphic/@url)"/>
                         <img>
-                          <xsl:attribute name="src" select="concat($images-base-path,//tei:head/tei:figure[2]/tei:graphic/@url)"/>
-                      </img>
+                            <xsl:attribute name="src" select="concat($images-base-path,//tei:head/tei:figure[2]/tei:graphic/@url)"/>
+                        </img>
                     </a>
                 </div>
             </xsl:if>
@@ -350,7 +350,7 @@
             <a>
                 <xsl:attribute name="href" select="concat($images-base-path, ./@target)"/>
                 <img>
-                    <xsl:attribute name="href" select="concat($images-base-path, 'thumb/',  ./@target)"/>
+                    <xsl:attribute name="src" select="concat($images-base-path, 'thumb/',  ./@target)"/>
                     <xsl:attribute name="alt" select="./tei:head"/>
                 </img>
             </a>
