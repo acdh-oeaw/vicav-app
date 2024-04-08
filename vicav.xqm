@@ -125,8 +125,8 @@ function vicav:_project_config() {
       let $jsonAsXML := 
         if (exists(try{collection('prerendered_json')} catch err:FODC0002 {()}) and
             exists(collection('prerendered_json')//json[projectConfig/baseURIPublic = $publicURI]))
-        then collection('prerendered_json')//json[projectConfig/baseURIPublic = $publicURI] update {insert node <cached>true</cached> as first into ./projectConfig}
-        else vicav:project_config_json_as_xml($publicURI) update {insert node <cached>false</cached> as first into ./json/projectConfig}
+        then collection('prerendered_json')//json[projectConfig/baseURIPublic = $publicURI] update {insert node <cached type="boolean">true</cached> as first into ./projectConfig}
+        else vicav:project_config_json_as_xml($publicURI) update {insert node <cached type="boolean">false</cached> as first into ./json/projectConfig}
       return serialize($jsonAsXML, map {"method": "json"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
       return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
@@ -191,7 +191,9 @@ function vicav:prerender_project_config() {
       $jsonAsXml := api-problem:or_result (prof:current-ns(),
     vicav:project_config_json_as_xml#1, [$publicURI], map:merge((cors:header(()), vicav:return_content_header()))
   ),
-      $res := if (matches($accept-header, '[+/]json')) then ($jsonAsXml[1],serialize($jsonAsXml[2], map {'method': 'json'})) else $jsonAsXml
+      $res := if (matches($accept-header, '[+/]json')) 
+        then ($jsonAsXml[1],serialize($jsonAsXml[2], map {'method': 'json'})) 
+        else ($jsonAsXml[1],serialize($jsonAsXml[2], map {'method': 'xml'}))
   return (
     if (db:exists('prerendered_json')) then db:replace('prerendered_json', $prerenderedFileName, $jsonAsXml[2])
     else db:create('prerendered_json', $jsonAsXml[2], $prerenderedFileName),
