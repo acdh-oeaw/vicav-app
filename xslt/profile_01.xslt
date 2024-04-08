@@ -123,57 +123,26 @@
             <xsl:if test="count(//tei:head/tei:figure) = 2">
                 <div>
                     <a>
-                      <xsl:attribute name="href" select="concat($images-base-path, //tei:head/tei:figure[2]/tei:graphic/@url)"/>
+                        <xsl:attribute name="href" select="concat($images-base-path, //tei:head/tei:figure[2]/tei:graphic/@url)"/>
                         <img>
-                          <xsl:attribute name="src" select="concat($images-base-path,//tei:head/tei:figure[2]/tei:graphic/@url)"/>
-                      </img>
+                            <xsl:attribute name="src" select="concat($images-base-path,//tei:head/tei:figure[2]/tei:graphic/@url)"/>
+                        </img>
                     </a>
                 </div>
             </xsl:if>
 
             <xsl:if test="count(//tei:head/tei:figure) > 2">
-                <div class="slider-container">
-                    <xsl:variable select="count(//tei:head/tei:figure) - 1" name="total"/>
+                <gallery>
                     <xsl:for-each select="subsequence(//tei:head/tei:figure, 2)">
-                        <xsl:variable select="position()" name="pos"/>
-
-                          <!-- Full-width images with number text -->
-                          <div class="mySlides slider-fade">
-                            <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
-                              <a>
-                              <xsl:attribute name="href" select="concat($images-base-path, ./tei:graphic/@url)"/>
-                                <img>
-                                  <xsl:attribute name="src" select="concat($images-base-path, ./tei:graphic/@url)"/>
-                              </img>
-                            </a>
-                          </div>
-                      </xsl:for-each>
-                  <!-- Next and previous buttons -->
-                  <a class="slider-prev">&#10094;</a>
-                  <a class="slider-next">&#10095;</a>
-
-                  <!-- Image text -->
-                  <div class="caption-container">
-                    <p class="caption"></p>
-                  </div>
-
-                  <!-- Thumbnail images -->
-                  <div class="thumbs-wrapper">
-                      <div class="row">
-                        <xsl:attribute name="style" select="concat('width: ', count(//tei:head/tei:figure) * 100, 'px')"/>
-                        <xsl:for-each select="subsequence(//tei:head/tei:figure, 2)">
-                            <xsl:variable select="position()" name="pos"/>
-                            <div class="column">
-                              <img class="demo cursor" style="width:100px; height: 100px">
-                                  <xsl:attribute name="src" select="concat($images-base-path, ./tei:graphic/@url)"/>
-                                  <xsl:attribute name="data-showslide" select="$pos"/>
-                                  <xsl:attribute name="alt" select="./tei:head"/>
-                              </img>
-                            </div>
-                        </xsl:for-each>
-                      </div>
-                  </div>
-                </div>
+                        <a>
+                            <xsl:attribute name="href" select="concat($images-base-path, ./tei:graphic/@url)"/>
+                            <img>
+                                <xsl:attribute name="src" select="concat($images-base-path, 'thumb/', ./tei:graphic/@url)"/>
+                                <xsl:attribute name="alt" select="./tei:head"/>
+                            </img>
+                        </a>
+                    </xsl:for-each>
+                    </gallery>
             </xsl:if>   
             <br/>
             <br/>
@@ -251,48 +220,17 @@
     <xsl:template match="tei:teiHeader"></xsl:template>
 
     <xsl:template match="tei:p[@rendition='#slideshow']">
-        <div class="slider-container">
-            <xsl:variable select="count(./tei:figure)" name="total"/>
+        <gallery>
             <xsl:for-each select="./tei:figure">
-                <xsl:variable select="position()" name="pos"/>
-
-                  <!-- Full-width images with number text -->
-                  <div class="mySlides slider-fade">
-                    <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
-                      <a>
-                      <xsl:attribute name="href" select="concat($images-base-path, ./tei:link/@target)"/>
-                        <img>
-                          <xsl:attribute name="src" select="concat($images-base-path, ./tei:link/@target)"/>
-                      </img>
-                    </a>
-                  </div>
+                <a>
+                    <xsl:attribute name="href" select="concat($images-base-path, ./tei:link/@target)"/>
+                    <img>
+                        <xsl:attribute name="alt" select="tei:head"/>
+                        <xsl:attribute name="src" select="concat($images-base-path, 'thumb/', ./tei:link/@target)"/>
+                    </img>
+                </a>
               </xsl:for-each>
-          <!-- Next and previous buttons -->
-          <a class="slider-prev">&#10094;</a>
-          <a class="slider-next">&#10095;</a>
-
-          <!-- Image text -->
-          <div class="caption-container">
-            <p class="caption"></p>
-          </div>
-
-          <!-- Thumbnail images -->
-          <div class="thumbs-wrapper">
-              <div class="row">
-                <xsl:attribute name="style" select="concat('width: ', count(./tei:figure) * 100, 'px')"/>
-                <xsl:for-each select="./tei:figure">
-                    <xsl:variable select="position()" name="pos"/>
-                    <div class="column">
-                      <img class="demo cursor" style="width:100px; height: 100px">
-                          <xsl:attribute name="src" select="concat($images-base-path, ./tei:graphic/@url)"/>
-                          <xsl:attribute name="data-showslide" select="$pos"/>
-                          <xsl:attribute name="alt" select="./tei:head"/>
-                      </img>
-                    </div>
-                </xsl:for-each>
-              </div>
-          </div>
-        </div>
+        </gallery>
     </xsl:template>
 
 
@@ -407,49 +345,17 @@
 
     <xsl:template match="//tei:div[@type='gallery']">
         <div class="h3Profile"><xsl:value-of select="./tei:head"/></div>
-        <div class="slider-container">
-            <xsl:variable select="count(./tei:link)" name="total"/>
+        <gallery>
             <xsl:for-each select="./tei:link">
-                <xsl:variable select="position()" name="pos"/>
-
-                  <!-- Full-width images with number text -->
-                  <div class="mySlides slider-fade">
-                    <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
-                    <a>
-                      <xsl:attribute name="href" select="concat($images-base-path, ./@target)"/>
-
-                      <img>
-                          <xsl:attribute name="src" select="concat($images-base-path, ./@target)"/>
-                      </img>
-                    </a>
-                  </div>
-              </xsl:for-each>
-          <!-- Next and previous buttons -->
-          <a class="slider-prev">&#10094;</a>
-          <a class="slider-next">&#10095;</a>
-
-          <!-- Image text -->
-          <div class="caption-container">
-            <p class="caption"></p>
-          </div>
-
-          <!-- Thumbnail images -->
-          <div class="thumbs-wrapper">
-              <div class="row">
-                <xsl:attribute name="style" select="concat('width: ', count(./tei:link) * 100, 'px')"/>
-                <xsl:for-each select="./tei:link">
-                    <xsl:variable select="position()" name="pos"/>
-                    <div class="column">
-                      <img class="demo cursor" style="width:100px; height: 100px">
-                          <xsl:attribute name="src" select="concat($images-base-path, ./tei:graphic/@url)"/>
-                          <xsl:attribute name="data-showslide" select="$pos"/>
-                          <xsl:attribute name="alt" select="./tei:head"/>
-                      </img>
-                    </div>
-                </xsl:for-each>
-              </div>
-          </div>
-        </div>
+            <a>
+                <xsl:attribute name="href" select="concat($images-base-path, ./@target)"/>
+                <img>
+                    <xsl:attribute name="src" select="concat($images-base-path, 'thumb/',  ./@target)"/>
+                    <xsl:attribute name="alt" select="./tei:head"/>
+                </img>
+            </a>
+            </xsl:for-each>
+        </gallery>
     </xsl:template>
 
     <xsl:template match="tei:figure">
