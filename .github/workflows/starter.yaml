@@ -5,6 +5,7 @@ on:
     branches:
       - "master"
       - "devel"
+  workflow_dispatch: {}
 jobs:
   setup_workflow_env:
     runs-on: ubuntu-latest
