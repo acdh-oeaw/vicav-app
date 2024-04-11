@@ -66,6 +66,7 @@ jobs:
           echo "public_url=$public_url" >> $GITHUB_OUTPUT
     outputs:     
       PUBLIC_URL: ${{ steps.generate_public_url.outputs.public_url }}
+      environment: ${{ needs.setup_workflow_env.outputs.environment }}
   _1:
     needs: [setup_workflow_env, generate_workflow_vars]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
