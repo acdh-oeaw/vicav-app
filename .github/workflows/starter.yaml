@@ -58,7 +58,7 @@ jobs:
       - name: Generate PUBLIC_URL if not set
         id: generate_public_url
         run: |
-          kube_ingress_base_domain="${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"
+          kube_ingress_base_domain="${{ vars.C2_KUBE_INGRESS_BASE_DOMAIN || vars.KUBE_INGRESS_BASE_DOMAIN }}"
           public_url="${{ needs.setup_workflow_env.outputs.PUBLIC_URL || vars.PUBLIC_URL }}"
           if [ "${public_url}x" == 'x' ]
           then public_url=https://${{ needs.setup_workflow_env.outputs.environment_short }}.${kube_ingress_base_domain}
@@ -75,7 +75,7 @@ jobs:
       - name: Generate PUBLIC_URL if not set
         id: generate_public_url
         run: |
-          kube_ingress_base_domain="${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"
+          kube_ingress_base_domain="${{ vars.C2_KUBE_INGRESS_BASE_DOMAIN || vars.KUBE_INGRESS_BASE_DOMAIN }}"
           public_url="${{ needs.setup_workflow_env.outputs.PUBLIC_URL || vars.PUBLIC_URL }}"
           if [ "${public_url}x" == 'x' ]
           then public_url=https://tunocent-${{ needs.setup_workflow_env.outputs.environment_short }}.${kube_ingress_base_domain}
@@ -93,7 +93,7 @@ jobs:
       - name: Generate PUBLIC_URL if not set
         id: generate_public_url
         run: |
-          kube_ingress_base_domain="${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"
+          kube_ingress_base_domain="${{ vars.C2_KUBE_INGRESS_BASE_DOMAIN || vars.KUBE_INGRESS_BASE_DOMAIN }}"
           public_url="${{ needs.setup_workflow_env.outputs.PUBLIC_URL || vars.PUBLIC_URL }}"
           if [ "${public_url}x" == 'x' ]
           then public_url=https://shawi-${{ needs.setup_workflow_env.outputs.environment_short }}.${kube_ingress_base_domain}
@@ -111,7 +111,7 @@ jobs:
       - name: Generate PUBLIC_URL if not set
         id: generate_public_url
         run: |
-          kube_ingress_base_domain="${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"
+          kube_ingress_base_domain="${{ vars.C2_KUBE_INGRESS_BASE_DOMAIN || vars.KUBE_INGRESS_BASE_DOMAIN }}"
           public_url="${{ needs.setup_workflow_env.outputs.PUBLIC_URL || vars.PUBLIC_URL }}"
           if [ "${public_url}x" == 'x' ]
           then public_url=https://wibarab-${{ needs.setup_workflow_env.outputs.environment_short }}.${kube_ingress_base_domain}
