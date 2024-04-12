@@ -381,7 +381,7 @@ declare
 %rest:produces('application/problem+xml')
 function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:string*, $print as xs:string*) {
   let $generateTeiMarker := exists($xsltfn)
-  let $xsltfn := if (exists($xsltfn)) then $xsltfn else "profile_01.xslt"
+  let $xsltfn := if (exists($xsltfn)) then $xsltfn else "profile_vue.xslt"
   return api-problem:or_result (prof:current-ns(),
     vicav:_get_profile#6, [$coll, $id, $xsltfn, $print, $generateTeiMarker, '/profile'], map:merge((cors:header(()), vicav:return_content_header()))
   )
