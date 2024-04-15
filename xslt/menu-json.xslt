@@ -60,7 +60,7 @@
     <xsl:template match="panel|item">
         <_ type="object">
           <xsl:apply-templates select="@* except @type"/>
-          <title><xsl:value-of select="text()"/></title>
+          <title><xsl:value-of select="normalize-space(string-join(text(), ' '))"/></title>
           <type><xsl:value-of select="local-name()"/></type>
           <targetType>
             <xsl:choose>
@@ -83,7 +83,7 @@
           </targetType>
           <label>
             <xsl:variable name="caption" select="$captionFromMenuID(_:cleanID(data((@target, @xml:id)[1])))"/>
-            <xsl:value-of select="if (normalize-space($caption) eq '') then text() else $caption"/>
+            <xsl:value-of select="if (normalize-space($caption) eq '') then normalize-space(string-join(text(), ' ')) else $caption"/>
           </label>
           <xsl:choose>
             <xsl:when test="contains(@xml:id, 'avBiblGeoMarkers')">
@@ -158,6 +158,7 @@
               <params>
                 <textId><xsl:value-of select="_:cleanID(data((@target,@xml:id)[1]))"/></textId>
                 <teiSource><xsl:value-of select="$teiSource"/></teiSource>
+                <xsl:apply-templates select="params/*"/>
               </params>
             </xsl:otherwise>
           </xsl:choose>

@@ -40,7 +40,7 @@ jobs:
         id: get_environment_from_git_ref
         run: |
           echo "Running on branch ${{ github.ref_name }}"
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
             echo "environment=production"
             echo "environment=production" >> $GITHUB_OUTPUT
             echo "environment_short=prod" >> $GITHUB_OUTPUT
@@ -66,6 +66,7 @@ jobs:
           echo "public_url=$public_url" >> $GITHUB_OUTPUT
     outputs:     
       PUBLIC_URL: ${{ steps.generate_public_url.outputs.public_url }}
+      environment: ${{ needs.setup_workflow_env.outputs.environment }}
   generate_workflow_vars-tunocent:
     needs: [setup_workflow_env]
     environment:
@@ -183,13 +184,13 @@ jobs:
       registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
       image_tagged: ${{ needs.setup_workflow_env.outputs.image_tagged }}
       default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
-      herokuish_base_image: ${{ needs.setup_workflow_env.outputs.herokuish_base_image }}
-      POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED }}
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
+      herokuish_base_image: ${{ needs.setup_workflow_env.outputs.herokuish_base_image }}
+      POSTGRES_ENABLED: false
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _3:
     needs: [setup_workflow_env, generate_workflow_vars, _1, _2]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy-cluster-2.yml@main
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
       environment: ${{ needs.generate_workflow_vars.outputs.environment}}
@@ -198,13 +199,13 @@ jobs:
       APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
       SERVICE_ID: ${{ needs.setup_workflow_env.outputs.SERVICE_ID }}
       PUBLIC_URL: ${{ needs.generate_workflow_vars.outputs.PUBLIC_URL }}
-      POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
+      POSTGRES_ENABLED: false
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _3-tunocent:
     needs: [setup_workflow_env, generate_workflow_vars-tunocent, _1-tunocent, _2]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy-cluster-2.yml@main
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
       environment: ${{ needs.generate_workflow_vars-tunocent.outputs.environment}}
@@ -234,7 +235,7 @@ jobs:
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _3-wibarab:
     needs: [setup_workflow_env, generate_workflow_vars-wibarab, _1-wibarab, _2]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy-cluster-2.yml@main
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
       environment: ${{ needs.generate_workflow_vars-wibarab.outputs.environment}}
