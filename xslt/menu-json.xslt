@@ -20,7 +20,7 @@
     </xsl:function>
     
     <xsl:template match="/">
-      <json objects="json projectConfig logo frontpage menu params map center styleSettings colors staticData" arrays="panel param main item subnav scope geo table" numbers="zoom lat lng">
+      <json objects="json projectConfig logo frontpage menu params map center styleSettings colors staticData" arrays="panel param main item subnav scope geo table dataTypes" numbers="zoom lat lng">
         <xsl:apply-templates/>
       </json>
     </xsl:template>
@@ -64,6 +64,7 @@
           <type><xsl:value-of select="local-name()"/></type>
           <targetType>
             <xsl:choose>
+              <xsl:when test="@targetType"><xsl:value-of select="@targetType"/></xsl:when>
               <xsl:when test="@type">
                 <xsl:choose>
                   <xsl:when test="data(@type) = 'vicavTexts'">Text</xsl:when>                  
@@ -77,7 +78,6 @@
               <xsl:when test="starts-with(@xml:id, 'liSample')">SampleText</xsl:when>
               <xsl:when test="data(@xml:id) = 'liBiblNewQuery'">BiblioEntries</xsl:when>
               <xsl:when test="data(@xml:id) = 'liVicavCrossDictQuery'">CrossDictQuery</xsl:when>
-              <xsl:when test="@targetType"><xsl:value-of select="@targetType"/></xsl:when>
               <xsl:otherwise>UnknownTypeWarning</xsl:otherwise>
             </xsl:choose>
           </targetType>

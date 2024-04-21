@@ -50,6 +50,13 @@
         </taxonomy>
     </xsl:template>
     
+    <xsl:template match="t:settlement">
+        <settlement type="object">
+            <name type="array"><xsl:apply-templates select="t:name" mode="arrayItem"/></name>
+        </settlement>
+    </xsl:template>
+    
+
     <xsl:template match="t:listPrefixDef">
         <listPrefixDef type="array">
             <xsl:apply-templates select="t:prefixDef" mode="arrayItem"/>
