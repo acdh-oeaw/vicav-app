@@ -96,6 +96,9 @@
                                     <xsl:when test="matches($geo, '^\s*\d+°')">
                                        <xsl:value-of select="$geo"/> 
                                     </xsl:when>
+                                    <xsl:when test="matches($geo, '\d+\.\d+,\s*\d+\.\d+')">
+                                       <xsl:value-of select="$geo"/> 
+                                    </xsl:when>
                                     <xsl:otherwise>
                                         <xsl:analyze-string select="$geo" regex="[\d\.]+">
                                             <xsl:matching-substring>
