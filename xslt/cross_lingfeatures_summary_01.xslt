@@ -22,8 +22,6 @@
         <xsl:variable name="query">
             <xsl:value-of select="concat('age=', encode-for-uri(./@age), '&amp;sex=', encode-for-uri(./@sex), '&amp;word=', ./@word, '&amp;translation=', ./@translation, '&amp;comment=', ./@comment)"/>
         </xsl:variable>
-
-
         
         <xsl:variable name="results" >
             <xsl:for-each select="$features-shown">
