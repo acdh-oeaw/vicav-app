@@ -1,5 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
+    xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" 
+version="3.1">
     <xsl:include href="sampletexts_common.xslt"/>
     <!-- VERSION 3.1.4 -->
     <xsl:strip-space elements="*"/>
@@ -106,7 +107,11 @@
                                             <small xml:space="preserve"><xsl:if test="./@informant != ''"> (<xsl:value-of select="./@informant"/><xsl:if test="./@sex != ''">/<xsl:value-of select="@sex"/></xsl:if><xsl:if test="@age != ''">/<xsl:value-of select="@age"/></xsl:if>)<xsl:if test=".//tei:revisionDesc/tei:change"><br/></xsl:if></xsl:if><xsl:value-of select="replace(.//tei:revisionDesc/tei:change[1]/@when, 'T.*', '')" /></small>
                                         </td>
                                             <td class="tdFeaturesRightTarget">
-                                                <a class="show-sentence" title="Show full sample text" href="#">
+                                                <a class="show-sentence" title="Show full sample text" href="#"
+                                                data-target-type="SampleText">
+                                                    <xsl:attribute name="data-text-id">
+                                                        <xsl:value-of select="./descendant::tei:TEI/@xml:id" />
+                                                    </xsl:attribute>
                                                     <xsl:attribute name="data-sampletext">
                                                         <xsl:value-of select="./descendant::tei:TEI/@xml:id" />
                                                     </xsl:attribute>
