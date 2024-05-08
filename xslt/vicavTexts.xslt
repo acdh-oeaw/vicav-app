@@ -2,34 +2,23 @@
   xmlns="http://www.w3.org/1999/xhtml"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:tei="http://www.tei-c.org/ns/1.0"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
   exclude-result-prefixes="#all"
   version="2.0" >
-  
-    <xsl:character-map name="a">
-       <xsl:output-character character="&lt;" string="&lt;"/>
-       <xsl:output-character character="&gt;" string="&gt;"/>
-      <xsl:output-character character="&amp;" string="&amp;"/>
-    </xsl:character-map>
 
-    <xsl:output method="html" encoding="UTF-8"/>
-  <!-- the path under which images are served frome the webapplication. The XQuery function that handles such requests is defined in http.xqm -->
-  <xsl:param name="param-images-base-path">images</xsl:param>
+  <xsl:output method="html" encoding="UTF-8"/>  
+  <xsl:param name="tei-link-marker" select="'false'" as="xs:string"/>
   <!-- we make sure that $images-base-path always has a trailing slash -->
-    <xsl:variable name="images-base-path">
-        <xsl:choose>
-            <xsl:when test="$param-images-base-path = ''"/>
-            <xsl:otherwise>
-                <xsl:choose>
-                    <xsl:when test="substring(normalize-space($param-images-base-path),string-length(normalize-space($param-images-base-path)),1) = '/'">
-                        <xsl:value-of select="$param-images-base-path"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="concat($param-images-base-path,'/')"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:variable>
+  <xsl:include href="concat-path-inc.xslt"/>
+  <xsl:variable name="images-base-path" select="tei:concat-path('images')"/>
+  <xsl:variable name="docs-base-path" select="tei:concat-path('')"/>
+  <xsl:include href="getLinkAttributes.xslt"/>
+  
+  <xsl:character-map name="a">
+     <xsl:output-character character="&lt;" string="&lt;"/>
+     <xsl:output-character character="&gt;" string="&gt;"/>
+    <xsl:output-character character="&amp;" string="&amp;"/>
+  </xsl:character-map>
   
   <xsl:template match="/">
     <div><xsl:apply-templates/></div>
@@ -91,11 +80,20 @@
   <xsl:template match="tei:head">
     <xsl:choose>
       <xsl:when test="count(ancestor::tei:div) = 1">
-        <table class="tbHeader">
-          <tr><td><h2>
-              <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
-              <xsl:apply-templates/></h2></td><td>{teiLink}</td></tr>
-        </table>
+        <xsl:choose>
+          <xsl:when test="$tei-link-marker = 'true'">
+            <table class="tbHeader">
+              <tr><td><h2>
+                  <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+                  <xsl:apply-templates/></h2></td><td>{teiLink}</td></tr>
+            </table>
+          </xsl:when>
+          <xsl:otherwise>
+            <h2>
+                  <xsl:if test="@type"><xsl:attribute name="class"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
+                  <xsl:apply-templates/></h2>
+          </xsl:otherwise>
+        </xsl:choose>
       </xsl:when>
       <xsl:when test="count(ancestor::tei:div) = 2">
         <h3>
@@ -155,8 +153,8 @@
           <xsl:analyze-string select="." regex="href=&quot;(http.*?\.jpe?g).*?&quot;.*?src=&quot;(http.*?\.jpe?g).*?&quot;.*? alt=&quot;(.*?)&quot;">
           <xsl:matching-substring>
             <div class="gallery-item">
-            <a href="{replace(regex-group(1), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}" title="{regex-group(3)}">
-              <img src="{replace(regex-group(2), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}"/>
+            <a href="{replace(regex-group(1), '^https?://.*/(.*?)\.(jpe?g)$', concat($images-base-path, '$1.jpg'))}" title="{regex-group(3)}">
+              <img src="{replace(regex-group(2), '^https?://.*/(.*?)\.(jpe?g)$', concat($images-base-path, '$1.jpg'))}"/>
             </a>
             </div>
           </xsl:matching-substring>
@@ -168,8 +166,8 @@
           <xsl:matching-substring>
             <div class="gallery {regex-group(2)}">
             <div class="gallery-item">
-              <a href="{replace(regex-group(1), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}" title="{regex-group(4)}">
-                <img src="{replace(regex-group(3), '^https?://.*/(.*?)\.(jpe?g)$', 'images/$1.jpg')}"/>
+              <a href="{replace(regex-group(1), '^https?://.*/(.*?)\.(jpe?g)$', concat($images-base-path, '$1.jpg'))}" title="{regex-group(4)}">
+                <img src="{replace(regex-group(3), '^https?://.*/(.*?)\.(jpe?g)$', concat($images-base-path, '$1.jpg'))}"/>
               </a>
               </div>
             </div>
@@ -190,6 +188,7 @@
   <xsl:template match="tei:ref[starts-with(@target,'http:') or starts-with(@target,'https:')]">
       <a target="_blank" class="aVicText">
           <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
+          <xsl:sequence select='tei:getLinkAttributes(@target)'/>
           <xsl:apply-templates/>
       </a>
   </xsl:template>
@@ -209,6 +208,7 @@
         starts-with(@target,'sample:')]">
         <a class="aVicText">
             <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select='@target'/>", this)</xsl:attribute>
+            <xsl:sequence select='tei:getLinkAttributes(@target)'/>
             <xsl:apply-templates/>
         </a>
     </xsl:template>
@@ -223,14 +223,17 @@
         starts-with(@ref,'bibl:') or
         starts-with(@ref,'flashcards:') or
         starts-with(@ref,'text:') or
-        starts-with(@ref,'sample:')]">
+        starts-with(@ref,'sample:') or
+        starts-with(@ref,'corpusText:')]">
         <a class="aVicText">
             <xsl:choose>
                 <xsl:when test="contains(@ref,'showLingFeatures')">
                     <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="translate(@ref, ' ', '&#x2005;')"/>", this)</xsl:attribute>
+                    <xsl:attribute name="data-text-id"><xsl:value-of select="translate(@ref, ' ', '&#x2005;')"/></xsl:attribute>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select='@ref'/>", this)</xsl:attribute>
+                    <xsl:sequence select='tei:getLinkAttributes(@ref)'/>
                 </xsl:otherwise>
             </xsl:choose>
             <xsl:apply-templates/>
@@ -239,6 +242,7 @@
     
     <xsl:template match="tei:ref[starts-with(@target,'func:')]">
         <a class="aVicText" href="{concat('javascript', substring-after(@target, 'func'))}">
+        <xsl:sequence select='tei:getLinkAttributes(@target)'/>
             <xsl:apply-templates/>
         </a>
     </xsl:template>
@@ -253,7 +257,8 @@
     
     <xsl:template match="tei:ref">
         <a target="_blank" class="aVicText">
-            <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
+            <xsl:attribute name="href"><xsl:value-of select="$docs-base-path||@target"/></xsl:attribute>
+            <xsl:sequence select='tei:getLinkAttributes(@target)'/>
             <xsl:apply-templates/>
         </a>
     </xsl:template>

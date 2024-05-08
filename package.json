@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "chai-colors": "^1.0.1",
-    "cypress": "^4.12.1"
+    "cypress": "^13.6.0"
   },
   "scripts": {
     "cypress:open": "cypress open",
@@ -40,10 +40,14 @@
   },
   "homepage": "https://github.com/acdh-oeaw/vicav-app#readme",
   "engines": {
-    "node": "18.x",
-    "npm": "9.5.x",
+    "node": "20.x",
+    "npm": "10.2.x",
     "jvm": "17",
-    "basex": "9.7.3",
-    "saxon": "11.3"
+    "basex": "9.7.4",
+    "saxon": "12.4"
+  },
+  "basex": {
+    "parallel": "128",
+    "gzip": "true"
   }
 }

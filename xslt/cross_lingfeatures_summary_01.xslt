@@ -22,8 +22,6 @@
         <xsl:variable name="query">
             <xsl:value-of select="concat('age=', encode-for-uri(./@age), '&amp;sex=', encode-for-uri(./@sex), '&amp;word=', ./@word, '&amp;translation=', ./@translation, '&amp;comment=', ./@comment)"/>
         </xsl:variable>
-
-
         
         <xsl:variable name="results" >
             <xsl:for-each select="$features-shown">
@@ -114,8 +112,15 @@
                             </th>
                             <td>
                                     <a href="#">
+                                    <!-- todo: remove old vicav style query when moved to Vicav-vue -->
                                     <xsl:attribute name="data-type">feature</xsl:attribute>
                                     <xsl:attribute name="data-query" select="concat($query,'&amp;location=region:', $region, $feature-query)"/>
+                                    <!-- new VICAV style dataset -->
+                                    <xsl:attribute name="data-target-type">ExploreSamples</xsl:attribute>
+                                    <xsl:attribute name="data-data-type">Feature</xsl:attribute>
+                                    <xsl:attribute name="data-region" select="$region"/>
+                                    <xsl:attribute name="data-features" select="$root/@features"/>
+                                    <xsl:attribute name="data-word" select="$root/@word"/>
                                     <xsl:value-of select="$count"/>
                                     <xsl:value-of select="' sentences'"/>
                                 </a>

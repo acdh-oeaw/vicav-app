@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<meta xmlns="http://exist-db.org/xquery/repo">
+    <description>Vienna Corpus of Arabic Varieties</description>
+    <author>Austrian Centre for Digital Humanities</author>
+    <website>https://vicav.acdh.oeaw.ac.at</website>
+    <status>development</status>
+    <license ref="https://spdx.org/licenses/">MIT</license>
+    <copyright>true</copyright>
+    <type>application</type>
+    <target>vicav</target>
+    <changelog>
+      <change version="0.0.1">
+        <ul xmlns="http://www.w3.org/1999/xhtml"/>
+      </change>
+    </changelog>
+</meta>

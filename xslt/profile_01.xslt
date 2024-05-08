@@ -1,25 +1,36 @@
 <xsl:stylesheet 
    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-   xmlns="http://www.w3.org/1999/xhtml" 
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   xmlns="http://www.w3.org/1999/xhtml"
    xmlns:tei="http://www.tei-c.org/ns/1.0"
    version="2.0">
-   
-    <xsl:output method="html"/>
-    <!-- we make sure that $images-base-path always has a trailing slash -->
+ 
+    <xsl:output method="html" encoding="UTF-8"/>
+    <xsl:param name="tei-link-marker" select="'false'" as="xs:string"/>
+    <xsl:include href="concat-path-inc.xslt"/>
+    <xsl:include href="getLinkAttributes.xslt"/>
+    <xsl:variable name="images-base-path" select="tei:concat-path('images')"/>
+    <xsl:variable name="docs-base-path" select="tei:concat-path('')"/>
     
     <xsl:template match="/">
                                         
         <div>
-            <table class="tbHeader">
-                <tr><td><h2><xsl:value-of select="//tei:name[@xml:lang='eng']"/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
-            </table>    
+              <xsl:choose>
+                <xsl:when test="$tei-link-marker = 'true'">
+                  <table class="tbHeader">
+                    <tr><td><h2><xsl:value-of select="//tei:name[@xml:lang='eng']"/></h2></td><td class="tdTeiLink">{teiLink}</td></tr>
+                  </table>    
+                </xsl:when>
+                <xsl:otherwise>
+                  <h2><xsl:value-of select="//tei:name[@xml:lang='eng']"/></h2>
+                </xsl:otherwise>
+              </xsl:choose>
 
             <div class="profileHeader">
                 <div class="dvImgProfile">
-                    <img>
-                        <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure[1]/tei:graphic/@url"/></xsl:attribute>
-                    </img>
                     <xsl:if test="//tei:head/tei:figure/tei:head">
+                        <img src="{concat($images-base-path,//tei:head/tei:figure[1]/tei:graphic/@url)}">
+                        </img>
                         <div class="imgCaption">
                             <xsl:apply-templates select="//tei:head/tei:figure[1]/tei:head"/>
                         </div>                                           
@@ -80,14 +91,25 @@
                         <td class="tdHead">Geo location</td>
                         <td class="tdProfileTableRight">
                             <i>
-                                <xsl:analyze-string select="//tei:div[@type='positioning']/tei:p" regex="[\d\.]+">
-                                    <xsl:matching-substring>
-                                        <xsl:value-of select="substring(., 1, 6)"/>
-                                    </xsl:matching-substring>
-                                    <xsl:non-matching-substring>
-                                        <xsl:value-of select="', '"/>
-                                    </xsl:non-matching-substring>
-                                </xsl:analyze-string>
+                                <xsl:variable name="geo" select="xs:string(//tei:div[@type='positioning']/tei:p)"/>
+                                <xsl:choose>                                   
+                                    <xsl:when test="matches($geo, '^\s*\d+°')">
+                                       <xsl:value-of select="$geo"/> 
+                                    </xsl:when>
+                                    <xsl:when test="matches($geo, '\d+\.\d+,\s*\d+\.\d+')">
+                                       <xsl:value-of select="$geo"/> 
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:analyze-string select="$geo" regex="[\d\.]+">
+                                            <xsl:matching-substring>
+                                                <xsl:value-of select="substring(., 1, 6)"/>
+                                            </xsl:matching-substring>
+                                            <xsl:non-matching-substring>
+                                                <xsl:value-of select="', '"/>
+                                            </xsl:non-matching-substring>
+                                        </xsl:analyze-string>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </i>
                         </td>
                     </tr>
@@ -104,62 +126,65 @@
             <xsl:if test="count(//tei:head/tei:figure) = 2">
                 <div>
                     <a>
-                      <xsl:attribute name="href" select="concat('images/', //tei:head/tei:figure[2]/tei:graphic/@url)"/>
+                        <xsl:attribute name="href" select="concat($images-base-path, //tei:head/tei:figure[2]/tei:graphic/@url)"/>
                         <img>
-                          <xsl:attribute name="src" select="concat('images/', //tei:head/tei:figure[2]/tei:graphic/@url)"/>
-                      </img>
+                            <xsl:attribute name="src" select="concat($images-base-path,//tei:head/tei:figure[2]/tei:graphic/@url)"/>
+                        </img>
                     </a>
                 </div>
             </xsl:if>
 
             <xsl:if test="count(//tei:head/tei:figure) > 2">
-                <div class="slider-container">
-                    <xsl:variable select="count(//tei:head/tei:figure) - 1" name="total"/>
-                    <xsl:for-each select="subsequence(//tei:head/tei:figure, 2)">
-                        <xsl:variable select="position()" name="pos"/>
-
-                          <!-- Full-width images with number text -->
-                          <div class="mySlides slider-fade">
-                            <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
-                              <a>
-                              <xsl:attribute name="href" select="concat('images/', ./tei:graphic/@url)"/>
-                                <img>
-                                  <xsl:attribute name="src" select="concat('images/', ./tei:graphic/@url)"/>
-                              </img>
-                            </a>
-                          </div>
-                      </xsl:for-each>
-                  <!-- Next and previous buttons -->
-                  <a class="slider-prev">&#10094;</a>
-                  <a class="slider-next">&#10095;</a>
-
-                  <!-- Image text -->
-                  <div class="caption-container">
-                    <p class="caption"></p>
-                  </div>
-
-                  <!-- Thumbnail images -->
-                  <div class="thumbs-wrapper">
-                      <div class="row">
-                        <xsl:attribute name="style" select="concat('width: ', count(//tei:head/tei:figure) * 100, 'px')"/>
-                        <xsl:for-each select="subsequence(//tei:head/tei:figure, 2)">
-                            <xsl:variable select="position()" name="pos"/>
-                            <div class="column">
-                              <img class="demo cursor" style="width:100px; height: 100px">
-                                  <xsl:attribute name="src" select="concat('images/', ./tei:graphic/@url)"/>
-                                  <xsl:attribute name="data-showslide" select="$pos"/>
-                                  <xsl:attribute name="alt" select="./tei:head"/>
-                              </img>
-                            </div>
-                        </xsl:for-each>
-                      </div>
-                  </div>
-                </div>
+               <xsl:apply-templates select="//tei:head[tei:figure]" mode="gallery"/>
             </xsl:if>   
             <br/>
             <br/>
-            <br/>
         </div>
+    </xsl:template>
+    
+    <xsl:template match="tei:head" mode="gallery">
+        <div class="slider-container">
+            <xsl:variable select="count(tei:figure) - 1" name="total"/>
+            <xsl:for-each select="subsequence(tei:figure, 2)">
+                <xsl:variable select="position()" name="pos"/>
+                
+                <!-- Full-width images with number text -->
+                <div class="mySlides slider-fade">
+                    <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
+                    <a>
+                        <xsl:attribute name="href" select="concat($images-base-path, ./tei:graphic/@url)"/>
+                        <img>
+                            <xsl:attribute name="src" select="concat($images-base-path, ./tei:graphic/@url)"/>
+                        </img>
+                    </a>
+                </div>
+            </xsl:for-each>
+            <!-- Next and previous buttons -->
+            <a class="slider-prev">&#10094;</a>
+            <a class="slider-next">&#10095;</a>
+            
+            <!-- Image text -->
+            <div class="caption-container">
+                <p class="caption"></p>
+            </div>
+            
+            <!-- Thumbnail images -->
+            <div class="thumbs-wrapper">
+                <div class="row">
+                    <xsl:attribute name="style" select="concat('width: ', count(tei:figure) * 100, 'px')"/>
+                    <xsl:for-each select="subsequence(tei:figure, 2)">
+                        <xsl:variable select="position()" name="pos"/>
+                        <div class="column">
+                            <img class="demo cursor" style="width:100px; height: 100px">
+                                <xsl:attribute name="src" select="concat($images-base-path, ./tei:graphic/@url)"/>
+                                <xsl:attribute name="data-showslide" select="$pos"/>
+                                <xsl:attribute name="alt" select="./tei:head"/>
+                            </img>
+                        </div>
+                    </xsl:for-each>
+                </div>
+            </div>
+        </div>       
     </xsl:template>
 
     <xsl:template match="tei:div[@type='typology']">
@@ -172,7 +197,7 @@
 
     <xsl:template match="tei:div[@type='positioning']"/>
     
-    <xsl:template match="tei:div[@type and not(./tei:head)]">
+    <xsl:template match="tei:div[@type and not(./tei:head)]" priority="-1">
         <xsl:choose>
             <xsl:when test="@type='lingFeatures'">
                 <div class="h3Profile">Linguistic Features</div>
@@ -236,43 +261,43 @@
             <xsl:variable select="count(./tei:figure)" name="total"/>
             <xsl:for-each select="./tei:figure">
                 <xsl:variable select="position()" name="pos"/>
-
-                  <!-- Full-width images with number text -->
-                  <div class="mySlides slider-fade">
+                
+                <!-- Full-width images with number text -->
+                <div class="mySlides slider-fade">
                     <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
-                      <a>
-                      <xsl:attribute name="href" select="concat('images/', ./tei:link/@target)"/>
+                    <a>
+                        <xsl:attribute name="href" select="concat($images-base-path, ./tei:link/@target)"/>
                         <img>
-                          <xsl:attribute name="src" select="concat('images/', ./tei:link/@target)"/>
-                      </img>
+                            <xsl:attribute name="src" select="concat($images-base-path, ./tei:link/@target)"/>
+                        </img>
                     </a>
-                  </div>
-              </xsl:for-each>
-          <!-- Next and previous buttons -->
-          <a class="slider-prev">&#10094;</a>
-          <a class="slider-next">&#10095;</a>
-
-          <!-- Image text -->
-          <div class="caption-container">
-            <p class="caption"></p>
-          </div>
-
-          <!-- Thumbnail images -->
-          <div class="thumbs-wrapper">
-              <div class="row">
-                <xsl:attribute name="style" select="concat('width: ', count(./tei:figure) * 100, 'px')"/>
-                <xsl:for-each select="./tei:figure">
-                    <xsl:variable select="position()" name="pos"/>
-                    <div class="column">
-                      <img class="demo cursor" style="width:100px; height: 100px">
-                          <xsl:attribute name="src" select="concat('images/', ./tei:graphic/@url)"/>
-                          <xsl:attribute name="data-showslide" select="$pos"/>
-                          <xsl:attribute name="alt" select="./tei:head"/>
-                      </img>
-                    </div>
-                </xsl:for-each>
-              </div>
-          </div>
+                </div>
+            </xsl:for-each>
+            <!-- Next and previous buttons -->
+            <a class="slider-prev">&#10094;</a>
+            <a class="slider-next">&#10095;</a>
+            
+            <!-- Image text -->
+            <div class="caption-container">
+                <p class="caption"></p>
+            </div>
+            
+            <!-- Thumbnail images -->
+            <div class="thumbs-wrapper">
+                <div class="row">
+                    <xsl:attribute name="style" select="concat('width: ', count(./tei:figure) * 100, 'px')"/>
+                    <xsl:for-each select="./tei:figure">
+                        <xsl:variable select="position()" name="pos"/>
+                        <div class="column">
+                            <img class="demo cursor" style="width:100px; height: 100px">
+                                <xsl:attribute name="src" select="concat($images-base-path, ./tei:graphic/@url)"/>
+                                <xsl:attribute name="data-showslide" select="$pos"/>
+                                <xsl:attribute name="alt" select="./tei:head"/>
+                            </img>
+                        </div>
+                    </xsl:for-each>
+                </div>
+            </div>
         </div>
     </xsl:template>
 
@@ -288,7 +313,7 @@
         <video width="320" height="240" controls="true">
         <source>
                   <xsl:attribute name="type" select="./@mimeType" />
-                  <xsl:attribute name="src" select="./@url" />
+                  <xsl:attribute name="src" select="concat($images-base-path, ./@url)" />
         </source>
         Your browser does not support the video tag.
         </video>
@@ -319,6 +344,7 @@
     <xsl:template match="tei:ref[starts-with(@target,'http')]">
         <a target="_blank" class="aVicText">      
             <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
+            <xsl:sequence select='tei:getLinkAttributes(@target)'/>
             <xsl:apply-templates/>
         </a>
     </xsl:template>
@@ -332,23 +358,23 @@
     </xsl:template>
 
     <xsl:template match="tei:ref[@type='feature']">
-        <a href="#">
-            <xsl:attribute name="data-featurelist"><xsl:value-of select="@target"/></xsl:attribute>
+        <a href="#" data-target-type="Feature">
+            <xsl:attribute name="data-text-id"><xsl:value-of select="@target"/></xsl:attribute>
             <xsl:apply-templates/>
         </a>
         <br/>
     </xsl:template>
 
     <xsl:template match="tei:ref[@type='sample']">
-        <a href="#">
-            <xsl:attribute name="data-sampletext"><xsl:value-of select="@target"/></xsl:attribute>
+        <a href="#" data-target-type="SampleText">
+            <xsl:attribute name="data-text-id"><xsl:value-of select="@target"/></xsl:attribute>
             <xsl:apply-templates/>
         </a><br/>
     </xsl:template>
 
      <xsl:template match="tei:ref[@type='profile']">
-        <a href="#">
-            <xsl:attribute name="data-profile"><xsl:value-of select="@target"/></xsl:attribute>
+        <a href="#" data-target-type="Profile">
+            <xsl:attribute name="data-text-id"><xsl:value-of select="@target"/></xsl:attribute>
             <xsl:apply-templates/>
         </a><br/>
     </xsl:template>
@@ -363,7 +389,8 @@
         starts-with(@ref,'text:') or
         starts-with(@ref,'sample:')]">
         <a class="aVicText">
-            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@ref"/>")</xsl:attribute>
+            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@ref"/>")</xsl:attribute>            
+            <xsl:sequence select='tei:getLinkAttributes(@ref)'/>
             <xsl:apply-templates/>          
         </a>
     </xsl:template>
@@ -378,14 +405,61 @@
         starts-with(@target,'text:') or
         starts-with(@target,'sample:')]">
         <a class="aVicText">
-            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@target"/>")</xsl:attribute>
+            <xsl:attribute name="href">javascript:getDBSnippet("<xsl:value-of select="@target"/>")</xsl:attribute>            
+            <xsl:sequence select='tei:getLinkAttributes(@target)'/>
             <xsl:apply-templates/>          
         </a>
     </xsl:template>
 
     <xsl:template match="//tei:div[@type='gallery']">
         <div class="h3Profile"><xsl:value-of select="./tei:head"/></div>
+        <gallery>
+            <xsl:for-each select="./tei:link">
+            <a>
+                <xsl:attribute name="href" select="concat($images-base-path, ./@target)"/>
+                <img>
+                    <xsl:attribute name="src" select="concat($images-base-path, 'thumb/',  ./@target)"/>
+                    <xsl:attribute name="alt" select="./tei:head"/>
+                </img>
+            </a>
+            </xsl:for-each>
+        </gallery>
+    </xsl:template>
 
+    <xsl:template match="tei:figure">
+        <div>
+            <xsl:attribute name="class" select="'figure'"/>
+            <xsl:if test="@rendition = '#right'">
+                <xsl:attribute name="style">float: right; margin: 10px 10px 0px 10px</xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@rendition = '#left'">
+                <xsl:attribute name="style">float: left; margin: 10px 10px 0px 10px</xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@rendition = '#full-width'">
+                <xsl:attribute name="class" select="'figure full-width'"></xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@rendition = '#small'">
+                <xsl:attribute name="class" select="'figure small'"></xsl:attribute>
+            </xsl:if>
+            <div  class="gallery-item">
+                <a href="concat($images-base-path, {./tei:link/@target})" title="{./tei:head}">
+                    <img>
+                        <xsl:attribute name="src">
+                            <xsl:value-of select="concat($images-base-path, tei:graphic/@url)"/>
+                        </xsl:attribute>
+                    </img>
+                </a>
+            </div>
+            <xsl:if test="tei:head">
+                <div class="imgCaption">
+                    <xsl:apply-templates select="tei:head"/>
+                </div>                                           
+            </xsl:if>           
+        </div>
+    </xsl:template>
+
+    <xsl:template match="//tei:div[@type='gallery']">
+        <div class="h3Profile"><xsl:value-of select="./tei:head"/></div>
         <div class="slider-container">
             <xsl:variable select="count(./tei:link)" name="total"/>
             <xsl:for-each select="./tei:link">
@@ -395,10 +469,10 @@
                   <div class="mySlides slider-fade">
                     <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
                     <a>
-                      <xsl:attribute name="href" select="./@target"/>
+                      <xsl:attribute name="href" select="concat($images-base-path, ./@target)"/>
 
                       <img>
-                          <xsl:attribute name="src" select="./@target"/>
+                          <xsl:attribute name="src" select="concat($images-base-path, ./@target)"/>
                       </img>
                     </a>
                   </div>
@@ -420,7 +494,7 @@
                     <xsl:variable select="position()" name="pos"/>
                     <div class="column">
                       <img class="demo cursor" style="width:100px; height: 100px">
-                          <xsl:attribute name="src" select="./tei:graphic/@url"/>
+                          <xsl:attribute name="src" select="concat($images-base-path, ./tei:graphic/@url)"/>
                           <xsl:attribute name="data-showslide" select="$pos"/>
                           <xsl:attribute name="alt" select="./tei:head"/>
                       </img>
@@ -431,35 +505,6 @@
         </div>
     </xsl:template>
 
-    <xsl:template match="tei:figure">
-        <div>
-            <xsl:attribute name="class" select="'figure'"/>
-            <xsl:if test="@rendition = '#right'">
-                <xsl:attribute name="style">float: right; margin: 10px 10px 0px 10px</xsl:attribute>
-            </xsl:if>
-            <xsl:if test="@rendition = '#left'">
-                <xsl:attribute name="style">float: left; margin: 10px 10px 0px 10px</xsl:attribute>
-            </xsl:if>
-            <xsl:if test="@rendition = '#full-width'">
-                <xsl:attribute name="class" select="'figure full-width'"></xsl:attribute>
-            </xsl:if>
-            <xsl:if test="@rendition = '#small'">
-                <xsl:attribute name="class" select="'figure small'"></xsl:attribute>
-            </xsl:if>
-            <div  class="gallery-item">
-                <a href="images/{./tei:link/@target}" title="{./tei:head}">
-                    <img>
-                        <xsl:attribute name="src">images/<xsl:value-of select="tei:graphic/@url"/></xsl:attribute>
-                    </img>
-                </a>
-            </div>
-            <xsl:if test="tei:head">
-                <div class="imgCaption">
-                    <xsl:apply-templates select="tei:head"/>
-                </div>                                           
-            </xsl:if>           
-        </div>
-    </xsl:template>
 <!-- 
     <xsl:template match="tei:ref">
         <xsl:choose>

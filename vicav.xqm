@@ -8,7 +8,30 @@ declare namespace dc = 'http://purl.org/dc/elements/1.1/';
 declare namespace tei = 'http://www.tei-c.org/ns/1.0';
 declare namespace dcterms = "http://purl.org/dc/terms/";
 declare namespace prof = "http://basex.org/modules/prof";
+declare namespace response-codes = "https://tools.ietf.org/html/rfc7231#section-6";
+declare namespace test = "http://exist-db.org/xquery/xqsuite";
 
+import module namespace openapi="https://lab.sub.uni-goettingen.de/restxqopenapi" at "3rd-party/openapi4restxq/content/openapi.xqm";
+import module namespace util = "https://www.oeaw.ac.at/acdh/tools/vle/util" at "3rd-party/vleserver_basex/vleserver/util.xqm";
+
+(:~
+ : VICAV API
+ :
+ : An API for retrieving the various VICAV TEI documents rendered either as XHTML snippets or JSON
+ :)
+ 
+(:~
+ : get the API description
+ :
+ : OpenAPI 3.0 JSON description of the API
+ :)
+declare
+    %rest:path('/vicav/openapi.json')
+    %rest:produces('application/json')
+    %output:media-type('application/json')
+function vicav:getOpenapiJSON() as item()+ {
+    openapi:json(file:base-dir())
+};
 
 declare function vicav:expandExamplePointers($in as item(), $dict as document-node()*) {
     typeswitch ($in)
@@ -26,6 +49,9 @@ declare function vicav:expandExamplePointers($in as item(), $dict as document-no
         case element(tei:ptr)
             return
                 $dict//tei:cit[@xml:id = $in/@target]
+        case element(tei:ref)
+            return
+                $dict//tei:cit[@xml:id = replace($in/@target, '#', '')]
         case element()
             return
                 (: element { QName( namespace-uri($in), local-name($in) ) } { for $node in $in/node() return wde:expandExamplePointers($node, $dict) } :)
@@ -54,7 +80,7 @@ $seq as node()*) as xs:boolean {
 };
 
 declare function vicav:get_project_name() as xs:string {
-    let $project := doc('vicav_projects/projects.xml')/projects/project[matches(request:hostname(), @regex)]/text()
+    let $project := doc('vicav_projects/projects.xml')/projects/project[matches(try{request:hostname()} catch basex:http {()}, @regex)]/text()
     return if (empty($project) or $project = '') then doc('vicav_projects/projects.xml')/projects/project[1]/text() else $project
 };
 
@@ -69,8 +95,12 @@ declare function vicav:get_project_db() as xs:string {
 };
 
 declare
-%rest:path("vicav/project")
+%rest:path("/vicav/project")
 %rest:GET
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
 function vicav:project_config() {
   api-problem:or_result (prof:current-ns(),
     vicav:_project_config#0, [], map:merge((cors:header(()), vicav:return_content_header()))
@@ -87,18 +117,92 @@ declare function vicav:return_content_header() {
 declare
 function vicav:_project_config() {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+    let $publicURI := try { replace(util:get-base-uri-public(), '/project', '') } catch basex:http { '' }
     let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
     let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
     return if (matches($accept-header, '[+/]json'))
-    then let $renderedJson := xslt:transform($config, 'xslt/menu-json.xslt')
-    return serialize($renderedJson, map {"method": "json"})
+    then
+      let $jsonAsXML := 
+        if (exists(try{collection('prerendered_json')} catch err:FODC0002 {()}) and
+            exists(collection('prerendered_json')//json[projectConfig/baseURIPublic = $publicURI]))
+        then collection('prerendered_json')//json[projectConfig/baseURIPublic = $publicURI] update {insert node <cached type="boolean">true</cached> as first into ./projectConfig}
+        else vicav:project_config_json_as_xml($publicURI) update {insert node <cached type="boolean">false</cached> as first into ./json/projectConfig}
+      return serialize($jsonAsXML, map {"method": "json"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
       return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
 };
 
+declare function vicav:project_config_json_as_xml($publicURI as xs:string) {
+    let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml',
+        $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>,
+        $jsonAsXML := xslt:transform($config, 'xslt/menu-json.xslt', map{'baseURIPublic': $publicURI}),
+        $jsonAsXML := $jsonAsXML update {
+          .//*[starts-with(local-name(), "insert_")]!(replace node . with <_ type="object">{vicav:get_insert_data(local-name())}</_>)
+        }      
+    return $jsonAsXML
+};
+
+declare function vicav:get_insert_data($type as xs:string) {
+  switch ($type)
+    case "insert_featurelist" return vicav:get_featurelist()
+    case "insert_variety_data" return vicav:get_variety_data()
+    default return json:parse(vicav:_get_tei_doc_list(replace($type, '^insert_', '')))/json/*
+};
+
+declare function vicav:get_variety_data() {
+  collection("wibarab_varieties")//json/*
+};
+
+declare function vicav:get_featurelist() {
+  let $docs := collection('wibarab_features')//tei:TEI
+  let $result :=
+  map:merge((
+    for $doc in $docs
+    let $filename := fn:tokenize(base-uri($doc), '/')[last()]
+    where starts-with($filename, 'feature')
+    return
+        map {
+           string($doc/@xml:id): 
+                map {
+                    "title": string($doc//tei:title),
+                    "values": map:merge((
+                        let $items := $doc//tei:list[@type = "featureValues"]/tei:item
+                        for $item in $items
+                        return map {string($item/@xml:id): string($item/tei:label)}))
+                    }
+                }
+          ))
+        
+   return json:parse(serialize($result, map {"method": "json"}), map {"format": "direct"})/json/*
+};
 
 declare
-%rest:path("vicav/biblio")
+%updating
+%rest:path("/vicav/project")
+%rest:PUT
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
+function vicav:prerender_project_config() {
+  let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' },
+      $publicURI := try { replace(util:get-base-uri-public(), '/project', '') } catch basex:http { '' },
+      $prerenderedFileName := replace($publicURI, 'https?://', '') => translate(':', '_')||'/prerendered_json.xml',
+      $jsonAsXml := api-problem:or_result (prof:current-ns(),
+    vicav:project_config_json_as_xml#1, [$publicURI], map:merge((cors:header(()), vicav:return_content_header()))
+  ),
+      $res := if (matches($accept-header, '[+/]json')) 
+        then ($jsonAsXml[1],serialize($jsonAsXml[2], map {'method': 'json'})) 
+        else ($jsonAsXml[1],serialize($jsonAsXml[2], map {'method': 'xml'}))
+  return (
+    if (db:exists('prerendered_json')) then db:replace('prerendered_json', $prerenderedFileName, $jsonAsXml[2])
+    else db:create('prerendered_json', $jsonAsXml[2], $prerenderedFileName),
+    update:output($res)
+  )
+};
+
+declare
+%rest:path("/vicav/biblio")
 %rest:query-param("query", "{$query}")
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:GET
@@ -123,7 +227,7 @@ function vicav:query_biblio($query as xs:string*, $xsltfn as xs:string) {
     "declare namespace rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'; " ||
     "declare namespace foaf= 'http://xmlns.com/foaf/0.1/'; " ||
     "declare namespace dc = 'http://purl.org/dc/elements/1.1/';"
-    let $q := 'let $arts := collection("vicav_biblio")//node()[(name()="bib:Article") or 
+    let $q := 'let $arts := collection("/vicav_biblio")//node()[(name()="bib:Article") or 
     (name()="bib:Book") or (name()="bib:BookSection") or (name()="bib:Thesis")]' ||
     string-join($qs) ||
     'for $art in $arts ' ||
@@ -142,12 +246,23 @@ function vicav:query_biblio($query as xs:string*, $xsltfn as xs:string) {
 };
 
 declare
-%rest:path("vicav/biblio_tei")
+%rest:path("/vicav/biblio_tei")
 %rest:query-param("query", "{$query}")
 %rest:query-param("xslt", "{$xsltfn}")
+%test:arg("query", "Skoura")
+%rest:produces("application/xml")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
 %rest:GET
+function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string?) {
+  let $generateQuery := not(empty($xsltfn))
+  let $xsltfn := if (empty($xsltfn)) then "biblio_tei_01.xslt" else $xsltfn
+  return api-problem:or_result (prof:current-ns(),
+    vicav:_query_biblio_tei#3, [$query, $xsltfn, $generateQuery], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
 
-function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
+declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:string, $generateQuery as xs:boolean) {
     let $queries := tokenize($query, '\+')
     let $qs :=
     for $query in $queries     
@@ -166,12 +281,14 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
            '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else if (contains($query, 'prj:')) then
            '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+        else if (starts-with($query, 'zotid:')) then
+           '[@corresp = "http://zotero.org/groups/2165756/items/' || substring-after($query, ':') ||'"]'
         else
            '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'  
     
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $q := 'let $arts := ' ||
-    'collection("vicav_biblio'  || vicav:get_project_db() || '")//tei:biblStruct' ||
+    'collection("/vicav_biblio'  || vicav:get_project_db() || '")//tei:biblStruct' ||
     string-join($qs) ||
     'for $art in $arts ' ||
     'let $author := ' ||
@@ -189,22 +306,20 @@ function vicav:query_biblio_tei($query as xs:string*, $xsltfn as xs:string) {
     let $query2 := $ns || $q
     let $results := xquery:eval($query2)
     
-    let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
-    let $style := doc($stylePath)
     let $num := count($results)
     
     let $results := <results
         num="{$num}">{$results}</results>
-    let $sHTML := xslt:transform-text($results, $style)
+    let $sHTML := vicav:transform($results, $xsltfn, (), map{
+      'generateQuery': xs:string($generateQuery)
+    })
     return
-        (: <r>{$sHTML}</r> :)
-        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        $sHTML)
-        (: <r>{$query2}</r> :)
+      $sHTML
+        
 };
 
 declare
-%rest:path("vicav/biblio_id")
+%rest:path("/vicav/biblio_id")
 %rest:query-param("query", "{$query}")
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:GET
@@ -214,7 +329,7 @@ function vicav:query_biblio_id($query as xs:string*, $xsltfn as xs:string) {
     let $bibls :=
     for $id in $ids
     return
-        collection("vicav_biblio" || vicav:get_project_db())//tei:biblStruct[@corresp = 'http://zotero.org/groups/2165756/items/' || $id]
+        collection("/vicav_biblio" || vicav:get_project_db())//tei:biblStruct[@corresp = 'http://zotero.org/groups/2165756/items/' || $id]
     
     let $results :=
     for $bibl in $bibls
@@ -241,10 +356,12 @@ function vicav:query_biblio_id($query as xs:string*, $xsltfn as xs:string) {
 };
 
 declare function vicav:transform($doc as element(), $xsltfn as xs:string, $print as xs:string?, $options as map(*)?) {
-    let $stylePath := file:base-dir() || 'xslt/'
-    let $style := doc($stylePath || $xsltfn)
+    let $stylePath := file:resolve-path('xslt/', file:base-dir())
+    let $style := doc(file:resolve-path('xslt/' || $xsltfn, file:base-dir()))
 
-    let $xslt := if (empty($print)) then $style else xslt:transform-text(doc($stylePath || 'printable.xslt'), doc($stylePath || 'printable_path.xslt'), map {'xslt': $stylePath || $xsltfn})
+    let $xslt := if (empty($print)) then $style else xslt:transform-text(
+        doc(file:resolve-path('xslt/printable.xslt', file:base-dir()))
+        , doc(file:resolve-path('xslt/printable_path.xslt', file:base-dir())), map {'xslt': file:path-to-uri(file:resolve-path('xslt/' || $xsltfn, file:base-dir()))})
 
     let $sHTML := xslt:transform-text($doc, $xslt, $options)
     return
@@ -252,26 +369,47 @@ declare function vicav:transform($doc as element(), $xsltfn as xs:string, $print
 };
 
 declare
-%rest:path("vicav/profile")
-%rest:query-param("coll", "{$coll}", "vicav_profiles")
-%rest:query-param("id", "{$id}")
-%rest:query-param("xslt", "{$xsltfn}", "profile_01.xslt")
-%rest:query-param("print", "{$print}")
-
+%rest:path("/vicav/profile")
 %rest:GET
-
-function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:string, $print as xs:string*) {
-    let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $q := 'collection("' || $coll || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
-    let $query := $ns || $q
-    let $results := xquery:eval($query)
-    return 
-        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        vicav:transform($results, $xsltfn, $print, ()))
+%rest:query-param("id", "{$id}")
+%test:arg("id", "profile_amman_01")
+%rest:query-param("coll", "{$coll}", "/vicav_profiles")
+%rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("print", "{$print}")
+%rest:produces("application/xml")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
+function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:string*, $print as xs:string*) {
+  let $generateTeiMarker := exists($xsltfn)
+  let $xsltfn := if (exists($xsltfn)) then $xsltfn else "profile_vue.xslt"
+  return api-problem:or_result (prof:current-ns(),
+    vicav:_get_profile#6, [$coll, $id, $xsltfn, $print, $generateTeiMarker, '/profile'], map:merge((cors:header(()), vicav:return_content_header()))
+  )
 };
 
 declare
-%rest:path("vicav/sample")
+%rest:path("/vicav/ling_feature")
+%rest:GET
+%rest:query-param("id", "{$id}")
+%test:arg("id", "ling_features_baghdad")
+function vicav:get_ling_feature($id as xs:string?) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_profile#6, ['vicav_lingfeatures', $id, 'features_01.xslt', (), false(), '/ling_feature'], map:merge((cors:header(()), vicav:return_content_header())))
+};
+
+declare function vicav:_get_profile($coll as xs:string, $id as xs:string*,
+  $xsltfn as xs:string*, $print as xs:string*, $generateTeiMarker as xs:boolean,
+  $endpoint as xs:string) { 
+  vicav:transform(collection($coll || vicav:get_project_db())/descendant::tei:TEI[@xml:id=$id],
+     $xsltfn, $print, map{
+          'param-base-path': replace(util:get-base-uri-public(), $endpoint, ''),
+          'tei-link-marker': xs:string($generateTeiMarker)
+        }
+     )
+};
+
+declare
+%rest:path("/vicav/sample")
 %rest:query-param("coll", "{$coll}")
 %rest:query-param("id", "{$id}")
 %rest:query-param("xslt", "{$xsltfn}")
@@ -279,19 +417,21 @@ declare
 
 %rest:GET
 
-function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:string, $print as xs:string*) {
+function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:string*, $print as xs:string*) {
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $q := 'collection("' || $coll || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
+    let $xsltfn := if (exists($xsltfn)) then $xsltfn else "sampletext_01.xslt"
+
+    let $q := 'collection("/vicav_samples' || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
     let $query := $ns || $q
     let $results := xquery:eval($query)
     return 
         (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        vicav:transform($results, $xsltfn, $print, ()))
+        vicav:transform($results, $xsltfn, $print, map{}))
 };
 
 
 declare
-%rest:path("vicav/features")
+%rest:path("/vicav/features")
 %rest:query-param("ana", "{$ana}")
 %rest:query-param("xslt", "{$xsltfn}")
 %rest:query-param("expl", "{$expl}")
@@ -300,7 +440,7 @@ declare
 
 function vicav:get_lingfeatures($ana as xs:string*, $expl as xs:string*, $xsltfn as xs:string) {
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $q := 'collection("vicav_lingfeatures'  || vicav:get_project_db() ||'")//tei:cit[@type="featureSample" and (.//tei:w[contains-token(@ana,"' || $ana || '")][1] or .//tei:phr[contains-token(@ana,"' || $ana || '")][1])]'
+    let $q := 'collection("/vicav_lingfeatures'  || vicav:get_project_db() ||'")//tei:cit[@type="featureSample" and (.//tei:w[contains-token(@ana,"' || $ana || '")][1] or .//tei:phr[contains-token(@ana,"' || $ana || '")][1])]'
     let $query := $ns || $q    
     let $results := xquery:eval($query)
     
@@ -460,7 +600,7 @@ declare function vicav:explore-data(
 
 
 declare
-%rest:path("vicav/explore_samples")
+%rest:path("/vicav/explore_samples")
 %rest:query-param("type", "{$type}")
 %rest:query-param("location", "{$location}")
 %rest:query-param("xslt", "{$xsltfn}")
@@ -557,28 +697,47 @@ function vicav:explore_samples(
         $sHTML)
 };
 
+(:~
+ : get a description text
+ :
+ : Retrieve a description TEI text found in the DB.
+ : 
+ : @param $id ID of a description TEI text found in the DB.
+ :           May start with li_
+ : @param $xsltfn XSL used to rencer the TEI (defaults to vicavTexts.xslt)
+ :
+ : @return A rendered HTML of the description TEI text.
+ :)
 declare
-%rest:path("vicav/text")
+%rest:path("/vicav/text")
 %rest:query-param("id", "{$id}")
-%rest:query-param("xslt", "{$xsltfn}", "vicavTexts.xslt")
+%test:arg("id", "li_vicavMission")
+%rest:query-param("xslt", "{$xsltfn}")
 %rest:GET
+%rest:produces("application/xml")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
+function vicav:get_text($id as xs:string, $xsltfn as xs:string?) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_text#2, [$id, $xsltfn], map:merge((cors:header(()), vicav:return_content_header()))
+  )  
+};
 
-function vicav:get_text($id as xs:string*, $xsltfn as xs:string) {
-    let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $q := 'collection("vicav_texts")//tei:div[@xml:id="' || $id || '"]'
-    let $query := $ns || $q
-    let $results := parse-xml(serialize(xquery:eval($query), map {'method': 'xml', 'indent': 'yes'}))
+declare function vicav:_get_text($id as xs:string, $xsltfn as xs:string?) {
+    let $id := replace($id, '^li_', '')
+    let $generateTeiMarker := exists($xsltfn)
+    let $xsltfn := if (exists($xsltfn)) then $xsltfn else "vicavTexts.xslt" 
+    let $results := collection("/vicav_texts")//tei:div[@xml:id=$id] 
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
-    let $sHTML := xslt:transform-text($results, $style)
-    return
-        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        $sHTML)
-        
+    let $sHTML := xslt:transform-text($results, $style, map{
+      'param-base-path': replace(util:get-base-uri-public(), '/text', ''),
+      'tei-link-marker': xs:string($generateTeiMarker)})
+    return $sHTML        
 };
 
 declare
-%rest:path("vicav/dict_index")
+%rest:path("/vicav/dict_index")
 %rest:query-param("dict", "{$dict}")
 %rest:query-param("ind", "{$ind}")
 %rest:query-param("str", "{$str}")
@@ -636,13 +795,14 @@ declare function vicav:createMatchString($in as xs:string) {
 };
 
 declare
-%rest:path("vicav/dicts_api")
+%rest:path("/vicav/dicts_api")
 %rest:query-param("query", "{$query}")
 %rest:query-param("dicts", "{$dicts}")
 %rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("print", "{$print}")
 %rest:GET
 
-function vicav:dicts_query($dicts as xs:string, $query as xs:string*, $xsltfn as xs:string) {
+function vicav:dicts_query($dicts as xs:string, $query as xs:string*, $xsltfn as xs:string, $print as xs:string?) {
     let $nsTei := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $queries := tokenize($query, ',')
     let $qs :=
@@ -698,9 +858,11 @@ let $qq :=
 let $sQuery := $nsTei || string-join($qq)
 let $results := xquery:eval($sQuery)
 
-let $style := doc("xslt/" || $xsltfn)
 let $ress := <results xmlns="http://www.tei-c.org/ns/1.0">{$results}</results>
-let $sReturn := xslt:transform-text($ress, $style)
+let $sReturn := vicav:transform($ress, $xsltfn, $print, map{
+  "query": $query,
+  "dicts": $dicts
+})
 return
   (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
   $sReturn)
@@ -708,13 +870,14 @@ return
 };
 
 declare
-%rest:path("vicav/dict_api")
+%rest:path("/vicav/dict_api")
 %rest:query-param("query", "{$query}")
 %rest:query-param("dict", "{$dict}")
 %rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("print", "{$print}")
 %rest:GET
 
-function vicav:dict_query($dict as xs:string, $query as xs:string*, $xsltfn as xs:string) {
+function vicav:dict_query($dict as xs:string, $query as xs:string*, $xsltfn as xs:string, $print as xs:string?) {
     (: let $user := substring-before($autho, ':')
   let $pw := substring-after($autho, ':') :)
     
@@ -809,7 +972,7 @@ let $ress1 :=
         <span xmlns="http://www.tei-c.org/ns/1.0" type="editor">{$ed}</span>
         return <div xmlns="http://www.tei-c.org/ns/1.0" type="entry">{$entry}{$editors}</div>
         
-let $exptrs := $ress1//tei:ptr[@type = 'example']
+let $exptrs := $ress1//tei:*[name() = ['ptr', 'ref'] and @type = 'example']
 let $entries :=
 for $r in $ress1
 return
@@ -820,9 +983,11 @@ let $res2 := for $e in $res
 return
     vicav:expandExamplePointers($e, collection($dict))
 
-let $style := doc("xslt/" || $xsltfn)
 let $ress := <results  xmlns="http://www.tei-c.org/ns/1.0">{$res2}</results>
-let $sReturn := xslt:transform-text($ress, $style)
+let $sReturn := vicav:transform($ress, $xsltfn, $print, map{
+  "query": $query,
+  "dict": $dict
+})
 
 return
     (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
@@ -835,7 +1000,7 @@ return
 };
 
 declare
-%rest:path("vicav/bibl_markers")
+%rest:path("/vicav/bibl_markers")
 %rest:query-param("query", "{$query}")
 %rest:query-param("scope", "{$scope}")
 %rest:GET
@@ -860,7 +1025,7 @@ function vicav:get_bibl_markers($query as xs:string, $scope as xs:string) {
     "declare namespace rdf = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'; " ||
     "declare namespace foaf= 'http://xmlns.com/foaf/0.1/'; " ||
     "declare namespace dc = 'http://purl.org/dc/elements/1.1/';"
-    let $q := 'let $arts := collection("vicav_biblio' || vicav:get_project_db() || '")//node()[(name()="bib:Article") or (name()="bib:Book") or (name()="bib:BookSection") or (name()="bib:Thesis")]' ||
+    let $q := 'let $arts := collection("/vicav_biblio' || vicav:get_project_db() || '")//node()[(name()="bib:Article") or (name()="bib:Book") or (name()="bib:BookSection") or (name()="bib:Thesis")]' ||
     string-join($qs) ||
     'for $art in $arts ' ||
     'let $author := $art/bib:authors[1]/rdf:Seq[1]/rdf:li[1]/foaf:Person[1]/foaf:surname[1] ' ||
@@ -958,13 +1123,52 @@ return
 
 };
 
-declare
-%rest:path("vicav/bibl_markers_tei")
-%rest:query-param("query", "{$query}")
-%rest:query-param("scope", "{$scope}")
-%rest:GET
+(:~
+ : gets a geo marker information.
+ :
+ : Retrieve geo data information from the bibliography for displaying coordinates on a map.
+ : 
+ : @param $query A BaseX Full-Text search query in in vicav-biblio tei:biblstruct with wildcards enabled.
+ :           See: https://docs.basex.org/wiki/Full-Text#Match_Options
+ :           using wildcards using diacritics sensitive
+ :           Uses prefixes to limit the full text search to certein elements.
+ :           * date: -> tei:date
+ :           * title: -> tei:title
+ :           * pubPlace: -> tei:pubPlace
+ :           * author: -> tei:author/tei:surname
+ :           * geo:, geo_reg:, reg:, diaGroup: -> tei:note[@type="tag"]/tei:name
+ :           * vt:, prj: -> tei:note[@type="tag"]
+ :           
+ :           Without a prefix any text in vicav-biblio tei:biblstruct is searched.
+ :           
+ :           More than one query is possible by separating with ' '/+.
+ : @param $scope Filters based on a set of tei:name/@types being present in a tei:note[tei:geo]           
+ :           * geo
+ :           * diaGroup
+ :           * reg
+ :           * geo_reg: any of the above
+ :
+ : @return a list of geo markers
+ :)
 
-function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
+declare
+%rest:path("/vicav/bibl_markers_tei")
+%rest:query-param("query", "{$query}")
+%rest:query-param("scope", "{$scope}", "geo", "reg", "diaGroup")
+%rest:GET
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
+function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string+) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_bibl_markers_tei#2, [$query, $scope], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:string+) {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+    let $current-query := $query
     let $queries := tokenize($query, '\+')
     let $qs :=
         for $query in $queries
@@ -976,7 +1180,7 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
            else if (contains($query, 'pubPlace:')) then
               '[.//tei:pubPlace[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'author:')) then
-              '[.//tei:author/tei:surname[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+              '[.//[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'geo:') or contains($query, 'geo_reg:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
               '[.//tei:note[@type="tag"]/tei:name[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'vt:')) then
@@ -991,7 +1195,7 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
             (: return '[tei:note/tei:note[tei:name contains text "' || $query || '" using wildcards using diacritics sensitive]]' :)
             (: return '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]' :)
   
-    let $q := 'let $arts := collection("vicav_biblio' || vicav:get_project_db() ||'")//tei:biblStruct' || string-join($qs) || 
+    let $q := 'let $arts := collection("/vicav_biblio' || vicav:get_project_db() ||'")//tei:biblStruct' || string-join($qs) || 
               'for $art in $arts ' ||
               'let $author := ' ||
               '   if ($art/tei:analytic) ' ||
@@ -1007,10 +1211,10 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
     let $tempresults := xquery:eval($query)
 
     let $out :=
-        for $subj at $icnt in $tempresults
+        for $subj in $tempresults
         return
             let $geos :=
-                switch ($scope)
+                $scope!(switch (.)
                     case 'geo_reg'
                         return $subj/tei:note/tei:note[(tei:name/@type = 'reg') or (tei:name/@type = 'geo') or (tei:name/@type = 'diaGroup')][tei:geo]
                     case 'geo'
@@ -1019,7 +1223,7 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
                         return $subj/tei:note/tei:note[tei:name/@type = 'diaGroup'][tei:geo]
                     case 'reg'
                         return $subj/tei:note/tei:note[tei:name/@type = 'reg'][tei:geo]
-            default return ()
+            default return ())
     
     for $geo in $geos
     return
@@ -1085,20 +1289,33 @@ function vicav:get_bibl_markers_tei($query as xs:string, $scope as xs:string) {
         :)
     (:else  ():)
         
-    return
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <rs type="{count($out2)}">{$out2}</rs>
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out2}</_>, 'xslt/bibl-markers-json.xslt', map{
+      "target-type": "BiblioEntries",
+      "current-query": $current-query
+    })
+    return serialize($renderedJson, map {"method": "json"})
+    else <rs type="{count($out2)}">{$out2}</rs>
         (: <res>{$out}</res> :)
         (: <res>{$query}</res> :)
         (: <_>{$tempresults}</_> :)
-        )
 };
 
 declare
-%rest:path("vicav/profile_markers")
+%rest:path("/vicav/profile_markers")
 %rest:GET
-
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
 function vicav:get_profile_markers() {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_profile_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_profile_markers() {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $entries := collection('vicav_profiles' || vicav:get_project_db())/descendant::tei:TEI
     let $out :=
     for $item in $entries
@@ -1120,13 +1337,16 @@ function vicav:get_profile_markers() {
           </r>
         )
     
-    return
-        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <rs>{$out}</rs>)
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt', map{
+      "target-type": "Profile"
+    })
+    return serialize($renderedJson, map {"method": "json"})
+    else <rs>{$out}</rs>
 };
 
 declare
-%rest:path("vicav/data_locations")
+%rest:path("/vicav/data_locations")
 %rest:GET
 %rest:query-param("type", "{$type}")
 function vicav:data_locations($type as xs:string*) {
@@ -1157,11 +1377,20 @@ function vicav:data_locations($type as xs:string*) {
 };
 
 declare
-%rest:path("vicav/sample_markers")
+%rest:path("/vicav/sample_markers")
 %rest:GET
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
+function vicav:get_sample_markers() {api-problem:or_result (prof:current-ns(),
+    vicav:_get_sample_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
 
-function vicav:get_sample_markers() {
-    let $entries := collection("vicav_samples" || vicav:get_project_db())/descendant::tei:TEI
+declare function vicav:_get_sample_markers() {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+    let $entries := collection("/vicav_samples" || vicav:get_project_db())/descendant::tei:TEI
     let $out :=
     for $item in $entries
         order by $item/@xml:id
@@ -1190,13 +1419,16 @@ function vicav:get_sample_markers() {
             </r>
             else ()
     
-    return
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <rs>{$out}</rs>)
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>,
+        'xslt/bibl-markers-json.xslt',
+        map{"target-type": "SampleText"})
+    return serialize($renderedJson, map {"method": "json"})
+    else <rs>{$out}</rs>
 };
 
 declare
-%rest:path("vicav/feature_labels")
+%rest:path("/vicav/feature_labels")
 %rest:GET
 
 function vicav:get_feature_labels() {
@@ -1211,7 +1443,7 @@ function vicav:get_feature_labels() {
 
 
 declare
-%rest:path("vicav/data_persons")
+%rest:path("/vicav/data_persons")
 %rest:GET
 %rest:query-param("type", "{$type}")
 
@@ -1233,7 +1465,7 @@ function vicav:get_sample_persons($type as xs:string*) {
 };
 
 declare
-%rest:path("vicav/data_words")
+%rest:path("/vicav/data_words")
 %rest:query-param("type", "{$type}")
 %rest:GET
 
@@ -1263,10 +1495,20 @@ function vicav:get_sample_words($type as xs:string*) {
 
 
 declare
-%rest:path("vicav/feature_markers")
+%rest:path("/vicav/feature_markers")
 %rest:GET
-
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
 function vicav:get_feature_markers() {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_feature_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_feature_markers() {  
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $entries := collection('vicav_lingfeatures' || vicav:get_project_db())/descendant::tei:TEI
     let $out :=
         for $item in $entries
@@ -1297,18 +1539,27 @@ function vicav:get_feature_markers() {
                 </r>
                 else ''
     
-    return
-        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <rs>{$out}</rs>)
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>,
+        'xslt/bibl-markers-json.xslt',
+        map{"target-type": "Feature"})
+    return serialize($renderedJson, map {"method": "json"})
+    else <rs>{$out}</rs>
 };
 
 
 
 declare
-%rest:path("vicav/data_markers")
+%rest:path("/vicav/data_markers")
 %rest:GET
-
 function vicav:get_all_data_markers() {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_all_data_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_all_data_markers() {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $entries := for $c in ('vicav_profiles', 'vicav_samples', 'vicav_lingfeatures')
         return collection($c)/descendant::tei:TEI
 
@@ -1334,9 +1585,10 @@ function vicav:get_all_data_markers() {
                 </r>
                 else ''
 
-    return
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <rs>{$out}</rs>)
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt')
+    return serialize($renderedJson, map {"method": "json"})
+    else <rs>{$out}</rs>
 };
 
 
@@ -1397,10 +1649,17 @@ declare function vicav:data_list_region($type as xs:string, $region as xs:string
 };
 
 declare
-%rest:path("vicav/data_list")
+%rest:path("/vicav/data_list")
 %rest:query-param("type", "{$type}")
 %rest:GET
 function vicav:get_data_list($type as xs:string*) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_data_list#1, [$type], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_data_list($type as xs:string*) {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $type := if (empty($type) or $type = '') then 'all' else $type
     let $items := if ($type = 'all') then
         for $c in ('vicav_profiles', 'vicav_samples', 'vicav_lingfeatures') return collection($c)/descendant::tei:TEI
@@ -1409,7 +1668,7 @@ function vicav:get_data_list($type as xs:string*) {
 
     let $countries := distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:country)
 
-    let $out := if (count($countries) > 1) then
+    let $out := <div>Total: {count($items)}<br/>{if (count($countries) > 1) then
         for $country in $countries
         order by $country
         let $regions := distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:country[./text() = $country]]/tei:region)
@@ -1422,19 +1681,47 @@ function vicav:get_data_list($type as xs:string*) {
         let $regions := distinct-values($items/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:region)
         for $region in $regions
         order by $region
-             return vicav:data_list_region($type, $region, $items[./tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:region[./text() = $region]]])
+             return vicav:data_list_region($type, $region, $items[./tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:region[./text() = $region]]])}</div>
 
-    return
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <div>Total: {count($items)}<br/>{$out}</div>)
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/identity.xslt')
+    return serialize($renderedJson, map {"method": "xml"})
+    else $out
 };
 
+declare
+%rest:path("/vicav/tei_doc_list")
+%rest:query-param("type", "{$type}")
+%rest:produces('application/json')
+%rest:GET
+function vicav:get_tei_doc_list($type as xs:string*) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_tei_doc_list#1, [$type], map:merge((cors:header(()), map{'Content-Type': 'application/json;charset=UTF-8'}))
+  )
+};
+
+declare function vicav:_get_tei_doc_list($type as xs:string*) {
+  let $noType := if (not(exists($type))) then
+        error(xs:QName('response-codes:_422'), 
+         $api-problem:codes_to_message(422),
+         'You need to specify a type') else (),
+      $corpus := collection($type)//tei:teiCorpus,
+      $corpus := if (not(exists($corpus)) and exists(collection($type)//tei:TEI))
+        then <teiCorpus xmlns="http://www.tei-c.org/ns/1.0">{collection($type)//tei:TEI!. update {delete node ./tei:text}}</teiCorpus>
+        else $corpus,
+      $corpus := if (exists($corpus/@xml:id)) then $corpus else $corpus update { insert node attribute {"id"} {$type} as first into . }, 
+      $notFound := if (not(exists($corpus))) then
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'There are no TEI documents of type '||$type) else ()
+  return serialize(xslt:transform($corpus, 'xslt/teiCorpusTeiHeader-json.xslt'), map {'method': 'json'})
+};
 
 (:****************************************************************************:)
 (:** MANAGEMENT FUNCS ********************************************************:)
 (:****************************************************************************:)
 declare
-%rest:path("vicav/show_docs")
+%rest:path("/vicav/show_docs")
 %rest:query-param("db", "{$db}")
 %rest:GET
 
@@ -1450,7 +1737,7 @@ function vicav:vicav_show_docs($db as xs:string*) {
 };
 
 declare
-%rest:path("vicav/profiles")
+%rest:path("/vicav/profiles")
 %rest:GET
 
 function vicav:get_profiles_overview() {
@@ -1478,4 +1765,283 @@ function vicav:get_profiles_overview() {
         $tei)
 };
   
- 
+(:~
+ : Performs a corpus search in NoSKE.
+ : 
+ : @param $query Query to perform against NoSKE.
+ : @param $print Whether return the printable page with full HTML headers.
+ :
+ : @return A rendered HTML snippet with the search results.
+ :)
+declare
+%rest:path("/vicav/corpus")
+%rest:GET
+%rest:query-param("query", "{$query}")
+%rest:query-param("print", "{$print}")
+%rest:query-param("xslt", "{$xslt}", "corpus_search_result.xslt")
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')
+%rest:produces('application/problem+xml')
+function vicav:search_corpus($query as xs:string, $print as xs:string?, $xslt as xs:string?) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_search_corpus#3, [$query, $print, $xslt], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_search_corpus($query as xs:string, $print as xs:string?, $xslt as xs:string?) {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+    
+    let $query-words := tokenize($query, '\s')
+    let $query-parts := string-join(($query-words!('[word="' || encode-for-uri(.)
+        || '"]')))
+
+    let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
+    let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
+
+    let $noske_host := $config//noskeHost,
+        $request := $noske_host || '/bonito/run.cgi/first?corpname=' || vicav:get_project_name()
+        || '&amp;queryselector=cqlrow&amp;cql='||$query-parts||'&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=-1&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
+      , $_ := admin:write-log($request, 'INFO')
+        
+
+    let $result := if ($noske_host) then
+        http:send-request(<http:request method='get'/>,
+        $request)
+        else false()
+      (: , $_ := admin:write-log(serialize($result[2], map{'method': 'json'}), 'INFO') :)
+
+(:let consecutiveIDs
+        json.Lines.map((line) => {
+          const key = line.Refs.map((ref) => {return ref.split('=')[1]}).join();
+          consecutiveIDs = consecutiveIDs || []
+          docsUandIDs[key] = docsUandIDs[key] || [];
+          docsUHits[key] = docsUHits[key] || [];
+          if (!line.Kwic[0]) {line.Kwic = line.Left}
+          if (!line.Kwic[0]) {line.Kwic = line.Right}
+          const ids = line.Kwic[0].str.split(" ").filter(str => str != "")
+          const found = docsUandIDs[key].findIndex((id) => id === ids[0])
+          if (line.Kwic[0]) {
+            if (ids[0] === '' || found === -1) {
+              consecutiveIDs = consecutiveIDs.concat(ids)
+              docsUHits[key].push(Array.from(consecutiveIDs))
+              docsUandIDs[key] = docsUandIDs[key].concat(consecutiveIDs)
+              console.log('uhits', JSON.stringify(docsUHits), 'uandids', JSON.stringify(docsUandIDs))
+              consecutiveIDs = []
+            } else {
+              const newIds = ids.filter(id => docsUandIDs[key].indexOf(id) === -1)
+              if (newIds.length > 1) {
+                consecutiveIDs = consecutiveIDs.concat(newIds)
+              }
+            }
+          }:)
+
+
+    let $consecutiveIds := []
+    (:let $docUandIds := map:merge():)
+    let $hits := <hits>{if (not($result)) then '' else for $line in $result/json/Lines/_
+        let $uId := tokenize($line/Refs/_[1], '=')[2]
+        let $docId := tokenize($line/Refs/_[2], '=')[2]
+        (:$docUandIds := if not((map:contains($docUandIds, $key))) then map:put($docUandIds, $key, []) else $docUandIds:)
+        let $tokenId := if (count($line/Kwic/_) > 0) then
+                        tokenize($line/Kwic/_[1]/str/text(), '\s')
+                     else if (count($line/Left/_) > 0) then
+                        $line/Left/_[1]/text()
+                     else if (count($line/Right/_) > 0) then
+                        $line/Right/_[1]/text() else ""
+        let $u := collection('vicav_corpus')
+          /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]         
+        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u[@xml:id = $uId]
+        return <hit u="{$uId}" doc="{$docId}">{$u}{$tokenId!<token>{normalize-space(.)}</token>}</hit>}</hits>
+      (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
+      (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
+
+    return if (matches($accept-header, '[+/]json'))
+        then
+            let $transformedOutput := xslt:transform($hits, 'xslt/corpus_search_result_json.xslt', map{ 'query': $query})
+            return serialize($transformedOutput, map {"method": "json"})
+        else
+            let $out := vicav:transform($hits, $xslt, $print, map{ 'query': $query })
+            return $out
+
+
+
+};
+
+declare function vicav:_corpus_text(
+        $docId as xs:string,
+        $page as xs:integer?,
+        $size as xs:integer?,
+        $hits as xs:string?,
+        $print as xs:string?
+    ) {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+    let $p := if (empty($page)) then 1 else $page
+    let $s := if (empty($size)) then 10 else $size
+
+    let $hits_str := if (not(empty($hits))) then $hits else ""
+
+    let $teiDoc := collection('vicav_corpus')
+        //tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId],
+        $notFound := if (not(exists($teiDoc))) then
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'Text with id '||$docId||' does not exist') else (),
+        $utterances := subsequence($teiDoc
+        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s),
+        $notFound := if (not(exists($utterances))) then
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'Text with id '||$docId||' does not have page '||$p) else (),
+        $doc := <doc id="${$docId}">{$utterances}</doc>
+      (: , $_ := file:write(file:resolve-path('doc.xml', file:base-dir()), $doc, map { "method": "xml"}) :)
+
+    return if (matches($accept-header, '[+/]json'))
+        then
+            let $out := xslt:transform($doc, 'xslt/corpus_utterances_json.xslt', map{
+                "hits_str": $hits_str
+            })
+            return serialize($out, map {"method": "json"})
+        else
+            let $out := vicav:transform($doc, 'corpus_utterances.xslt', $print, map{ "hits_str": $hits_str })
+            return $out
+};
+
+(:~
+ : Retrieve pageble set of utterances from a corpus text.
+ :
+ : @param $docId Text Identidfier.
+ : @param $page Page number (defaults to 1)
+ : @param $size Page size (defaults to 10)
+ : @param $print Whether to return a printable page with full HTML headers.
+ :
+ : @return A rendered HTML snippet of the utterances.
+ :)
+declare
+%rest:path("/vicav/corpus_text")
+%rest:GET
+%rest:query-param("id", "{$docId}")
+%rest:query-param("page", "{$page}")
+%rest:query-param("size", "{$size}")
+%rest:query-param("hits", "{$hits}")
+%rest:query-param("print", "{$print}")
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')
+%rest:produces('application/problem+xml')
+function vicav:corpus_text($docId as xs:string, $page as xs:integer?, $size as xs:integer?, $hits as xs:string?, $print as xs:string?) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_corpus_text#5, [$docId, $page, $size, $hits, $print], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare variable $vicav:dict-alias-to-dict := map {
+  "ar_de__v001": "dc_ar_en_publ",
+  "aeb_eng_001__v001": "dc_tunico",
+  "apc_eng_002": "dc_apc_eng_publ"
+};
+
+declare
+%rest:path("/vicav/dict_csv")
+%rest:GET
+%rest:produces("text/csv")
+%rest:query-param("unit","{$unit}")
+%rest:query-param("x-format","{$format}")
+%rest:query-param("x-context", "{$dict-alias}")
+function vicav:get_dict_csv($unit as xs:string, $format as xs:string, $dict-alias as xs:string) {
+  let $dict := $vicav:dict-alias-to-dict($dict-alias),
+      $notFound := if (not(exists($dict))) then
+      error(xs:QName('response-codes:_404'), 
+       $api-problem:codes_to_message(404),
+       'There is no dict for x-context '||$dict-alias) else () 
+  return api-problem:or_result (prof:current-ns(),
+    vicav:_get_dict_csv#3, [$unit, $format, $dict], map:merge((cors:header(()), map{
+      'Content-Type': 'text/csv;charset=UTF-8',
+      'Content-Disposition': 'attachment; filename="vocabulary_L'||$unit||'.csv"'
+    }))
+  )
+};
+
+declare function vicav:_get_dict_csv($unit as xs:string, $format as xs:string, $dict as xs:string) {
+  let $data := <sru:records xmlns:sru="http://www.loc.gov/zing/srw/">{collection($dict)//(tei:cit[@type="example"]|tei:entry)[tei:fs/tei:f/tei:symbol/@value="released"][.//tei:bibl[@type=("damascCourse","tunisCourse","course") and .= $unit]]}</sru:records>,
+      $notFound := if (not(exists($data))) then
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'There are no TEI entries for dict/x-context '||$dict) else (),
+      $wrongFormat := if ($format = ("csv-anki", "csv-fcdeluxe")) then () else
+        error(xs:QName('response-codes:_422'), 
+         $api-problem:codes_to_message(422),
+         'Valid formats are csv-anki and csv-fcdeluxe')
+  return xslt:transform-text($data, 'xslt/csv-table-export.xsl', map {"format": $format, "unit": $unit})
+};
+
+declare
+%rest:path("/vicav/dict_markers")
+%rest:GET
+%rest:produces("application/json")
+%rest:produces('application/problem+json')
+function vicav:get_dict_markers() {api-problem:or_result (prof:current-ns(),
+    vicav:_get_dict_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_dict_markers() {
+  serialize([
+    map {
+    "type": "Feature",
+    "geometry": map {
+      "type": "Point",
+      "coordinates": [
+        31.233333333333334,
+        30.05
+      ]
+    },
+    "properties": map{
+      "type": "reg",
+      "name": "Cairo",
+      "hitCount": 1
+    }},
+    map {
+    "type": "Feature",
+    "geometry": map {
+      "type": "Point",
+      "coordinates": [
+        36.28333333333333,
+        33.5
+      ]
+    },
+    "properties": map{
+      "type": "reg",
+      "name": "Damascus",
+      "hitCount": 1
+    }},
+    map {
+    "type": "Feature",
+    "geometry": map {
+      "type": "Point",
+      "coordinates": [
+        10.15,
+        36.81666666666667
+      ]
+    },
+    "properties": map{
+      "type": "reg",
+      "name": "Tunis",
+      "hitCount": 1
+    }},
+    map {
+    "type": "Feature",
+    "geometry": map {
+      "type": "Point",
+      "coordinates":[
+        44.4,
+        33.333333333333336
+      ] 
+    },
+    "properties": map{
+      "type": "reg",
+      "name": "Baghdad",
+      "hitCount": 1
+    }}
+  ], map{"method": "json"})
+};

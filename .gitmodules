@@ -1,0 +1,6 @@
+[submodule "openapi4restxq"]
+	path = 3rd-party/openapi4restxq
+	url = https://github.com/acdh-oeaw/openapi4restxq.git
+[submodule "vleserver_basex"]
+	path = 3rd-party/vleserver_basex
+	url = https://github.com/acdh-oeaw/vleserver_basex.git

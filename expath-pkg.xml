@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://expath.org/ns/pkg"
+  name="urn:vicav"
+  abbrev="vicav"
+  version="0.3.0"
+  spec="1.0"
+  xml:id="vicav">
+  <title>VICAV</title>
+  <dependency processor="http://basex.org" semver-min="9.2"/>
+  <xquery>
+    <namespace>urn:vicav</namespace>
+    <file>vicav.xqm</file>
+  </xquery>
+</package>

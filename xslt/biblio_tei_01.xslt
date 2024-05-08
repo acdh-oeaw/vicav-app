@@ -1,15 +1,20 @@
 <xsl:stylesheet 
-   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"    
-   xmlns:tei="http://www.tei-c.org/ns/1.0" 
+   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   xmlns:tei="http://www.tei-c.org/ns/1.0"
+   xmlns="http://www.w3.org/1999/xhtml"
+   exclude-result-prefixes="#all"
    version="2.0">
    
-    <xsl:output method="xml"/>
-    <xsl:template match="/">
-        
+    <xsl:output method="xml"/>    
+    <xsl:param name="generateQuery" select="'true'" as="xs:string"/>
+    <xsl:template match="/">        
         <div>
+           <xsl:if test="$generateQuery = 'true'">
            <div class="dvStats">
               Query:  <span class="spQueryText">{query}</span>
            </div>
+           </xsl:if>
            <div class="dvStats">
               <xsl:variable name="num" select="//@num"/>
               <xsl:choose>

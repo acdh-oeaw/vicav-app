@@ -1,6 +1,9 @@
+**/.DS_Store
 OLDSITE/
 
 # ide
 .idea
 node_modules/
 backup
+images/**/*.jpg
+images/**/*.png

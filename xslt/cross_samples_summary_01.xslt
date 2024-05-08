@@ -102,6 +102,11 @@
                                     <a href="#">
                                     <xsl:attribute name="data-type">sample</xsl:attribute>
                                     <xsl:attribute name="data-query" select="concat($query,'&amp;location=region:', $region, $feature-query)"/>
+                                    <xsl:attribute name="data-target-type">ExploreSamples</xsl:attribute>
+                                    <xsl:attribute name="data-data-type">SampleText</xsl:attribute>
+                                    <xsl:attribute name="data-region" select="$region"/>
+                                    <xsl:attribute name="data-features" select="$root/@features"/>
+                                    <xsl:attribute name="data-word" select="$root/@word"/>
                                     <xsl:value-of select="$count"/>
                                     <xsl:value-of select="' sentences'"/>
                                 </a>

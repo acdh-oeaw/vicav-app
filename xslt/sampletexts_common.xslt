@@ -1,11 +1,16 @@
 <xsl:stylesheet 
-xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+xmlns:xs="http://www.w3.org/2001/XMLSchema"
 xmlns="http://www.w3.org/1999/xhtml" 
 xmlns:tei="http://www.tei-c.org/ns/1.0"
 xmlns:acdh="http://acdh.oeaw.ac.at"
-version="2.0">    
-<xsl:output method="xml"/>
-
+exclude-result-prefixes="#all"
+version="3.1">    
+<xsl:output method="xml" encoding="UTF-8"/>
+<xsl:param name="tei-link-marker" select="'false'" as="xs:string"/>
+<xsl:include href="concat-path-inc.xslt"/>    
+<xsl:variable name="images-base-path" select="tei:concat-path('images')"/>
+<xsl:variable name="docs-base-path" select="tei:concat-path('')"/>
 <xsl:param name="highlight" select="()"></xsl:param>
     
 <xsl:template match="//tei:div[@type='sampleText']/tei:p/tei:s | //tei:div[@type='corpusText']/tei:u">
@@ -16,7 +21,11 @@ version="2.0">
                 <xsl:variable name="nn" select="@n"/>
                 <xsl:value-of select="(//tei:s[@type='translationSentence'][@n=$nn] | //tei:div[@type='dvTranslations']/tei:u[@n=$nn])[1]"/>
             </xsl:attribute>
-            <i class="fa fa-commenting-o" aria-hidden="true">
+            <xsl:attribute name="data-tooltip">                    
+                <xsl:variable name="nn" select="@n"/>
+                <xsl:value-of select="(//tei:s[@type='translationSentence'][@n=$nn] | //tei:div[@type='dvTranslations']/tei:u[@n=$nn])[1]"/>
+            </xsl:attribute>
+            <i class="fa fa-comment" aria-hidden="true">
                 <span/>
             </i>
         </span>
@@ -99,6 +108,9 @@ version="2.0">
         <xsl:if test="$w/tei:fs">
             <xsl:if test="not($title = '')">
                 <xsl:attribute name="title">
+                    <xsl:value-of select="$title"/>
+                </xsl:attribute>
+                <xsl:attribute name="data-tooltip">
                     <xsl:value-of select="$title"/>
                 </xsl:attribute>
             </xsl:if>
@@ -216,6 +228,7 @@ version="2.0">
         not(matches(following-sibling::tei:w[1]/tei:fs/tei:f[@name='wordform'], '^\W+$')) "/>
         <xsl:sequence select="acdh:word-block(., 'sample', $add-space, '')"></xsl:sequence>        
 </xsl:template>
+
     
 <xsl:function name="acdh:word-block">
     <xsl:param name="w"></xsl:param>
@@ -228,11 +241,26 @@ version="2.0">
         not(matches($w/following-sibling::tei:w[1]/tei:fs/tei:f[@name='wordform'], '^\W+$')) and
         (not($w/ancestor::tei:choice) or $position != count($w/parent::*/*))"/>
     <a class="word-search" href="#">
+        <!-- LEgacy VICAV format data-type and data-wordform -->
         <xsl:attribute name="data-wordform">
             <xsl:value-of select="$wordform" />
         </xsl:attribute>
         <xsl:attribute name="data-type">
             <xsl:value-of select="$type" />
+        </xsl:attribute>
+        <!-- Vicav VUE format  -->
+        <xsl:attribute name="data-word">
+            <xsl:value-of select="$wordform" />
+        </xsl:attribute>
+        <xsl:attribute name="data-target-type">ExploreSamples</xsl:attribute>
+        <xsl:attribute name="data-data-type">
+            <xsl:variable name="dataTypes" as="map(xs:string, xs:string)">
+                <xsl:map>
+                    <xsl:map-entry key="'sample'" select="'SampleText'"/>
+                    <xsl:map-entry key="'feature'" select="'Feature'"/>
+                </xsl:map>
+            </xsl:variable>
+            <xsl:value-of select="$dataTypes($type)" />
         </xsl:attribute>
         <xsl:sequence select="acdh:word-span($w, $highLightIdentifier)"></xsl:sequence>
     </a>       
