@@ -128,7 +128,7 @@ function vicav:_project_config() {
          update {insert node <cached type="boolean">true</cached> as first into ./projectConfig,
        .//text()[contains(., '{{host_name}}')]!(replace value of node . with replace(., '{{host_name}}/{{path}}', $publicURI, 'q'))}
         else vicav:project_config_json_as_xml($publicURI) update {insert node <cached type="boolean">false</cached> as first into ./json/projectConfig}
-      return serialize($jsonAsXML, map {"method": "json"})
+      return serialize($jsonAsXML, map {"method": "json", "indent": "no"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
       return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
 };
