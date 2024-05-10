@@ -123,9 +123,10 @@ function vicav:_project_config() {
     return if (matches($accept-header, '[+/]json'))
     then
       let $jsonAsXML := 
-        if (exists(try{collection('prerendered_json')} catch err:FODC0002 {()}) and
-            exists(collection('prerendered_json')//json[projectConfig/baseURIPublic = $publicURI]))
-        then collection('prerendered_json')//json[projectConfig/baseURIPublic = $publicURI] update {insert node <cached type="boolean">true</cached> as first into ./projectConfig}
+        if (exists(try{collection('prerendered_json')} catch err:FODC0002 {()}))
+        then collection('prerendered_json')//json
+         update {insert node <cached type="boolean">true</cached> as first into ./projectConfig,
+       .//text()[contains(., '{{host_name}}')]!(replace value of node . with replace(., '{{host_name}}/{{path}}', $publicURI, 'q'))}
         else vicav:project_config_json_as_xml($publicURI) update {insert node <cached type="boolean">false</cached> as first into ./json/projectConfig}
       return serialize($jsonAsXML, map {"method": "json"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
@@ -186,8 +187,8 @@ declare
 %rest:produces('application/problem+xml')
 function vicav:prerender_project_config() {
   let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' },
-      $publicURI := try { replace(util:get-base-uri-public(), '/project', '') } catch basex:http { '' },
-      $prerenderedFileName := replace($publicURI, 'https?://', '') => translate(':', '_')||'/prerendered_json.xml',
+      $publicURI := '{{host_name}}/{{path}}',
+      $prerenderedFileName := $publicURI||'/prerendered_json.xml',
       $jsonAsXml := api-problem:or_result (prof:current-ns(),
     vicav:project_config_json_as_xml#1, [$publicURI], map:merge((cors:header(()), vicav:return_content_header()))
   ),
