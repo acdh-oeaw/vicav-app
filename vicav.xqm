@@ -127,7 +127,7 @@ function vicav:_project_config() {
             exists(collection('prerendered_json')//json[projectConfig/baseURIPublic = $publicURI]))
         then collection('prerendered_json')//json[projectConfig/baseURIPublic = $publicURI] update {insert node <cached type="boolean">true</cached> as first into ./projectConfig}
         else vicav:project_config_json_as_xml($publicURI) update {insert node <cached type="boolean">false</cached> as first into ./json/projectConfig}
-      return serialize($jsonAsXML, map {"method": "json"})
+      return serialize($jsonAsXML, map {"method": "json", "indent": "no"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
       return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
 };
@@ -173,7 +173,7 @@ declare function vicav:get_featurelist() {
                 }
           ))
         
-   return json:parse(serialize($result, map {"method": "json"}), map {"format": "direct"})/json/*
+   return json:parse(serialize($result, map {"method": "json", "indent": "no"}), map {"format": "direct"})/json/*
 };
 
 declare
@@ -1294,7 +1294,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
       "target-type": "BiblioEntries",
       "current-query": $current-query
     })
-    return serialize($renderedJson, map {"method": "json"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else <rs type="{count($out2)}">{$out2}</rs>
         (: <res>{$out}</res> :)
         (: <res>{$query}</res> :)
@@ -1341,7 +1341,7 @@ declare function vicav:_get_profile_markers() {
     then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt', map{
       "target-type": "Profile"
     })
-    return serialize($renderedJson, map {"method": "json"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else <rs>{$out}</rs>
 };
 
@@ -1423,7 +1423,7 @@ declare function vicav:_get_sample_markers() {
     then let $renderedJson := xslt:transform(<_>{$out}</_>,
         'xslt/bibl-markers-json.xslt',
         map{"target-type": "SampleText"})
-    return serialize($renderedJson, map {"method": "json"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else <rs>{$out}</rs>
 };
 
@@ -1452,7 +1452,7 @@ function vicav:_get_feature_labels() {
     return if (matches($accept-header, '[+/]json'))
     then let $renderedJson := xslt:transform(<_>{$out}</_>,
         'xslt/feature_labels-json.xslt')
-    return serialize($renderedJson, map {"method": "json"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else
         (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
         <features>{$out}</features>)
@@ -1517,7 +1517,7 @@ declare function vicav:_get_data_words($type as xs:string*) {
     if (matches($accept-header, '[+/]json'))
     then let $renderedJson := xslt:transform(<_>{$out}</_>,
         'xslt/data_words-json.xslt')
-        return serialize($renderedJson, map {"method": "json"})
+        return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else 
         (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
         <words>{$out}</words>)
@@ -1573,7 +1573,7 @@ declare function vicav:_get_feature_markers() {
     then let $renderedJson := xslt:transform(<_>{$out}</_>,
         'xslt/bibl-markers-json.xslt',
         map{"target-type": "Feature"})
-    return serialize($renderedJson, map {"method": "json"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else <rs>{$out}</rs>
 };
 
@@ -1617,7 +1617,7 @@ declare function vicav:_get_all_data_markers() {
 
     return if (matches($accept-header, '[+/]json'))
     then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt')
-    return serialize($renderedJson, map {"method": "json"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else <rs>{$out}</rs>
 };
 
@@ -1889,7 +1889,7 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
     return if (matches($accept-header, '[+/]json'))
         then
             let $transformedOutput := xslt:transform($hits, 'xslt/corpus_search_result_json.xslt', map{ 'query': $query})
-            return serialize($transformedOutput, map {"method": "json"})
+            return serialize($transformedOutput, map {"method": "json", "indent": "no"})
         else
             let $out := vicav:transform($hits, $xslt, $print, map{ 'query': $query })
             return $out
@@ -1931,7 +1931,7 @@ declare function vicav:_corpus_text(
             let $out := xslt:transform($doc, 'xslt/corpus_utterances_json.xslt', map{
                 "hits_str": $hits_str
             })
-            return serialize($out, map {"method": "json"})
+            return serialize($out, map {"method": "json", "indent": "no"})
         else
             let $out := vicav:transform($doc, 'corpus_utterances.xslt', $print, map{ "hits_str": $hits_str })
             return $out
@@ -2073,5 +2073,5 @@ declare function vicav:_get_dict_markers() {
       "name": "Baghdad",
       "hitCount": 1
     }}
-  ], map{"method": "json"})
+  ], map{"method": "json", "indent": "no"})
 };
