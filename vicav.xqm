@@ -1455,8 +1455,7 @@ function vicav:_get_feature_labels() {
         'xslt/feature_labels-json.xslt')
     return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <features>{$out}</features>)
+        <features>{$out}</features>
 };
 
 
@@ -1520,8 +1519,7 @@ declare function vicav:_get_data_words($type as xs:string*) {
         'xslt/data_words-json.xslt')
         return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else 
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <words>{$out}</words>)
+        <words>{$out}</words>
 };
 
 
