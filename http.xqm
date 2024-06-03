@@ -17,7 +17,7 @@ declare function api:get-base-uri-public() as xs:string {
                  else '',
         (: FIXME: this is to naive. Works for ProxyPass / to /exist/apps/cr-xq-mets/project
            but probably not for /x/y/z/ to /exist/apps/cr-xq-mets/project. Especially check the get module. :)
-        $xForwardBasedPath := (request:header('X-Forwarded-Request-Uri'), request:path())[1]
+        $xForwardBasedPath := (replace(request:header('X-Forwarded-Request-Uri'), '^([^?]*)(\?.*)$', '$1'), request:path())[1]
     return $urlScheme||'://'||($forwarded-hostname, request:hostname())[1]||$port||$xForwardBasedPath
 };
 
