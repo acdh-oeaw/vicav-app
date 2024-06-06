@@ -55,7 +55,15 @@
             <div>
                 <table class="tbHeader">
                     <tr><td>
-                        <h2 xml:space="preserve">Compare features</h2></td><td class="tdPrintLink"><a href="#" data-print="true" class="aTEIButton">Print</a></td>
+                        <h2 xml:space="preserve">Compare features</h2></td>
+                        <td class="tdPrintLink">
+                            <a data-print="true" target="_blank" class="aTEIButton">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="$print-url"/>
+                                </xsl:attribute>
+                                Print
+                            </a>
+                        </td>
                     </tr>
                     <!-- <tr><td><i>
                             <xsl:value-of select="string-join(distinct-values(.//item/@city), ', ')"/></i>

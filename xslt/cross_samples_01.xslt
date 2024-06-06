@@ -50,8 +50,14 @@ version="3.1">
                 <table class="tbHeader">
                     <tr><td>
                         <h2 xml:space="preserve">Compare samples</h2></td>
-                        <td class="tdPrintLink"><a href="#" data-print="true" class="aTEIButton">Print</a></td>
-                    </tr>
+                            <td class="tdPrintLink">
+                            <a data-print="true" target="_blank" class="aTEIButton">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="$print-url"/>
+                                </xsl:attribute>
+                                Print
+                            </a>
+                        </td>                    </tr>
                 </table>
                 <div class="explore-samples-summary">
                     <h4>Summary</h4>
@@ -71,16 +77,18 @@ version="3.1">
                 </div>
                 
                 <xsl:if test="$filter-features">
-                    <div class="sentences-nav">
+                    <div class="sentences-nav flex justify-between">
                         <xsl:if test="not($prev_sentence = '')">
-                            <a href="#" data-feature="{$prev_sentence}" class="prev-link"><i class="fa fa-chevron-left"><span/></i> Previous</a>
+                            <a href="#" data-target-type="ExploreSamples" data-target-window="self" data-features="{$prev_sentence}" class="prev-link"><i class="fa fa-chevron-left"><span/></i> Previous</a>
                         </xsl:if>
+                        <form>
+                            <input name="features" data-target-type="ExploreSamples" data-target-window="self">
+                                <xsl:attribute name="value"><xsl:value-of select="string-join($selected-sentences, ',')"/></xsl:attribute>
+                            </input> / <xsl:value-of select="max($all-sentences)"/>
+                        </form>
                         <xsl:if test="not($next_sentence = '')">
-                            <a href="#" data-feature="{$next_sentence}" class="next-link">Next <i class="fa fa-chevron-right"><span/></i></a>
+                            <a href="#" data-target-type="ExploreSamples" data-target-window="self" data-features="{$next_sentence}" class="next-link">Next <i class="fa fa-chevron-right"><span/></i></a>
                         </xsl:if>
-                        <input name="sentences">
-                            <xsl:attribute name="value"><xsl:value-of select="string-join($selected-sentences, ',')"/></xsl:attribute>
-                        </input> / <xsl:value-of select="max($all-sentences)"/>
                     </div>
                 </xsl:if>
 
