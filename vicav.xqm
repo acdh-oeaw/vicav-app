@@ -102,8 +102,27 @@ declare
 %rest:produces('application/problem+json')   
 %rest:produces('application/problem+xml')
 function vicav:project_config() {
-  api-problem:or_result (prof:current-ns(),
-    vicav:_project_config#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  let $hash := if (exists(try{collection('prerendered_json')} catch err:FODC0002 {()}))
+               then xs:string(collection('prerendered_json')//json/ETag/text())
+               else ''
+    , $hashBrowser := request:header('If-None-Match', '')
+  return if ($hash = $hashBrowser) then api-problem:return_problem(prof:current-ns(),
+    <problem xmlns="urn:ietf:rfc:7807">
+      <type>https://tools.ietf.org/html/rfc7231#section-6</type>
+      <title>{$api-problem:codes_to_message(304)}</title>
+      <status>304</status>
+    </problem>,
+  map:merge((cors:header(()), vicav:return_content_header(), map{
+      'X-UA-Compatible': 'IE=11'
+    , 'Cache-Control': 'max-age=3600,public'
+    , 'ETag': $hash
+    })))
+  else api-problem:or_result (prof:current-ns(),
+    vicav:_project_config#0, [], map:merge((cors:header(()), vicav:return_content_header(), map{
+      'X-UA-Compatible': 'IE=11'
+    , 'Cache-Control': 'max-age=3600,public'
+    , 'ETag': $hash
+    }))
   )
 };
 
@@ -139,8 +158,12 @@ declare function vicav:project_config_json_as_xml($publicURI as xs:string) {
         $jsonAsXML := xslt:transform($config, 'xslt/menu-json.xslt', map{'baseURIPublic': $publicURI}),
         $jsonAsXML := $jsonAsXML update {
           .//*[starts-with(local-name(), "insert_")]!(replace node . with <_ type="object">{vicav:get_insert_data(local-name())}</_>)
-        }      
-    return $jsonAsXML
+        },
+        $hash := xs:string(xs:hexBinary(hash:md5($jsonAsXML))),
+        $res := $jsonAsXML/json update {
+          insert node <ETag>{$hash}</ETag> into .
+        }
+    return $res
 };
 
 declare function vicav:get_insert_data($type as xs:string) {
@@ -193,7 +216,7 @@ function vicav:prerender_project_config() {
     vicav:project_config_json_as_xml#1, [$publicURI], map:merge((cors:header(()), vicav:return_content_header()))
   ),
       $res := if (matches($accept-header, '[+/]json')) 
-        then ($jsonAsXml[1],serialize($jsonAsXml[2], map {'method': 'json'})) 
+        then ($jsonAsXml[1],$jsonAsXml[2]) 
         else ($jsonAsXml[1],serialize($jsonAsXml[2], map {'method': 'xml'}))
   return (
     if (db:exists('prerendered_json')) then db:replace('prerendered_json', $prerenderedFileName, $jsonAsXml[2])
