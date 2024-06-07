@@ -10,9 +10,17 @@
     <xsl:template match="tei:TEI">        
         <div>
             <table class="tbHeader">
-                <tr><td><h2><xsl:value-of select="./tei:text/tei:body/tei:head"/></h2></td><td class="tdTeiLink">{teiLink}</td><td class="tdPrintLink">
-                <a href="#" data-print="true" class="aTEIButton"><xsl:attribute name="data-sampletext"><xsl:value-of 
-                    select="./@xml:id"/></xsl:attribute>Print</a></td></tr>
+                <tr><td><h2><xsl:value-of select="./tei:text/tei:body/tei:head"/></h2></td>
+                    <xsl:if test="$tei-link-marker='true'"><td class="tdTeiLink">{teiLink}</td></xsl:if>
+                    <td class="tdPrintLink">
+                        <a data-print="true" target="_blank" class="aTEIButton">
+                            <xsl:attribute name="href">
+                                <xsl:value-of select="$print-url"/>
+                            </xsl:attribute>
+                            Print
+                        </a>
+                    </td>
+                </tr>
             </table>
 
             <p xml:space="preserve">By <i><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/><xsl:if test="./tei:teiHeader/tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="(./tei:teiHeader/tei:revisionDesc/tei:change[1]/@n, replace(./tei:teiHeader/tei:revisionDesc/tei:change[1]/@when, 'T.*', ''))[1]" />)</xsl:if></i></p>

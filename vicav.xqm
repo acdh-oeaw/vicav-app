@@ -415,10 +415,11 @@ declare
 %rest:path("/vicav/ling_feature")
 %rest:GET
 %rest:query-param("id", "{$id}")
+%rest:query-param("print", "{$print}")
 %test:arg("id", "ling_features_baghdad")
-function vicav:get_ling_feature($id as xs:string?) {
+function vicav:get_ling_feature($id as xs:string?, $print as xs:string*) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_get_profile#6, ['vicav_lingfeatures', $id, 'features_01.xslt', (), false(), '/ling_feature'], map:merge((cors:header(()), vicav:return_content_header())))
+    vicav:_get_profile#6, ['vicav_lingfeatures', $id, 'features_01.xslt', $print, false(), '/ling_feature'], map:merge((cors:header(()), vicav:return_content_header())))
 };
 
 declare function vicav:_get_profile($coll as xs:string, $id as xs:string*,
@@ -427,7 +428,10 @@ declare function vicav:_get_profile($coll as xs:string, $id as xs:string*,
   vicav:transform(collection($coll || vicav:get_project_db())/descendant::tei:TEI[@xml:id=$id],
      $xsltfn, $print, map{
           'param-base-path': replace(util:get-base-uri-public(), $endpoint, ''),
-          'tei-link-marker': xs:string($generateTeiMarker)
+          'tei-link-marker': xs:string($generateTeiMarker),
+          "print-url": concat(
+             request:uri(), "?", request:query(), "&amp;print=true" 
+          )
         }
      )
 };
@@ -450,7 +454,11 @@ function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:
     let $results := xquery:eval($query)
     return 
         (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        vicav:transform($results, $xsltfn, $print, map{}))
+        vicav:transform($results, $xsltfn, $print, map{
+            "print-url": concat(
+                request:uri(), "?", request:query(), "&amp;print=true" 
+            )
+        }))
 };
 
 
@@ -711,7 +719,10 @@ function vicav:explore_samples(
             "filter-words": string($word),
             "filter-features":$filter_features,
             "filter-translations": $trans_filter,
-            "filter-comments": $comment_filter
+            "filter-comments": $comment_filter,
+            "print-url": concat(
+                request:uri(), "?", request:query(), "&amp;print=true" 
+            )
         })
 
     return

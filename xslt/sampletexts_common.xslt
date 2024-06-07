@@ -12,7 +12,8 @@ version="3.1">
 <xsl:variable name="images-base-path" select="tei:concat-path('images')"/>
 <xsl:variable name="docs-base-path" select="tei:concat-path('')"/>
 <xsl:param name="highlight" select="()"></xsl:param>
-    
+<xsl:param name="print-url" as="xs:string" select="''"></xsl:param>
+
 <xsl:template match="//tei:div[@type='sampleText']/tei:p/tei:s | //tei:div[@type='corpusText']/tei:u">
     <span class="spSentence">
         <xsl:attribute name="xml:space">preserve</xsl:attribute>      
@@ -235,6 +236,7 @@ version="3.1">
     <xsl:param name="type"></xsl:param>
     <xsl:param name="position"></xsl:param>
     <xsl:param name="highLightIdentifier"/>
+
     <xsl:variable name="wordform" select="acdh:get-wordform($w)"/>
     <xsl:variable name="add-space" select="not(matches($wordform, '^[„-]$')) and
         not($w/following-sibling::*[1]/name() = 'pc') and

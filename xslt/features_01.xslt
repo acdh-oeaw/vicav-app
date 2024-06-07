@@ -18,13 +18,36 @@
               <xsl:choose>
                 <xsl:when test="$tei-link-marker = 'true'">
                 <table class="tbHeader">
-                    <tr><td><h2><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/></h2></td><td class="tdTeiLink">{teiLink}</td><td class="tdPrintLink">
-                <a href="#" data-print="true" class="aTEIButton"><xsl:attribute name="data-featurelist"><xsl:value-of 
-                    select="./@xml:id"/></xsl:attribute>Print</a></td></tr>
+                    <tr>
+                        <td><h2><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/></h2></td>
+                        <td class="tdTeiLink">{teiLink}</td>
+                        <td class="tdPrintLink">
+                            <a data-print="true" target="_blank" class="aTEIButton">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="$print-url"/>
+                                </xsl:attribute>
+                                Print
+                            </a>
+                        </td>
+                    </tr>
                 </table>
                 </xsl:when>
                 <xsl:otherwise>
-                  <h2><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/></h2>
+                  <table class="tbHeader">
+                    <tr>
+                        <td>
+                            <h2><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/></h2>
+                        </td>
+                        <td class="tdPrintLink">
+                            <a data-print="true" target="_blank" class="aTEIButton">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="$print-url"/>
+                                </xsl:attribute>
+                                Print
+                            </a>
+                        </td>
+                    </tr>
+                  </table>
                 </xsl:otherwise>
               </xsl:choose>
 
