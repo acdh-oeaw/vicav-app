@@ -114,13 +114,13 @@ function vicav:project_config() {
     </problem>,
   map:merge((cors:header(()), vicav:return_content_header(), map{
       'X-UA-Compatible': 'IE=11'
-    , 'Cache-Control': 'max-age=3600,public'
+    , 'Cache-Control': 'public, max-age=2, must-revalidate'
     , 'ETag': $hash
     })))
   else api-problem:or_result (prof:current-ns(),
     vicav:_project_config#0, [], map:merge((cors:header(()), vicav:return_content_header(), map{
       'X-UA-Compatible': 'IE=11'
-    , 'Cache-Control': 'max-age=3600,public'
+    , 'Cache-Control': 'public, max-age=2, must-revalidate'
     , 'ETag': $hash
     }))
   )
