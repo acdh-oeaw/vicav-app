@@ -18,7 +18,8 @@
     
     <xsl:template match="t:titleStmt">
         <titleStmt type="object">
-            <xsl:apply-templates select="@*|* except t:respStmt"/>
+            <titles type="array"><xsl:apply-templates select="t:title" mode="arrayItem"/></titles>
+            <xsl:apply-templates select="@*|* except (t:respStmt, t:title)"/>
             <respStmts type="array"><xsl:apply-templates select="t:respStmt" mode="arrayItem"/></respStmts>
         </titleStmt>
     </xsl:template>    
