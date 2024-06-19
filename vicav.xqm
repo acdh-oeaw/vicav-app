@@ -104,7 +104,7 @@ declare
 function vicav:project_config() {
   let $hash := if (exists(try{collection('prerendered_json')} catch err:FODC0002 {()}))
                then xs:string(collection('prerendered_json')//json/ETag/text())
-               else ''
+               else ()
     , $hashBrowser := request:header('If-None-Match', '')
   return if ($hash = $hashBrowser) then api-problem:return_problem(prof:current-ns(),
     <problem xmlns="urn:ietf:rfc:7807">
@@ -118,11 +118,12 @@ function vicav:project_config() {
     , 'ETag': $hash
     })))
   else api-problem:or_result (prof:current-ns(),
-    vicav:_project_config#0, [], map:merge((cors:header(()), vicav:return_content_header(), map{
+    vicav:_project_config#0, [], map:merge((cors:header(()), vicav:return_content_header(),
+    if ($hash) then map{
       'X-UA-Compatible': 'IE=11'
     , 'Cache-Control': 'public, max-age=2, must-revalidate'
     , 'ETag': $hash
-    }))
+    } else ()))
   )
 };
 
