@@ -106,7 +106,7 @@ function vicav:project_config() {
                then xs:string(collection('prerendered_json')//json/ETag/text())
                else ()
     , $hashBrowser := request:header('If-None-Match', '')
-  return if ($hash = $hashBrowser) then api-problem:return_problem(prof:current-ns(),
+  return if ($hash and ($hash = $hashBrowser)) then api-problem:return_problem(prof:current-ns(),
     <problem xmlns="urn:ietf:rfc:7807">
       <type>https://tools.ietf.org/html/rfc7231#section-6</type>
       <title>{$api-problem:codes_to_message(304)}</title>
