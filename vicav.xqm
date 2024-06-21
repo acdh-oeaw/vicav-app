@@ -1769,7 +1769,10 @@ declare function vicav:_get_tei_doc_list($type as xs:string*) {
         error(xs:QName('response-codes:_422'), 
          $api-problem:codes_to_message(422),
          'You need to specify a type') else (),
-      $corpus := collection($type)//tei:teiCorpus,
+      $corpus := try { collection($type)//tei:teiCorpus } catch err:FODC0002 {
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'There are no TEI documents of type '||$type)},
       $corpus := if (not(exists($corpus)) and exists(collection($type)//tei:TEI))
         then <teiCorpus xmlns="http://www.tei-c.org/ns/1.0">{collection($type)//tei:TEI!. update {delete node ./tei:text}}</teiCorpus>
         else $corpus,
@@ -1777,7 +1780,11 @@ declare function vicav:_get_tei_doc_list($type as xs:string*) {
       $notFound := if (not(exists($corpus))) then
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
-         'There are no TEI documents of type '||$type) else ()
+         'There are no TEI documents of type '||$type) else (),
+      $corpusIDs := $corpus//tei:idno[contains(@type, 'CorpusID')]/text()!xs:string(.),
+      $IDtypes :=  distinct-values($corpus//tei:idno/@type),
+      $IDsContainingData := collection($type)//tei:TEI[.//tei:w]//tei:idno[@type = $IDtypes][. = $corpusIDs]!xs:string(.),
+      $corpus := $corpus update { .//tei:TEI[.//tei:idno[@type = $IDtypes][. = $IDsContainingData]]!(insert node attribute {"hasTEIw"} {"true"} as first into .) }
   return serialize(xslt:transform($corpus, 'xslt/teiCorpusTeiHeader-json.xslt'), map {'method': 'json'})
 };
 
