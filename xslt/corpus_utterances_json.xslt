@@ -20,7 +20,7 @@
         <xsl:variable name="html">
         <div class="u">
             <xsl:attribute name="id" select="$u/@xml:id"/>
-            <div class="xmlId">
+            <div class="xml-id">
                 <xsl:value-of select="$u/@xml:id"/>
             </div>
             <div class="content">
