@@ -1953,7 +1953,7 @@ declare function vicav:_corpus_text(
     let $hits_str := if (not(empty($hits))) then $hits else ""
 
     let $teiDoc := collection('vicav_corpus')
-        //tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId],
+        //tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno/text() = $docId],
         $notFound := if (not(exists($teiDoc))) then
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
