@@ -45,6 +45,8 @@ There is a workflow that takes TEI texts or ELAN files and converts them to TEI 
 Search results from NoSketchEngine are resolved to w-tags in XML files that are genereated using the above workflow that also generates the NoSketchEngine verticals.
 The xml:id attributes on any w-tag in the vicav_corpus collection needs to be unique within the collection. We therefore usually prefix the token ID with a document ID.
 
+The corpus in NoSketchEngine has to have the same name as the project configured in vicav_projects.
+
 For a schema example see:
 
 ## Other collections
