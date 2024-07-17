@@ -1781,7 +1781,7 @@ declare function vicav:_get_tei_doc_list($type as xs:string*) {
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
          'There are no TEI documents of type '||$type) else (),
-      $corpusIDs := $corpus//tei:idno[contains(@type, 'CorpusID')]/text()!xs:string(.),
+      $corpusIDs := $corpus//tei:idno[ends-with(@type, 'CorpusID')]/text()!xs:string(.),
       $IDtypes :=  distinct-values($corpus//tei:idno/@type),
       $IDsContainingData := collection($type)//tei:TEI[.//tei:w]//tei:idno[@type = $IDtypes][. = $corpusIDs]!xs:string(.),
       $corpus := $corpus update { .//tei:TEI[.//tei:idno[@type = $IDtypes][. = $IDsContainingData]]!(insert node attribute {"hasTEIw"} {"true"} as first into .) }
@@ -1953,7 +1953,7 @@ declare function vicav:_corpus_text(
     let $hits_str := if (not(empty($hits))) then $hits else ""
 
     let $teiDoc := collection('vicav_corpus')
-        //tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno/text() = $docId],
+        //tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, 'CorpusID')]/text() = $docId],
         $notFound := if (not(exists($teiDoc))) then
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
