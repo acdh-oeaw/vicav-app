@@ -1915,7 +1915,7 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
         let $docId := tokenize($line/Refs/_[2], '=')[2]
         (:$docUandIds := if not((map:contains($docUandIds, $key))) then map:put($docUandIds, $key, []) else $docUandIds:)
         let $tokenId := if (count($line/Kwic/_) > 0) then
-                        tokenize($line/Kwic/_[1]/str/text(), '\s')
+                        tokenize(normalize-space($line/Kwic/_[1]/str/text()), '\s')
                      else if (count($line/Left/_) > 0) then
                         $line/Left/_[1]/text()
                      else if (count($line/Right/_) > 0) then
@@ -1923,7 +1923,7 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
         let $u := collection('vicav_corpus')
           /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno/text() = $docId]         
         /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u[@xml:id = $uId]
-        return <hit u="{$uId}" doc="{$docId}">{$u}{$tokenId!<token>{normalize-space(.)}</token>}</hit>}</hits>
+        return <hit u="{$uId}" doc="{$docId}">{$u}{$tokenId!<token>{.}</token>}</hit>}</hits>
       (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
       (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
 
