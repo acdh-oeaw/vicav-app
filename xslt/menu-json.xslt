@@ -20,7 +20,7 @@
     </xsl:function>
     
     <xsl:template match="/">
-      <json objects="json projectConfig logo frontpage menu params map center styleSettings colors staticData" arrays="panel param main item subnav scope geo table dataTypes" numbers="zoom lat lng">
+      <json objects="json projectConfig logo frontpage menu params map center styleSettings colors staticData" arrays="panel param main item subnav scope geo table dataTypes specialCharacters" numbers="zoom lat lng">
         <xsl:apply-templates/>
       </json>
     </xsl:template>
@@ -56,7 +56,15 @@
             <type><xsl:value-of select="local-name()"/></type>
         </_>
     </xsl:template>
-    
+
+    <xsl:template match="char">
+        <_ type="object">
+            <xsl:apply-templates select="./text" />
+            <xsl:apply-templates select="./value" />
+        </_>
+    </xsl:template>
+
+
     <xsl:template match="panel|item">
         <_ type="object">
           <xsl:apply-templates select="@* except @type"/>
