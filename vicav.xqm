@@ -147,7 +147,7 @@ function vicav:_project_config() {
         then collection('prerendered_json')//json
          update {insert node <cached type="boolean">true</cached> as first into ./projectConfig,
        .//text()[contains(., '{{host_name}}')]!(replace value of node . with replace(., '{{host_name}}/{{path}}', $publicURI, 'q'))}
-        else vicav:project_config_json_as_xml($publicURI) 
+        else vicav:project_config_json_as_xml($publicURI) update {insert node <cached type="boolean">false</cached> as first into ./json/projectConfig}
       return serialize($jsonAsXML, map {"method": "json", "indent": "no"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
       return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
@@ -1875,6 +1875,7 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
         || '&amp;queryselector=cqlrow&amp;cql='||$query-parts||'&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=-1&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
       , $_ := admin:write-log($request, 'INFO')
         
+
     let $result := if ($noske_host) then
         http:send-request(<http:request method='get'/>,
         $request)
@@ -1906,6 +1907,7 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
             }
           }:)
 
+
     let $consecutiveIds := []
     (:let $docUandIds := map:merge():)
     let $hits := <hits>{if (not($result)) then '' else for $line in $result/json/Lines/_
@@ -1924,7 +1926,16 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
         return <hit u="{$uId}" doc="{$docId}">{$u}{$tokenId!<token>{normalize-space(.)}</token>}</hit>}</hits>
       (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
       (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
-    return $hits
+
+    return if (matches($accept-header, '[+/]json'))
+        then
+            let $transformedOutput := xslt:transform($hits, 'xslt/corpus_search_result_json.xslt', map{ 'query': $query})
+            return serialize($transformedOutput, map {"method": "json", "indent": "no"})
+        else
+            let $out := vicav:transform($hits, $xslt, $print, map{ 'query': $query })
+            return $out
+
+
 
 };
 
