@@ -43,9 +43,12 @@ For a schema example see:
 We use NoSketchEngine as the search engine beckend.   
 There is a workflow that takes TEI texts or ELAN files and converts them to TEI with the text tokenized.  
 Search results from NoSketchEngine are resolved to w-tags in XML files that are genereated using the above workflow that also generates the NoSketchEngine verticals.
-The xml:id attributes on any w-tag in the vicav_corpus collection needs to be unique within the collection. We therefore usually prefix the token ID with a document ID.
+The xml:id attributes on any tei:w-tag in the vicav_corpus collection needs to be unique within the collection. We therefore usually prefix the token ID with a document ID.
 
 The corpus in NoSketchEngine has to have the same name as the project configured in vicav_projects.
+
+Documents in this collection are identified using the text in a tei:idno-tag with a type attribute that ends with `CorpusID`. This tag has to exist.  
+If there is a tei:teiCorpus document for metadata the tei:teiHeader in this document and the document containing the content in tei:body are linked using this identifier.
 
 For a schema example see:
 
