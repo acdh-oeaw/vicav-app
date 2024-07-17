@@ -1921,7 +1921,7 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
                      else if (count($line/Right/_) > 0) then
                         $line/Right/_[1]/text() else ""
         let $u := collection('vicav_corpus')
-          /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno/text() = $docId]         
+          /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, "CorpusID")]/text() = $docId]         
         /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u[@xml:id = $uId]
         return <hit u="{$uId}" doc="{$docId}">{$u}{$tokenId!<token>{normalize-space(.)}</token>}</hit>}</hits>
       (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
