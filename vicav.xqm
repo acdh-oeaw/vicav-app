@@ -159,7 +159,7 @@ declare function vicav:project_config_json_as_xml($publicURI as xs:string) {
         $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>,
         $jsonAsXML := xslt:transform($config, 'xslt/menu-json.xslt', map{'baseURIPublic': $publicURI}),
         $jsonAsXML := $jsonAsXML update {
-          .//*[starts-with(local-name(), "insert_")]!(replace node . with <_ type="object">{vicav:get_insert_data(local-name())}</_>)
+          .//*[starts-with(local-name(), "insert_")]!(replace node . with vicav:get_insert_data(local-name()))
         },
         $hash := xs:string(xs:hexBinary(hash:md5($jsonAsXML))),
         $res := $jsonAsXML/json update {
@@ -170,10 +170,10 @@ declare function vicav:project_config_json_as_xml($publicURI as xs:string) {
 
 declare function vicav:get_insert_data($type as xs:string) {
   switch ($type)
-    case "insert_featurelist" return vicav:get_featurelist()
-    case "insert_variety_data" return vicav:get_variety_data()
+    case "insert_featurelist" return <_ type="object">{vicav:get_featurelist()}</_>
+    case "insert_variety_data" return <_ type="object">{vicav:get_variety_data()}</_>
     case "insert_list_of_corpus_characters" return vicav:get_list_of_corpus_characters()
-    default return json:parse(vicav:_get_tei_doc_list(replace($type, '^insert_', '')))/json/*
+    default return <_ type="object">{json:parse(vicav:_get_tei_doc_list(replace($type, '^insert_', '')))/json/*}</_>
 };
 
 declare function vicav:get_list_of_corpus_characters() as element(specialCharacters) {
