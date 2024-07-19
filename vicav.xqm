@@ -13,6 +13,7 @@ declare namespace test = "http://exist-db.org/xquery/xqsuite";
 
 import module namespace openapi="https://lab.sub.uni-goettingen.de/restxqopenapi" at "3rd-party/openapi4restxq/content/openapi.xqm";
 import module namespace util = "https://www.oeaw.ac.at/acdh/tools/vle/util" at "3rd-party/vleserver_basex/vleserver/util.xqm";
+import module namespace u = "http://basex.org/modules/util";
 
 (:~
  : VICAV API
@@ -171,7 +172,15 @@ declare function vicav:get_insert_data($type as xs:string) {
   switch ($type)
     case "insert_featurelist" return vicav:get_featurelist()
     case "insert_variety_data" return vicav:get_variety_data()
+    case "insert_list_of_corpus_characters" return vicav:get_list_of_corpus_characters()
     default return json:parse(vicav:_get_tei_doc_list(replace($type, '^insert_', '')))/json/*
+};
+
+declare function vicav:get_list_of_corpus_characters() as element(specialCharacters) {
+  <specialCharacters>{
+    for $c in sort(distinct-values(collection('vicav_corpus')//text()[normalize-space() ne '']!u:chars(.))[not(matches(., '[-\[\]0-9a-zA-z<>,.;:+*?!~%=#"&apos;]|\s'))]) return
+    <_ type="object"><value>{$c}</value></_>
+  }</specialCharacters> 
 };
 
 declare function vicav:get_variety_data() {
