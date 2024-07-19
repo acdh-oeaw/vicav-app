@@ -1863,9 +1863,12 @@ function vicav:search_corpus($query as xs:string, $print as xs:string?, $xslt as
 declare function vicav:_search_corpus($query as xs:string, $print as xs:string?, $xslt as xs:string?) {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     
-    let $query-words := tokenize($query, '\s')
-    let $query-parts := string-join(($query-words!('[word="' || encode-for-uri(.)
-        || '"]')))
+    let $query-parts := if (starts-with($query, "[")) then
+        $query
+    else
+        let $query-words := tokenize($query, '\s')
+        return string-join(($query-words!('[word="' || encode-for-uri(.)
+            || '"]')))
 
     let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
     let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
