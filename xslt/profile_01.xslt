@@ -35,26 +35,6 @@
                             <xsl:apply-templates select="//tei:head/tei:figure[1]/tei:head"/>
                         </div>                                           
                     </xsl:if> 
-<!-- 
-                <xsl:choose>
-                    <xsl:when test="//tei:head/tei:figure/tei:graphic">
-                        <img>
-                            <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure/tei:graphic/@url"/></xsl:attribute>
-                        </img>
-                        <div class="imgCaption">
-                            <xsl:apply-templates select="//tei:head/tei:figure/tei:head"/>
-                        </div>                   
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <img>
-                            <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:ref[1]/@target"/></xsl:attribute>
-                        </img>
-                        <div class="imgCaption">
-                            <xsl:apply-templates select="//tei:head/tei:ref/tei:p[1]"/>
-                        </div>                   
-                    </xsl:otherwise>
-                </xsl:choose>
-                 -->
                 </div>
 
             
@@ -134,9 +114,11 @@
                 </div>
             </xsl:if>
 
+            <div>
             <xsl:if test="count(//tei:head/tei:figure) > 2">
                <xsl:apply-templates select="//tei:head[tei:figure]" mode="gallery"/>
-            </xsl:if>   
+            </xsl:if>
+            </div>   
             <br/>
             <br/>
         </div>
@@ -442,7 +424,7 @@
                 <xsl:attribute name="class" select="'figure small'"></xsl:attribute>
             </xsl:if>
             <div  class="gallery-item">
-                <a href="concat($images-base-path, {./tei:link/@target})" title="{./tei:head}">
+                <a href="{concat($images-base-path, ./tei:link/@target)}" title="{./tei:head}">
                     <img>
                         <xsl:attribute name="src">
                             <xsl:value-of select="concat($images-base-path, tei:graphic/@url)"/>
