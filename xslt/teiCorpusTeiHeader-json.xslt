@@ -66,7 +66,7 @@
     
     <xsl:template match="t:listPerson">
         <listPerson type="array">
-            <xsl:apply-templates select="t:person|t:head" mode="arrayItem"/>
+            <xsl:apply-templates select="t:person" mode="arrayItem"/>
         </listPerson>
     </xsl:template>
     

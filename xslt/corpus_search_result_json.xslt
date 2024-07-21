@@ -26,8 +26,8 @@
 
         <xsl:variable select="acdh:index-of-node($hit/tei:u/tei:w, $w[1])" name="word_pos_start"/>
         <xsl:variable select="acdh:index-of-node($hit/tei:u/tei:w, $w[last()])" name="word_pos_end"/>
-        <xsl:variable select="subsequence($hit/tei:u/tei:w, $word_pos_end+1, 5)" name="right"/>
-        <xsl:variable select="subsequence($hit/tei:u/tei:w, $word_pos_start - 5, 5)" name="left"/>
+        <xsl:variable select="subsequence($hit/tei:u/*[local-name() = ['w', 'pc']], $word_pos_end+1, 5)" name="right"/>
+        <xsl:variable select="subsequence($hit/tei:u/*[local-name() = ['w', 'pc']], $word_pos_start - 5, 5)" name="left"/>
         <!-- <xsl:attribute name="id" select="concat('corpus-w-', $hit/token)"/> -->
         <left>
             <xsl:variable name="html">
@@ -36,7 +36,7 @@
                         <xsl:attribute name="id" select="@xml:id"/>
                         <xsl:value-of select="."/>
                     </span>
-                    <xsl:if test="not(./@join = 'right')  or following-sibling::*[1]/name() = 'pc'">
+                    <xsl:if test="not(./@join = 'right')">
                         <span xml:space="preserve"> </span>
                     </xsl:if>
                     <xsl:if test="./@join = 'right' and ./@rend='withDash'">
@@ -53,7 +53,7 @@
                         <xsl:attribute name="id" select="@xml:id"/>
                         <xsl:value-of select="."/>
                     </span>
-                    <xsl:if test="not(./@join = 'right')  or following-sibling::*[1]/name() = 'pc'">
+                    <xsl:if test="not(./@join = 'right')">
                         <span xml:space="preserve">&#xa0;</span>
                     </xsl:if>
                     <xsl:if test="./@join = 'right' and ./@rend='withDash'">
@@ -69,7 +69,7 @@
                     <span class="w">
                         <xsl:value-of select="."/>
                     </span>
-                    <xsl:if test="not(./@join = 'right') or following-sibling::*[1]/name() = 'pc'">
+                    <xsl:if test="not(./@join = 'right')">
                         <span xml:space="preserve"> </span>
                     </xsl:if>
                     <xsl:if test="./@join = 'right' and ./@rend='withDash'">
