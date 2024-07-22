@@ -35,19 +35,19 @@
         <xsl:variable name="token" select="$hit/token/text()"/>
         <xsl:variable name="w" select="$hit//tei:w[@xml:id = $token]"/>
 
-        <xsl:variable select="acdh:index-of-node($hit/tei:u/tei:w, $w[1])" name="word_pos_start"/>
-        <xsl:variable select="acdh:index-of-node($hit/tei:u/tei:w, $w[last()])" name="word_pos_end"/>
-        <xsl:variable select="subsequence($hit/tei:u/*[local-name() = ['w', 'pc']], $word_pos_end+1, 5)" name="right"/>
-        <xsl:variable select="subsequence($hit/tei:u/*[local-name() = ['w', 'pc']], $word_pos_start - 5, 5)" name="left"/>
+        <xsl:variable select="acdh:index-of-node($hit/tei:u/(tei:w|tei:pc), $w[1])" name="word_pos_start"/>
+        <xsl:variable select="acdh:index-of-node($hit/tei:u/(tei:w|tei:pc), $w[last()])" name="word_pos_end"/>
+        <xsl:variable select="subsequence($hit/tei:u/(tei:w|tei:pc), $word_pos_end+1, 5)" name="right"/>
+        <xsl:variable select="subsequence($hit/tei:u/(tei:w|tei:pc), $word_pos_start - 5, 5)" name="left"/>
         <!-- <xsl:attribute name="id" select="concat('corpus-w-', $hit/token)"/> -->
         <left>
             <xsl:variable name="html">
                 <xsl:for-each select="$left">
-                    <span class="w">
+                    <span class="{local-name(.)}">
                         <xsl:attribute name="id" select="@xml:id"/>
                         <xsl:value-of select="."/>
                     </span>
-                    <xsl:if test="not(./@join = 'right')">
+                    <xsl:if test="not(./@join = 'right') and not(following-sibling::*[1]/self::tei:pc)">
                         <span xml:space="preserve"> </span>
                     </xsl:if>
                     <xsl:if test="./@join = 'right' and ./@rend='withDash'">
@@ -60,11 +60,11 @@
         <kwic>
             <xsl:variable name="html">
                 <xsl:for-each select="$w">
-                    <span class="w">
+                    <span class="{local-name(.)}">
                         <xsl:attribute name="id" select="@xml:id"/>
                         <xsl:value-of select="."/>
                     </span>
-                    <xsl:if test="not(./@join = 'right')">
+                    <xsl:if test="not(./@join = 'right') and not(following-sibling::*[1]/self::tei:pc)">
                         <span xml:space="preserve">&#xa0;</span>
                     </xsl:if>
                     <xsl:if test="./@join = 'right' and ./@rend='withDash'">
@@ -77,10 +77,10 @@
         <right>
             <xsl:variable name="html">
                 <xsl:for-each select="$right">
-                    <span class="w">
+                    <span class="{local-name(.)}">
                         <xsl:value-of select="."/>
                     </span>
-                    <xsl:if test="not(./@join = 'right')">
+                    <xsl:if test="not(./@join = 'right') and not(following-sibling::*[1]/self::tei:pc)">
                         <span xml:space="preserve"> </span>
                     </xsl:if>
                     <xsl:if test="./@join = 'right' and ./@rend='withDash'">
