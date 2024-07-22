@@ -8,9 +8,17 @@
     <xsl:output method="html" encoding="UTF-8"/>
     <xsl:import href="profile_01.xslt"/>
 
+    <xsl:template match="tei:ref[starts-with(@target,'http')]">
+         <a  data-target-type="External-link" target="_blank">
+            <xsl:attribute name="href" select="@target" />
+            <xsl:value-of select="."/>
+        </a>
+    </xsl:template>
+
+
     <xsl:template match="tei:head" mode="gallery">
         <gallery>
-            <xsl:for-each select="subsequence(//tei:head/tei:figure, 2)">
+            <xsl:for-each select="./tei:figure">
                 <a>
                     <xsl:attribute name="href" select="concat($images-base-path, ./tei:graphic/@url)"/>
                     <img>
