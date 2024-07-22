@@ -178,7 +178,7 @@ declare function vicav:get_insert_data($type as xs:string) {
 
 declare function vicav:get_list_of_corpus_characters() as element(specialCharacters) {
   <specialCharacters>{
-    for $c in sort(distinct-values(collection('vicav_corpus')//text()[normalize-space() ne '']!u:chars(.))[not(matches(., '[-\[\]0-9a-zA-z<>,.;:+*?!~%=#"&apos;]|\s'))]) return
+    for $c in sort(distinct-values(collection('vicav_corpus')//text()[normalize-space() ne '']!u:chars(normalize-unicode(.,'NFC')))[not(matches(., '[-/()\[\]0-9a-zA-z<>,.;:+*?!~%=#"&apos;]|\s'))]) return
     <_ type="object"><value>{$c}</value></_>
   }</specialCharacters> 
 };
