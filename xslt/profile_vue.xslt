@@ -9,7 +9,7 @@
     <xsl:import href="profile_01.xslt"/>
 
     <xsl:template match="tei:ref[starts-with(@target,'http')]">
-         <a  data-target-type="External-link" target="_blank">
+         <a data-target-type="External-link" target="_blank">
             <xsl:attribute name="href" select="@target" />
             <xsl:value-of select="."/>
         </a>
