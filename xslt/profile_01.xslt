@@ -287,7 +287,7 @@
     <xsl:template match="tei:p[./tei:figure and not(@rendition='#slideshow')]">
         <div class="pFigure">
             <xsl:attribute name="class" 
-                select="concat('pFigure ', 'fig-col-', count(./tei:figure), ' grid grid-cols-', count(./tei:figure))"  />
+                select="concat('pFigure ', 'fig-col-', count(./tei:figure), ' grid gap-2 grid-cols-', count(./tei:figure))"  />
             <xsl:apply-templates/>
         </div>
     </xsl:template>
