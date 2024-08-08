@@ -286,7 +286,8 @@
 
     <xsl:template match="tei:p[./tei:figure and not(@rendition='#slideshow')]">
         <div class="pFigure">
-            <xsl:attribute name="class" select="concat('pFigure ', 'fig-col-', count(./tei:figure))" />
+            <xsl:attribute name="class" 
+                select="concat('pFigure ', 'fig-col-', count(./tei:figure), ' grid gap-2 grid-cols-', count(./tei:figure))"  />
             <xsl:apply-templates/>
         </div>
     </xsl:template>
@@ -344,21 +345,22 @@
             <xsl:attribute name="data-text-id"><xsl:value-of select="@target"/></xsl:attribute>
             <xsl:apply-templates/>
         </a>
-        <br/>
+        <xsl:if test="../../@type = 'lingFeatures'"><br/></xsl:if>
     </xsl:template>
 
     <xsl:template match="tei:ref[@type='sample']">
         <a href="#" data-target-type="SampleText">
             <xsl:attribute name="data-text-id"><xsl:value-of select="@target"/></xsl:attribute>
             <xsl:apply-templates/>
-        </a><br/>
+        </a>
+        <xsl:if test="../../@type = 'sampleText'"><br/></xsl:if>
     </xsl:template>
 
      <xsl:template match="tei:ref[@type='profile']">
         <a href="#" data-target-type="Profile">
             <xsl:attribute name="data-text-id"><xsl:value-of select="@target"/></xsl:attribute>
             <xsl:apply-templates/>
-        </a><br/>
+        </a>
     </xsl:template>
 
     <xsl:template match="tei:rs[
