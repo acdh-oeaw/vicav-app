@@ -742,6 +742,136 @@ function vicav:explore_samples(
         $sHTML)
 };
 
+declare function vicav:compare-features-query(
+    $collection as xs:string,
+    $ids as xs:string*, 
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*,
+    $comment as xs:string*
+) as xs:string {
+    let $ids_q := for $id in tokenize($ids, ",") return '"'|| $id || '"'
+    let $id_q := "../../../../../@xml:id = [" || string-join($ids_q, ',') || "]"
+
+    let $words_q := for $w in tokenize($word, ',')
+            let $match_str := if (contains($w, '*')) then
+                '[matches(.,"(^|\W)' || replace($w, '\*', '.*') || '($|\W)")][1]'
+                else 
+                '[contains-token(.,"' || $w || '")][1]'
+            return 
+                vicav:or(('./tei:quote/tei:w' || $match_str, 
+                './tei:quote/tei:w/tei:fs/tei:f' || $match_str, 
+                './tei:quote/tei:phr/tei:w/tei:fs/tei:f' || $match_str))
+    let $features_q := for $f in tokenize($features, ",") return '"'|| $f || '"'
+    let $ana_q := if (empty($features_q)) then '' else '@ana = ['|| $features_q ||'][1]'
+
+
+    let $feature_q := if (empty($features_q)) then '' else vicav:or(
+        ('./[' || $ana_q,
+        './tei:quote/tei:w' || $ana_q, 
+        './tei:quote/tei:w/tei:fs/tei:f' || $ana_q, 
+        './tei:quote/tei:phr/tei:w/tei:fs/tei:f' || $ana_q
+        )
+    )
+
+    let $transls_q := for $t in tokenize($translation, ',')
+            let $match_str := 'contains(.,"' || $t || '")'
+            return 
+                vicav:or(('./tei:cit/tei:quote[' || $match_str || '][1]', 
+                './tei:quote/tei:w/tei:fs/tei:f[@type="translation" and ' || $match_str || '][1]'
+                ))
+    let $transl_q := if (empty($transls_q)) then '' else vicav:or($transls_q)
+
+    let $comments_q := for $c in tokenize($comment, ',')
+     return vicav:or(
+        ('./tei:quote/tei:w/tei:fs/tei:f[@name="comment" and ' ||
+     'contains(translate(.,"ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "' 
+     || $c || '")][1]',
+     './tei:quote/tei:phr/tei:w/tei:fs/tei:f[@name="comment" and ' ||
+     'contains(translate(.,"ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "' 
+     || $c || '")][1]' 
+     ))
+                
+    let $comment_q := if (empty($comments_q)) then '' else vicav:or($comments_q)
+    let $word_q := if (empty($words_q)) then '' else vicav:or($words_q)
+
+    let $full_tei_query := vicav:and(($id_q, vicav:and(($word_q, $transl_q, $comment_q, $feature_q))))
+
+    let $full_tei_query := if (not($full_tei_query = '')) then
+        '[' || $full_tei_query || ']'
+        else
+        $full_tei_query
+
+    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || $collection ||'")/descendant::tei:TEI/tei:text/tei:body/tei:div/tei:div/tei:cit[@type="featureSample"]'
+        || $full_tei_query
+
+    return $query
+};
+
+declare
+%rest:path("/vicav/compare")
+%rest:query-param("type", "{$type}")
+%rest:query-param("ids", "{$ids}")
+%rest:query-param("word", "{$word}")
+%rest:query-param("comment", "{$comment}")
+%rest:query-param("features", "{$features}")
+%rest:query-param("translation", "{$translation}")
+%rest:query-param("highlight", "{$highlight}")
+%rest:GET
+function vicav:compare(
+    $type as xs:string, 
+    $ids as xs:string,
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*, 
+    $comment as xs:string*,
+    $highlight as xs:string*
+    ) {
+
+    let $resourcetype := if (empty($type) or $type = '') then 
+            "samples"
+        else 
+            $type
+
+    (: let $filter_features := if ((empty($word) or $word = '') and (empty($features) or $features = '')) then 
+            if ($resourcetype = 'samples') then "1" else ''
+        else 
+            if (empty($word) or $word = '') then $features
+                if ($resourcetype = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,_]+', '')
+            else "" :)
+
+    let $comment_filter := if (empty($comment)) then '' else  lower-case($comment) 
+    let $trans_filter := if (empty($translation)) then '' else $translation
+    let $query := vicav:compare-features-query(
+        'vicav_' || $resourcetype || vicav:get_project_db(),
+        $ids,
+        $word,
+        $features,
+        $trans_filter,
+        $comment_filter
+    )  
+    (: return $query :)
+
+    let $results := xquery:eval($query)
+    let $ress := 
+      for $item in $results
+         let $id := $item/../../../../../@xml:id
+        return
+           <item id="{$id}">{$item}</item>
+    let $ress1 := <items>{$ress}</items> 
+    
+    return $ress1 
+      (: let $items := vicav:compare-data(
+        'vicav_' || $resourcetype || vicav:get_project_db(),
+        $ids,
+        $features,
+        $word,
+        $translation_filter,
+        $comment_filter
+    ) :)
+
+};
+
 (:~
  : get a description text
  :
