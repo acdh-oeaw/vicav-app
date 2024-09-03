@@ -898,7 +898,7 @@ function vicav:compare(
                 for $item-in-region in $item-in-feature
                 group by $settlement := $item-in-region/../../../../../tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"]
                 return <settlement name="{$settlement}">{
-                    for $i in $item 
+                    for $i in $item-in-region
                     return 
                         <item id="{$i/../../../../../@xml:id}" 
                         informant="{$i/../../../../../tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]}" 
