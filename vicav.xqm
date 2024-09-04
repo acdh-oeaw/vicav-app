@@ -810,26 +810,6 @@ declare function vicav:compare-features-query(
     return $query
 };
 
-declare
-%rest:path("/vicav/compare-markers")
-%rest:query-param("type", "{$type}")
-%rest:query-param("ids", "{$ids}")
-%rest:query-param("word", "{$word}")
-%rest:query-param("comment", "{$comment}")
-%rest:query-param("features", "{$features}")
-%rest:query-param("translation", "{$translation}")
-%rest:GET
-function vicav:compare-markers(
-    $type as xs:string, 
-    $ids as xs:string,
-    $word as xs:string*,
-    $features as xs:string*,
-    $translation as xs:string*, 
-    $comment as xs:string*
-    ) {
-    "a"
-};
-
 declare function vicav:compare-data(
     $type as xs:string, 
     $ids as xs:string,
@@ -863,6 +843,90 @@ declare function vicav:compare-data(
     )  
     
     return xquery:eval($query)
+};
+
+declare
+%rest:path("/vicav/compare_markers")
+%rest:query-param("type", "{$type}")
+%rest:query-param("ids", "{$ids}")
+%rest:query-param("word", "{$word}")
+%rest:query-param("comment", "{$comment}")
+%rest:query-param("features", "{$features}")
+%rest:query-param("translation", "{$translation}")
+%rest:GET
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
+function vicav:get_compare_markers(
+   $type as xs:string, 
+    $ids as xs:string,
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*, 
+    $comment as xs:string* 
+) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_compare_markers#6, [
+    $type, 
+    $ids,
+    $word,
+    $features,
+    $translation, 
+    $comment], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_compare_markers(
+    $type as xs:string, 
+    $ids as xs:string,
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*, 
+    $comment as xs:string*
+) {  
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+    let $entries := vicav:compare-data(
+        $type, 
+        $ids,
+        $word,
+        $features,
+        $translation, 
+        $comment)
+
+    let $ids := distinct-values($entries/../../../../../@xml:id)
+    
+    let $teis := collection('vicav_' || $type || vicav:get_project_db())/descendant::tei:TEI[@xml:id = $ids]
+    let $dataType := if ($type = 'lingfeatures') then "Feature" else "SampleText" 
+
+    let $out :=
+        for $item in $entries
+        group by $locName := $item/../../../../../tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement[1]/tei:name[@xml:lang="en"]/text()
+        let $loc := replace($item[1]/../../../../../tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
+        return
+        
+            <r
+                type='geo'>
+                <loc>{$loc}</loc>
+                (: <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc> :)
+                <locName>{$locName}</locName>
+                <alt>{$locName}</alt>
+                <freq>{count($entries[./../../../../../tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement[1]/tei:name[@xml:lang="en"]/text() = $locName])}</freq>
+                <params>
+                    <dataType>{$dataType}</dataType>
+                    <ids>{string-join(distinct-values($item/../../../../../@xml:id))}</ids>
+                    <features>{$features}</features>
+                    <translation>{$translation}</translation>
+                    <comment>{$comment}</comment>
+                </params>
+            </r>
+    
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>,
+        'xslt/bibl-markers-json.xslt',
+        map{"target-type": "ExploreSamples"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
+    else <rs>{$out}</rs>
 };
 
 declare
