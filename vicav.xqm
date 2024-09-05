@@ -811,7 +811,7 @@ declare function vicav:compare-features-query(
 };
 
 declare function vicav:compare-data(
-    $type as xs:string, 
+    $resourcetype as xs:string, 
     $ids as xs:string,
     $word as xs:string*,
     $features as xs:string*,
@@ -819,31 +819,94 @@ declare function vicav:compare-data(
     $comment as xs:string*
     ) {
 
-    let $resourcetype := if (empty($type) or $type = '') then 
-            "samples"
-        else 
-            $type
-
     let $features_filter := if ((empty($word) or $word = '') and (empty($features) or $features = '')) then 
             if ($resourcetype = 'samples') then "1" else ''
         else 
-            if (empty($word) or $word = '') then 
-                if ($resourcetype = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,_]+', '')
-            else ""
-
+            if ($resourcetype = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,_]+', '')
+            
     let $comment_filter := if (empty($comment)) then '' else  lower-case($comment) 
     let $trans_filter := if (empty($translation)) then '' else $translation
-    let $query := vicav:compare-features-query(
+    let $query := if ($resourcetype = "samples") then
+    vicav:compare-samples-query(
         'vicav_' || $resourcetype || vicav:get_project_db(),
         $ids,
         $word,
         $features_filter,
         $trans_filter,
         $comment_filter
-    )  
-    
+    )
+    else vicav:compare-features-query(
+        'vicav_' || $resourcetype || vicav:get_project_db(),
+        $ids,
+        $word,
+        $features_filter,
+        $trans_filter,
+        $comment_filter
+    )
     return xquery:eval($query)
 };
+
+declare function vicav:compare-samples-query(
+    $collection as xs:string,
+    $ids as xs:string*, 
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*,
+    $comment as xs:string*
+) as xs:string {
+    let $ids_q := for $id in tokenize($ids, ",") return '"'|| $id || '"'
+    let $id_q := "../../../../../@xml:id = [" || string-join($ids_q, ',') || "]"
+
+    let $words_q := for $w in tokenize($word, ',')
+        let $match_str := if (contains($w, '*')) then
+            '[matches(.,"(^|\W)' || replace($w, '\*', '.*') || '($|\W)")][1]'
+            else 
+            '[contains-token(.,"' || $w || '")][1]'
+        return 
+            vicav:or(('./tei:w' || $match_str, 
+            './tei:w/tei:fs/tei:f' || $match_str, 
+            './tei:phr/tei:w/tei:fs/tei:f' || $match_str))
+    let $features_q := for $f in tokenize($features, ",") return '"'|| $f || '"'
+    let $feature_q := if (empty($features_q)) then '' 
+        else './@n = ['|| string-join($features_q, ",") ||']'
+
+    let $transls_q := for $t in tokenize($translation, ',')
+        let $match_str := 'contains(.,"' || $t || '")'
+        return vicav:or((
+            '../../tei:div[@type="translationSentence"]/tei:s[' || $match_str || '][1]', 
+            './tei:w/tei:fs/tei:f[@type="translation" and ' || $match_str || '][1]'
+        ))
+    let $transl_q := if (empty($transls_q)) then '' else vicav:or($transls_q)
+
+    let $comments_q := for $c in tokenize($comment, ',')
+     return vicav:or(
+        ('./tei:w/tei:fs/tei:f[@name="comment" and ' ||
+     'contains(translate(.,"ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "' 
+     || $c || '")][1]',
+     './tei:phr/tei:w/tei:fs/tei:f[@name="comment" and ' ||
+     'contains(translate(.,"ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "' 
+     || $c || '")][1]' 
+     ))
+                
+    let $comment_q := if (empty($comments_q)) then '' else vicav:or($comments_q)
+    let $word_q := if (empty($words_q)) then '' else vicav:or($words_q)
+    
+    let $full_tei_query := vicav:and(($id_q, $word_q, $transl_q, $comment_q,
+        $feature_q))
+
+    let $full_tei_query := if (not($full_tei_query = '')) then
+        '[' || $full_tei_query || ']'
+        else
+        $full_tei_query
+
+    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || 
+        $collection ||
+        '")/descendant::tei:teiCorpus/tei:TEI/tei:text/tei:body/tei:div[@type="sampleText"]/tei:p/tei:s'
+        || $full_tei_query
+
+    return $query
+};
+
 
 declare
 %rest:path("/vicav/compare_markers")
@@ -894,15 +957,14 @@ declare function vicav:_get_compare_markers(
         $translation, 
         $comment)
 
-    let $ids := distinct-values($entries/../../../../../@xml:id)
+    let $ids := distinct-values(vicav:get-root($entries)/@xml:id)
     
-    let $teis := collection('vicav_' || $type || vicav:get_project_db())/descendant::tei:TEI[@xml:id = $ids]
     let $dataType := if ($type = 'lingfeatures') then "Feature" else "SampleText" 
 
     let $out :=
         for $item in $entries
-        group by $locName := $item/../../../../../tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement[1]/tei:name[@xml:lang="en"]/text()
-        let $loc := replace($item[1]/../../../../../tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
+        group by $locName := vicav:get-root($item)/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement[1]/tei:name[@xml:lang="en"]/text()
+        let $loc := replace(vicav:get-root($item[1])/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
         return
         
             <r
@@ -911,10 +973,10 @@ declare function vicav:_get_compare_markers(
                 (: <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc> :)
                 <locName>{$locName}</locName>
                 <alt>{$locName}</alt>
-                <freq>{count($entries[./../../../../../tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement[1]/tei:name[@xml:lang="en"]/text() = $locName])}</freq>
+                <freq>{count($entries[vicav:get-root(.)/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement[1]/tei:name[@xml:lang="en"]/text() = $locName])}</freq>
                 <params>
                     <dataType>{$dataType}</dataType>
-                    <ids>{string-join(distinct-values($item/../../../../../@xml:id))}</ids>
+                    <ids>{string-join(distinct-values(vicav:get-root($item)/@xml:id))}</ids>
                     <features>{$features}</features>
                     <translation>{$translation}</translation>
                     <comment>{$comment}</comment>
@@ -938,6 +1000,7 @@ declare
 %rest:query-param("features", "{$features}")
 %rest:query-param("translation", "{$translation}")
 %rest:query-param("highlight", "{$highlight}")
+%rest:query-param("page", "{$page}")
 %rest:query-param("print", "{$print}")
 %rest:GET
 function vicav:compare(
@@ -947,55 +1010,68 @@ function vicav:compare(
     $features as xs:string*,
     $translation as xs:string*, 
     $comment as xs:string*,
-    $highlight as xs:string*,    
+    $highlight as xs:string*, 
+    $page as xs:string*,   
     $print as xs:string*
     ) {
-    let $data := vicav:compare-data($type, $ids, $word, $features, $translation, $comment)
+    let $resourcetype := if (empty($type) or $type = '') then 
+        "samples"
+    else 
+        $type
+
+    let $filter-features := tokenize(string($features), ",")
+
+    let $data := vicav:compare-data($resourcetype, $ids, $word, $features, $translation, $comment)
+    (: return $data :)
     let $ress := 
         for $item in $data
-        group by $feature := $item/@ana
+        group by $feature := ($item/@ana, $item/@n)
         return
         <feature feature="{$feature}" label="{$item[1]/tei:lbl}">
             {for $item-in-feature in $item 
-            group by $region := $item-in-feature/../../../../../tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:region
-            return <region name="{$region}">{
+            group by $region := vicav:get-root($item-in-feature)/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:region
+            return <region name="{$region}" count="{count($item)}">{
                 for $item-in-region in $item-in-feature
-                group by $settlement := $item-in-region/../../../../../tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"]
+                group by $settlement := vicav:get-root($item-in-region)/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"]
                 return <settlement name="{$settlement}">{
                     for $i in $item-in-region
                     return 
-                        <item id="{$i/../../../../../@xml:id}" 
-                        informant="{$i/../../../../../tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]}" 
-                        age="{$i/../../../../../tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@age}" 
-                        sex="{$i/../../../../../tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@sex}" 
-                        >{$i}</item>
-
+                        <item xml:id="{vicav:get-root($i)/@xml:id}" 
+                        informant="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]}" 
+                        age="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@age}" 
+                        sex="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@sex}" 
+                        >{$i}{
+                            if ($resourcetype = "samples") then
+                            $i/../../../tei:div[@type="dvTranslations"]/tei:p/tei:s[@n = $i/@n] 
+                            else ()
+                        }</item>
                 }</settlement>
             }
             </region>
             }
         </feature>
-            
-    let $ress1 := <items count="{count($data)}">{$ress}</items>
-    return vicav:transform($ress1, "cross_features_03.xslt", $print, map {
+
+    let $features := distinct-values(($data/@ana, $data/@n))
+    let $ress1 := <items count="{count($data)}">{if ($resourcetype = "samples") then
+        $ress[1] else $ress}</items>
+    (: return $ress1  :)
+
+    return vicav:transform($ress1, "cross_" || $resourcetype || "_03.xslt", $print, map {
+        "features": $features,
+        "filter-features": ($filter-features),
         "highlight":string($word),
         "print-url": concat(
             request:uri(), "?", request:query(), "&amp;print=true" 
         )
     })
-    (: return vicav:transform($ress1, {
-        count: count($ress/items)
-    }) :)
-      (: let $items := vicav:compare-data(
-        'vicav_' || $resourcetype || vicav:get_project_db(),
-        $ids,
-        $features,
-        $word,
-        $translation_filter,
-        $comment_filter
-    ) :)
-
 };
+
+
+declare
+function vicav:get-root($item) {
+    $item/../../../../..
+};
+
 
 (:~
  : get a description text
