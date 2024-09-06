@@ -1014,12 +1014,38 @@ function vicav:compare(
     $page as xs:string*,   
     $print as xs:string*
     ) {
+api-problem:or_result (prof:current-ns(),
+    vicav:_get_compare#9, [
+        $type, 
+        $ids,
+        $word,
+        $features,
+        $translation, 
+        $comment,
+        $highlight, 
+        $page,   
+        $print
+    ], map:merge((cors:header(()), vicav:return_content_header()))
+)  
+};
+
+declare function vicav:_get_compare(
+    $type as xs:string, 
+    $ids as xs:string,
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*, 
+    $comment as xs:string*,
+    $highlight as xs:string*, 
+    $page as xs:string*,   
+    $print as xs:string*
+)  {
     let $resourcetype := if (empty($type) or $type = '') then 
         "samples"
     else 
         $type
 
-    let $filter-features := tokenize(string($features), ",")
+    let $filter-features := if (empty($features) or $features = '') then "" else tokenize($features, ",")
 
     let $data := vicav:compare-data($resourcetype, $ids, $word, $features, $translation, $comment)
     (: return $data :)
@@ -1053,12 +1079,12 @@ function vicav:compare(
 
     let $features := distinct-values(($data/@ana, $data/@n))
     let $ress1 := <items count="{count($data)}">{if ($resourcetype = "samples") then
-        $ress[1] else $ress}</items>
+        $ress[1] else $ress[1]}</items>
     (: return $ress1  :)
 
     return vicav:transform($ress1, "cross_" || $resourcetype || "_03.xslt", $print, map {
         "features": $features,
-        "filter-features": ($filter-features),
+        "filter-features": $filter-features,
         "highlight":string($word),
         "print-url": concat(
             request:uri(), "?", request:query(), "&amp;print=true" 
