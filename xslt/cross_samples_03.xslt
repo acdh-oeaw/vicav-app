@@ -8,8 +8,9 @@ version="3.1">
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements=""/>
 
+    <xsl:param name="page"></xsl:param>
     <xsl:param name="filter-features"></xsl:param>
-    <xsl:param name="features"></xsl:param>
+    <!-- <xsl:param name="features"></xsl:param> -->
 
 
     <xsl:template match="tei:s">
@@ -45,7 +46,7 @@ version="3.1">
     </xsl:template>
 
     <xsl:template match="/items">
-        <xsl:variable name="prev_sentence">
+        <!-- <xsl:variable name="prev_sentence">
             <xsl:if test="count($filter-features) = 1 and number($filter-features[1]) > 1">
                 <xsl:value-of select="number($filter-features[1]) - 1"/>
             </xsl:if>
@@ -54,7 +55,7 @@ version="3.1">
             <xsl:if test="count($filter-features) = 1 and number($filter-features[1]) &lt; max($features)">
                 <xsl:value-of select="number($filter-features[1]) + 1"/>
             </xsl:if>
-        </xsl:variable>
+        </xsl:variable> -->
 
         <xsl:variable name="root" select="."/>
         
@@ -62,7 +63,7 @@ version="3.1">
             <div class="explore-samples">
                 <table class="tbHeader">
                     <tr><td>
-                        <h2 xml:space="preserve">Compare samples</h2></td>
+                        <h2 xml:space="preserve" class="pb-2 m-0">Compare samples</h2></td>
                             <td class="tdPrintLink">
                             <a data-print="true" target="_blank" class="aTEIButton">
                                 <xsl:attribute name="href">
@@ -72,10 +73,18 @@ version="3.1">
                             </a>
                         </td>                    </tr>
                 </table>
+                <xsl:if test="count($root/features/region) &gt; 1">
                 <div class="explore-samples-summary">
                     <h4>Summary</h4>
                     <table>
                     <xsl:for-each select="$root/feature">
+                        <tr>
+                            <th colspan="2">
+                                <xsl:value-of select="./@name"/>
+                            </th>
+                        </tr>
+                        <xsl:for-each select="./region">
+                    
                         <tr>
                             <th>
                                 <xsl:value-of select="./@name"/>
@@ -84,28 +93,31 @@ version="3.1">
                                 <xsl:value-of select="./@count"/>
                             </td>
                         </tr>
+                        </xsl:for-each>
                     </xsl:for-each>
                     </table>
                 </div>
+                </xsl:if>
                 
-                <xsl:if test="$filter-features">
+                <xsl:if test="count(./feature) &gt; 1">
                     <div class="sentences-nav flex justify-between">
-                        <xsl:if test="not($prev_sentence = '')">
-                            <a href="#" data-target-type="ExploreSamples" data-target-window="self" data-features="{$prev_sentence}" class="prev-link"><i class="fa fa-chevron-left"><span/></i> Previous</a>
+                        <xsl:if test="(count(./feature) > 1) and ($page > 1)">
+                            <a href="#" data-target-type="ExploreSamples" data-target-window="self" 
+                            data-page="{$page -1}" class="prev-link"><i class="fa fa-chevron-left"><span/></i> Previous</a>
                         </xsl:if>
                         <form>
                             <input name="features" data-target-type="ExploreSamples" data-target-window="self">
-                                <xsl:attribute name="value"><xsl:value-of select="string-join($filter-features, ',')"/></xsl:attribute>
-                            </input> / <xsl:value-of select="max($features)"/>
+                                <xsl:attribute name="value"><xsl:value-of select="$page"/></xsl:attribute>
+                            </input> / <xsl:value-of select="count(./feature)"/>
                         </form>
-                        <xsl:if test="not($next_sentence = '')">
-                            <a href="#" data-target-type="ExploreSamples" data-target-window="self" data-features="{$next_sentence}" class="next-link">Next <i class="fa fa-chevron-right"><span/></i></a>
+                        <xsl:if test="(count(./feature) &gt; 1) and ($page &lt; count(./feature))">
+                            <a href="#" data-target-type="ExploreSamples" data-target-window="self" data-page="{$page + 1}" class="next-link">Next <i class="fa fa-chevron-right"><span/></i></a>
                         </xsl:if>
                     </div>
                 </xsl:if>
 
                 <xsl:for-each select="./feature">
-                    <h3><xsl:value-of select="@name"/></h3>
+                    <h3 class="mt-0" xml:space="preserve">Sentence <xsl:value-of select="@name"/></h3>
 
                     <xsl:for-each select="./region">
                         <h4><xsl:value-of select="@name"/></h4>

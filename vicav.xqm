@@ -1044,16 +1044,18 @@ declare function vicav:_get_compare(
         "samples"
     else 
         $type
+    
+    let $pagevalue := number(if (empty($page) or $page = '') then "1" else $page)
 
     let $filter-features := if (empty($features) or $features = '') then "" else tokenize($features, ",")
 
     let $data := vicav:compare-data($resourcetype, $ids, $word, $features, $translation, $comment)
-    (: return $data :)
+    
     let $ress := 
         for $item in $data
         group by $feature := ($item/@ana, $item/@n)
         return
-        <feature feature="{$feature}" label="{$item[1]/tei:lbl}">
+        <feature name="{$feature}" label="{$item[1]/tei:lbl}" count="{count($item)}">
             {for $item-in-feature in $item 
             group by $region := vicav:get-root($item-in-feature)/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:region
             return <region name="{$region}" count="{count($item)}">{
@@ -1078,12 +1080,13 @@ declare function vicav:_get_compare(
         </feature>
 
     let $features := distinct-values(($data/@ana, $data/@n))
-    let $ress1 := <items count="{count($data)}">{if ($resourcetype = "samples") then
-        $ress[1] else $ress[1]}</items>
+
+    let $ress1 := <items count="{count($data)}" pages="{count($ress)}">{$ress[$pagevalue]}</items>
     (: return $ress1  :)
 
     return vicav:transform($ress1, "cross_" || $resourcetype || "_03.xslt", $print, map {
-        "features": $features,
+        (: "features": $features or , :)
+        "page": $pagevalue,
         "filter-features": $filter-features,
         "highlight":string($word),
         "print-url": concat(
