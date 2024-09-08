@@ -9,7 +9,6 @@
 
     <xsl:param name="page" select="1"></xsl:param>
     <xsl:param name="filter-features"></xsl:param>
-    <!-- <xsl:param name="features"></xsl:param> -->
 
     <xsl:template match="/items">
         <table class="tbHeader">

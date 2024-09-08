@@ -1,7 +1,6 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns="http://www.w3.org/1999/xhtml" xmlns:tei="http://www.tei-c.org/ns/1.0" 
     xmlns:acdh="http://acdh.oeaw.ac.at"
-
 version="3.1">
     <xsl:include href="sampletexts_common.xslt"/>
     <!-- VERSION 3.1.4 -->
@@ -10,7 +9,6 @@ version="3.1">
 
     <xsl:param name="page"></xsl:param>
     <xsl:param name="filter-features"></xsl:param>
-    <!-- <xsl:param name="features"></xsl:param> -->
 
 
     <xsl:template match="tei:s">
@@ -46,17 +44,6 @@ version="3.1">
     </xsl:template>
 
     <xsl:template match="/items">
-        <!-- <xsl:variable name="prev_sentence">
-            <xsl:if test="count($filter-features) = 1 and number($filter-features[1]) > 1">
-                <xsl:value-of select="number($filter-features[1]) - 1"/>
-            </xsl:if>
-        </xsl:variable>
-        <xsl:variable name="next_sentence">
-            <xsl:if test="count($filter-features) = 1 and number($filter-features[1]) &lt; max($features)">
-                <xsl:value-of select="number($filter-features[1]) + 1"/>
-            </xsl:if>
-        </xsl:variable> -->
-
         <xsl:variable name="root" select="."/>
         
         <div>
@@ -73,7 +60,7 @@ version="3.1">
                             </a>
                         </td>                    </tr>
                 </table>
-                <xsl:if test="count($root/features/region) &gt; 1">
+                <xsl:if test="count($root/feature/region) &gt; 1">
                 <div class="explore-samples-summary">
                     <h4>Summary</h4>
                     <table>
@@ -154,16 +141,9 @@ version="3.1">
                             </xsl:for-each>
                         </table>
                     </xsl:for-each>
-                </xsl:for-each> 
-                            
+                </xsl:for-each>             
                 <xsl:sequence select="$pager">     
             </div>         
         </div>
     </xsl:template>
-    
-    <!-- <xsl:template match="tei:fs"><xsl:value-of select="."/></xsl:template>
-    <xsl:template match="tei:head"></xsl:template>
-    <xsl:template match="tei:hi[@rend = 'italic']"><i><xsl:apply-templates/></i></xsl:template>
-    <xsl:template match="tei:hi[@rend = 'bold']"><b><xsl:apply-templates/></b></xsl:template>
-    <xsl:template match="tei:p"></xsl:template> -->
 </xsl:stylesheet>
