@@ -28,6 +28,7 @@
         
         <div><span xml:space="preserve"><xsl:value-of select="./@count"/> sentences found.</span>
 
+        <xsl:variable name="pager">
         <xsl:if test="not(./@pages = 1)">
             <div class="sentences-nav flex justify-between">
                 <xsl:if test="@pages &gt; 1 and $page &gt; 1">
@@ -43,6 +44,9 @@
                 </xsl:if>
             </div>
         </xsl:if>
+        </xsl:variable>
+
+        <xsl:sequence select="$pager" />
 
         <xsl:for-each select="./feature">
             <xsl:variable name="ana" select="./@feature"/>
@@ -97,7 +101,8 @@
                     </xsl:for-each>
                 </div>
             </xsl:for-each>
-        </xsl:for-each>                  
+        </xsl:for-each>      
+        <xsl:sequence select="$pager"/>            
         </div>
     </xsl:template>
  

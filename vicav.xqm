@@ -751,7 +751,8 @@ declare function vicav:compare-features-query(
     $comment as xs:string*
 ) as xs:string {
     let $ids_q := for $id in tokenize($ids, ",") return '"'|| $id || '"'
-    let $id_q := "../../../../../@xml:id = [" || string-join($ids_q, ',') || "]"
+    let $id_q := if (empty($ids_q)) then "" else 
+        "[@xml:id = [" || string-join($ids_q, ',') || "]]"
 
     let $words_q := for $w in tokenize($word, ',')
             let $match_str := if (contains($w, '*')) then
@@ -796,7 +797,7 @@ declare function vicav:compare-features-query(
     let $word_q := if (empty($words_q)) then '' else vicav:or($words_q)
      (: return $feature_q :)
     
-    let $full_tei_query := vicav:and(($id_q, vicav:and(($word_q, $transl_q, $comment_q,
+    let $full_tei_query := vicav:and((vicav:and(($word_q, $transl_q, $comment_q,
     $feature_q))))
 
     let $full_tei_query := if (not($full_tei_query = '')) then
@@ -804,7 +805,8 @@ declare function vicav:compare-features-query(
         else
         $full_tei_query
 
-    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || $collection ||'")/descendant::tei:TEI/tei:text/tei:body/tei:div/tei:div/tei:cit[@type="featureSample"]'
+    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || 
+        $collection ||'")/descendant::tei:TEI' || $id_q || '/tei:text/tei:body/tei:div/tei:div/tei:cit[@type="featureSample"]'
         || $full_tei_query
 
     return $query
@@ -855,7 +857,8 @@ declare function vicav:compare-samples-query(
     $comment as xs:string*
 ) as xs:string {
     let $ids_q := for $id in tokenize($ids, ",") return '"'|| $id || '"'
-    let $id_q := "../../../../../@xml:id = [" || string-join($ids_q, ',') || "]"
+    let $id_q :=  if (empty($ids_q)) then "" else 
+        "[@xml:id = [" || string-join($ids_q, ',') || "]]"
 
     let $words_q := for $w in tokenize($word, ',')
         let $match_str := if (contains($w, '*')) then
@@ -891,7 +894,7 @@ declare function vicav:compare-samples-query(
     let $comment_q := if (empty($comments_q)) then '' else vicav:or($comments_q)
     let $word_q := if (empty($words_q)) then '' else vicav:or($words_q)
     
-    let $full_tei_query := vicav:and(($id_q, $word_q, $transl_q, $comment_q,
+    let $full_tei_query := vicav:and(($word_q, $transl_q, $comment_q,
         $feature_q))
 
     let $full_tei_query := if (not($full_tei_query = '')) then
@@ -901,7 +904,8 @@ declare function vicav:compare-samples-query(
 
     let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || 
         $collection ||
-        '")/descendant::tei:teiCorpus/tei:TEI/tei:text/tei:body/tei:div[@type="sampleText"]/tei:p/tei:s'
+        '")/descendant::tei:teiCorpus/tei:TEI' || $id_q ||
+        '/tei:text/tei:body/tei:div[@type="sampleText"]/tei:p/tei:s'
         || $full_tei_query
 
     return $query
@@ -1051,8 +1055,13 @@ declare function vicav:_get_compare(
 
     let $data := vicav:compare-data($resourcetype, $ids, $word, $features, $translation, $comment)
     
+    let $sorted := for $entry in $data
+                    order by ($entry/@ana, $entry/@n)[1]
+                    return $entry
+    let $paged := subsequence($sorted, ($pagevalue - 1) * 100 + 1, $pagevalue * 100)
+
     let $ress := 
-        for $item in $data
+        for $item in $paged
         group by $feature := ($item/@ana, $item/@n)
         return
         <feature name="{$feature}" label="{$item[1]/tei:lbl}" count="{count($item)}">
@@ -1079,9 +1088,9 @@ declare function vicav:_get_compare(
             }
         </feature>
 
-    let $features := distinct-values(($data/@ana, $data/@n))
+    (: let $features := distinct-values(($data/@ana, $data/@n)) :)
 
-    let $ress1 := <items count="{count($data)}" pages="{count($ress)}">{$ress[$pagevalue]}</items>
+    let $ress1 := <items count="{count($data)}" pages="{(count($data) idiv 100) + 1}">{$ress}</items>
     (: return $ress1  :)
 
     return vicav:transform($ress1, "cross_" || $resourcetype || "_03.xslt", $print, map {

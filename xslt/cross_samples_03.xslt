@@ -99,22 +99,25 @@ version="3.1">
                 </div>
                 </xsl:if>
                 
-                <xsl:if test="count(./feature) &gt; 1">
-                    <div class="sentences-nav flex justify-between">
-                        <xsl:if test="(count(./feature) > 1) and ($page > 1)">
-                            <a href="#" data-target-type="ExploreSamples" data-target-window="self" 
-                            data-page="{$page -1}" class="prev-link"><i class="fa fa-chevron-left"><span/></i> Previous</a>
-                        </xsl:if>
-                        <form>
-                            <input name="features" data-target-type="ExploreSamples" data-target-window="self">
-                                <xsl:attribute name="value"><xsl:value-of select="$page"/></xsl:attribute>
-                            </input> / <xsl:value-of select="count(./feature)"/>
-                        </form>
-                        <xsl:if test="(count(./feature) &gt; 1) and ($page &lt; count(./feature))">
-                            <a href="#" data-target-type="ExploreSamples" data-target-window="self" data-page="{$page + 1}" class="next-link">Next <i class="fa fa-chevron-right"><span/></i></a>
-                        </xsl:if>
-                    </div>
-                </xsl:if>
+                <xsl:variable name="pager">
+                    <xsl:if test="@pages &gt; 1">
+                        <div class="sentences-nav flex justify-between">
+                            <xsl:if test="(count(./feature) > 1) and ($page > 1)">
+                                <a href="#" data-target-type="ExploreSamples" data-target-window="self" 
+                                data-page="{$page -1}" class="prev-link"><i class="fa fa-chevron-left"><span/></i> Previous</a>
+                            </xsl:if>
+                            <form>
+                                <input name="features" data-target-type="ExploreSamples" data-target-window="self">
+                                    <xsl:attribute name="value"><xsl:value-of select="$page"/></xsl:attribute>
+                                </input> / <xsl:value-of select="@pages"/>
+                            </form>
+                            <xsl:if test="(@pages &gt; 1) and ($page &lt; @pages)">
+                                <a href="#" data-target-type="ExploreSamples" data-target-window="self" data-page="{$page + 1}" class="next-link">Next <i class="fa fa-chevron-right"><span/></i></a>
+                            </xsl:if>
+                        </div>
+                    </xsl:if>
+                </xsl:variable>
+                <xsl:sequence select="$pager">
 
                 <xsl:for-each select="./feature">
                     <h3 class="mt-0" xml:space="preserve">Sentence <xsl:value-of select="@name"/></h3>
@@ -151,7 +154,9 @@ version="3.1">
                             </xsl:for-each>
                         </table>
                     </xsl:for-each>
-                </xsl:for-each>                  
+                </xsl:for-each> 
+                            
+                <xsl:sequence select="$pager">     
             </div>         
         </div>
     </xsl:template>
