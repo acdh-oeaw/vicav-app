@@ -15,6 +15,7 @@
     </xd:doc>
     
     <xsl:param name="target-type" as="xs:string?" select='()'/>
+    <xsl:param name="data-type" as="xs:string?" select='()'/>
     <xsl:param name="current-query" as="xs:string?" select='()'/>
     
     <xsl:template match="/">
@@ -81,6 +82,9 @@
                         </xsl:when>
                     </xsl:choose>
                 </targetType>
+                <xsl:for-each select="params/*">
+                    <xsl:copy-of select="."/>
+                </xsl:for-each>
                 <xsl:if test="exists($current-query)">
                     <queryString><xsl:value-of select="$current-query||'+'||(locName, alt)[1]"/></queryString>
                 </xsl:if>
