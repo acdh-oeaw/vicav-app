@@ -210,6 +210,32 @@ declare function vicav:get_featurelist() {
    return json:parse(serialize($result, map {"method": "json", "indent": "no"}), map {"format": "direct"})/json/*
 };
 
+declare function vicav:get_taxonomy() {
+  let $docs := collection('wibarab_features')//tei:TEI
+  let $dmp := $docs[fn:tokenize(base-uri(.), '/')[last()] = 'wibarab_dmp.xml']
+  let $mainCategories := $dmp//tei:taxonomy/tei:category
+  let $result :=
+     map:merge((
+      for $category in $mainCategories
+      let $id := string($category/@xml:id)
+      let $title := string($category/tei:catDesc)
+      let $subcategories := $category/tei:category
+      return
+        if (empty($subcategories)) then
+          map:entry($id, map { "title": $title })
+        else
+          map:entry($id, map { 
+            "title": $title, 
+            "subcategories": map:merge(
+              for $sub in $subcategories
+              return map:entry(string($sub/@xml:id), string($sub/tei:catDesc))
+            )
+          })
+    ))
+
+  return json:parse(serialize($result, map {"method": "json", "indent": "no"}), map {"format": "direct"})/json/*
+};
+
 declare
 %updating
 %rest:path("/vicav/project")
