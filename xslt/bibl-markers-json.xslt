@@ -19,7 +19,7 @@
     <xsl:param name="current-query" as="xs:string?" select='()'/>
     
     <xsl:template match="/">
-        <json objects="geometry properties" arrays="json coordinates" numbers="hitCount">
+        <json objects="geometry properties params" arrays="json coordinates" numbers="hitCount">
           <xsl:apply-templates select=".//r"/>
         </json>
     </xsl:template>
@@ -82,9 +82,7 @@
                         </xsl:when>
                     </xsl:choose>
                 </targetType>
-                <xsl:for-each select="params/*">
-                    <xsl:copy-of select="."/>
-                </xsl:for-each>
+                <xsl:copy-of select="./params"/>
                 <xsl:if test="exists($current-query)">
                     <queryString><xsl:value-of select="$current-query||'+'||(locName, alt)[1]"/></queryString>
                 </xsl:if>

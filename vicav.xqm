@@ -822,7 +822,7 @@ declare function vicav:compare-data(
     ) {
 
     let $features_filter := if ((empty($word) or $word = '') and (empty($features) or $features = '')) then 
-            if ($resourcetype = 'samples') then "1" else ''
+            ''
         else 
             if ($resourcetype = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,_]+', '')
             
@@ -980,7 +980,7 @@ declare function vicav:_get_compare_markers(
                 <freq>{count($entries[vicav:get-root(.)/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement[1]/tei:name[@xml:lang="en"]/text() = $locName])}</freq>
                 <params>
                     <dataType>{$dataType}</dataType>
-                    <ids>{string-join(distinct-values(vicav:get-root($item)/@xml:id))}</ids>
+                    <ids>{string-join(distinct-values(vicav:get-root($item)/@xml:id), ",")}</ids>
                     <features>{$features}</features>
                     <translation>{$translation}</translation>
                     <comment>{$comment}</comment>

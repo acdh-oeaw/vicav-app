@@ -104,7 +104,7 @@ version="3.1">
                         </div>
                     </xsl:if>
                 </xsl:variable>
-                <xsl:sequence select="$pager">
+                <xsl:sequence select="$pager"/>
 
                 <xsl:for-each select="./feature">
                     <h3 class="mt-0" xml:space="preserve">Sentence <xsl:value-of select="@name"/></h3>
@@ -142,7 +142,7 @@ version="3.1">
                         </table>
                     </xsl:for-each>
                 </xsl:for-each>             
-                <xsl:sequence select="$pager">     
+                <xsl:sequence select="$pager" />     
             </div>         
         </div>
     </xsl:template>
