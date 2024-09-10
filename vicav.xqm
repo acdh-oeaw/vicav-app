@@ -984,6 +984,7 @@ declare function vicav:_get_compare_markers(
                     <features>{$features}</features>
                     <translation>{$translation}</translation>
                     <comment>{$comment}</comment>
+                    <word>{$word}</word>
                 </params>
             </r>
     
