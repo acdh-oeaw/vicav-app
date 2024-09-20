@@ -444,7 +444,7 @@ function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:
   let $generateTeiMarker := exists($xsltfn)
   let $xsltfn := if (exists($xsltfn)) then $xsltfn else "profile_vue.xslt"
   return api-problem:or_result (prof:current-ns(),
-    vicav:_get_profile#6, [$coll, $id, $xsltfn, $print, $generateTeiMarker, '/profile'], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_get_document_transformed#6, [$coll, $id, $xsltfn, $print, $generateTeiMarker, '/profile'], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };
 
@@ -456,13 +456,17 @@ declare
 %test:arg("id", "ling_features_baghdad")
 function vicav:get_ling_feature($id as xs:string?, $print as xs:string*) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_get_profile#6, ['vicav_lingfeatures', $id, 'features_01.xslt', $print, false(), '/ling_feature'], map:merge((cors:header(()), vicav:return_content_header())))
+    vicav:_get_document_transformed#6, ['vicav_lingfeatures', $id, 'features_01.xslt', $print, false(), '/ling_feature'], map:merge((cors:header(()), vicav:return_content_header())))
 };
 
-declare function vicav:_get_profile($coll as xs:string, $id as xs:string*,
+declare function vicav:_get_document_transformed($coll as xs:string, $id as xs:string*,
   $xsltfn as xs:string*, $print as xs:string*, $generateTeiMarker as xs:boolean,
-  $endpoint as xs:string) { 
-  vicav:transform(collection($coll || vicav:get_project_db())/descendant::tei:TEI[@xml:id=$id],
+  $endpoint as xs:string) {
+  let $doc := collection($coll || vicav:get_project_db())/descendant::tei:TEI[@xml:id=$id],
+      $doc-exists := if (exists($doc)) then true()
+	                 else error(xs:QName('response-codes:_404'), 
+                                $api-problem:codes_to_message(404), 'A document with xml:id '||$id|| ' does not exist in '|| $coll || vicav:get_project_db() || '.')
+  return vicav:transform($doc,
      $xsltfn, $print, map{
           'param-base-path': replace(util:get-base-uri-public(), $endpoint, ''),
           'tei-link-marker': xs:string($generateTeiMarker),
@@ -1752,11 +1756,11 @@ declare
 %rest:produces('application/problem+xml')
 function vicav:get_profile_markers() {
   api-problem:or_result (prof:current-ns(),
-    vicav:_get_profile_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_get_document_transformed_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };
 
-declare function vicav:_get_profile_markers() {
+declare function vicav:_get_document_transformed_markers() {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $entries := collection('vicav_profiles' || vicav:get_project_db())/descendant::tei:TEI
     let $out :=
