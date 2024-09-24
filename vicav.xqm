@@ -745,6 +745,7 @@ function vicav:explore_samples(
     let $sHTML := if ((empty($location) or $location = '') and (empty($person) or $person = '')) then
         vicav:transform($ress1, "cross_" || $resourcetype || "_summary_01.xslt", $print, map {
             "highlight":string($word),
+            "highLightIdentifier":$features,
             "filter-words": string($word),
             "filter-features":$filter_features,
             "filter-translations": $trans_filter,
