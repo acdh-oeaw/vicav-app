@@ -20,7 +20,7 @@
     </xsl:function>
     
     <xsl:template match="/">
-      <json objects="json projectConfig logo frontpage menu params map center styleSettings colors staticData version" arrays="panel param main item subnav scope geo table dataTypes specialCharacters" numbers="zoom lat lng">
+      <json objects="json projectConfig logo frontpage menu params map center styleSettings colors staticData version filterListBy" arrays="panel param main item subnav scope geo table dataTypes specialCharacters" numbers="zoom lat lng">
         <xsl:apply-templates/>
       </json>
     </xsl:template>
