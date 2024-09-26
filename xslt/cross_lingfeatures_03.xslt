@@ -48,7 +48,8 @@
         <xsl:sequence select="$pager" />
 
         <xsl:for-each select="./feature">
-            <xsl:variable name="ana" select="./@feature"/>
+            <xsl:variable name="ana" select="./@name"/>
+
             <h3><xsl:value-of select="./@label" /></h3>
             <xsl:for-each select="./region">
                 <div>
