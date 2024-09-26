@@ -48,7 +48,8 @@
         <xsl:sequence select="$pager" />
 
         <xsl:for-each select="./feature">
-            <xsl:variable name="ana" select="./@feature"/>
+            <xsl:variable name="ana" select="./@name"/>
+
             <h3><xsl:value-of select="./@label" /></h3>
             <xsl:for-each select="./region">
                 <div>
@@ -91,7 +92,7 @@
                                     </tr>
                                     <tr>
                                         <td class="tdFeaturesRightTarget">
-                                            <xsl:sequence select="acdh:feature-sentence($item/tei:cit/tei:quote[@xml:lang = ['aeb', 'ar']], acdh:current-feature-ana(., $ana))" /><xsl:text> </xsl:text>
+                                            <xsl:sequence select="acdh:feature-sentence($item/tei:cit/tei:quote[@xml:lang = ['aeb', 'ar']], acdh:current-feature-ana($item, $ana))" /><xsl:text> </xsl:text>
                                         </td>                                                
                                     </tr>              
                                 </xsl:for-each>
