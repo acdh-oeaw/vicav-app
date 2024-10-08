@@ -48,11 +48,13 @@ popd
 
 pwd=$(pwd)
 pushd ${1:-../../}
+pushd lib/custom
+curl -LO https://repo1.maven.org/maven2/io/opentelemetry/javaagent/opentelemetry-javaagent/2.8.0/opentelemetry-javaagent-2.8.0.jar
+popd
 if [ "${STACK}x" = "x" ]; then
 pushd lib/custom
 curl -LO https://repo1.maven.org/maven2/net/sf/saxon/Saxon-HE/12.4/Saxon-HE-12.4.jar
 curl -LO https://repo1.maven.org/maven2/org/xmlresolver/xmlresolver/5.2.3/xmlresolver-5.2.3.jar
-curl -LO https://repo1.maven.org/maven2/io/opentelemetry/javaagent/opentelemetry-javaagent/2.8.0/opentelemetry-javaagent-2.8.0.jar
 popd
 
 if [ "$OSTYPE" == "msys" -o "$OSTYPE" == "win32" ]
