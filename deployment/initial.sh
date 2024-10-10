@@ -48,6 +48,9 @@ popd
 
 pwd=$(pwd)
 pushd ${1:-../../}
+pushd lib/custom
+curl -LO https://repo1.maven.org/maven2/io/opentelemetry/javaagent/opentelemetry-javaagent/2.8.0/opentelemetry-javaagent-2.8.0.jar
+popd
 if [ "${STACK}x" = "x" ]; then
 pushd lib/custom
 curl -LO https://repo1.maven.org/maven2/net/sf/saxon/Saxon-HE/12.5/Saxon-HE-12.5.jar
