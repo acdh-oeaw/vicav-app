@@ -44,7 +44,7 @@
     "npm": "10.2.x",
     "jvm": "17",
     "basex": "9.7.4",
-    "saxon": "12.4"
+    "saxon": "12.5"
   },
   "basex": {
     "parallel": "128",

@@ -50,7 +50,7 @@ pwd=$(pwd)
 pushd ${1:-../../}
 if [ "${STACK}x" = "x" ]; then
 pushd lib/custom
-curl -LO https://repo1.maven.org/maven2/net/sf/saxon/Saxon-HE/12.4/Saxon-HE-12.4.jar
+curl -LO https://repo1.maven.org/maven2/net/sf/saxon/Saxon-HE/12.5/Saxon-HE-12.5.jar
 curl -LO https://repo1.maven.org/maven2/org/xmlresolver/xmlresolver/5.2.3/xmlresolver-5.2.3.jar
 popd
 
