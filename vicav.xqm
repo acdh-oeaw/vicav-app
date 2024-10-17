@@ -2184,7 +2184,7 @@ declare function vicav:_get_tei_doc_list($type as xs:string*) {
          $api-problem:codes_to_message(404),
          'There are no TEI documents of type '||$type)},
       $corpus := if (not(exists($corpus)) and exists(collection($type)//tei:TEI))
-        then <teiCorpus xmlns="http://www.tei-c.org/ns/1.0">{collection($type)//tei:TEI!. update {delete node ./tei:text}}</teiCorpus>
+        then <teiCorpus xmlns="http://www.tei-c.org/ns/1.0">{collection($type)//tei:TEI!. update {delete node (./tei:text,./tei:standOff)}}</teiCorpus>
         else $corpus,
       $corpus := if (exists($corpus/@xml:id)) then $corpus else $corpus update { insert node attribute {"id"} {$type} as first into . }, 
       $notFound := if (not(exists($corpus))) then
