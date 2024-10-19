@@ -1947,9 +1947,10 @@ declare function vicav:_get_data_words($type as xs:string*) {
     let $persons := if ($type = 'samples') then 
         for $w in collection('vicav_' || $type || vicav:get_project_db())/tei:teiCorpus/tei:TEI/tei:text/tei:body/tei:div[@type="sampleText"]/tei:p/tei:s//tei:w/tei:fs/tei:f[@name="wordform"]/text()
         return replace(normalize-space($w), '[\s&#160;]', '')
-    else for $w in collection('vicav_' || $type || vicav:get_project_db())/tei:TEI/tei:text/tei:body/tei:div/tei:div[@type="featureGroup"]/tei:cit[@type="featureSample"]/tei:quote//tei:w/tei:fs/tei:f[@name="wordform"]/text()
+    else if ($type = "features") then for $w in collection('vicav_' || $type || vicav:get_project_db())/tei:TEI/tei:text/tei:body/tei:div/tei:div[@type="featureGroup"]/tei:cit[@type="featureSample"]/tei:quote//tei:w/tei:fs/tei:f[@name="wordform"]/text()
        return replace(normalize-space($w), '[\s&#160;]', '')
-
+    else for $w in collection('vicav_' || $type || vicav:get_project_db())/tei:TEI/tei:text/tei:body/tei:div/tei:annotationBlock/tei:u/tei:w
+        return replace(normalize-space($w), '[\s&#160;]', '')
     let $out :=
     for $person in distinct-values($persons)
         order by $person
