@@ -69,12 +69,6 @@
             <xsl:apply-templates select="t:person" mode="arrayItem"/>
         </listPerson>
     </xsl:template>
-
-    <xsl:template match="t:particDesc">
-        <particDesc type="array">
-            <xsl:apply-templates select="t:person" mode="arrayItem"/>
-        </particDesc>
-    </xsl:template>
     
     <xsl:template match="t:*" mode="arrayItem">
         <_ type="object">
