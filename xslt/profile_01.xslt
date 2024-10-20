@@ -335,7 +335,12 @@
     <xsl:template match="tei:div[@type=['sampleText', 'lingFeatures', 'bibliography']]">
         <xsl:if test="count(./tei:p/tei:ref) > 0">
             <xsl:copy>
-                <xsl:apply-templates/>
+                <xsl:apply-templates select="./tei:head"/>
+                <xsl:copy select="./tei:p">
+                    <xsl:apply-templates select="./tei:ref">
+                        <xsl:sort select="number(replace(./text(), '([a-zA-Z]+)(\d+)/.+', '$2'))" data-type="number" order="ascending"/>
+                    </xsl:apply-templates>
+                </xsl:copy>
             </xsl:copy>
         </xsl:if>
     </xsl:template>
