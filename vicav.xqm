@@ -1926,29 +1926,55 @@ function vicav:get_sample_persons($type as xs:string*) {
         <persons>{$out}</persons>)
 };
 
+declare function vicav:tr($string as xs:string) {
+    let $tr := translate($string, 
+        "ᵃᵉⁱᵒᵘᵊʰʷʸˢᶴQāēīōūḅṭḍṣẓḏšžṛḥṃǧġʕʔ",
+        "aeiouehwyssqaeioubtdszdszrhmgg??"
+    )
+    return replace(
+        replace($tr, "ǟ", "a"), "ḏ̣", "d")
+};
+
 declare
 %rest:path("/vicav/data_words")
 %rest:query-param("type", "{$type}")
+%rest:query-param("query", "{$query}")
 %rest:GET
 %rest:produces("application/xml")
 %rest:produces("application/json")
 %rest:produces('application/problem+json')   
 %rest:produces('application/problem+xml')
-function vicav:get_data_words($type as xs:string*) {
+function vicav:get_data_words($type as xs:string*, $query as xs:string*) {
     api-problem:or_result (prof:current-ns(),
-    vicav:_get_data_words#1, [$type], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_get_data_words#2, [$type, $query], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };
 
-declare function vicav:_get_data_words($type as xs:string*) {
+declare function vicav:_get_data_words($type as xs:string*, $query as xs:string*) {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
-    let $type := if ($type = () or $type = '') then 'samples' else $type
+    let $collections := if (empty($type) or $type = '') then 
+        <i><coll>samples</coll><coll>corpus</coll><coll>lingfeatures</coll></i> else <i><coll>{$type}</coll></i>
+    
+     let $words := for $collName in $collections[1]/coll/text()
+        let $collection := collection("vicav_" || $collName || vicav:get_project_db())
+        let $base := if ($collName = "samples") then 
+            $collection/tei:teiCorpus/tei:TEI/tei:text/tei:body/tei:div[@type="sampleText"]/tei:p/tei:s
+            else if ($collName = "lingfeatures") then
+            $collection/tei:TEI/tei:text/tei:body/tei:div/tei:div[@type="featureGroup"]/tei:cit[@type="featureSample"]/tei:quote
+            else $collection/tei:TEI/tei:text/tei:body/tei:div/tei:annotationBlock/tei:u/tei:w
+        
+        return if ($collName = ["samples", "lingfeatures"]) then
+            (
+                $base/tei:choice/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text(),
+                $base/tei:choice/tei:phr/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text(),                
+                $base/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text(),
+                $base/tei:phr/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text()
+            )
+            else 
+                $base[if (empty($query)) then true() else contains(vicav:tr(.), vicav:tr($query))]
 
-    let $persons := if ($type = 'samples') then 
-        for $w in collection('vicav_' || $type || vicav:get_project_db())/tei:teiCorpus/tei:TEI/tei:text/tei:body/tei:div[@type="sampleText"]/tei:p/tei:s//tei:w/tei:fs/tei:f[@name="wordform"]/text()
+    let $persons := for $w in $words
         return replace(normalize-space($w), '[\s&#160;]', '')
-    else for $w in collection('vicav_' || $type || vicav:get_project_db())/tei:TEI/tei:text/tei:body/tei:div/tei:div[@type="featureGroup"]/tei:cit[@type="featureSample"]/tei:quote//tei:w/tei:fs/tei:f[@name="wordform"]/text()
-       return replace(normalize-space($w), '[\s&#160;]', '')
 
     let $out :=
     for $person in distinct-values($persons)
@@ -1964,7 +1990,7 @@ declare function vicav:_get_data_words($type as xs:string*) {
         'xslt/data_words-json.xslt')
         return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else 
-        <words>{$out}</words>
+        <words>{$out}</words> 
 };
 
 
