@@ -24,6 +24,7 @@
                 <xsl:value-of select="$u/@xml:id"/>
             </div>
             <div class="content">
+            <xsl:variable name="ana-exists" select="exists($u//@ana)"/>
             <xsl:for-each select="$u/*">
                 <xsl:variable name="ana-id" select="substring(@ana, 2)"/>
                 <span>
@@ -36,16 +37,18 @@
                     </xsl:attribute>
                     <xsl:attribute name="id" select="@xml:id"/>
                     <xsl:value-of select="."/>
+                    <xsl:if test="$ana-exists">
                     <span class="ana">
                       <xsl:apply-templates select="//*[@xml:id=$ana-id]/tei:f"/>
                       &#xA0;
                     </span>
+                    </xsl:if>
                 </span>
                 <xsl:if test="not(./@join = 'right' or following-sibling::*[1]/name() = 'pc')">
-                    <span class="c" xml:space="preserve"> <span class="ana">&#xA0;</span></span>
+                    <span class="c">&#xA0;<xsl:if test="$ana-exists"><span class="ana">&#xA0;</span></xsl:if></span>
                 </xsl:if>
                 <xsl:if test="./@join = 'right' and ./@rend='withDash'">
-                    <span class="c">-<span class="ana">&#xA0;</span></span>
+                    <span class="c">-<xsl:if test="$ana-exists"><span class="ana">&#xA0;</span></xsl:if></span>
                 </xsl:if>
             </xsl:for-each>
             </div>
