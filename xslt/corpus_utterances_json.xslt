@@ -7,6 +7,7 @@
     <xsl:preserve-space elements="span"/>
 
     <xsl:param name="hits_str"/>
+    <xsl:param name="assetsBaseURI" />
 
     <xsl:template match="/">
         <json objects="json" arrays="utterances">
@@ -55,6 +56,13 @@
         <xsl:for-each select="./tei:u">
             <_ type="object">
                 <id><xsl:value-of select="@xml:id"/></id>
+                <audio>
+                    <xsl:if test="./tei:media[@mimeType='audio/mp3']">
+                        <xsl:value-of select="replace(
+                        ./tei:media[@mimeType='audio/mp3'][1]/@url, 
+                        'publicAssets:', $assetsBaseURI)" />
+                    </xsl:if>
+                </audio>
                 <content>
                     <xsl:apply-templates select="acdh:render-u(.)"/>
                 </content>
