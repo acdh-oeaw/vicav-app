@@ -188,35 +188,8 @@ declare function vicav:get_variety_data() {
   collection("wibarab_varieties")//json/*
 };
 
-declare function vicav:get_featurelist() {
-  let $docs := collection('wibarab_features')//tei:TEI
-  let $result :=
-  map:merge((
-    for $doc in $docs
-    let $filename := fn:tokenize(base-uri($doc), '/')[last()]
-    where starts-with($filename, 'feature')
-    return
-        map {
-           string($doc/@xml:id): 
-                map {
-                    "title": string($doc//tei:title),
-                    "values": map:merge((
-                        let $items := $doc//tei:list[@type = "featureValues"]/tei:item
-                        for $item in $items
-                        return map {string($item/@xml:id): string($item/tei:label)}))
-                    }
-                }
-          ))
-        
-   return json:parse(serialize($result, map {"method": "json", "indent": "no"}), map {"format": "direct"})/json/*
-};
-
-declare function vicav:get_taxonomy() {
-  let $docs := collection('wibarab_features')//tei:TEI
-  let $dmp := $docs[fn:tokenize(base-uri(.), '/')[last()] = 'wibarab_dmp.xml']
-  let $mainCategories := $dmp//tei:taxonomy/tei:category
-  let $result :=
-     map:merge((
+declare function vicav:get_categories($mainCategories){
+       map:merge((
       for $category in $mainCategories
       let $id := string($category/@xml:id)
       let $title := string($category/tei:catDesc)
@@ -233,8 +206,39 @@ declare function vicav:get_taxonomy() {
             )
           })
     ))
+};
 
-  return json:parse(serialize($result, map {"method": "json", "indent": "no"}), map {"format": "direct"})/json/*
+declare function vicav:get_featurelist(){
+  let $docs := collection('wibarab_features')//tei:TEI
+  let $result :=
+  map:merge((
+    for $doc in $docs
+    let $filename := fn:tokenize(base-uri($doc), '/')[last()]
+    where starts-with($filename, 'feature')
+    let $mainCategories := $doc//tei:taxonomy/tei:category
+    return
+        map {
+           string($doc/@xml:id): 
+                map {
+                    "values": map:merge(
+                        let $items := $doc//tei:list[@type = "featureValues"]/tei:item
+                        for $item in $items
+                        return map:entry(string($item/tei:label),substring(string($item/@corresp), 2))),
+                    "taxonomy": vicav:get_categories($mainCategories)
+                    }
+                }
+          ))
+        
+   return json:parse(serialize($result, map {"method": "json", "indent": "no"}), map {"format": "direct"})/json/*
+};
+
+declare function vicav:get_taxonomy() {
+  let $docs := collection('wibarab_features')//tei:TEI
+  let $dmp := $docs[fn:tokenize(base-uri(.), '/')[last()] = 'wibarab_dmp.xml']
+  let $mainCategories := $dmp//tei:taxonomy/tei:category
+  let $result := vicav:get_categories($mainCategories)
+  
+    return json:parse(serialize($result, map {"method": "json", "indent": "no"}), map {"format": "direct"})/json/*
 };
 
 declare
