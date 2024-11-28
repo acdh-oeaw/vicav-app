@@ -95,7 +95,7 @@
                     </tr>
                     <tr>
                         <td class="tdHead">Contributed by</td>
-                        <td class="tdProfileTableRight"><i><xsl:value-of select="//tei:author"/></i></td>
+                        <td class="tdProfileTableRight"><i><xsl:value-of select="string-join(./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:respStmt/tei:persName, ',')"/></i></td>
                     </tr>
                 </table>
             </div>
