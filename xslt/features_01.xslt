@@ -18,17 +18,39 @@
               <xsl:choose>
                 <xsl:when test="$tei-link-marker = 'true'">
                 <table class="tbHeader">
-                    <tr><td><h2><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/></h2></td><td class="tdTeiLink">{teiLink}</td><td class="tdPrintLink">
-                <a href="#" data-print="true" class="aTEIButton"><xsl:attribute name="data-featurelist"><xsl:value-of 
-                    select="./@xml:id"/></xsl:attribute>Print</a></td></tr>
+                    <tr>
+                        <td><h2><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/></h2></td>
+                        <td class="tdTeiLink">{teiLink}</td>
+                        <td class="tdPrintLink">
+                            <a data-print="true" target="_blank" class="aTEIButton">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="$print-url"/>
+                                </xsl:attribute>
+                                Print
+                            </a>
+                        </td>
+                    </tr>
                 </table>
                 </xsl:when>
                 <xsl:otherwise>
-                  <h2><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/></h2>
+                  <table class="tbHeader">
+                    <tr>
+                        <td>
+                            <h2><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/></h2>
+                        </td>
+                        <td class="tdPrintLink">
+                            <a data-print="true" target="_blank" class="aTEIButton">
+                                <xsl:attribute name="href">
+                                    <xsl:value-of select="$print-url"/>
+                                </xsl:attribute>
+                                Print
+                            </a>
+                        </td>
+                    </tr>
+                  </table>
                 </xsl:otherwise>
               </xsl:choose>
-
-                <p xml:space="preserve">By <i><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/><xsl:if test="./tei:teiHeader/tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="replace(./tei:teiHeader/tei:revisionDesc/tei:change[1]/@when, 'T.*', '')" />)</xsl:if></i></p>
+                <p xml:space="preserve">By <i><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/><xsl:if test="./tei:teiHeader/tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="replace(subsequence(./tei:teiHeader/tei:revisionDesc/tei:change/@when, 1, 1)[1], 'T.*', '')" />)</xsl:if></i></p>
                 
                 <ul id="informants"><xsl:for-each select="./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person"><li xml:space="preserve">Informant ID: <i><xsl:value-of 
                     select="."/></i><xsl:if

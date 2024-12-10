@@ -20,11 +20,13 @@
         <xsl:variable name="html">
         <div class="u">
             <xsl:attribute name="id" select="$u/@xml:id"/>
-            <div class="xmlId">
+            <div class="xml-id">
                 <xsl:value-of select="$u/@xml:id"/>
             </div>
             <div class="content">
+            <xsl:variable name="ana-exists" select="exists($u//@ana)"/>
             <xsl:for-each select="$u/*">
+                <xsl:variable name="ana-id" select="substring(@ana, 2)"/>
                 <span>
                     <xsl:attribute name="class">
                         <xsl:value-of select="./name()"/>
@@ -35,12 +37,18 @@
                     </xsl:attribute>
                     <xsl:attribute name="id" select="@xml:id"/>
                     <xsl:value-of select="."/>
+                    <xsl:if test="$ana-exists">
+                    <span class="ana">
+                      <xsl:apply-templates select="//*[@xml:id=$ana-id]/tei:f"/>
+                      &#xA0;
+                    </span>
+                    </xsl:if>
                 </span>
                 <xsl:if test="not(./@join = 'right' or following-sibling::*[1]/name() = 'pc')">
-                    <span xml:space="preserve"> </span>
+                    <span class="c">&#xA0;<xsl:if test="$ana-exists"><span class="ana">&#xA0;</span></xsl:if></span>
                 </xsl:if>
                 <xsl:if test="./@join = 'right' and ./@rend='withDash'">
-                    <span>-</span>
+                    <span class="c">-<xsl:if test="$ana-exists"><span class="ana">&#xA0;</span></xsl:if></span>
                 </xsl:if>
             </xsl:for-each>
             </div>
@@ -48,6 +56,15 @@
         </xsl:variable>
         <xsl:value-of select='serialize($html, map{"method":"html"})'/>
     </xsl:function>
+    
+    <xsl:template match="tei:f">
+    <span class="sep">/</span><span class="{@name}"><xsl:value-of select="(tei:string|@fVal)"/></span>
+    </xsl:template>
+    
+    <xsl:template match="tei:f[@name='dict']">
+    <xsl:variable name="dict" select="replace(//tei:prefixDef[@ident='dict']/@replacementPattern, '.+/(.+)\.xml#\$1$', '$1')"/>
+    <span class="sep">/</span><a class="{@name}" data-target-type="DictQuery" data-text-id="{$dict}" data-query-params="{{&quot;id&quot;: &quot;{replace((tei:string|@fVal), '^dict:', '')}&quot;}}" href="#"><i class="fa-solid fa-book"></i></a> 
+    </xsl:template>
 
     <xsl:template match="/doc">
         <id><xsl:value-of select="@id"/></id>

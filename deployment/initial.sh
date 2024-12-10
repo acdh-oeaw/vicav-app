@@ -11,7 +11,7 @@ npm install --production
 pushd ${1:-../../}
 source data/credentials
 local_password=${BASEX_admin_pw:-admin}
-git clone $CONTENT_REPO -b $CONTENT_BRANCH --depth=10
+git clone $CONTENT_REPO -b $CONTENT_BRANCH --depth=10 # for getting a tag later on at least for a while
 cp -Rv ./*-{content,data}/deployment/* .
 mv redeploy.settings.dist redeploy.settings
 sed -e "s~local_password=.*~local_password='$local_password'~g" -i'' redeploy.settings
@@ -48,9 +48,12 @@ popd
 
 pwd=$(pwd)
 pushd ${1:-../../}
+pushd lib/custom
+curl -LO https://repo1.maven.org/maven2/io/opentelemetry/javaagent/opentelemetry-javaagent/2.8.0/opentelemetry-javaagent-2.8.0.jar
+popd
 if [ "${STACK}x" = "x" ]; then
 pushd lib/custom
-curl -LO https://repo1.maven.org/maven2/net/sf/saxon/Saxon-HE/12.4/Saxon-HE-12.4.jar
+curl -LO https://repo1.maven.org/maven2/net/sf/saxon/Saxon-HE/12.5/Saxon-HE-12.5.jar
 curl -LO https://repo1.maven.org/maven2/org/xmlresolver/xmlresolver/5.2.3/xmlresolver-5.2.3.jar
 popd
 
@@ -70,4 +73,4 @@ fi
 curl --connect-timeout 5 --max-time 10 --retry 3 --retry-delay 0  --retry-max-time 40 --retry-connrefused 3 \
      -X POST "http://localhost:$PORT/restvle/dicts" -H "accept: application/vnd.wde.v2+json" -H "Content-Type: application/json" -d "{\"name\":\"dict_users\"}"
 curl -X POST "http://localhost:$PORT/restvle/dicts/dict_users/users" -H "accept: application/vnd.wde.v2+json" -H "Content-Type: application/json" -d "{\"id\":\"\",\"userID\":\"admin\",\"pw\":\"$local_password\",\"read\":\"y\",\"write\":\"y\",\"writeown\":\"n\",\"table\":\"dict_users\"}"
-exec ./redeploy.sh
+exec ./redeploy.sh $@

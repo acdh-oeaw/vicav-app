@@ -13,6 +13,7 @@ declare namespace test = "http://exist-db.org/xquery/xqsuite";
 
 import module namespace openapi="https://lab.sub.uni-goettingen.de/restxqopenapi" at "3rd-party/openapi4restxq/content/openapi.xqm";
 import module namespace util = "https://www.oeaw.ac.at/acdh/tools/vle/util" at "3rd-party/vleserver_basex/vleserver/util.xqm";
+import module namespace u = "http://basex.org/modules/util";
 
 (:~
  : VICAV API
@@ -102,8 +103,28 @@ declare
 %rest:produces('application/problem+json')   
 %rest:produces('application/problem+xml')
 function vicav:project_config() {
-  api-problem:or_result (prof:current-ns(),
-    vicav:_project_config#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  let $hash := if (exists(try{collection('prerendered_json')} catch err:FODC0002 {()}))
+               then xs:string(collection('prerendered_json')//json/ETag/text())
+               else ()
+    , $hashBrowser := request:header('If-None-Match', '')
+  return if ($hash and ($hash = $hashBrowser)) then api-problem:return_problem(prof:current-ns(),
+    <problem xmlns="urn:ietf:rfc:7807">
+      <type>https://tools.ietf.org/html/rfc7231#section-6</type>
+      <title>{$api-problem:codes_to_message(304)}</title>
+      <status>304</status>
+    </problem>,
+  map:merge((cors:header(()), vicav:return_content_header(), map{
+      'X-UA-Compatible': 'IE=11'
+    , 'Cache-Control': 'public, max-age=2, must-revalidate'
+    , 'ETag': $hash
+    })))
+  else api-problem:or_result (prof:current-ns(),
+    vicav:_project_config#0, [], map:merge((cors:header(()), vicav:return_content_header(),
+    if ($hash) then map{
+      'X-UA-Compatible': 'IE=11'
+    , 'Cache-Control': 'public, max-age=2, must-revalidate'
+    , 'ETag': $hash
+    } else ()))
   )
 };
 
@@ -123,11 +144,12 @@ function vicav:_project_config() {
     return if (matches($accept-header, '[+/]json'))
     then
       let $jsonAsXML := 
-        if (exists(try{collection('prerendered_json')} catch err:FODC0002 {()}) and
-            exists(collection('prerendered_json')//json[projectConfig/baseURIPublic = $publicURI]))
-        then collection('prerendered_json')//json[projectConfig/baseURIPublic = $publicURI] update {insert node <cached type="boolean">true</cached> as first into ./projectConfig}
+        if (exists(try{collection('prerendered_json')} catch err:FODC0002 {()}))
+        then collection('prerendered_json')//json
+         update {insert node <cached type="boolean">true</cached> as first into ./projectConfig,
+       .//text()[contains(., '{{host_name}}')]!(replace value of node . with replace(., '{{host_name}}/{{path}}', $publicURI, 'q'))}
         else vicav:project_config_json_as_xml($publicURI) update {insert node <cached type="boolean">false</cached> as first into ./json/projectConfig}
-      return serialize($jsonAsXML, map {"method": "json"})
+      return serialize($jsonAsXML, map {"method": "json", "indent": "no"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
       return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
 };
@@ -137,43 +159,86 @@ declare function vicav:project_config_json_as_xml($publicURI as xs:string) {
         $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>,
         $jsonAsXML := xslt:transform($config, 'xslt/menu-json.xslt', map{'baseURIPublic': $publicURI}),
         $jsonAsXML := $jsonAsXML update {
-          .//*[starts-with(local-name(), "insert_")]!(replace node . with <_ type="object">{vicav:get_insert_data(local-name())}</_>)
-        }      
-    return $jsonAsXML
+          .//*[starts-with(local-name(), "insert_")]!(replace node . with vicav:get_insert_data(local-name()))
+        },
+        $hash := xs:string(xs:hexBinary(hash:md5($jsonAsXML))),
+        $res := $jsonAsXML/json update {
+          insert node <ETag>{$hash}</ETag> into .
+        }
+    return $res
 };
 
 declare function vicav:get_insert_data($type as xs:string) {
   switch ($type)
-    case "insert_featurelist" return vicav:get_featurelist()
-    case "insert_variety_data" return vicav:get_variety_data()
-    default return json:parse(vicav:_get_tei_doc_list(replace($type, '^insert_', '')))/json/*
+    case "insert_featurelist" return <_ type="object">{vicav:get_featurelist()}</_>
+    case "insert_variety_data" return <_ type="object">{vicav:get_variety_data()}</_>
+    case "insert_taxonomy" return <_ type="object">{vicav:get_taxonomy()}</_>
+    case "insert_list_of_corpus_characters" return vicav:get_list_of_corpus_characters()
+    default return <_ type="object">{json:parse(vicav:_get_tei_doc_list(replace($type, '^insert_', '')))/json/*}</_>
+};
+
+declare function vicav:get_list_of_corpus_characters() as element(specialCharacters) {
+  <specialCharacters>{
+    for $c in sort(distinct-values(collection('vicav_corpus')//text()[normalize-space() ne '']!u:chars(normalize-unicode(.,'NFC')))[not(matches(., '[-/()\[\]0-9a-zA-z<>,.;:+*?!~%=#"&apos;]|\s'))]) return
+    <_ type="object"><value>{$c}</value></_>
+  }</specialCharacters> 
 };
 
 declare function vicav:get_variety_data() {
   collection("wibarab_varieties")//json/*
 };
 
-declare function vicav:get_featurelist() {
+declare function vicav:get_categories($mainCategories){
+       map:merge((
+      for $category in $mainCategories
+      let $id := string($category/@xml:id)
+      let $title := string($category/tei:catDesc)
+      let $subcategories := $category/tei:category
+      return
+        if (empty($subcategories)) then
+          map:entry($id, map { "title": $title })
+        else
+          map:entry($id, map { 
+            "title": $title, 
+            "subcategories": map:merge(
+              for $sub in $subcategories
+              return map:entry(string($sub/@xml:id), string($sub/tei:catDesc))
+            )
+          })
+    ))
+};
+
+declare function vicav:get_featurelist(){
   let $docs := collection('wibarab_features')//tei:TEI
   let $result :=
   map:merge((
     for $doc in $docs
     let $filename := fn:tokenize(base-uri($doc), '/')[last()]
     where starts-with($filename, 'feature')
+    let $mainCategories := $doc//tei:taxonomy/tei:category
     return
         map {
            string($doc/@xml:id): 
                 map {
-                    "title": string($doc//tei:title),
-                    "values": map:merge((
+                    "values": map:merge(
                         let $items := $doc//tei:list[@type = "featureValues"]/tei:item
                         for $item in $items
-                        return map {string($item/@xml:id): string($item/tei:label)}))
+                        return map:entry(string($item/tei:label),substring(string($item/@corresp), 2))),
+                    "taxonomy": vicav:get_categories($mainCategories)
                     }
                 }
           ))
         
-   return json:parse(serialize($result, map {"method": "json"}), map {"format": "direct"})/json/*
+   return json:parse(serialize($result, map {"method": "json", "indent": "no"}), map {"format": "direct"})/json/*
+};
+
+declare function vicav:get_taxonomy() {
+  let $docs := collection('wibarab_features')//tei:TEI
+  let $dmp := $docs[fn:tokenize(base-uri(.), '/')[last()] = 'wibarab_dmp.xml']
+  let $mainCategories := $dmp//tei:taxonomy/tei:category
+  let $result := vicav:get_categories($mainCategories)
+  
+    return json:parse(serialize($result, map {"method": "json", "indent": "no"}), map {"format": "direct"})/json/*
 };
 
 declare
@@ -186,13 +251,13 @@ declare
 %rest:produces('application/problem+xml')
 function vicav:prerender_project_config() {
   let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' },
-      $publicURI := try { replace(util:get-base-uri-public(), '/project', '') } catch basex:http { '' },
-      $prerenderedFileName := replace($publicURI, 'https?://', '') => translate(':', '_')||'/prerendered_json.xml',
+      $publicURI := '{{host_name}}/{{path}}',
+      $prerenderedFileName := $publicURI||'/prerendered_json.xml',
       $jsonAsXml := api-problem:or_result (prof:current-ns(),
     vicav:project_config_json_as_xml#1, [$publicURI], map:merge((cors:header(()), vicav:return_content_header()))
   ),
       $res := if (matches($accept-header, '[+/]json')) 
-        then ($jsonAsXml[1],serialize($jsonAsXml[2], map {'method': 'json'})) 
+        then ($jsonAsXml[1],$jsonAsXml[2]) 
         else ($jsonAsXml[1],serialize($jsonAsXml[2], map {'method': 'xml'}))
   return (
     if (db:exists('prerendered_json')) then db:replace('prerendered_json', $prerenderedFileName, $jsonAsXml[2])
@@ -383,7 +448,7 @@ function vicav:get_profile($coll as xs:string, $id as xs:string*, $xsltfn as xs:
   let $generateTeiMarker := exists($xsltfn)
   let $xsltfn := if (exists($xsltfn)) then $xsltfn else "profile_vue.xslt"
   return api-problem:or_result (prof:current-ns(),
-    vicav:_get_profile#6, [$coll, $id, $xsltfn, $print, $generateTeiMarker, '/profile'], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_get_document_transformed#6, [$coll, $id, $xsltfn, $print, $generateTeiMarker, '/profile'], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };
 
@@ -391,19 +456,27 @@ declare
 %rest:path("/vicav/ling_feature")
 %rest:GET
 %rest:query-param("id", "{$id}")
+%rest:query-param("print", "{$print}")
 %test:arg("id", "ling_features_baghdad")
-function vicav:get_ling_feature($id as xs:string?) {
+function vicav:get_ling_feature($id as xs:string?, $print as xs:string*) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_get_profile#6, ['vicav_lingfeatures', $id, 'features_01.xslt', (), false(), '/ling_feature'], map:merge((cors:header(()), vicav:return_content_header())))
+    vicav:_get_document_transformed#6, ['vicav_lingfeatures', $id, 'features_01.xslt', $print, false(), '/ling_feature'], map:merge((cors:header(()), vicav:return_content_header())))
 };
 
-declare function vicav:_get_profile($coll as xs:string, $id as xs:string*,
+declare function vicav:_get_document_transformed($coll as xs:string, $id as xs:string*,
   $xsltfn as xs:string*, $print as xs:string*, $generateTeiMarker as xs:boolean,
-  $endpoint as xs:string) { 
-  vicav:transform(collection($coll || vicav:get_project_db())/descendant::tei:TEI[@xml:id=$id],
+  $endpoint as xs:string) {
+  let $doc := collection($coll || vicav:get_project_db())/descendant::tei:TEI[@xml:id=$id],
+      $doc-exists := if (exists($doc)) then true()
+	                 else error(xs:QName('response-codes:_404'), 
+                                $api-problem:codes_to_message(404), 'A document with xml:id '||$id|| ' does not exist in '|| $coll || vicav:get_project_db() || '.')
+  return vicav:transform($doc,
      $xsltfn, $print, map{
           'param-base-path': replace(util:get-base-uri-public(), $endpoint, ''),
-          'tei-link-marker': xs:string($generateTeiMarker)
+          'tei-link-marker': xs:string($generateTeiMarker),
+          "print-url": concat(
+             request:uri(), "?", request:query(), "&amp;print=true" 
+          )
         }
      )
 };
@@ -426,7 +499,11 @@ function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:
     let $results := xquery:eval($query)
     return 
         (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        vicav:transform($results, $xsltfn, $print, map{}))
+        vicav:transform($results, $xsltfn, $print, map{
+            "print-url": concat(
+                request:uri(), "?", request:query(), "&amp;print=true" 
+            )
+        }))
 };
 
 
@@ -687,7 +764,10 @@ function vicav:explore_samples(
             "filter-words": string($word),
             "filter-features":$filter_features,
             "filter-translations": $trans_filter,
-            "filter-comments": $comment_filter
+            "filter-comments": $comment_filter,
+            "print-url": concat(
+                request:uri(), "?", request:query(), "&amp;print=true" 
+            )
         })
 
     return
@@ -696,6 +776,376 @@ function vicav:explore_samples(
         (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
         $sHTML)
 };
+
+declare function vicav:compare-features-query(
+    $collection as xs:string,
+    $ids as xs:string*, 
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*,
+    $comment as xs:string*
+) as xs:string {
+    let $ids_q := for $id in tokenize($ids, ",") return '"'|| $id || '"'
+    let $id_q := if (empty($ids_q)) then "" else 
+        "[@xml:id = [" || string-join($ids_q, ',') || "]]"
+
+    let $words_q := for $w in tokenize($word, ',')
+            let $match_str := if (contains($w, '*')) then
+                '[matches(.,"(^|\W)' || replace($w, '\*', '.*') || '($|\W)")][1]'
+                else 
+                '[contains-token(.,"' || $w || '")][1]'
+            return 
+                vicav:or(('./tei:quote/tei:w' || $match_str, 
+                './tei:quote/tei:w/tei:fs/tei:f' || $match_str, 
+                './tei:quote/tei:phr/tei:w/tei:fs/tei:f' || $match_str))
+    let $features_q := for $f in tokenize($features, ",") return '"'|| $f || '"'
+    let $ana_q := if (empty($features_q)) then '' else '@ana = ['|| string-join($features_q, ",") ||']'
+
+    let $feature_q := if (empty($features_q)) then '' else vicav:or(
+        ('./' || $ana_q ,
+        './tei:quote/tei:w[' || $ana_q || '][1]',
+        './tei:quote/tei:choice[' || $ana_q || '][1]',
+        './tei:quote/tei:w/tei:fs/tei:f[' || $ana_q || '][1]', 
+        './tei:quote/tei:phr/tei:w/tei:fs/tei:f[' || $ana_q || '][1]'
+        )
+    )
+
+    let $transls_q := for $t in tokenize($translation, ',')
+            let $match_str := 'contains(.,"' || $t || '")'
+            return 
+                vicav:or(('./tei:cit/tei:quote[' || $match_str || '][1]', 
+                './tei:quote/tei:w/tei:fs/tei:f[@type="translation" and ' || $match_str || '][1]'
+                ))
+    let $transl_q := if (empty($transls_q)) then '' else vicav:or($transls_q)
+
+    let $comments_q := for $c in tokenize($comment, ',')
+     return vicav:or(
+        ('./tei:quote/tei:w/tei:fs/tei:f[@name="comment" and ' ||
+     'contains(translate(.,"ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "' 
+     || $c || '")][1]',
+     './tei:quote/tei:phr/tei:w/tei:fs/tei:f[@name="comment" and ' ||
+     'contains(translate(.,"ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "' 
+     || $c || '")][1]' 
+     ))
+                
+    let $comment_q := if (empty($comments_q)) then '' else vicav:or($comments_q)
+    let $word_q := if (empty($words_q)) then '' else vicav:or($words_q)
+     (: return $feature_q :)
+    
+    let $full_tei_query := vicav:and((vicav:and(($word_q, $transl_q, $comment_q,
+    $feature_q))))
+
+    let $full_tei_query := if (not($full_tei_query = '')) then
+        '[' || $full_tei_query || ']'
+        else
+        $full_tei_query
+
+    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || 
+        $collection ||'")/descendant::tei:TEI' || $id_q || '/tei:text/tei:body/tei:div/tei:div/tei:cit[@type="featureSample"]'
+        || $full_tei_query
+
+    return $query
+};
+
+declare function vicav:compare-data(
+    $resourcetype as xs:string, 
+    $ids as xs:string,
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*, 
+    $comment as xs:string*
+    ) {
+
+    let $features_filter := if ((empty($word) or $word = '') and (empty($features) or $features = '')) then 
+            ''
+        else 
+            if ($resourcetype = 'samples') then replace($features, '[^\d,]+', '') else replace($features, '[^\w:,_]+', '')
+            
+    let $comment_filter := if (empty($comment)) then '' else  lower-case($comment) 
+    let $trans_filter := if (empty($translation)) then '' else $translation
+    let $query := if ($resourcetype = "samples") then
+    vicav:compare-samples-query(
+        'vicav_' || $resourcetype || vicav:get_project_db(),
+        $ids,
+        $word,
+        $features_filter,
+        $trans_filter,
+        $comment_filter
+    )
+    else vicav:compare-features-query(
+        'vicav_' || $resourcetype || vicav:get_project_db(),
+        $ids,
+        $word,
+        $features_filter,
+        $trans_filter,
+        $comment_filter
+    )
+    return xquery:eval($query)
+};
+
+declare function vicav:compare-samples-query(
+    $collection as xs:string,
+    $ids as xs:string*, 
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*,
+    $comment as xs:string*
+) as xs:string {
+    let $ids_q := for $id in tokenize($ids, ",") return '"'|| $id || '"'
+    let $id_q :=  if (empty($ids_q)) then "" else 
+        "[@xml:id = [" || string-join($ids_q, ',') || "]]"
+
+    let $words_q := for $w in tokenize($word, ',')
+        let $match_str := if (contains($w, '*')) then
+            '[matches(.,"(^|\W)' || replace($w, '\*', '.*') || '($|\W)")][1]'
+            else 
+            '[contains-token(.,"' || $w || '")][1]'
+        return 
+            vicav:or(('./tei:w' || $match_str, 
+            './tei:w/tei:fs/tei:f' || $match_str, 
+            './tei:phr/tei:w/tei:fs/tei:f' || $match_str))
+    let $features_q := for $f in tokenize($features, ",") return '"'|| $f || '"'
+    let $feature_q := if (empty($features_q)) then '' 
+        else './@n = ['|| string-join($features_q, ",") ||']'
+
+    let $transls_q := for $t in tokenize($translation, ',')
+        let $match_str := 'contains(.,"' || $t || '")'
+        return vicav:or((
+            '../../tei:div[@type="translationSentence"]/tei:s[' || $match_str || '][1]', 
+            './tei:w/tei:fs/tei:f[@type="translation" and ' || $match_str || '][1]'
+        ))
+    let $transl_q := if (empty($transls_q)) then '' else vicav:or($transls_q)
+
+    let $comments_q := for $c in tokenize($comment, ',')
+     return vicav:or(
+        ('./tei:w/tei:fs/tei:f[@name="comment" and ' ||
+     'contains(translate(.,"ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "' 
+     || $c || '")][1]',
+     './tei:phr/tei:w/tei:fs/tei:f[@name="comment" and ' ||
+     'contains(translate(.,"ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "' 
+     || $c || '")][1]' 
+     ))
+                
+    let $comment_q := if (empty($comments_q)) then '' else vicav:or($comments_q)
+    let $word_q := if (empty($words_q)) then '' else vicav:or($words_q)
+    
+    let $full_tei_query := vicav:and(($word_q, $transl_q, $comment_q,
+        $feature_q))
+
+    let $full_tei_query := if (not($full_tei_query = '')) then
+        '[' || $full_tei_query || ']'
+        else
+        $full_tei_query
+
+    let $query := 'declare namespace tei = "http://www.tei-c.org/ns/1.0"; collection("' || 
+        $collection ||
+        '")/descendant::tei:teiCorpus/tei:TEI' || $id_q ||
+        '/tei:text/tei:body/tei:div[@type="sampleText"]/tei:p/tei:s'
+        || $full_tei_query
+
+    return $query
+};
+
+
+declare
+%rest:path("/vicav/compare_markers")
+%rest:query-param("type", "{$type}")
+%rest:query-param("ids", "{$ids}")
+%rest:query-param("word", "{$word}")
+%rest:query-param("comment", "{$comment}")
+%rest:query-param("features", "{$features}")
+%rest:query-param("translation", "{$translation}")
+%rest:GET
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
+function vicav:get_compare_markers(
+   $type as xs:string, 
+    $ids as xs:string,
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*, 
+    $comment as xs:string* 
+) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_compare_markers#6, [
+    $type, 
+    $ids,
+    $word,
+    $features,
+    $translation, 
+    $comment], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_compare_markers(
+    $type as xs:string, 
+    $ids as xs:string,
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*, 
+    $comment as xs:string*
+) {  
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+    let $entries := vicav:compare-data(
+        $type, 
+        $ids,
+        $word,
+        $features,
+        $translation, 
+        $comment)
+
+    let $ids := distinct-values(vicav:get-root($entries)/@xml:id)
+    
+    let $dataType := if ($type = 'lingfeatures') then "Feature" else "SampleText" 
+
+    let $out :=
+        for $item in $entries
+        group by $locName := vicav:get-root($item)/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement[1]/tei:name[@xml:lang="en"]/text()
+        let $loc := replace(vicav:get-root($item[1])/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
+        return
+        
+            <r
+                type='geo'>
+                <loc>{$loc}</loc>
+                (: <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc> :)
+                <locName>{$locName}</locName>
+                <alt>{$locName}</alt>
+                <freq>{count($entries[vicav:get-root(.)/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement[1]/tei:name[@xml:lang="en"]/text() = $locName])}</freq>
+                <params>
+                    <dataType>{$dataType}</dataType>
+                    <ids>{string-join(distinct-values(vicav:get-root($item)/@xml:id), ",")}</ids>
+                    <features>{$features}</features>
+                    <translation>{$translation}</translation>
+                    <comment>{$comment}</comment>
+                    <word>{$word}</word>
+                </params>
+            </r>
+    
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>,
+        'xslt/bibl-markers-json.xslt',
+        map{"target-type": "ExploreSamples"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
+    else <rs>{$out}</rs>
+};
+
+declare
+%rest:path("/vicav/compare")
+%rest:query-param("type", "{$type}")
+%rest:query-param("ids", "{$ids}")
+%rest:query-param("word", "{$word}")
+%rest:query-param("comment", "{$comment}")
+%rest:query-param("features", "{$features}")
+%rest:query-param("translation", "{$translation}")
+%rest:query-param("highlight", "{$highlight}")
+%rest:query-param("page", "{$page}")
+%rest:query-param("print", "{$print}")
+%rest:GET
+function vicav:compare(
+    $type as xs:string, 
+    $ids as xs:string,
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*, 
+    $comment as xs:string*,
+    $highlight as xs:string*, 
+    $page as xs:string*,   
+    $print as xs:string*
+    ) {
+api-problem:or_result (prof:current-ns(),
+    vicav:_get_compare#9, [
+        $type, 
+        $ids,
+        $word,
+        $features,
+        $translation, 
+        $comment,
+        $highlight, 
+        $page,   
+        $print
+    ], map:merge((cors:header(()), vicav:return_content_header()))
+)  
+};
+
+declare function vicav:_get_compare(
+    $type as xs:string, 
+    $ids as xs:string,
+    $word as xs:string*,
+    $features as xs:string*,
+    $translation as xs:string*, 
+    $comment as xs:string*,
+    $highlight as xs:string*, 
+    $page as xs:string*,   
+    $print as xs:string*
+)  {
+    let $resourcetype := if (empty($type) or $type = '') then 
+        "samples"
+    else 
+        $type
+    
+    let $pagevalue := number(if (empty($page) or $page = '') then "1" else $page)
+
+    let $filter-features := if (empty($features) or $features = '') then "" else tokenize($features, ",")
+
+    let $data := vicav:compare-data($resourcetype, $ids, $word, $features, $translation, $comment)
+    
+    let $sorted := for $entry in $data
+                    order by ($entry/@ana, $entry/@n)[1]
+                    return $entry
+    let $paged := subsequence($sorted, ($pagevalue - 1) * 100 + 1, $pagevalue * 100)
+
+    let $ress := 
+        for $item in $paged
+        group by $feature := ($item/@ana, $item/@n)
+        return
+        <feature name="{$feature}" label="{$item[1]/tei:lbl}" count="{count($item)}">
+            {for $item-in-feature in $item 
+            group by $region := vicav:get-root($item-in-feature)/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:region
+            return <region name="{$region}" count="{count($item)}">{
+                for $item-in-region in $item-in-feature
+                group by $settlement := vicav:get-root($item-in-region)/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"]
+                return <settlement name="{$settlement}">{
+                    for $i in $item-in-region
+                    return 
+                        <item xml:id="{vicav:get-root($i)/@xml:id}" 
+                        informant="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]}" 
+                        age="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@age}" 
+                        sex="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person[1]/@sex}" 
+                        >{$i}{
+                            if ($resourcetype = "samples") then
+                            $i/../../../tei:div[@type="dvTranslations"]/tei:p/tei:s[@n = $i/@n] 
+                            else ()
+                        }</item>
+                }</settlement>
+            }
+            </region>
+            }
+        </feature>
+
+    (: let $features := distinct-values(($data/@ana, $data/@n)) :)
+
+    let $ress1 := <items count="{count($data)}" pages="{(count($data) idiv 100) + 1}">{$ress}</items>
+    (: return $ress1  :)
+
+    return vicav:transform($ress1, "cross_" || $resourcetype || "_03.xslt", $print, map {
+        (: "features": $features or , :)
+        "page": $pagevalue,
+        "filter-features": $filter-features,
+        "highlight":string($word),
+        "print-url": concat(
+            request:uri(), "?", request:query(), "&amp;print=true" 
+        )
+    })
+};
+
+
+declare
+function vicav:get-root($item) {
+    $item/../../../../..
+};
+
 
 (:~
  : get a description text
@@ -1294,7 +1744,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
       "target-type": "BiblioEntries",
       "current-query": $current-query
     })
-    return serialize($renderedJson, map {"method": "json"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else <rs type="{count($out2)}">{$out2}</rs>
         (: <res>{$out}</res> :)
         (: <res>{$query}</res> :)
@@ -1310,11 +1760,11 @@ declare
 %rest:produces('application/problem+xml')
 function vicav:get_profile_markers() {
   api-problem:or_result (prof:current-ns(),
-    vicav:_get_profile_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_get_document_transformed_markers#0, [], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };
 
-declare function vicav:_get_profile_markers() {
+declare function vicav:_get_document_transformed_markers() {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $entries := collection('vicav_profiles' || vicav:get_project_db())/descendant::tei:TEI
     let $out :=
@@ -1341,7 +1791,7 @@ declare function vicav:_get_profile_markers() {
     then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt', map{
       "target-type": "Profile"
     })
-    return serialize($renderedJson, map {"method": "json"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else <rs>{$out}</rs>
 };
 
@@ -1423,22 +1873,38 @@ declare function vicav:_get_sample_markers() {
     then let $renderedJson := xslt:transform(<_>{$out}</_>,
         'xslt/bibl-markers-json.xslt',
         map{"target-type": "SampleText"})
-    return serialize($renderedJson, map {"method": "json"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else <rs>{$out}</rs>
 };
 
 declare
 %rest:path("/vicav/feature_labels")
 %rest:GET
-
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
 function vicav:get_feature_labels() {
+    api-problem:or_result (prof:current-ns(),
+    vicav:_get_feature_labels#0, [], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare
+function vicav:_get_feature_labels() {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+   
     let $features := collection('vicav_lingfeatures' || vicav:get_project_db())/descendant::tei:TEI//tei:cit[@type="featureSample"]
     let $out := for $ana in distinct-values($features/@ana)
         return <feature ana="{$ana}">{$features[./@ana = $ana][1]/tei:lbl/text()}</feature>
 
-    return
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <features>{$out}</features>)
+
+    return if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>,
+        'xslt/feature_labels-json.xslt')
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
+    else
+        <features>{$out}</features>
 };
 
 
@@ -1464,21 +1930,55 @@ function vicav:get_sample_persons($type as xs:string*) {
         <persons>{$out}</persons>)
 };
 
+declare function vicav:tr($string as xs:string) {
+    let $tr := translate($string, 
+        "ᵃᵉⁱᵒᵘᵊʰʷʸˢᶴQāēīōūḅṭḍṣẓḏšžṛḥṃǧġʕʔ",
+        "aeiouehwyssqaeioubtdszdszrhmgg??"
+    )
+    return replace(
+        replace($tr, "ǟ", "a"), "ḏ̣", "d")
+};
+
 declare
 %rest:path("/vicav/data_words")
 %rest:query-param("type", "{$type}")
+%rest:query-param("query", "{$query}")
 %rest:GET
+%rest:produces("application/xml")
+%rest:produces("application/json")
+%rest:produces('application/problem+json')   
+%rest:produces('application/problem+xml')
+function vicav:get_data_words($type as xs:string*, $query as xs:string*) {
+    api-problem:or_result (prof:current-ns(),
+    vicav:_get_data_words#2, [$type, $query], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
 
-function vicav:get_sample_words($type as xs:string*) {
-    let $type := if ($type = () or $type = '') then 'samples' else $type
+declare function vicav:_get_data_words($type as xs:string*, $query as xs:string*) {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+    let $collections := if (empty($type) or $type = '') then 
+        <i><coll>samples</coll><coll>corpus</coll><coll>lingfeatures</coll></i> else <i><coll>{$type}</coll></i>
+    
+     let $words := for $collName in $collections[1]/coll/text()
+        let $collection := collection("vicav_" || $collName || vicav:get_project_db())
+        let $base := if ($collName = "samples") then 
+            $collection/tei:teiCorpus/tei:TEI/tei:text/tei:body/tei:div[@type="sampleText"]/tei:p/tei:s
+            else if ($collName = "lingfeatures") then
+            $collection/tei:TEI/tei:text/tei:body/tei:div/tei:div[@type="featureGroup"]/tei:cit[@type="featureSample"]/tei:quote
+            else $collection/tei:TEI/tei:text/tei:body/tei:div/tei:annotationBlock/tei:u/tei:w
+        
+        return if ($collName = ["samples", "lingfeatures"]) then
+            (
+                $base/tei:choice/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text(),
+                $base/tei:choice/tei:phr/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text(),                
+                $base/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text(),
+                $base/tei:phr/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text()
+            )
+            else 
+                $base[if (empty($query)) then true() else contains(vicav:tr(.), vicav:tr($query))]
 
-
-
-    let $persons := if ($type = 'samples') then 
-        for $w in collection('vicav_' || $type || vicav:get_project_db())/tei:teiCorpus/tei:TEI/tei:text/tei:body/tei:div[@type="sampleText"]/tei:p/tei:s//tei:w/tei:fs/tei:f[@name="wordform"]/text()
+    let $persons := for $w in $words
         return replace(normalize-space($w), '[\s&#160;]', '')
-    else for $w in collection('vicav_' || $type || vicav:get_project_db())/tei:TEI/tei:text/tei:body/tei:div/tei:div[@type="featureGroup"]/tei:cit[@type="featureSample"]/tei:quote//tei:w/tei:fs/tei:f[@name="wordform"]/text()
-       return replace(normalize-space($w), '[\s&#160;]', '')
 
     let $out :=
     for $person in distinct-values($persons)
@@ -1489,8 +1989,12 @@ function vicav:get_sample_words($type as xs:string*) {
         </word>
     
     return
-        (web:response-header(map {'method': 'xml'}, map:merge((cors:header(()), vicav:return_content_header()))),
-        <words>{$out}</words>)
+    if (matches($accept-header, '[+/]json'))
+    then let $renderedJson := xslt:transform(<_>{$out}</_>,
+        'xslt/data_words-json.xslt')
+        return serialize($renderedJson, map {"method": "json", "indent": "no"})
+    else 
+        <words>{$out}</words> 
 };
 
 
@@ -1543,7 +2047,7 @@ declare function vicav:_get_feature_markers() {
     then let $renderedJson := xslt:transform(<_>{$out}</_>,
         'xslt/bibl-markers-json.xslt',
         map{"target-type": "Feature"})
-    return serialize($renderedJson, map {"method": "json"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else <rs>{$out}</rs>
 };
 
@@ -1587,7 +2091,7 @@ declare function vicav:_get_all_data_markers() {
 
     return if (matches($accept-header, '[+/]json'))
     then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt')
-    return serialize($renderedJson, map {"method": "json"})
+    return serialize($renderedJson, map {"method": "json", "indent": "no"})
     else <rs>{$out}</rs>
 };
 
@@ -1705,15 +2209,22 @@ declare function vicav:_get_tei_doc_list($type as xs:string*) {
         error(xs:QName('response-codes:_422'), 
          $api-problem:codes_to_message(422),
          'You need to specify a type') else (),
-      $corpus := collection($type)//tei:teiCorpus,
+      $corpus := try { collection($type)//tei:teiCorpus } catch err:FODC0002 {
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'There are no TEI documents of type '||$type)},
       $corpus := if (not(exists($corpus)) and exists(collection($type)//tei:TEI))
-        then <teiCorpus xmlns="http://www.tei-c.org/ns/1.0">{collection($type)//tei:TEI!. update {delete node ./tei:text}}</teiCorpus>
+        then <teiCorpus xmlns="http://www.tei-c.org/ns/1.0">{collection($type)//tei:TEI!. update {delete node (./tei:text,./tei:standOff)}}</teiCorpus>
         else $corpus,
       $corpus := if (exists($corpus/@xml:id)) then $corpus else $corpus update { insert node attribute {"id"} {$type} as first into . }, 
       $notFound := if (not(exists($corpus))) then
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
-         'There are no TEI documents of type '||$type) else ()
+         'There are no TEI documents of type '||$type) else (),
+      $corpusIDs := $corpus//tei:idno[ends-with(@type, 'CorpusID')]/text()!xs:string(.),
+      $IDtypes :=  distinct-values($corpus//tei:idno/@type),
+      $IDsContainingData := collection($type)//tei:TEI[.//tei:w]//tei:idno[@type = $IDtypes][. = $corpusIDs]!xs:string(.),
+      $corpus := $corpus update { .//tei:TEI[.//tei:idno[@type = $IDtypes][. = $IDsContainingData]]!(insert node attribute {"hasTEIw"} {"true"} as first into .) }
   return serialize(xslt:transform($corpus, 'xslt/teiCorpusTeiHeader-json.xslt'), map {'method': 'json'})
 };
 
@@ -1792,16 +2303,19 @@ function vicav:search_corpus($query as xs:string, $print as xs:string?, $xslt as
 declare function vicav:_search_corpus($query as xs:string, $print as xs:string?, $xslt as xs:string?) {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     
-    let $query-words := tokenize($query, '\s')
-    let $query-parts := string-join(($query-words!('[word="' || encode-for-uri(.)
-        || '"]')))
+    let $query-parts := if (starts-with($query, "[")) then
+        $query
+    else
+        let $query-words := tokenize($query, '\s')
+        return string-join(($query-words!('[word="' || encode-for-uri(.)
+            || '"]')))
 
     let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
     let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
 
     let $noske_host := $config//noskeHost,
         $request := $noske_host || '/bonito/run.cgi/first?corpname=' || vicav:get_project_name()
-        || '&amp;queryselector=cqlrow&amp;cql='||$query-parts||'&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=-1&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
+        || '&amp;queryselector=cqlrow&amp;cql='||$query-parts||'&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=0&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
       , $_ := admin:write-log($request, 'INFO')
         
 
@@ -1844,22 +2358,22 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
         let $docId := tokenize($line/Refs/_[2], '=')[2]
         (:$docUandIds := if not((map:contains($docUandIds, $key))) then map:put($docUandIds, $key, []) else $docUandIds:)
         let $tokenId := if (count($line/Kwic/_) > 0) then
-                        tokenize($line/Kwic/_[1]/str/text(), '\s')
+                        tokenize(normalize-space($line/Kwic/_[1]/str/text()), '\s')
                      else if (count($line/Left/_) > 0) then
                         $line/Left/_[1]/text()
                      else if (count($line/Right/_) > 0) then
                         $line/Right/_[1]/text() else ""
         let $u := collection('vicav_corpus')
-          /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId]         
+          /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, "CorpusID")]/text() = $docId]         
         /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u[@xml:id = $uId]
-        return <hit u="{$uId}" doc="{$docId}">{$u}{$tokenId!<token>{normalize-space(.)}</token>}</hit>}</hits>
+        return <hit u="{$uId}" doc="{$docId}">{$u}{$tokenId!<token>{.}</token>}</hit>}</hits>
       (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
       (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
 
     return if (matches($accept-header, '[+/]json'))
         then
             let $transformedOutput := xslt:transform($hits, 'xslt/corpus_search_result_json.xslt', map{ 'query': $query})
-            return serialize($transformedOutput, map {"method": "json"})
+            return serialize($transformedOutput, map {"method": "json", "indent": "no"})
         else
             let $out := vicav:transform($hits, $xslt, $print, map{ 'query': $query })
             return $out
@@ -1882,7 +2396,7 @@ declare function vicav:_corpus_text(
     let $hits_str := if (not(empty($hits))) then $hits else ""
 
     let $teiDoc := collection('vicav_corpus')
-        //tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[@type="SHAWICorpusID"]/text() = $docId],
+        //tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, 'CorpusID')]/text() = $docId],
         $notFound := if (not(exists($teiDoc))) then
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
@@ -1893,15 +2407,36 @@ declare function vicav:_corpus_text(
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
          'Text with id '||$docId||' does not have page '||$p) else (),
-        $doc := <doc id="${$docId}">{$utterances}</doc>
-      (: , $_ := file:write(file:resolve-path('doc.xml', file:base-dir()), $doc, map { "method": "xml"}) :)
+        $doc := <doc id="${$docId}">{$utterances}</doc>,
+      (: , $_ := file:write(file:resolve-path('doc.xml', file:base-dir()), $doc, map { "method": "xml"}) :)      
+        $referenced_ids := $doc//@ana[starts-with(., '#')]!substring(., 2),
+        $annot := db:attribute('vicav_corpus', $referenced_ids)/.. 
+        (: there is a lot of scaffolding here, filter it :)
+        update {
+          delete node .//*[@fVal=""],
+          delete node .//*[matches(@fVal, '\{.+\}')],
+          delete node .//*[./*:string[not(text())]],
+          delete node .//*[./*:string[matches(text(), '\{.+\}')]]
+        },
+        $pds := for $pd in collection('vicav_corpus')//tei:prefixDef
+                group by $ident := $pd/@ident
+                return $pd[1],
+        $doc := <doc id="${$docId}">
+          {$utterances}
+          <standOff>
+            {$annot}
+          </standOff>
+          <listPrefixDef>
+            {$pds}
+          </listPrefixDef>
+        </doc>
 
     return if (matches($accept-header, '[+/]json'))
-        then
+        then 
             let $out := xslt:transform($doc, 'xslt/corpus_utterances_json.xslt', map{
                 "hits_str": $hits_str
             })
-            return serialize($out, map {"method": "json"})
+            return serialize($out, map {"method": "json", "indent": "no"})
         else
             let $out := vicav:transform($doc, 'corpus_utterances.xslt', $print, map{ "hits_str": $hits_str })
             return $out
@@ -2043,5 +2578,5 @@ declare function vicav:_get_dict_markers() {
       "name": "Baghdad",
       "hitCount": 1
     }}
-  ], map{"method": "json"})
+  ], map{"method": "json", "indent": "no"})
 };

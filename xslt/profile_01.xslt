@@ -35,26 +35,6 @@
                             <xsl:apply-templates select="//tei:head/tei:figure[1]/tei:head"/>
                         </div>                                           
                     </xsl:if> 
-<!-- 
-                <xsl:choose>
-                    <xsl:when test="//tei:head/tei:figure/tei:graphic">
-                        <img>
-                            <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:figure/tei:graphic/@url"/></xsl:attribute>
-                        </img>
-                        <div class="imgCaption">
-                            <xsl:apply-templates select="//tei:head/tei:figure/tei:head"/>
-                        </div>                   
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <img>
-                            <xsl:attribute name="src">images/<xsl:value-of select="//tei:head/tei:ref[1]/@target"/></xsl:attribute>
-                        </img>
-                        <div class="imgCaption">
-                            <xsl:apply-templates select="//tei:head/tei:ref/tei:p[1]"/>
-                        </div>                   
-                    </xsl:otherwise>
-                </xsl:choose>
-                 -->
                 </div>
 
             
@@ -134,9 +114,11 @@
                 </div>
             </xsl:if>
 
+            <div>
             <xsl:if test="count(//tei:head/tei:figure) > 2">
                <xsl:apply-templates select="//tei:head[tei:figure]" mode="gallery"/>
-            </xsl:if>   
+            </xsl:if>
+            </div>   
             <br/>
             <br/>
         </div>
@@ -304,7 +286,8 @@
 
     <xsl:template match="tei:p[./tei:figure and not(@rendition='#slideshow')]">
         <div class="pFigure">
-            <xsl:attribute name="class" select="concat('pFigure ', 'fig-col-', count(./tei:figure))" />
+            <xsl:attribute name="class" 
+                select="concat('pFigure ', 'fig-col-', count(./tei:figure), ' grid gap-2 grid-cols-', count(./tei:figure))"  />
             <xsl:apply-templates/>
         </div>
     </xsl:template>
@@ -352,7 +335,12 @@
     <xsl:template match="tei:div[@type=['sampleText', 'lingFeatures', 'bibliography']]">
         <xsl:if test="count(./tei:p/tei:ref) > 0">
             <xsl:copy>
-                <xsl:apply-templates/>
+                <xsl:apply-templates select="./tei:head"/>
+                <xsl:copy select="./tei:p">
+                    <xsl:apply-templates select="./tei:ref">
+                        <xsl:sort select="number(replace(./text(), '([a-zA-Z]+)(\d+)/.+', '$2'))" data-type="number" order="ascending"/>
+                    </xsl:apply-templates>
+                </xsl:copy>
             </xsl:copy>
         </xsl:if>
     </xsl:template>
@@ -362,21 +350,22 @@
             <xsl:attribute name="data-text-id"><xsl:value-of select="@target"/></xsl:attribute>
             <xsl:apply-templates/>
         </a>
-        <br/>
+        <xsl:if test="../../@type = 'lingFeatures'"><br/></xsl:if>
     </xsl:template>
 
     <xsl:template match="tei:ref[@type='sample']">
         <a href="#" data-target-type="SampleText">
             <xsl:attribute name="data-text-id"><xsl:value-of select="@target"/></xsl:attribute>
             <xsl:apply-templates/>
-        </a><br/>
+        </a>
+        <xsl:if test="../../@type = 'sampleText'"><br/></xsl:if>
     </xsl:template>
 
      <xsl:template match="tei:ref[@type='profile']">
         <a href="#" data-target-type="Profile">
             <xsl:attribute name="data-text-id"><xsl:value-of select="@target"/></xsl:attribute>
             <xsl:apply-templates/>
-        </a><br/>
+        </a>
     </xsl:template>
 
     <xsl:template match="tei:rs[
@@ -442,7 +431,7 @@
                 <xsl:attribute name="class" select="'figure small'"></xsl:attribute>
             </xsl:if>
             <div  class="gallery-item">
-                <a href="concat($images-base-path, {./tei:link/@target})" title="{./tei:head}">
+                <a href="{concat($images-base-path, ./tei:link/@target)}" title="{./tei:head}">
                     <img>
                         <xsl:attribute name="src">
                             <xsl:value-of select="concat($images-base-path, tei:graphic/@url)"/>

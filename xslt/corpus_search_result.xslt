@@ -32,36 +32,36 @@
             </xsl:if>
             <xsl:if test="count($w) = 1">
 
-                <xsl:variable select="acdh:index-of-node(./tei:u/tei:w, $w)" name="word_pos"/>
-                <xsl:variable select="subsequence(./tei:u/tei:w, $word_pos+1, 5)" name="right"/>
-                <xsl:variable select="subsequence(./tei:u/tei:w, $word_pos - 5, 5)" name="left"/>
+                <xsl:variable select="acdh:index-of-node(./tei:u/(tei:w|tei:pc), $w)" name="word_pos"/>
+                <xsl:variable select="subsequence(./tei:u/(tei:w|tei:pc), $word_pos+1, 5)" name="right"/>
+                <xsl:variable select="subsequence(./tei:u/(tei:w|tei:pc), $word_pos - 5, 5)" name="left"/>
                 <div class="corpus-search-result">
                     <xsl:attribute name="id" select="concat('corpus-w-', ./token)"/>
                     <div class="left">
                         <xsl:for-each select="$left">
-                            <span class="w">
+                            <span class="{local-name(.)}">
                                 <xsl:attribute name="id" select="@xml:id"/>
                                 <xsl:value-of select="."/>
                             </span>
-                            <xsl:if test="not(./@join = 'right')  or following-sibling::*[1]/name() = 'pc'">
+                            <xsl:if test="not(./@join = 'right') and not(following-sibling::*[1]/self::tei:pc)">
                                 <span xml:space="preserve"> </span>
                             </xsl:if>                        
                         </xsl:for-each> 
                     </div>
                     <div class="keyword">
-                        <span class="w">
+                        <span class="{local-name($w)}">
                             <xsl:value-of select="$w" />
                         </span>
-                        <xsl:if test="not($w/@join = 'right') or following-sibling::*[1]/name() = 'pc'">
+                        <xsl:if test="not($w/@join = 'right') and not(following-sibling::*[1]/self::tei:pc)">
                             <span xml:space="preserve"> </span>
                         </xsl:if> 
                     </div>
                     <div class="right">
                         <xsl:for-each select="$right">
-                            <span class="w">
+                            <span class="{local-name(.)}">
                                 <xsl:value-of select="."/>
                             </span>
-                            <xsl:if test="not(./@join = 'right') or following-sibling::*[1]/name() = 'pc'">
+                            <xsl:if test="not(./@join = 'right') and not(following-sibling::*[1]/self::tei:pc)">
                                 <span xml:space="preserve"> </span>
                             </xsl:if> 
                         </xsl:for-each> 

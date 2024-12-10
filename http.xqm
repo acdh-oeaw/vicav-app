@@ -17,7 +17,7 @@ declare function api:get-base-uri-public() as xs:string {
                  else '',
         (: FIXME: this is to naive. Works for ProxyPass / to /exist/apps/cr-xq-mets/project
            but probably not for /x/y/z/ to /exist/apps/cr-xq-mets/project. Especially check the get module. :)
-        $xForwardBasedPath := (request:header('X-Forwarded-Request-Uri'), request:path())[1]
+        $xForwardBasedPath := replace((request:header('X-Forwarded-Request-Uri'), request:path())[1], '^([^?]*)(\?.*)$', '$1')
     return $urlScheme||'://'||($forwarded-hostname, request:hostname())[1]||$port||$xForwardBasedPath
 };
 
@@ -32,19 +32,27 @@ function api:file($file as xs:string) as item()+ {
   let $path := api:base-dir()|| $file
   return if (file:exists($path)) then
     if (matches($file, '\.(htm|html|pdf|m4a|js|docx|map|css|png|gif|jpg|jpeg|woff|woff2|svg|ttf|mp4)$', 'i')) then
-    (
-      web:response-header(map { 'media-type': web:content-type($path) }, 
-                          map { 'X-UA-Compatible': 'IE=11' }),
-      file:read-binary($path)
+    let $bin := file:read-binary($path)
+       , $hash := xs:string(xs:hexBinary(hash:md5($bin)))
+       , $hashBrowser := request:header('If-None-Match', '')
+    return if ($hash = $hashBrowser) then
+      web:response-header(map{}, map{}, map{'status': 304, 'message': 'Not Modified'})
+    else (
+      web:response-header(map { 'media-type': web:content-type($path),
+                                'method': 'basex',
+                                'binary': 'yes' }, 
+                          map { 'X-UA-Compatible': 'IE=11'
+                              , 'Cache-Control': 'max-age=3600,public'
+                              , 'ETag': $hash }),
+      $bin
     ) else api:forbidden-file($file)
   else
   (
-  <rest:response>
-    <http:response status="404" message="{$file} was not found.">
-      <http:header name="Content-Language" value="en"/>
-      <http:header name="Content-Type" value="text/html; charset=utf-8"/>
-    </http:response>
-  </rest:response>,
+    web:response-header(map{'media-type': 'text/html',
+                            'method': 'html'}, 
+                        map{'Content-Language': 'en',
+                        'X-UA-Compatible': 'IE=11'},
+                        map{'status': 404, 'message':$file||' was not found'}),
   <html xmlns="http://www.w3.org/1999/xhtml">
     <title>{$file||' was not found'}</title>
     <body>        
