@@ -29,7 +29,9 @@
       </encodingDesc>
       <profileDesc>
          <particDesc>
-            <person sex="f" age="45">Tunis2</person>
+            <listPerson>
+              <person sex="f" age="45">Tunis2</person>
+            </listPerson>
          </particDesc>
          <settingDesc>
             <place>
