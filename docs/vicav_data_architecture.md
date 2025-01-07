@@ -54,7 +54,7 @@ The main principle of this architecture is that information common to all data i
 
 ### Team Members and their responsibilities
 
-Each team member is represented in the corpus document by a `<person>` element in the **Team Member List** at `/teiCorpus/standOff/listPerson[@type="team"]`. This is the authoratitve place where other documents point to when referencing the person in question and where the application is fetching labels and other metadata for display.
+Each team member is represented in the corpus document by a `<person>` element in the **Team Member List** at `/teiCorpus/standOff/listPerson[@type="projectTeam"]`. This is the authoratitve place where other documents point to when referencing the person in question and where the application is fetching labels and other metadata for display.
 
 The `<person>` element …
 
@@ -73,7 +73,7 @@ Each `<respStmt>` …
 
 ```xml
 <!-- In the Corpus document -->
-<listPerson type="team">
+<listPerson type="projectTeam">
    <head>Team Members</head>
    <person xml:id="VRB">
       <forename>Veronika</forename>
