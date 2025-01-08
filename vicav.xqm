@@ -2083,7 +2083,7 @@ declare function vicav:_get_all_data_markers() {
                     <loc>{$loc}</loc>
                     <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc>
                     <locName>{$locName}</locName>
-                    <taxonomy>{$item/tei:teiHeader/tei:profileDesc/tei:taxonomy/tei:category/tei:catDesc/text()}</taxonomy>
+                    <taxonomy>{$item/tei:teiHeader/tei:profileDesc/tei:textClass/tei:catRef/@target}</taxonomy>
                     <alt>{$alt}</alt>
                     <freq>1</freq>
                 </r>
