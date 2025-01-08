@@ -2364,7 +2364,19 @@ declare function vicav:_corpus_text(
     let $s := if (empty($size)) then 10 else $size
 
     let $hits_str := if (not(empty($hits))) then $hits else ""
-    let $baseURI := try { replace(util:get-base-uri-public(), '/corpus_text', '/static/sound') } catch basex:http { '' }
+    
+    (: TODO: use this and replace publicAssets root :)
+    let $assetsBaseURIpattern := collection("vicav_corpus")
+        /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
+        /tei:prefixDef[@ident="publicAssets"]/@matchPattern
+    let $assetsBaseURIto := collection("vicav_corpus")
+        /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
+        /tei:prefixDef[@ident="publicAssets"]/@replacementPattern
+    (: let $assetsBaseURI := replace(
+        concat("publicAssets:", $assetsBaseURIpattern), $assetsBaseURIto
+    ) :)
+
+    let $baseURI := try { replace(util:get-base-uri-public(), '/vicav/corpus_text', '/static/sound/') } catch basex:http { '' }
 
     let $teiDoc := collection('vicav_corpus')
         //tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, 'CorpusID')]/text() = $docId],
@@ -2384,12 +2396,15 @@ declare function vicav:_corpus_text(
     return if (matches($accept-header, '[+/]json'))
         then
             let $out := xslt:transform($doc, 'xslt/corpus_utterances_json.xslt', map{
-                "hits_str": $hits_str, "assetsBaseURI": $baseURI
+                "hits_str": $hits_str, "assetsBaseURIpattern": $assetsBaseURIpattern,  
+                "assetsBaseURIto": $assetsBaseURIto
             })
             return serialize($out, map {"method": "json", "indent": "no"})
         else
             let $out := vicav:transform($doc, 'corpus_utterances.xslt', $print, 
-                map{ "hits_str": $hits_str, "assetsBaseURI": $baseURI })
+                map{ "hits_str": $hits_str, 
+                "assetsBaseURIpattern": $assetsBaseURIpattern,  
+                "assetsBaseURIto": $assetsBaseURIto })
             return $out
 };
 

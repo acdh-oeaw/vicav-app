@@ -7,7 +7,8 @@
     <xsl:preserve-space elements="span"/>
 
     <xsl:param name="hits_str"/>
-    <xsl:param name="assetsBaseURI" />
+    <xsl:param name="assetsBaseURIpattern" />
+    <xsl:param name="assetsBaseURIto" />
 
     <xsl:template match="/">
         <json objects="json" arrays="utterances">
@@ -20,10 +21,10 @@
         <xsl:variable name="hits" select="tokenize($hits_str, ',')" />        
         <xsl:variable name="html">
         <div class="u">
-            <xsl:attribute name="id" select="$u/@xml:id"/>
+            <!-- <xsl:attribute name="id" select="$u/@xml:id"/>
             <div class="xml-id">
                 <xsl:value-of select="$u/@xml:id"/>
-            </div>
+            </div> -->
             <div class="content">
             <xsl:for-each select="$u/*">
                 <span>
@@ -59,8 +60,9 @@
                 <audio>
                     <xsl:if test="./tei:media[@mimeType='audio/mp3']">
                         <xsl:value-of select="replace(
-                        ./tei:media[@mimeType='audio/mp3'][1]/@url, 
-                        'publicAssets:', $assetsBaseURI)" />
+                        replace(./tei:media[@mimeType='audio/mp3'][1]/@url, 'publicAssets:', ''), 
+                        $assetsBaseURIpattern, 
+                        $assetsBaseURIto)" />
                     </xsl:if>
                 </audio>
                 <content>
