@@ -97,7 +97,7 @@ While the content of `<resp>` is generally not enforced, there are two execption
 
 ### Informants
 
-Each informant is represented by a `<person>` element in the **main participants list** at `/teiCorpus/teiHeader/particDesc/listPerson`. 
+Each informant is represented by a `<person>` element in the **main participants list** at `/teiCorpus/teiHeader/profileDesc/particDesc/listPerson`. 
 
 The `<person>` element …
 
