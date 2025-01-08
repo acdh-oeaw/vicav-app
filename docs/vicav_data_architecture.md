@@ -115,7 +115,7 @@ The `<person>` element …
 
 #### Referencing the participants list
 
-Informants in a data document are encoded in the document's local participant list at `TEI/teiHeader/particDesc/listPerson`, however unlike the entry in the **main participants list** they do not have any content but only reference their counterpart via `@sameAs`:
+Informants in a data document are encoded in the document's local participant list at `TEI/teiHeader/profileDesc/particDesc/listPerson`, however unlike the entry in the **main participants list** they do not have any content but only reference their counterpart via `@sameAs`:
 
 
 ```xml
