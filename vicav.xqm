@@ -2365,15 +2365,15 @@ declare function vicav:_corpus_text(
 
     let $hits_str := if (not(empty($hits))) then $hits else ""
     
-    (: TODO: use this and replace publicAssets root :)
+    (: TODO: use this and replace assets root :)
     let $assetsBaseURIpattern := collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
-        /tei:prefixDef[@ident="publicAssets"]/@matchPattern
+        /tei:prefixDef[@ident="assets"]/@matchPattern
     let $assetsBaseURIto := collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
-        /tei:prefixDef[@ident="publicAssets"]/@replacementPattern
+        /tei:prefixDef[@ident="assets"]/@replacementPattern
     (: let $assetsBaseURI := replace(
-        concat("publicAssets:", $assetsBaseURIpattern), $assetsBaseURIto
+        concat("assets:", $assetsBaseURIpattern), $assetsBaseURIto
     ) :)
 
     let $baseURI := try { replace(util:get-base-uri-public(), '/vicav/corpus_text', '/static/sound/') } catch basex:http { '' }
