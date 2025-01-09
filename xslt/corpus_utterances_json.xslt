@@ -60,7 +60,7 @@
                 <audio>
                     <xsl:if test="./tei:media[@mimeType='audio/mp3']">
                         <xsl:value-of select="replace(
-                        replace(./tei:media[@mimeType='audio/mp3'][1]/@url, 'publicAssets:', ''), 
+                        replace(./tei:media[@mimeType='audio/mp3'][1]/@url, 'assets:', ''), 
                         $assetsBaseURIpattern, 
                         $assetsBaseURIto)" />
                     </xsl:if>
