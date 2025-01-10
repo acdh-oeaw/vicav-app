@@ -75,7 +75,7 @@
             <_ type="object">
                 <id><xsl:value-of select="@xml:id"/></id>
                 <audio>
-                    <xsl:if test="./tei:media[@mimeType='audio/mp3']">
+                    <xsl:if test="./tei:media[@type="distributionFile"]">
                         <xsl:value-of select="replace(
                         substring-after(./tei:media[@type="distributionFile"][1]/@url, ':'), 
                         $assetsBaseURIpattern, 
