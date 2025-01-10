@@ -77,7 +77,7 @@
                 <audio>
                     <xsl:if test="./tei:media[@mimeType='audio/mp3']">
                         <xsl:value-of select="replace(
-                        replace(./tei:media[@mimeType='audio/mp3'][1]/@url, 'assets:', ''), 
+                        substring-after(./tei:media[@type="distributionFile"][1]/@url, ':'), 
                         $assetsBaseURIpattern, 
                         $assetsBaseURIto)" />
                     </xsl:if>
