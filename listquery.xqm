@@ -14,5 +14,5 @@ declare
 };
 
 declare function _:_featurelist(){
-  serialize(<json type="object">{vicav:get_featurelist()/*}</json>, map { "method": "json", "indent": "yes" })
+  serialize(<json type="object">{vicav:get_featurelist()}</json>, map { "method": "json", "indent": "yes" })
 };
