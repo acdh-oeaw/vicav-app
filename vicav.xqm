@@ -2379,7 +2379,6 @@ declare function vicav:_corpus_text(
     let $assetsBaseURIto := collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
         /tei:prefixDef[@ident="assets"]/@replacementPattern
-    
     let $teiDoc := collection('vicav_corpus')
         //tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, 'CorpusID')]/text() = $docId],
         $notFound := if (not(exists($teiDoc))) then
