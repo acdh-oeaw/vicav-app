@@ -19,11 +19,11 @@ VICAV-compatible datasets share a set of common corpus-like data types, i.e. TEI
 
 * Feature Lists
 * Sample Texts
-* Free Speech (dialogues, narration)
+* Unmonitored Speech (dialogues, narration)
 
 Moreover, VICAV-compatible dataset can contain:
 
-* Glossaries or Dictionaries
+* Glossaries or dictionaries
 * Profiles (describing the socio-demographic or linguistic particularities of a given place)
 * Bibliographies
 * Paratexts
@@ -37,6 +37,8 @@ Since the main content of a VICAV-compatible data set is contained within those 
 
 Each data set is represented by one [TEI Corpus Document](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-teiCorpus.html) which contains information common to all data documents in one central place. The corpus document has an identifier within `/TEI/teiHeader/fileDesc/publicationStmt/idno`. The name of the dataset is encoded within `/TEI/teiHeader/fileDesc/titleStmt/title[@level="s"]`.
 
+The corpus document contains a series of `<TEI>` elements, each representing one data document. 
+
 ```xml
 <teiCorpus xml:id="tunocentDataset">
    <teiHeader>
@@ -47,8 +49,10 @@ Each data set is represented by one [TEI Corpus Document](https://www.tei-c.org/
          </titleStmt>
       </fileDesc>
    </teiHeader>
+   <!-- one <TEI> element for each recording/data point including references to derived data document where applicable -->
+   <TEI><!-- ... --></TEI>
 </teiCorpus>
-``` 
+```
 
 The main principle of this architecture is that information common to all data is centrally defined in the TEI Corpus document whereas the data documents only contain pointers to these where needed.
 
@@ -138,7 +142,7 @@ Informants in a data document are encoded in the document's local participant li
       <person sameAs="corpus:Frikhat5"/>
    </listPerson>
 </particDesc>
-``` 
+```
 
 ### Places
 
@@ -195,8 +199,8 @@ Each TEI Header must contain a `<catRef>` element within `teiHeader/profileDesc/
 
 ```xml
 <!-- in the corpus document-->
-<taxonomy>
-   <category xml:id="textClass.tunocent.TUN" n="TUN">
+<taxonomy xml:id="datatypes.tunocent">
+   <category xml:id="datatypes.tunocent.tun" n="TUN">
       <catDesc>
          <name xml:lang="en">TUNOCENT Questionnaire</name>
       </catDesc>
@@ -205,23 +209,46 @@ Each TEI Header must contain a `<catRef>` element within `teiHeader/profileDesc/
 
 <!-- in a TEI document --> 
 <textClass>
-    <catRef target="corpus:textClass.tunocent.TUN"/>
+    <catRef target="corpus:datatypes.tunocent.tun"/>
 </textClass>
 ```
 
 **Notes:**    
-* In order to avoid identifier conflicts, the ids of dataset-specific data types should be prefixed with the project name, e.g. `textClass.tunocent.TUN`
-* The default VICAV data types are prefixed with in `textClass.vicav`:
-    * `textClass.vicav.profile`
-    * `textClass.vicav.sampleText`
-    * `textClass.vicav.featureList`
+* In order to avoid identifier conflicts, the ids of dataset-specific data types should be prefixed with the project name, e.g. `datatypes.tunocent.tun`
+* The default VICAV data types are prefixed with in `datatypes.vicav`:
+    * `datatypes.vicav.p`
+    * `datatypes.vicav.st`
+    * `datatypes.vicav.fl`
+* Please note that the datatype identies must only contain lowercase characters and dots (see section below "Data Document references") 
 
+<!-- Revisit! -->
 ### Data Document references
 
-In its `<body>`, the corpus document should contain references to all data documents in the data set:
+In its `<body>`, each `<TEI>` element in the corpus document should contain references to the data document(s) derived from it in the data set:
 
-* `<xi:include>` element pointing to all TEI documents contained in the data set 
-* `<TEI>` stubs for audio recordings which have not been transcribed further
+* `<xi:include>` element pointing to all TEI documents contained in the data set
+* `<TEI>` stubs for audio recordings
+
+If a recording has been reworked into a properly-encoded TEI document (e.g. a sample text or a feature list document), the stub in the corpus document points to the respective TEI document it its `<body>`:
+
+```xml
+ <body>
+    <ab>
+         <ref target="datatypes.vicav.st:vicav_sample_arish_02">A sample of l-Aʕrīš Arabic</ref>
+         <note>The content of this recording has been processed into a TEI document.</note>
+    </ab>
+</body>
+```
+
+In order one is able to reference the value of `@target`, there should be a `<prefixDef>` for each datatype with the URI prefix equal to the datatype's identifier:
+
+```xml
+<prefixDef ident="datatypes.vicav.st"
+           matchPattern="^(.+)$"
+           replacementPattern="vicav_samples/tunocent/vicav_sample_text_003.xml#$1">
+      <p>Private URIs using the <code>datatypes.vicav.st</code> prefix are pointers to VICAV sample texts.</p>
+</prefixDef>
+```
 
 ## Data Document Level
 
@@ -235,9 +262,34 @@ Each document …
 
 ### Media Files
 
+#### Document-wide audio 
+
 Any data document can be sourced from one or more audio or video recordings. For the time being we assume that one document corresponds to exactly one recording session which is represented by exactly one `<recording>` element in `sourceDesc/recodingStmt`.
 
-The recordings corresponding to this recording session might be split into several media files, thus `<recording>` can contain zero or more `<media>`elements. 
+Usually, the outcome of a recording session is a digital audio recording which can manifest itself in different variants, each of which is encoded as a `<media>` element within the `<recording>` element: 
+
+* The `master file` is the original, unaltered file as it has been produced by the audio recording device/software. (`<media type="master">`)
+* The `distribution file` are versions of the master file which have been edited or compressed to be be disseminated e.g. via the VICAV web application.  (`<media type="distributionFile">`)
+
+Each `<media>` element can be described by different metadata elements (e.g. license information in `<availibility>`), which are referenced with the `@decls` attribute attached to it.
+
+#### Utterance-wide audio
+
+Especially in case of transcriptions of unmonitored speech or sample texts, the transcription will be seperated in single utterances (`<u>`). In this case, the audio can be segmented into smaller units, each corresponding with an utterance. In such cases, the `<media>` element is embedded within the corresponding `<u>` element.
+
+```xml
+<u xml:id="text001_utterance001" who="corpus:speakerID">
+   <!-- many tokens ... -->
+   <w xml:id="text001_utterance001_token000038">gʕad</w>
+   <w xml:id="text001_utterance001_token000039">fǟli</w>
+   <w join="right" xml:id="text001_utterance001_token000040">ṯammⁱkīya</w>
+   <pc join="right" xml:id="text001_utterance001_token000040">.</pc>
+   <media mimeType="audio/mp3" url="publicAssets:magsamtrab1_f_72_e4_a/magsamtrab1_f_72_e4_a_a1.mp3"/>
+   <media mimeType="audio/wav" url="arche:magsamtrab1_f_72_e4_a/magsamtrab1_f_72_e4_a_a1.wav"/>
+</u>
+```
+
+
 
 **TODO**s Add information regarding
 * types auf media files (master/derived)
