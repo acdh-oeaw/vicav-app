@@ -50,10 +50,9 @@
                   </table>
                 </xsl:otherwise>
               </xsl:choose>
-
-                <p xml:space="preserve">By <i><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:author"/><xsl:if test="./tei:teiHeader/tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="replace(./tei:teiHeader/tei:revisionDesc/tei:change[1]/@when, 'T.*', '')" />)</xsl:if></i></p>
+                <p xml:space="preserve">By <i><xsl:value-of select="string-join(//tei:titleStmt/(tei:author, tei:respStmt[@type = 'author']/tei:persName), ',')"/><xsl:if test="./tei:teiHeader/tei:revisionDesc/tei:change"> (revision: <xsl:value-of select="replace(subsequence(./tei:teiHeader/tei:revisionDesc/tei:change/@when, 1, 1)[1], 'T.*', '')" />)</xsl:if></i></p>
                 
-                <ul id="informants"><xsl:for-each select="./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:person"><li xml:space="preserve">Informant ID: <i><xsl:value-of 
+                <ul id="informants"><xsl:for-each select="./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person"><li xml:space="preserve">Informant ID: <i><xsl:value-of 
                     select="."/></i><xsl:if
                     test="@sex">, Sex: <i><xsl:value-of
                     select="@sex"/></i></xsl:if><xsl:if
