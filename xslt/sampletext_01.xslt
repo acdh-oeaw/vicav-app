@@ -24,7 +24,7 @@
             </table>
 
             <p xml:space="preserve">
-            By <i><xsl:value-of select="string-join(//tei:titleStmt/(tei:author,tei:respStmt[@type = 'author']/tei:persName), ',')"/>
+            By <i><xsl:value-of select="string-join(//tei:titleStmt/(tei:author,tei:respStmt[tei:resp = 'author']/tei:persName), ',')"/>
             <xsl:if test="./tei:teiHeader/tei:revisionDesc/tei:change"> 
             (revision: <xsl:value-of 
             select="(./tei:teiHeader/tei:revisionDesc[1]/tei:change[1]/@n, replace(subsequence(./tei:teiHeader/tei:revisionDesc/tei:change/@when, 1, 1)[1], 'T.*', ''))[1]" />)
