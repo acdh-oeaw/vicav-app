@@ -55,10 +55,12 @@
                     <source>
                     <xsl:attribute name="src">
                         <xsl:value-of select="replace(
-                        replace(tei:teiHeader//tei:fileDesc/tei:sourceDesc/tei:recordingStmt/tei:recording/
-                        tei:media[@type='distributionFile'][1]/@url, 'assets:', ''), 
-                        $assetsBaseURIpattern, 
-                        $assetsBaseURIto)" />
+                            substring-after(
+                                ./tei:teiHeader/tei:fileDesc/tei:sourceDesc/
+                                tei:recordingStmt/tei:recording/tei:media
+                                [@type='distributionFile'][1]/@url, ':'),
+                            $assetsBaseURIpattern, 
+                            $assetsBaseURIto)" />
                     </xsl:attribute>
                     </source>
                 </audio>                
