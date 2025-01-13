@@ -5,6 +5,10 @@
     xmlns:tei="http://www.tei-c.org/ns/1.0"
     version="2.0">    
     <xsl:include href="sampletexts_common.xslt"/>
+
+    <xsl:param name="assetsBaseURIpattern" />
+    <xsl:param name="assetsBaseURIto" />
+
     <xsl:strip-space elements="*"/>
     <xsl:preserve-space elements=""/>
     
@@ -47,7 +51,7 @@
                 </li>
             </xsl:for-each>
             </ul>
-            
+
             <xsl:if test="string-length(./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:p[1])&gt;0">
                 <xsl:for-each select="./tei:TEIHeader/tei:profileDesc/tei:particDesc/tei:p">
                     <xsl:apply-templates/>
@@ -55,10 +59,31 @@
                 <hr/>
             </xsl:if>
 
+            <xsl:if test="./tei:teiHeader/tei:fileDesc/tei:sourceDesc/tei:recordingStmt/tei:recording/tei:media[@type='distributionFile']">
+                <a class="play m-2 flex cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 self-center"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <span>Play recording</span>
+                </a>
+                <a class="stop m-2 flex hidden cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 self-center"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></svg>
+                    <span>Stop recording</span>
+                </a>
+                <audio hidden="hidden">
+                    <source>
+                    <xsl:attribute name="src">
+                        <xsl:value-of select="replace(
+                            substring-after(
+                                ./tei:teiHeader/tei:fileDesc/tei:sourceDesc/
+                                tei:recordingStmt/tei:recording/tei:media
+                                [@type='distributionFile'][1]/@url, ':'),
+                            $assetsBaseURIpattern, 
+                            $assetsBaseURIto)" />
+                    </xsl:attribute>
+                    </source>
+                </audio>                
+            </xsl:if>
             <xsl:apply-templates select="./tei:text/tei:body/tei:div[@type='sampleText']/tei:p/tei:s"/>
         </div> 
     </xsl:template>
-    
-    
 </xsl:stylesheet>
 

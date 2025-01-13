@@ -22,7 +22,7 @@
             <xsl:apply-templates select="@*|* except (t:respStmt, t:title)"/>
             <respStmts type="array"><xsl:apply-templates select="t:respStmt" mode="arrayItem"/></respStmts>
         </titleStmt>
-    </xsl:template>    
+    </xsl:template>
     
     <xsl:template match="t:publicationStmt">
         <publicationStmt type="object">

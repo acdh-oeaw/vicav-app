@@ -493,13 +493,21 @@ declare
 function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:string*, $print as xs:string*) {
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $xsltfn := if (exists($xsltfn)) then $xsltfn else "sampletext_01.xslt"
-
+    
+    let $assetsBaseURIpattern := collection("vicav_corpus")
+        /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
+        /tei:prefixDef[@ident="assets"]/@matchPattern
+    let $assetsBaseURIto := collection("vicav_corpus")
+        /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
+        /tei:prefixDef[@ident="assets"]/@replacementPattern
     let $q := 'collection("/vicav_samples' || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
     let $query := $ns || $q
     let $results := xquery:eval($query)
     return 
         (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
         vicav:transform($results, $xsltfn, $print, map{
+            "assetsBaseURIpattern": $assetsBaseURIpattern,
+            "assetsBaseURIto": $assetsBaseURIto,
             "print-url": concat(
                 request:uri(), "?", request:query(), "&amp;print=true" 
             )
@@ -2395,19 +2403,12 @@ declare function vicav:_corpus_text(
 
     let $hits_str := if (not(empty($hits))) then $hits else ""
     
-    (: TODO: use this and replace assets root :)
     let $assetsBaseURIpattern := collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
         /tei:prefixDef[@ident="assets"]/@matchPattern
     let $assetsBaseURIto := collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
         /tei:prefixDef[@ident="assets"]/@replacementPattern
-    (: let $assetsBaseURI := replace(
-        concat("assets:", $assetsBaseURIpattern), $assetsBaseURIto
-    ) :)
-
-    let $baseURI := try { replace(util:get-base-uri-public(), '/vicav/corpus_text', '/static/sound/') } catch basex:http { '' }
-
     let $teiDoc := collection('vicav_corpus')
         //tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, 'CorpusID')]/text() = $docId],
         $notFound := if (not(exists($teiDoc))) then
