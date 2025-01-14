@@ -1737,7 +1737,9 @@
       <profileDesc>
          <particDesc>
            <listPerson>
-              <person sex="m" age="20">Test1</person>
+              <person sex="m" age="20">
+                <idno>Test1</idno>
+              </person>
            </listPerson>
          </particDesc>
          <settingDesc>
@@ -3191,7 +3193,9 @@
       <profileDesc>
          <particDesc>
             <listPerson>
-              <person sex="f" age="40">Test2</person>
+              <person sex="f" age="40">
+                <idno>Test2</idno>
+              </person>
             </listPerson>
          </particDesc>
          <settingDesc>
