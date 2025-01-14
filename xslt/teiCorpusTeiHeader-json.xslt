@@ -48,7 +48,7 @@
     <xsl:template match="t:classDecl">
         <classDecl type="object">
             <xsl:apply-templates select="@*|* except t:taxonomy"/>
-            <taxonimies type="array"><xsl:apply-templates select="t:taxonomy"/></taxonimies>
+            <taxonomies type="array"><xsl:apply-templates select="t:taxonomy"/></taxonomies>
         </classDecl>
     </xsl:template>
     
