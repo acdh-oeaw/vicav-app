@@ -45,10 +45,17 @@
         </tagsDecl>
     </xsl:template>
     
+    <xsl:template match="t:classDecl">
+        <classDecl type="object">
+            <xsl:apply-templates select="@*|* except t:taxonomy"/>
+            <taxonimies type="array"><xsl:apply-templates select="t:taxonomy"/></taxonimies>
+        </classDecl>
+    </xsl:template>
+    
     <xsl:template match="t:taxonomy">
-        <taxonomy type="object">
+        <_ type="object">
             <categories type="array"><xsl:apply-templates select="t:category" mode="arrayItem"/></categories>
-        </taxonomy>
+        </_>
     </xsl:template>
     
     <xsl:template match="t:settlement">
