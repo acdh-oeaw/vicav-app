@@ -13,6 +13,10 @@
     <xsl:variable name="docs-base-path" select="tei:concat-path('')"/>
     
     <xsl:template match="/">
+        <xsl:variable name="authors" select=".//tei:titleStmt/tei:respStmt[tei:resp = 'author']/tei:persName" as="item()*"/>
+        <xsl:variable name="majorRevisions" select="descendant::tei:revisionDesc/tei:change[@type='major']" as="element(tei:change)*"/>
+        <xsl:variable name="lastRevision" select="$majorRevisions[@when = max($majorRevisions/@when/xs:dateTime(.))][last()]"/>
+
                                         
         <div>
               <xsl:choose>
@@ -95,7 +99,15 @@
                     </tr>
                     <tr>
                         <td class="tdHead">Contributed by</td>
-                        <td class="tdProfileTableRight"><i><xsl:value-of select="string-join(//tei:titleStmt/(tei:author, tei:respStmt[@type = 'author']/tei:persName), ',')"/></i></td>
+                        <td class="tdProfileTableRight"><i>
+                            <xsl:for-each select="$authors">
+                                <xsl:choose xml:space="default">
+                                    <xsl:when test="position() gt 1 and . is $authors[last()]" xml:space="preserve"> and </xsl:when>
+                                    <xsl:when test="position() gt 1  and not(. is $authors[last()])" xml:space="preserve">, </xsl:when>
+                                </xsl:choose>
+                                <xsl:value-of select=". "/>
+                            </xsl:for-each>
+                        </i></td>
                     </tr>
                 </table>
             </div>
