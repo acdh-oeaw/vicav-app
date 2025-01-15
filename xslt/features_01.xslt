@@ -23,7 +23,7 @@
                 <xsl:when test="$tei-link-marker = 'true'">
                 <table class="tbHeader">
                     <tr>
-                        <td><h2><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title"/></h2></td>
+                        <td><h2><xsl:value-of select="./tei:teiHeader/tei:fileDesc/tei:titleStmt/tei:title[@level='a']"/></h2></td>
                         <td class="tdTeiLink">{teiLink}</td>
                         <td class="tdPrintLink">
                             <a data-print="true" target="_blank" class="aTEIButton">
