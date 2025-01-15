@@ -494,12 +494,12 @@ function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:
     let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
     let $xsltfn := if (exists($xsltfn)) then $xsltfn else "sampletext_01.xslt"
     
-    let $assetsBaseURIpattern := collection("vicav_corpus")
+    let $assetsBaseURIpattern := (collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
-        /tei:prefixDef[@ident="assets"]/@matchPattern
-    let $assetsBaseURIto := collection("vicav_corpus")
+        /tei:prefixDef[@ident="assets"]/@matchPattern, "")[1]
+    let $assetsBaseURIto := (collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
-        /tei:prefixDef[@ident="assets"]/@replacementPattern
+        /tei:prefixDef[@ident="assets"]/@replacementPattern, "")[1]
     let $q := 'collection("/vicav_samples' || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
     let $query := $ns || $q
     let $results := xquery:eval($query)

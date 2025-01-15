@@ -32,16 +32,15 @@
                 </tr>
             </table>
 
-            <p>By <i>
+            <p><xsl:text xml:space="preserve">By </xsl:text><i>
                 <xsl:for-each select="$authors">
-                                <xsl:choose xml:space="default">
-                                    <xsl:when test="position() gt 1 and . is $authors[last()]"> and </xsl:when>
-                                    <xsl:when test="position() gt 1  and not(. is $authors[last()])">, </xsl:when>
-                                    <xsl:otherwise/>
-                                </xsl:choose>
-                                <xsl:value-of select="."/>
+                    <xsl:choose xml:space="default">
+                        <xsl:when test="position() gt 1 and . is $authors[last()]" xml:space="preserve"> and </xsl:when>
+                        <xsl:when test="position() gt 1  and not(. is $authors[last()])" xml:space="preserve">, </xsl:when>
+                    </xsl:choose>
+                    <xsl:value-of select=". "/>
                 </xsl:for-each>
-                <xsl:if test="$lastRevision"> (revision: <xsl:value-of 
+                <xsl:if test="$lastRevision" xml:space="preserve"> (revision: <xsl:value-of 
             select="($lastRevision/@n, replace($lastRevision, 'T.*', ''))[1]" />)
             </xsl:if></i></p>
             <ul id="informants">
