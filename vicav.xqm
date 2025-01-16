@@ -1930,7 +1930,7 @@ function vicav:get_sample_persons($type as xs:string*) {
         order by $person/text()
         return 
         <person age="{$person/@age}" sex="{$person/@sex}">
-            {$person/text()}
+            {$person//tei:idno/text()}
         </person>
     
     return
