@@ -8,7 +8,7 @@ describe('Features', function() {
 		cy.get('.how-to-panel .chrome-close').click()
 		cy.scrollTo(0, 200)
 	    cy.get('img.leaflet-marker-icon')
-		cy.get('img[alt^="Tunis"]').click({force: true})
+		cy.get('img[alt^="Tunis2"]').click({force: true})
 		cy.get('a[data-featurelist="vicav_lingfeatures_tunis2"]').click({force: true})
 		cy.get('[data-snippetid="vicav_lingfeatures_tunis2"]').contains('h2', 'A List of Linguistic Features of Tunis2 Arabic')
         cy.wait(800)
