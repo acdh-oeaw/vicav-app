@@ -6,7 +6,7 @@
    <teiHeader>
       <fileDesc>
          <titleStmt>
-            <title>A machine-readable list of linguistic features of Test Arabic</title>
+            <title level="a">A machine-readable list of linguistic features of Test Arabic</title>
             <author>Test Author</author>
          </titleStmt>
          <publicationStmt>
@@ -37,7 +37,9 @@
       <profileDesc>
          <particDesc>
             <listPerson>
-              <person sex="f" age="45">Test1</person>
+              <person sex="f" age="45">
+                <idno>Test1</idno>
+              </person>
             </listPerson>
          </particDesc>
          <settingDesc>
