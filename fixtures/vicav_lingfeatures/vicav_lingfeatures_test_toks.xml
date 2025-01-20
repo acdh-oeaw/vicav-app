@@ -3,7 +3,7 @@
    <teiHeader>
       <fileDesc>
          <titleStmt>
-            <title>A List of Linguistic Features of Tunis2 Arabic</title>
+            <title level="a">A List of Linguistic Features of Tunis2 Arabic</title>
             <author>Test</author>
          </titleStmt>
          <publicationStmt>
@@ -30,7 +30,9 @@
       <profileDesc>
          <particDesc>
             <listPerson>
-              <person sex="f" age="45">Tunis2</person>
+              <person sex="f" age="45">
+                <idno>Tunis2</idno>
+              </person>
             </listPerson>
          </particDesc>
          <settingDesc>
