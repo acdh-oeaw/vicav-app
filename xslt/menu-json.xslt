@@ -20,7 +20,7 @@
     </xsl:function>
     
     <xsl:template match="/">
-      <json objects="json projectConfig logo frontpage menu params map center styleSettings colors staticData version filterListBy" arrays="panel param main item subnav scope geo table dataTypes specialCharacters" numbers="zoom lat lng">
+      <json objects="json projectConfig logo frontpage menu params map center styleSettings colors staticData version filterListBy" arrays="panel param main item subnav scope geo table dataTypes specialCharacters funders" numbers="zoom lat lng">
         <xsl:apply-templates/>
       </json>
     </xsl:template>
@@ -28,8 +28,17 @@
     <xsl:template match="projectConfig">
       <projectConfig>
         <baseURIPublic><xsl:value-of select="$baseURIPublic"/></baseURIPublic>
-        <xsl:apply-templates/>
+        <funders>
+          <xsl:apply-templates select="funder"/>
+        </funders>
+        <xsl:apply-templates select="@*|* except (funder)"/>
       </projectConfig>
+    </xsl:template>
+    
+    <xsl:template match="funder">
+      <_ type="object">
+        <xsl:apply-templates/>
+      </_>
     </xsl:template>
     
     <xsl:template match="text()[parent::logo]">
