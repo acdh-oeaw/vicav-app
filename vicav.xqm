@@ -2374,7 +2374,7 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
         let $u := collection('vicav_corpus')
           /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, "CorpusID")]/text() = $docId]         
         /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u[@xml:id = $uId]
-        return <hit u="{$uId}" doc="{$docId}">{$u}{$tokenId!<token>{.}</token>}</hit>}</hits>
+        return <hit u="{$uId}" doc="{$docId}">{($u, ``[Error `{$uId}` not found in `{$docId}`]``)[1]}{$tokenId!<token>{.}</token>}</hit>}</hits>
       (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
       (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
 
