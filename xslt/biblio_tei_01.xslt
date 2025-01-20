@@ -38,6 +38,7 @@
                       <xsl:when test="@type='book'"><xsl:attribute name="class">dvBibBook</xsl:attribute></xsl:when>
                       <xsl:when test="@type='bookSection'"><xsl:attribute name="class">dvBibBookSection</xsl:attribute></xsl:when>
                       <xsl:when test="@type='thesis'"><xsl:attribute name="class">dvThesis</xsl:attribute></xsl:when>
+                      <xsl:when test="@type='presentation'"><xsl:attribute name="class">dvPresentation</xsl:attribute></xsl:when>
                   </xsl:choose>
                                    
                   <!-- AUTHORS -->
@@ -72,6 +73,19 @@
                                         </xsl:choose>
                                     </xsl:for-each>
                                 </xsl:when>
+                                <xsl:when test=" node()/tei:respStmt[tei:resp='presenter']">
+                                    <xsl:for-each select="node()/tei:respStmt[tei:resp='presenter']/tei:persName">
+                                        <xsl:if test="position()&gt;1">;<span xml:space="preserve"><xsl:text> </xsl:text></span></xsl:if>
+                                        <xsl:choose>
+                                            <xsl:when test="string-length(tei:name)&gt;0">
+                                                <xsl:value-of select="tei:name"/><span xml:space="preserve"><xsl:text> </xsl:text></span></xsl:when>
+                                            <xsl:when test="string-length(tei:forename)&gt;0">
+                                                <xsl:value-of select="tei:surname"/>,<span xml:space="preserve"><xsl:text> </xsl:text></span>
+                                                <xsl:value-of select="tei:forename"/><span xml:space="preserve"><xsl:text> </xsl:text></span></xsl:when>
+                                            <xsl:otherwise><xsl:value-of select="tei:surname"/><span xml:space="preserve"> </span></xsl:otherwise>
+                                        </xsl:choose>
+                                    </xsl:for-each>
+                                </xsl:when>
                                 <xsl:otherwise>(No author in record)</xsl:otherwise>
                             </xsl:choose>
                             
@@ -95,6 +109,7 @@
                          <xsl:when test="@type='journalArticle'"><img class="imgBiblItem" src="images/article_001.jpg"/></xsl:when>
                          <xsl:when test="@type='conferencePaper'"><img class="imgBiblItem" src="images/article_001.jpg"/></xsl:when>
                          <xsl:when test="@type='encyclopediaArticle'"><img class="imgBiblItem" src="images/article_001.jpg"/></xsl:when>
+                         <xsl:when test="@type='presentation'"><img class="imgBiblItem" src="images/article_001.jpg"/></xsl:when>
                      </xsl:choose>
 
                      <!-- Thesis -->
@@ -165,6 +180,12 @@
                       <xsl:if  test="@type='book'">
                           <xsl:value-of select="tei:monogr[1]/tei:title[1]"/>
                       </xsl:if>
+                      
+                      <!-- presentation -->
+                      <xsl:if  test="@type='presentation'">
+                          <xsl:value-of select="tei:monogr[1]/tei:title[1]"/><xsl:text>. Presented at </xsl:text><i><xsl:value-of select="tei:monogr/tei:meeting"/></i>
+                      </xsl:if>
+                      
                       
                       
                       <!-- ORT, Verlag -->
