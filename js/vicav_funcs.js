@@ -348,10 +348,10 @@ function makeAudioInVisible(obj_) {
 }
 
 function makeAudioVisible(obj_) {
-    var audioHeight = $(obj_).find("audio").height();
-    var parrentOffset = $(obj_).offset().top
+    var parrentOffset = $(obj_).offset()
     $(obj_).css("cursor", "pointer");
-    $(obj_).find("audio").css("left", 200);
+    $(obj_).find("audio").css("left", 20 + parrentOffset.left);
+    $(obj_).find("audio").css("top", parrentOffset.top + $(obj_).height() - 2);
 }
 
 function changeURLMapParameter(newParameter) {
