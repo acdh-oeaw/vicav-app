@@ -45,6 +45,14 @@
         </tagsDecl>
     </xsl:template>
     
+    <xsl:template match="t:classDecl">
+        <classDecl type="object">
+            <taxonomy type="array">
+                <xsl:apply-templates select="t:taxonomy" mode="arrayItem"/>
+            </taxonomy>
+        </classDecl>
+    </xsl:template>
+
     <xsl:template match="t:taxonomy">
         <taxonomy type="object">
             <categories type="array"><xsl:apply-templates select="t:category" mode="arrayItem"/></categories>
