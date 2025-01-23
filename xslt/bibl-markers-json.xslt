@@ -69,11 +69,21 @@
                 <alt><xsl:value-of select="alt"/></alt>
                 </xsl:if>
                 <hitCount><xsl:value-of select="freq"/></hitCount>
-                <xsl:if test="exists(@xml:id)">
-                    <textId><xsl:value-of select="@xml:id"/></textId>
-                </xsl:if>
+                <textId>
+                    <xsl:choose>
+                        <xsl:when test="exists(@xml:id)">
+                            <textId><xsl:value-of select="@xml:id"/></textId>
+                        </xsl:when>
+                        <xsl:when test="exists(textId)">
+                            <xsl:value-of select="textId"/>
+                        </xsl:when>
+                    </xsl:choose>
+                </textId>
                 <targetType>
                     <xsl:choose>
+                        <xsl:when test="exists(targetType)">
+                            <xsl:value-of select="targetType"/>
+                        </xsl:when>
                         <xsl:when test="exists(taxonomy)">
                             <xsl:value-of select="$translateTargetType(taxonomy)"/>
                         </xsl:when>
