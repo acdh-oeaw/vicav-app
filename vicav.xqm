@@ -421,16 +421,22 @@ function vicav:query_biblio_id($query as xs:string*, $xsltfn as xs:string) {
 };
 
 declare function vicav:transform($doc as element(), $xsltfn as xs:string, $print as xs:string?, $options as map(*)?) {
-    let $stylePath := file:resolve-path('xslt/', file:base-dir())
-    let $style := doc(file:resolve-path('xslt/' || $xsltfn, file:base-dir()))
+  util:eval(``[declare variable $doc as element() external;
+    declare variable $xsltfn as xs:string external;
+    declare variable $print as xs:string? external;
+    declare variable $options as map(*)? external;
+    let $file-base-dir := file:base-dir() || '/../../../'
+    let $stylePath := file:resolve-path('xslt/', $file-base-dir)
+    let $style := doc(file:resolve-path('xslt/' || $xsltfn, $file-base-dir))
 
     let $xslt := if (empty($print)) then $style else xslt:transform-text(
-        doc(file:resolve-path('xslt/printable.xslt', file:base-dir()))
-        , doc(file:resolve-path('xslt/printable_path.xslt', file:base-dir())), map {'xslt': file:path-to-uri(file:resolve-path('xslt/' || $xsltfn, file:base-dir()))})
+        doc(file:resolve-path('xslt/printable.xslt', $file-base-dir))
+        , doc(file:resolve-path('xslt/printable_path.xslt', $file-base-dir)), map {'xslt': file:path-to-uri(file:resolve-path('xslt/' || $xsltfn, $file-base-dir))})
 
     let $sHTML := xslt:transform-text($doc, $xslt, $options)
     return
         $sHTML
+  ]``, map{"doc": $doc, "xsltfn": $xsltfn, "print": $print, "options": $options}, 'vicav_transform')
 };
 
 declare
@@ -2318,19 +2324,11 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
         return string-join(($query-words!('[word="' || encode-for-uri(.)
             || '"]')))
 
-    let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
-    let $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
-
-    let $noske_host := $config//noskeHost,
-        $request := $noske_host || '/bonito/run.cgi/first?corpname=' || vicav:get_project_name()
-        || '&amp;queryselector=cqlrow&amp;cql='||$query-parts||'&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=0&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
-      , $_ := admin:write-log($request, 'INFO')
+    let $noske_host := vicav:get_config()//noskeHost
         
-
     let $result := if ($noske_host) then
-        http:send-request(<http:request method='get'/>,
-        $request)
-        else false()
+        vicav:get_noske_search_result($noske_host, $query-parts)
+        else ()
       (: , $_ := admin:write-log(serialize($result[2], map{'method': 'json'}), 'INFO') :)
 
 (:let consecutiveIDs
@@ -2358,10 +2356,44 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
             }
           }:)
 
-
     let $consecutiveIds := []
     (:let $docUandIds := map:merge():)
-    let $hits := <hits>{if (not($result)) then '' else for $line in $result/json/Lines/_
+
+    return if (matches($accept-header, '[+/]json'))
+        then
+            let $transformedOutput := xslt:transform(vicav:get_hits_context($result), 'xslt/corpus_search_result_json.xslt', map{ 'query': $query})
+            return serialize($transformedOutput, map {"method": "json", "indent": "no"})
+        else
+            let $out := vicav:transform(vicav:get_hits_context($result), $xslt, $print, map{ 'query': $query })
+            return $out
+};
+
+declare function vicav:get_noske_search_result($noske_host as xs:string, $query-parts as xs:string+) as element(json) {
+  let $res := util:eval(``[import module namespace vicav = "http://acdh.oeaw.ac.at/vicav" at "../../../vicav.xqm";
+    declare variable $noske_host as xs:string external;
+    declare variable $query-parts as xs:string+ external;
+    let $request := $noske_host || '/bonito/run.cgi/first?corpname=' || vicav:get_project_name()
+        || '&amp;queryselector=cqlrow&amp;cql='||$query-parts||'&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=0&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
+      (: , $_ := admin:write-log($request, 'INFO') :)
+      return http:send-request(<http:request method='get'/>,
+        $request)[2]/*  
+  ]``, map {"noske_host": $noske_host, "query-parts": $query-parts}, 'noske_search_results_vicav_get', true())
+  , $_ := admin:write-log(serialize($res), 'INFO')
+  return $res
+};
+
+declare function vicav:get_config() {
+  util:eval(``[import module namespace vicav = "http://acdh.oeaw.ac.at/vicav" at "../../../vicav.xqm";
+    let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml'
+    return if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>
+  ]``, (), 'config_vicav_get') 
+};
+
+declare function vicav:get_hits_context($result as element(json)?) as element(hits) {
+  if (not($result)) then <hits/> else 
+  util:eval(``[declare namespace tei = 'http://www.tei-c.org/ns/1.0';
+  declare variable $result as element(json) external;
+      let $hits := <hits>{for $line in $result/Lines/_
         let $uId := tokenize($line/Refs/_[1], '=')[2]
         let $docId := tokenize($line/Refs/_[2], '=')[2]
         (:$docUandIds := if not((map:contains($docUandIds, $key))) then map:put($docUandIds, $key, []) else $docUandIds:)
@@ -2374,20 +2406,12 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
         let $u := collection('vicav_corpus')
           /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, "CorpusID")]/text() = $docId]         
         /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u[@xml:id = $uId]
-        return <hit u="{$uId}" doc="{$docId}">{($u, ``[Error `{$uId}` not found in `{$docId}`]``)[1]}{$tokenId!<token>{.}</token>}</hit>}</hits>
+        return <hit u="{$uId}" doc="{$docId}">{($u, "Error "|| $uId ||" not found in " || $docId)[1]}{$tokenId!<token>{.}</token>}</hit>
+      }</hits>
       (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
       (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
-
-    return if (matches($accept-header, '[+/]json'))
-        then
-            let $transformedOutput := xslt:transform($hits, 'xslt/corpus_search_result_json.xslt', map{ 'query': $query})
-            return serialize($transformedOutput, map {"method": "json", "indent": "no"})
-        else
-            let $out := vicav:transform($hits, $xslt, $print, map{ 'query': $query })
-            return $out
-
-
-
+    return $hits
+    ]``, map{"result": $result}, 'hits_context_vicav_get')
 };
 
 declare function vicav:_corpus_text(
