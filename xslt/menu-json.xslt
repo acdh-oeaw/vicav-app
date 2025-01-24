@@ -50,8 +50,8 @@
     </xsl:template>
     
     <xsl:template match="frontpage">
-        <param><xsl:apply-templates select="param"/></param>
-        <panel><xsl:apply-templates select="panel"/></panel>
+      <param><xsl:apply-templates select="param"/></param>
+      <panel><xsl:apply-templates select="item"/></panel>
     </xsl:template>
     
     <xsl:template match="param">
