@@ -1983,13 +1983,13 @@ declare function vicav:_get_data_words($type as xs:string*, $query as xs:string*
         
         return if ($collName = ["samples", "lingfeatures"]) then
             (
-                $base/tei:choice/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text(),
-                $base/tei:choice/tei:phr/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text(),                
-                $base/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text(),
-                $base/tei:phr/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text()
+                $base/tei:choice/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and starts-with(vicav:tr(./text()), vicav:tr($query))]/text(),
+                $base/tei:choice/tei:phr/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and starts-with(vicav:tr(./text()), vicav:tr($query))]/text(),                
+                $base/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and starts-with(vicav:tr(./text()), vicav:tr($query))]/text(),
+                $base/tei:phr/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and starts-with(vicav:tr(./text()), vicav:tr($query))]/text()
             )
             else 
-                $base[if (empty($query)) then true() else contains(vicav:tr(.), vicav:tr($query))]
+                $base[if (empty($query)) then true() else starts-with(vicav:tr(.), vicav:tr($query))]
 
     let $persons := for $w in $words
         return replace(normalize-space($w), '[\s&#160;]', '')
