@@ -1124,7 +1124,7 @@ declare function vicav:_get_compare(
                     for $i in $item-in-region
                     return 
                         <item xml:id="{vicav:get-root($i)/@xml:id}" 
-                        informant="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]}" 
+                        informant="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]/tei:idno}" 
                         age="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]/@age}" 
                         sex="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]/@sex}" 
                         >{$i}{
@@ -2099,9 +2099,9 @@ declare function vicav:_get_all_data_markers() {
                     <locName>{$locName}</locName>
                     <alt>{$locName}</alt>
                     <freq>{count($items)}</freq>
-                    <textId>dataListAll</textId>
                     <targetType>DataTable</targetType>
-                    <params>
+                    <params>                
+                        <textId>dataListAll</textId>
                         <filters type="array">
                             <_ type="object">
                                 <key>settlement</key>

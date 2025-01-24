@@ -72,7 +72,7 @@
                 <textId>
                     <xsl:choose>
                         <xsl:when test="exists(@xml:id)">
-                            <textId><xsl:value-of select="@xml:id"/></textId>
+                            <xsl:value-of select="@xml:id"/>
                         </xsl:when>
                         <xsl:when test="exists(textId)">
                             <xsl:value-of select="textId"/>
