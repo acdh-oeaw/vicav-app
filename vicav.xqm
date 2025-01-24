@@ -1953,6 +1953,7 @@ declare function vicav:tr($string as xs:string) {
         replace($tr, "ǟ", "a"), "ḏ̣", "d")
 };
 
+
 declare
 %rest:path("/vicav/data_words")
 %rest:query-param("type", "{$type}")
@@ -1991,15 +1992,16 @@ declare function vicav:_get_data_words($type as xs:string*, $query as xs:string*
             else 
                 $base[if (empty($query)) then true() else starts-with(vicav:tr(.), vicav:tr($query))]
 
-    let $persons := for $w in $words
+    let $results := for $w in $words
         return replace(normalize-space($w), '[\s&#160;]', '')
 
     let $out :=
-    for $person in distinct-values($persons)
-        order by $person
+    for $result in distinct-values($results)
+        order by 
+            if (vicav:tr($result) = vicav:tr($query)) then () else $result ascending
         return 
         <word>
-            {$person}
+            {$result}
         </word>
     
     return
