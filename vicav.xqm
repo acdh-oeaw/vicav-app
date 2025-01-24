@@ -1124,7 +1124,7 @@ declare function vicav:_get_compare(
                     for $i in $item-in-region
                     return 
                         <item xml:id="{vicav:get-root($i)/@xml:id}" 
-                        informant="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]}" 
+                        informant="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]/tei:idno}" 
                         age="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]/@age}" 
                         sex="{vicav:get-root($i)/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]/@sex}" 
                         >{$i}{
@@ -2078,30 +2078,38 @@ function vicav:get_all_data_markers() {
 
 declare function vicav:_get_all_data_markers() {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
-    let $entries := for $c in ('vicav_profiles', 'vicav_samples', 'vicav_lingfeatures')
-        return collection($c)/descendant::tei:TEI
+    let $teis := collection("vicav_corpus")/descendant::tei:TEI
+
+    let $places := distinct-values(
+        $teis/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"]/text()
+    )
 
     let $out :=
-        for $item in $entries
-            order by $item/@xml:id
-            let $locName := $item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"]/text()
-            let $loc := if ($item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text()) then
-                            replace($item/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
-                        else $item/tei:text/tei:body/tei:div[@type="positioning"]//tei:geo/text()
-            let $alt := if ($item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person) then $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]/tei:idno/text() || '/' || $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]/@sex || '/' || $item/tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]/@age else $locName
+        for $locName in $places
+            order by $locName
+            let $items := $teis/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place[./tei:settlement/tei:name[@xml:lang="en"]/text() = $locName]
+            let $loc := if ($items[1]/tei:location/tei:geo/text()) then
+                    replace($items[1]/tei:location/tei:geo/text(), '(\d+(\.|,)\s*\d+,\s*\d+(\.|,)\s*\d+).*', '$1')
+                else ""
 
             return
-                if ($item/@xml:id and $loc) then
                 <r
-                    type='geo'>{$item/@xml:id}
+                    type='geo'>
                     <loc>{$loc}</loc>
-                    <loc type="decimal">{$item//tei:geo[@decls="decimal"]/text()}</loc>
                     <locName>{$locName}</locName>
-                    <taxonomy>{$item/tei:teiHeader/tei:profileDesc/tei:textClass/tei:catRef/@target}</taxonomy>
-                    <alt>{$alt}</alt>
-                    <freq>1</freq>
+                    <alt>{$locName}</alt>
+                    <freq>{count($items)}</freq>
+                    <targetType>DataTable</targetType>
+                    <params>                
+                        <textId>dataListAll</textId>
+                        <filters type="array">
+                            <_ type="object">
+                                <key>settlement</key>
+                                <value>{$locName}</value>
+                            </_>
+                        </filters>
+                    </params>
                 </r>
-                else ''
 
     return if (matches($accept-header, '[+/]json'))
     then let $renderedJson := xslt:transform(<_>{$out}</_>, 'xslt/bibl-markers-json.xslt')
