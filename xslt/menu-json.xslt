@@ -20,7 +20,7 @@
     </xsl:function>
     
     <xsl:template match="/">
-      <json objects="json projectConfig logo frontpage menu params map center styleSettings colors staticData version filterListBy" arrays="panel param main item subnav scope geo table dataTypes specialCharacters funders" numbers="zoom lat lng">
+      <json objects="json projectConfig logo frontpage menu params map center styleSettings colors staticData version filterListBy" arrays="editors panel param main item subnav scope geo table dataTypes specialCharacters funders" numbers="zoom lat lng">
         <xsl:apply-templates/>
       </json>
     </xsl:template>
@@ -40,7 +40,31 @@
         <xsl:apply-templates/>
       </_>
     </xsl:template>
-    
+    <xsl:template match="editors">
+      <editors type="array">
+        <xsl:apply-templates/>
+      </editors>
+    </xsl:template>
+    <xsl:template match="editor">
+      <_ type="object">
+        <xsl:apply-templates />
+      </_>
+    </xsl:template>
+
+    <xsl:template match="pubDate">
+      <pubDate type="array">
+        <_>
+          <xsl:value-of select="year"  />
+        </_>
+        <_>
+          <xsl:value-of select="month"  />
+        </_>
+        <_>
+          <xsl:value-of select="day"  />
+        </_>
+      </pubDate>
+    </xsl:template>
+
     <xsl:template match="text()[parent::logo]">
         <string><xsl:value-of select="."/></string>
     </xsl:template>
