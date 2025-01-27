@@ -1953,6 +1953,7 @@ declare function vicav:tr($string as xs:string) {
         replace($tr, "ǟ", "a"), "ḏ̣", "d")
 };
 
+
 declare
 %rest:path("/vicav/data_words")
 %rest:query-param("type", "{$type}")
@@ -1983,23 +1984,24 @@ declare function vicav:_get_data_words($type as xs:string*, $query as xs:string*
         
         return if ($collName = ["samples", "lingfeatures"]) then
             (
-                $base/tei:choice/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text(),
-                $base/tei:choice/tei:phr/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text(),                
-                $base/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text(),
-                $base/tei:phr/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and contains(vicav:tr(./text()), vicav:tr($query))]/text()
+                $base/tei:choice/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and starts-with(vicav:tr(./text()), vicav:tr($query))]/text(),
+                $base/tei:choice/tei:phr/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and starts-with(vicav:tr(./text()), vicav:tr($query))]/text(),                
+                $base/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and starts-with(vicav:tr(./text()), vicav:tr($query))]/text(),
+                $base/tei:phr/tei:w/tei:fs/tei:f[if (empty($query)) then @name="wordform" else @name = "wordform" and starts-with(vicav:tr(./text()), vicav:tr($query))]/text()
             )
             else 
-                $base[if (empty($query)) then true() else contains(vicav:tr(.), vicav:tr($query))]
+                $base[if (empty($query)) then true() else starts-with(vicav:tr(.), vicav:tr($query))]
 
-    let $persons := for $w in $words
+    let $results := for $w in $words
         return replace(normalize-space($w), '[\s&#160;]', '')
 
     let $out :=
-    for $person in distinct-values($persons)
-        order by $person
+    for $result in distinct-values($results)
+        order by 
+            if (vicav:tr($result) = vicav:tr($query)) then () else $result ascending
         return 
         <word>
-            {$person}
+            {$result}
         </word>
     
     return
