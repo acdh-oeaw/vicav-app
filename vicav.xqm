@@ -1944,7 +1944,7 @@ function vicav:get_sample_persons($type as xs:string*) {
         <persons>{$out}</persons>)
 };
 
-declare function vicav:tr($string as xs:string) {
+declare function vicav:tr($string as xs:string?) {
     let $tr := translate($string, 
         "ᵃᵉⁱᵒᵘᵊʰʷʸˢᶴQāēīōūḅṭḍṣẓḏšžṛḥṃǧġʕʔ",
         "aeiouehwyssqaeioubtdszdszrhmgg??"
