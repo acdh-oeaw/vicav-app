@@ -20,7 +20,7 @@
     </xsl:function>
     
     <xsl:template match="/">
-      <json objects="json projectConfig logo frontpage menu params map center styleSettings colors staticData version filterListBy" arrays="editors panel param main item subnav scope geo table dataTypes specialCharacters funders" numbers="zoom lat lng">
+      <json objects="json projectConfig logo frontpage menu params map center styleSettings colors staticData version filterListBy" arrays="editors panel param main item subnav scope geo table dataTypes specialCharacters funders partners" numbers="zoom lat lng">
         <xsl:apply-templates/>
       </json>
     </xsl:template>
@@ -28,26 +28,25 @@
     <xsl:template match="projectConfig">
       <projectConfig>
         <baseURIPublic><xsl:value-of select="$baseURIPublic"/></baseURIPublic>
+        <partners>
+          <xsl:apply-templates select="partner"/>
+        </partners>
         <funders>
           <xsl:apply-templates select="funder"/>
         </funders>
-        <xsl:apply-templates select="@*|* except (funder)"/>
+        <xsl:apply-templates select="@*|* except (funder|partner)"/>
       </projectConfig>
     </xsl:template>
     
-    <xsl:template match="funder">
-      <_ type="object">
-        <xsl:apply-templates/>
-      </_>
-    </xsl:template>
     <xsl:template match="editors">
       <editors type="array">
         <xsl:apply-templates/>
       </editors>
     </xsl:template>
-    <xsl:template match="editor">
+    
+    <xsl:template match="funder|partner|editor">
       <_ type="object">
-        <xsl:apply-templates />
+        <xsl:apply-templates/>
       </_>
     </xsl:template>
 
