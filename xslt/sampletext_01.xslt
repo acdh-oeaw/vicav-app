@@ -41,7 +41,7 @@
                     <xsl:value-of select=". "/>
                 </xsl:for-each>
                 <xsl:if test="$lastRevision" xml:space="preserve"> (revision: <xsl:value-of 
-            select="($lastRevision/@when, replace($lastRevision, 'T.*', ''))[1]" />)
+            select="($lastRevision/format-date(@when,'YYYY-MM-DD'), replace($lastRevision, 'T.*', ''))[1]" />)
             </xsl:if></i></p>
             <ul id="informants">
             <xsl:for-each select="./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person">
