@@ -203,6 +203,7 @@ jobs:
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+      do_not_generate_additional_host_names: "true"
   _3-tunocent:
     needs: [setup_workflow_env, generate_workflow_vars-tunocent, _1-tunocent, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
@@ -218,6 +219,7 @@ jobs:
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+      do_not_generate_additional_host_names: "true"
   _3-shawi:
     needs: [setup_workflow_env, generate_workflow_vars-shawi, _1-shawi, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy-cluster-2.yml@main
@@ -233,6 +235,7 @@ jobs:
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+      do_not_generate_additional_host_names: "true"
   _3-wibarab:
     needs: [setup_workflow_env, generate_workflow_vars-wibarab, _1-wibarab, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
@@ -248,3 +251,4 @@ jobs:
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+      do_not_generate_additional_host_names: "true"
