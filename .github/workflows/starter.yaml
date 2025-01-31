@@ -85,6 +85,42 @@ jobs:
     outputs:     
       PUBLIC_URL: ${{ steps.generate_public_url.outputs.public_url }}
       environment: ${{ needs.setup_workflow_env.outputs.environment }}-tunocent
+  generate_workflow_vars-shawi:
+    needs: [setup_workflow_env]
+    environment:
+      name: ${{ needs.setup_workflow_env.outputs.environment }}-shawi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate PUBLIC_URL if not set
+        id: generate_public_url
+        run: |
+          kube_ingress_base_domain="${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"
+          public_url="${{ needs.setup_workflow_env.outputs.PUBLIC_URL || vars.PUBLIC_URL }}"
+          if [ "${public_url}x" == 'x' ]
+          then public_url=https://shawi-${{ needs.setup_workflow_env.outputs.environment_short }}.${kube_ingress_base_domain}
+          fi
+          echo "public_url=$public_url" >> $GITHUB_OUTPUT
+    outputs:     
+      PUBLIC_URL: ${{ steps.generate_public_url.outputs.public_url }}
+      environment: ${{ needs.setup_workflow_env.outputs.environment }}-shawi
+  generate_workflow_vars-wibarab:
+    needs: [setup_workflow_env]
+    environment:
+      name: ${{ needs.setup_workflow_env.outputs.environment }}-wibarab
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate PUBLIC_URL if not set
+        id: generate_public_url
+        run: |
+          kube_ingress_base_domain="${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"
+          public_url="${{ needs.setup_workflow_env.outputs.PUBLIC_URL || vars.PUBLIC_URL }}"
+          if [ "${public_url}x" == 'x' ]
+          then public_url=https://wibarab-${{ needs.setup_workflow_env.outputs.environment_short }}.${kube_ingress_base_domain}
+          fi
+          echo "public_url=$public_url" >> $GITHUB_OUTPUT
+    outputs:     
+      PUBLIC_URL: ${{ steps.generate_public_url.outputs.public_url }}
+      environment: ${{ needs.setup_workflow_env.outputs.environment }}-wibarab
   _1:
     needs: [setup_workflow_env, generate_workflow_vars]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
@@ -108,6 +144,32 @@ jobs:
       BUILDPACK_URL: ${{ needs.setup_workflow_env.outputs.BUILDPACK_URL }}
       registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
       image_tagged: ${{ needs.setup_workflow_env.outputs.image_tagged }}-tunocent
+      default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
+      submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+  _1-shawi:
+    needs: [setup_workflow_env, generate_workflow_vars-shawi]
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
+    secrets: inherit
+# if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
+    with:
+      environment: ${{ needs.generate_workflow_vars-shawi.outputs.environment}}
+      BUILDPACK_URL: ${{ needs.setup_workflow_env.outputs.BUILDPACK_URL }}
+      registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
+      image_tagged: ${{ needs.setup_workflow_env.outputs.image_tagged }}-shawi
+      default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
+      submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+  _1-wibarab:
+    needs: [setup_workflow_env, generate_workflow_vars-wibarab]
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
+    secrets: inherit
+# if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
+    with:
+      environment: ${{ needs.generate_workflow_vars-wibarab.outputs.environment}}
+      BUILDPACK_URL: ${{ needs.setup_workflow_env.outputs.BUILDPACK_URL }}
+      registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
+      image_tagged: ${{ needs.setup_workflow_env.outputs.image_tagged }}-wibarab
       default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
@@ -152,6 +214,36 @@ jobs:
       APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
       SERVICE_ID: ${{ needs.setup_workflow_env.outputs.SERVICE_ID }}
       PUBLIC_URL: ${{ needs.generate_workflow_vars-tunocent.outputs.PUBLIC_URL }}
+      POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
+      default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
+      submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+  _3-shawi:
+    needs: [setup_workflow_env, generate_workflow_vars-shawi, _1-shawi, _2]
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy-cluster-2.yml@main
+    secrets: inherit
+    with:
+      environment: ${{ needs.generate_workflow_vars-shawi.outputs.environment}}
+      DOCKER_TAG: ${{ needs.setup_workflow_env.outputs.registry_root }}${{ needs.setup_workflow_env.outputs.image_tagged }}-shawi
+      APP_NAME: shawi-app-${{ needs.setup_workflow_env.outputs.environment_short }}
+      APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
+      SERVICE_ID: ${{ needs.setup_workflow_env.outputs.SERVICE_ID }}
+      PUBLIC_URL: ${{ needs.generate_workflow_vars-shawi.outputs.PUBLIC_URL }}
+      POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
+      default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
+      submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+  _3-wibarab:
+    needs: [setup_workflow_env, generate_workflow_vars-wibarab, _1-wibarab, _2]
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      environment: ${{ needs.generate_workflow_vars-wibarab.outputs.environment}}
+      DOCKER_TAG: ${{ needs.setup_workflow_env.outputs.registry_root }}${{ needs.setup_workflow_env.outputs.image_tagged }}-wibarab
+      APP_NAME: wibarab-app-${{ needs.setup_workflow_env.outputs.environment_short }}
+      APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
+      SERVICE_ID: ${{ needs.setup_workflow_env.outputs.SERVICE_ID }}
+      PUBLIC_URL: ${{ needs.generate_workflow_vars-wibarab.outputs.PUBLIC_URL }}
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
