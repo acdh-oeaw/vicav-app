@@ -48,7 +48,7 @@
                         <xsl:value-of select="."/>
                     </span>
                     <xsl:if test="not(./@join = 'right') and not(following-sibling::*[1]/self::tei:pc)">
-                        <span xml:space="preserve"> </span>
+                        <span xml:space="preserve">&#xa0;</span>
                     </xsl:if>
                     <xsl:if test="./@join = 'right' and ./@rend='withDash'">
                         <span>-</span>
@@ -64,12 +64,6 @@
                         <xsl:attribute name="id" select="@xml:id"/>
                         <xsl:value-of select="."/>
                     </span>
-                    <xsl:if test="not(./@join = 'right') and not(following-sibling::*[1]/self::tei:pc)">
-                        <span xml:space="preserve">&#xa0;</span>
-                    </xsl:if>
-                    <xsl:if test="./@join = 'right' and ./@rend='withDash'">
-                        <span>-</span>
-                    </xsl:if>
                 </xsl:for-each>
             </xsl:variable>
             <xsl:value-of select='serialize($html, map{"method":"html"})'/>
@@ -77,15 +71,15 @@
         <right>
             <xsl:variable name="html">
                 <xsl:for-each select="$right">
+                    <xsl:if test="preceding-sibling::*[1][./@join = 'right' and ./@rend='withDash']">
+                        <span>-</span>
+                    </xsl:if>
+                    <xsl:if test="not(./@join = 'left') and not(preceding-sibling::*[1][./@join = 'right' or ./@rend='withDash'])">
+                        <span xml:space="preserve">&#xa0;</span>
+                    </xsl:if>
                     <span class="{local-name(.)}">
                         <xsl:value-of select="."/>
                     </span>
-                    <xsl:if test="not(./@join = 'right') and not(following-sibling::*[1]/self::tei:pc)">
-                        <span xml:space="preserve"> </span>
-                    </xsl:if>
-                    <xsl:if test="./@join = 'right' and ./@rend='withDash'">
-                        <span>-</span>
-                    </xsl:if>
                 </xsl:for-each>
             </xsl:variable>
             <xsl:value-of select='serialize($html, map{"method":"html"})'/>
