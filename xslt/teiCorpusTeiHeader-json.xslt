@@ -30,6 +30,15 @@
             <publishers type="array"><xsl:apply-templates select="t:publisher" mode="arrayItem"/></publishers>
         </publicationStmt>
     </xsl:template>
+
+    <xsl:template match="t:imprint">
+        <imprint type="object">
+            <biblScope type="array">
+                <xsl:apply-templates select="t:biblScope" mode="arrayItem" />
+            </biblScope>
+            <xsl:apply-templates select="@*|* except t:biblScope"/>
+        </imprint>
+    </xsl:template>
     
     <xsl:template match="t:revisionDesc">
         <revisionDesc type="object">
