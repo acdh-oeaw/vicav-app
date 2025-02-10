@@ -6,7 +6,8 @@
     <xsl:output method="xml" indent="yes"/>
     
     <xsl:param name="baseURIPublic"/>
-    <xsl:param name="teiSource">https://github.com/acdh-oeaw/vicav-content</xsl:param>
+    <xsl:param name="teiSource">{}</xsl:param>
+    <xsl:variable name="teiSourceMap" select="parse-json($teiSource)"/>
   
     <xsl:include href="vicavIDToLabel.xslt"/>
     
@@ -196,8 +197,9 @@
             </xsl:when>
             <xsl:otherwise>
               <params>
-                <textId><xsl:value-of select="_:cleanID(data((@target,@xml:id)[1]))"/></textId>
-                <teiSource><xsl:value-of select="$teiSource"/></teiSource>
+                <xsl:variable name="textId" select="_:cleanID(data((@target,@xml:id)[1]))"/>
+                <textId><xsl:value-of select="$textId"/></textId>
+                <teiSource><xsl:value-of select="$teiSourceMap($textId)"/></teiSource>
                 <xsl:apply-templates select="params/*"/>
               </params>
             </xsl:otherwise>

@@ -157,7 +157,12 @@ function vicav:_project_config() {
 declare function vicav:project_config_json_as_xml($publicURI as xs:string) {
     let $path := 'vicav_projects/' || vicav:get_project_name() || '.xml',
         $config := if (doc-available($path)) then doc($path)/projectConfig else <projectConfig><menu></menu></projectConfig>,
-        $jsonAsXML := xslt:transform($config, 'xslt/menu-json.xslt', map{'baseURIPublic': $publicURI}),
+        $jsonAsXML := xslt:transform($config, 'xslt/menu-json.xslt', map{
+          'baseURIPublic': $publicURI,
+          'teiSource': json:serialize(map:merge((collection('vicav_texts')//tei:body/tei:div/@xml:id!
+            map{.: ./ancestor::tei:TEI//tei:publicationStmt/tei:idno/text()}
+          )))
+        }),
         $jsonAsXML := $jsonAsXML update {
           .//*[starts-with(local-name(), "insert_")]!(replace node . with vicav:get_insert_data(local-name()))
         },
