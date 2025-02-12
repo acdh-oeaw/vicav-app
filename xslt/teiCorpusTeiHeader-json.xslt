@@ -33,9 +33,9 @@
 
     <xsl:template match="t:imprint">
         <imprint type="object">
-            <biblScope type="array">
+            <biblScopes type="array">
                 <xsl:apply-templates select="t:biblScope" mode="arrayItem" />
-            </biblScope>
+            </biblScopes>
             <xsl:apply-templates select="@*|* except t:biblScope"/>
         </imprint>
     </xsl:template>
