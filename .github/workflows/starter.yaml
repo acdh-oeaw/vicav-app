@@ -95,7 +95,7 @@ jobs:
           }
           if [ "$GH_TOKEN"x != 'x' ]
           then
-            VARS_TEMPLATE=$(fetch_gh_env_vars "review-${{ env.template_ref_name}}")
+            VARS_TEMPLATE=$(fetch_gh_env_vars "review%2F${{ env.template_ref_name}}")
             if [ "$(fetch_gh_env_vars "review%2F${{ env.ref_name }}")"x = "x" ]
             then
             for var in $VARS_TEMPLATE
@@ -158,7 +158,7 @@ jobs:
           }
           if [ "$GH_TOKEN"x != 'x' ]
           then
-            VARS_TEMPLATE=$(fetch_gh_env_vars "review-${{ env.template_ref_name}}")
+            VARS_TEMPLATE=$(fetch_gh_env_vars "review%2F${{ env.template_ref_name}}")
             if [ "$(fetch_gh_env_vars "review%2F${{ env.ref_name }}")"x = "x" ]
             then
             for var in $VARS_TEMPLATE
@@ -221,7 +221,7 @@ jobs:
           }
           if [ "$GH_TOKEN"x != 'x' ]
           then
-            VARS_TEMPLATE=$(fetch_gh_env_vars "review-${{ env.template_ref_name}}")
+            VARS_TEMPLATE=$(fetch_gh_env_vars "review%2F${{ env.template_ref_name}}")
             if [ "$(fetch_gh_env_vars "review%2F${{ env.ref_name }}")"x = "x" ]
             then
             for var in $VARS_TEMPLATE
@@ -284,7 +284,7 @@ jobs:
           }
           if [ "$GH_TOKEN"x != 'x' ]
           then
-            VARS_TEMPLATE=$(fetch_gh_env_vars "review-${{ env.template_ref_name}}")
+            VARS_TEMPLATE=$(fetch_gh_env_vars "review%2F${{ env.template_ref_name}}")
             if [ "$(fetch_gh_env_vars "review%2F${{ env.ref_name }}")"x = "x" ]
             then
             for var in $VARS_TEMPLATE
