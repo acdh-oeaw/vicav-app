@@ -77,7 +77,6 @@ jobs:
           ref_name: ${{ needs.setup_workflow_env.outputs.environment_uenc }}
           template_ref_name: devel
         run: |
-          set -x
           # This was refactored using CoPilot
           fetch_gh_env_vars() {
             local environment=$1
@@ -141,7 +140,6 @@ jobs:
           ref_name: ${{ needs.setup_workflow_env.outputs.environment_uenc }}-shawi
           template_ref_name: devel-shawi
         run: |
-          set -x
           # This was refactored using CoPilot
           fetch_gh_env_vars() {
             local environment=$1
@@ -205,7 +203,6 @@ jobs:
           ref_name: ${{ needs.setup_workflow_env.outputs.environment_uenc }}-tunocent
           template_ref_name: devel-tunocent
         run: |
-          set -x
           # This was refactored using CoPilot
           fetch_gh_env_vars() {
             local environment=$1
@@ -269,7 +266,6 @@ jobs:
           ref_name: ${{ needs.setup_workflow_env.outputs.environment_uenc }}-wibarab
           template_ref_name: devel-wibarab
         run: |
-          set -x
           # This was refactored using CoPilot
           fetch_gh_env_vars() {
             local environment=$1
