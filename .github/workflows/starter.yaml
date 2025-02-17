@@ -300,7 +300,7 @@ jobs:
       APP_NAME: ${{ needs.setup_workflow_env.outputs.APP_NAME }}
   _1:
     needs: [setup_workflow_env, generate_workflow_vars]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
     secrets: inherit
     # if you run this outside of of an org that provides KUBE_CONFIG etc as a secret, you need to specify every secret you want to pass by name
     with:
@@ -314,7 +314,7 @@ jobs:
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _1-tunocent:
     needs: [setup_workflow_env, generate_workflow_vars_tunocent]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
     with:
@@ -327,7 +327,7 @@ jobs:
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _1-shawi:
     needs: [setup_workflow_env, generate_workflow_vars_shawi]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
     with:
@@ -340,7 +340,7 @@ jobs:
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _1-wibarab:
     needs: [setup_workflow_env, generate_workflow_vars_wibarab]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
     with:
