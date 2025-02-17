@@ -74,6 +74,7 @@ jobs:
           ref_name: ${{ github.ref_name }}
           template_ref_name: devel
         run: |
+          set -x
           # This was refactored using CoPilot
           fetch_gh_env_vars() {
             local environment=$1
@@ -137,6 +138,7 @@ jobs:
           ref_name: ${{ github.ref_name }}-shawi
           template_ref_name: devel-shawi
         run: |
+          set -x
           # This was refactored using CoPilot
           fetch_gh_env_vars() {
             local environment=$1
@@ -200,6 +202,7 @@ jobs:
           ref_name: ${{ github.ref_name }}-tunocent
           template_ref_name: devel-tunocent
         run: |
+          set -x
           # This was refactored using CoPilot
           fetch_gh_env_vars() {
             local environment=$1
@@ -263,6 +266,7 @@ jobs:
           ref_name: ${{ github.ref_name }}-wibarab
           template_ref_name: devel-wibarab
         run: |
+          set -x
           # This was refactored using CoPilot
           fetch_gh_env_vars() {
             local environment=$1
