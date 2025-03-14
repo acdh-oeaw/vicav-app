@@ -2479,9 +2479,17 @@ declare function vicav:_corpus_text(
           <standOff>
             {$annot}
           </standOff>
-          <listPrefixDef>
+          <listPrefixDef xmlns="http://www.tei-c.org/ns/1.0">
             {$pds}
           </listPrefixDef>
+          <dict xmlns="http://www.tei-c.org/ns/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+           { let $dictName := $pds/self::*[@ident='dict']/@replacementPattern =>
+                              replace('.*/vicav_dicts/(.*).xml.*$', '$1'),
+                 $ids := $annotationBlocks//@*/data()[starts-with(., 'dict:')]!
+                              replace(., '^dict:', '')
+             return collection($dictName)//tei:entry[@xml:id = $ids]
+           }
+          </dict>
         </doc>
 
     return if (matches($accept-header, '[+/]json'))
