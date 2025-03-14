@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
     xmlns:acdh="http://acdh.oeaw.ac.at"
     xmlns:tei="http://www.tei-c.org/ns/1.0"
     exclude-result-prefixes="tei acdh"
@@ -10,6 +11,8 @@
     <xsl:param name="hits_str"/>
     <xsl:param name="assetsBaseURIpattern" />
     <xsl:param name="assetsBaseURIto" />
+    
+    <xsl:variable name="dictById" select="map:merge(//tei:entry!map {data(./@xml:id): .})"/>
 
     <xsl:template match="/">
         <json objects="json">
@@ -85,8 +88,18 @@
             <xsl:element name="{local-name()}">
                 <xsl:attribute name="type">object</xsl:attribute>
                 <xsl:apply-templates select="."/>
+                <xsl:if test=".[@lemmaRef]">
+                    <xsl:variable name="id" select="replace(data(@lemmaRef), 'dict:', '')"/>
+                    <xsl:apply-templates select="$dictById($id)/tei:gramGrp/tei:gram"></xsl:apply-templates>
+                </xsl:if>
             </xsl:element>
         </_>
+    </xsl:template>
+    
+    <xsl:template match="tei:gram">
+        <xsl:element name="{@type}">
+            <xsl:value-of select="."/>
+        </xsl:element>
     </xsl:template>
     
     <xsl:template match="tei:w[count((text(),*)) > 1]">        
@@ -109,6 +122,7 @@
                       <xsl:apply-templates select="current-group()" mode="array"/>
                   </xsl:element>
               </xsl:when>
+              <xsl:when test="self::tei:dict|self::standOff"/> <!-- only for lookup -->
               <xsl:otherwise>
                   <xsl:element name="{local-name()}">
                       <xsl:attribute name="type">object</xsl:attribute>
