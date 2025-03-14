@@ -5,14 +5,15 @@
     exclude-result-prefixes="tei acdh"
     version="2.0">
     <xsl:preserve-space elements="span"/>
+    <xsl:output method="xml" indent="yes"/>
 
     <xsl:param name="hits_str"/>
     <xsl:param name="assetsBaseURIpattern" />
     <xsl:param name="assetsBaseURIto" />
 
     <xsl:template match="/">
-        <json objects="json" arrays="utterances">
-            <xsl:apply-templates />
+        <json objects="json">
+            <xsl:apply-templates mode="docwrap"/>
         </json>
     </xsl:template>
 
@@ -67,26 +68,123 @@
     <xsl:variable name="dict" select="replace(//tei:prefixDef[@ident='dict']/@replacementPattern, '.+/(.+)\.xml#\$1$', '$1')"/>
     <span class="sep">/</span><a class="{@name}" data-target-type="DictQuery" data-text-id="{$dict}" data-query-params="{{&quot;id&quot;: &quot;{replace((tei:string|@fVal), '^dict:', '')}&quot;}}" href="#"><i class="fa-solid fa-book"></i></a> 
     </xsl:template>
-
-    <xsl:template match="/doc">
-        <id><xsl:value-of select="@id"/></id>
-        <utterances>
-        <xsl:for-each select="./tei:u">
+    
+    <xsl:template match="doc" mode="docwrap">
+       <doc type="object">           
+           <xsl:apply-templates select="." mode="#default"/>
+       </doc> 
+    </xsl:template>
+    
+    <xsl:template match="tei:u">
+        <xsl:apply-templates select="@*"/>
+        <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap" mode="array"/></_0024_0024>
+    </xsl:template>
+    
+    <xsl:template match="tei:w|tei:pc|tei:gap" mode="array">
+        <_ type="object">
+            <xsl:element name="{local-name()}">
+                <xsl:attribute name="type">object</xsl:attribute>
+                <xsl:apply-templates select="."/>
+            </xsl:element>
+        </_>
+    </xsl:template>
+    
+    <xsl:template match="tei:w[count((text(),*)) > 1]">        
+        <xsl:apply-templates select="@*"/>
+        <_0024_0024 type="array">
+            <xsl:apply-templates select="." mode="sequence"/>
+        </_0024_0024> 
+    </xsl:template>
+    
+    <xsl:template match="*">
+        <xsl:apply-templates select="@*"/>
+        <xsl:for-each-group select="*|text()[normalize-space(.) ne '']" group-adjacent="local-name()">
+          <xsl:choose>
+              <xsl:when test="current-group()/local-name() = ''">
+                  <xsl:apply-templates select="current-group()" mode="#default"/> 
+              </xsl:when>
+              <xsl:when test="count(current-group()) > 1">
+                  <xsl:element name="{local-name()||'s'}">
+                      <xsl:attribute name="type">array</xsl:attribute>
+                      <xsl:apply-templates select="current-group()" mode="array"/>
+                  </xsl:element>
+              </xsl:when>
+              <xsl:otherwise>
+                  <xsl:element name="{local-name()}">
+                      <xsl:attribute name="type">object</xsl:attribute>
+                      <xsl:apply-templates select="current-group()" mode="#default"/>
+                  </xsl:element>
+              </xsl:otherwise>
+          </xsl:choose>  
+        </xsl:for-each-group>
+    </xsl:template>
+    
+    <xsl:template match="*" mode="array">
+        <_ type="object">
+        <xsl:apply-templates select="@*"/>
+            <xsl:for-each-group select="*|text()[normalize-space(.) ne '']" group-adjacent="local-name()">
+            <xsl:choose>
+                <xsl:when test="current-group()/local-name() = ''">
+                    <xsl:apply-templates select="current-group()" mode="#default"/> 
+                </xsl:when>
+                <xsl:when test="count(current-group()) > 1">
+                    <xsl:element name="{local-name()||'s'}">
+                        <xsl:attribute name="type">array</xsl:attribute>
+                        <xsl:apply-templates select="current-group()" mode="array"/>
+                    </xsl:element>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:element name="{local-name()}">                       
+                        <xsl:attribute name="type">object</xsl:attribute>
+                        <xsl:apply-templates select="current-group()" mode="#default"/>
+                    </xsl:element>
+                </xsl:otherwise>
+            </xsl:choose>  
+        </xsl:for-each-group>
+        </_>
+    </xsl:template>
+    
+    <xsl:template match="*" mode="sequence">
+        <xsl:for-each-group select="*|text()[normalize-space(.) ne '']" group-adjacent="local-name()">
             <_ type="object">
-                <id><xsl:value-of select="@xml:id"/></id>
-                <audio>
-                    <xsl:if test="./tei:media[@type='distributionFile']">
-                        <xsl:value-of select="replace(
-                        substring-after(./tei:media[@type='distributionFile'][1]/@url, ':'), 
-                        $assetsBaseURIpattern, 
-                        $assetsBaseURIto)" />
-                    </xsl:if>
-                </audio>
-                <content>
-                    <xsl:apply-templates select="acdh:render-u(.)"/>
-                </content>
+            <xsl:choose>
+                <xsl:when test="current-group()/local-name() = ''">
+                    <xsl:apply-templates select="current-group()" mode="#default"/> 
+                </xsl:when>
+                <xsl:when test="count(current-group()) > 1">
+                    <xsl:element name="{local-name()||'s'}">
+                        <xsl:attribute name="type">array</xsl:attribute>
+                        <xsl:apply-templates select="current-group()" mode="array"/>
+                    </xsl:element>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:element name="{local-name()}">                       
+                        <xsl:attribute name="type">object</xsl:attribute>
+                        <xsl:apply-templates select="current-group()" mode="#default"/>
+                    </xsl:element>
+                </xsl:otherwise>
+            </xsl:choose>
             </_>
-        </xsl:for-each>
-        </utterances>
+        </xsl:for-each-group>
+    </xsl:template>
+    
+    <xsl:template match="*[normalize-space(string-join(text())) ne '' and count(text()) > 1]">        
+        <xsl:apply-templates select="@*"/>
+        <_0024_0024 type="array">
+            <xsl:attribute name="type">array</xsl:attribute>
+            <xsl:apply-templates select="." mode="sequence"/>
+        </_0024_0024>        
+    </xsl:template>
+    
+    <xsl:template match="@*">
+        <xsl:element name="{'_0040'||local-name()}"><xsl:value-of select="."/></xsl:element>
+    </xsl:template>
+    
+    <xsl:template match="text()">
+      <_0024><xsl:value-of select="."/></_0024>
+    </xsl:template>
+    
+    <xsl:template match="text()" mode="array">
+        <_><_0024><xsl:value-of select="."/></_0024></_>
     </xsl:template>
 </xsl:stylesheet>
