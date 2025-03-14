@@ -2434,7 +2434,8 @@ declare function vicav:_corpus_text(
         $page as xs:integer?,
         $size as xs:integer?,
         $hits as xs:string?,
-        $print as xs:string?
+        $print as xs:string?,
+        $xslt as xs:string
     ) {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     let $p := if (empty($page)) then 1 else $page
@@ -2454,15 +2455,14 @@ declare function vicav:_corpus_text(
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
          'Text with id '||$docId||' does not exist') else (),
-        $utterances := subsequence($teiDoc
-        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u, ($p - 1)*$s+1, $s),
-        $notFound := if (not(exists($utterances))) then
+        $annotationBlocks := subsequence($teiDoc
+        /tei:text/tei:body/tei:div/tei:annotationBlock, ($p - 1)*$s+1, $s),
+        $notFound := if (not(exists($annotationBlocks))) then
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
          'Text with id '||$docId||' does not have page '||$p) else (),
-        $doc := <doc id="${$docId}">{$utterances}</doc>,
       (: , $_ := file:write(file:resolve-path('doc.xml', file:base-dir()), $doc, map { "method": "xml"}) :)      
-        $referenced_ids := $doc//@ana[starts-with(., '#')]!substring(., 2),
+        $referenced_ids := $annotationBlocks//@ana[starts-with(., '#')]!substring(., 2),
         $annot := db:attribute('vicav_corpus', $referenced_ids)/.. 
         (: there is a lot of scaffolding here, filter it :)
         update {
@@ -2474,8 +2474,8 @@ declare function vicav:_corpus_text(
         $pds := for $pd in collection('vicav_corpus')//tei:prefixDef
                 group by $ident := $pd/@ident
                 return $pd[1],
-        $doc := <doc id="${$docId}">
-          {$utterances}
+        $doc := <doc id="{$docId}">
+          {$annotationBlocks}
           <standOff>
             {$annot}
           </standOff>
@@ -2492,7 +2492,7 @@ declare function vicav:_corpus_text(
             })
             return serialize($out, map {"method": "json", "indent": "no"})
         else
-            let $out := vicav:transform($doc, 'corpus_utterances.xslt', $print, 
+            let $out := vicav:transform($doc, $xslt, $print, 
                 map{ "hits_str": $hits_str, 
                 "assetsBaseURIpattern": $assetsBaseURIpattern,  
                 "assetsBaseURIto": $assetsBaseURIto })
@@ -2517,13 +2517,14 @@ declare
 %rest:query-param("size", "{$size}")
 %rest:query-param("hits", "{$hits}")
 %rest:query-param("print", "{$print}")
+%rest:query-param("xslt", "{$xslt}", "corpus_utterances.xslt")
 %rest:produces("application/xml")
 %rest:produces("application/json")
 %rest:produces('application/problem+json')
 %rest:produces('application/problem+xml')
-function vicav:corpus_text($docId as xs:string, $page as xs:integer?, $size as xs:integer?, $hits as xs:string?, $print as xs:string?) {
+function vicav:corpus_text($docId as xs:string, $page as xs:integer?, $size as xs:integer?, $hits as xs:string?, $print as xs:string?, $xslt as xs:string) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_corpus_text#5, [$docId, $page, $size, $hits, $print], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_corpus_text#6, [$docId, $page, $size, $hits, $print, $xslt], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };
 
