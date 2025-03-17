@@ -2374,12 +2374,43 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
     let $consecutiveIds := []
     (:let $docUandIds := map:merge():)
 
+    let $hits := vicav:get_hits_context($result),      
+        $referenced_ids := $hits//@ana[starts-with(., '#')]!substring(., 2),
+        $annot := db:attribute('vicav_corpus', $referenced_ids)/.. 
+        (: there is a lot of scaffolding here, filter it :)
+        update {
+          delete node .//*[@fVal=""],
+          delete node .//*[matches(@fVal, '\{.+\}')],
+          delete node .//*[./*:string[not(text())]],
+          delete node .//*[./*:string[matches(text(), '\{.+\}')]]
+        },
+        $pds := for $pd in collection('vicav_corpus')//tei:prefixDef
+                group by $ident := $pd/@ident
+                return $pd[1],
+        $hits := <hits xmlns="http://www.tei-c.org/ns/1.0">
+          {$hits/*}
+          <standOff>
+            {$annot}
+          </standOff>
+          <listPrefixDef xmlns="http://www.tei-c.org/ns/1.0">
+            {$pds}
+          </listPrefixDef>
+          <dict xmlns="http://www.tei-c.org/ns/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+           { let $dictName := $pds/self::*[@ident='dict']/@replacementPattern =>
+                              replace('.*/vicav_dicts/(.*).xml.*$', '$1'),
+                 $ids := $hits//@*/data()[starts-with(., 'dict:')]!
+                              replace(., '^dict:', '')
+             return collection($dictName)//tei:entry[@xml:id = $ids]
+           }
+          </dict>          
+        </hits>
+    
     return if (matches($accept-header, '[+/]json'))
         then
-            let $transformedOutput := xslt:transform(vicav:get_hits_context($result), 'xslt/corpus_search_result_json.xslt', map{ 'query': $query})
+            let $transformedOutput := xslt:transform($hits, 'xslt/corpus_search_result_json.xslt', map{ 'query': $query})
             return serialize($transformedOutput, map {"method": "json", "indent": "no"})
         else
-            let $out := vicav:transform(vicav:get_hits_context($result), $xslt, $print, map{ 'query': $query })
+            let $out := vicav:transform($hits, $xslt, $print, map{ 'query': $query })
             return $out
 };
 
@@ -2404,11 +2435,12 @@ declare function vicav:get_config() {
   ]``, (), 'config_vicav_get') 
 };
 
-declare function vicav:get_hits_context($result as element(json)?) as element(hits) {
-  if (not($result)) then <hits/> else 
+declare function vicav:get_hits_context($result as element(json)?) as element(tei:hits) {
+  if (not($result) or count($result/Lines/_) = 0) then <hits xmlns="http://www.tei-c.org/ns/1.0"/> else 
+  <hits xmlns="http://www.tei-c.org/ns/1.0">{
   util:eval(``[declare namespace tei = 'http://www.tei-c.org/ns/1.0';
   declare variable $result as element(json) external;
-      let $hits := <hits>{for $line in $result/Lines/_
+  let $hits := for $line in $result/Lines/_
         let $uId := tokenize($line/Refs/_[1], '=')[2]
         let $docId := tokenize($line/Refs/_[2], '=')[2]
         (:$docUandIds := if not((map:contains($docUandIds, $key))) then map:put($docUandIds, $key, []) else $docUandIds:)
@@ -2418,15 +2450,14 @@ declare function vicav:get_hits_context($result as element(json)?) as element(hi
                         $line/Left/_[1]/text()
                      else if (count($line/Right/_) > 0) then
                         $line/Right/_[1]/text() else ""
-        let $u := collection('vicav_corpus')
+        let $u := (# db:copynode false #) { collection('vicav_corpus')
           /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, "CorpusID")]/text() = $docId]         
-        /tei:text/tei:body/tei:div/tei:annotationBlock/tei:u[@xml:id = $uId]
-        return <hit u="{$uId}" doc="{$docId}">{($u, "Error "|| $uId ||" not found in " || $docId)[1]}{$tokenId!<token>{.}</token>}</hit>
-      }</hits>
+        /tei:text/tei:body/tei:div/tei:annotationBlock[tei:u[@xml:id = $uId]] }
       (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
       (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
-    return $hits
-    ]``, map{"result": $result}, 'hits_context_vicav_get')
+        return $u update {insert node attribute {'hits'} {string-join($tokenId, ' ')} as first into . }
+  return $hits
+  ]``, map{"result": $result}, 'hits_context_vicav_get')}</hits>
 };
 
 declare function vicav:_corpus_text(
