@@ -5,8 +5,9 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     exclude-result-prefixes="tei acdh"
     version="2.0">
+    <xsl:import href="utterances-to-json.xsl"/>
 
-    <xsl:output method="xml" indent="yes"/>
+    <xsl:output method="xml" indent="no"/>
     <xsl:param name="query"></xsl:param>
     <xsl:param name="exit-on-node-index-not-found">no</xsl:param>
 
@@ -86,19 +87,16 @@
         </right>
     </xsl:function>
 
-
-
-
     <xsl:template match="/">
-        <json objects="json content" arrays="hits docHits">
-            <xsl:apply-templates/>
+        <json objects="json hits">
+            <xsl:apply-templates mode="docwrap"/>
         </json>
     </xsl:template>
 
-    <xsl:template match="hits">
+    <xsl:template match="*:hits" mode="docwrap">
         <query><xsl:value-of select="$query"/></query>
         <hits>
-          <xsl:apply-templates select="./hit"/>
+          <xsl:apply-templates select="." mode="#default"/>
         </hits>
     </xsl:template>
     
@@ -116,7 +114,11 @@
         </_>        
     </xsl:template>
 
-    <xsl:template match="@*">
-        <xsl:element name="{local-name()}"><xsl:value-of select="."/></xsl:element>
+    <xsl:template match="@hits">
+        <hits type="array">
+            <xsl:for-each select="tokenize(.)">
+                <_><xsl:value-of select="."/></_>
+            </xsl:for-each>
+        </hits>
     </xsl:template>
 </xsl:stylesheet>
