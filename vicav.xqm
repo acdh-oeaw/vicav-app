@@ -2400,11 +2400,12 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
                               replace('.*/vicav_dicts/(.*).xml.*$', '$1'),
                  $ids := $hits//@*/data()[starts-with(., 'dict:')]!
                               replace(., '^dict:', '')
-             return collection($dictName)//tei:entry[@xml:id = $ids]
+             return if ($dictName ne '' and exists(collection($dictName)))
+             then collection($dictName)//tei:entry[@xml:id = $ids]
+             else "no dictionary configured"
            }
-          </dict>          
+          </dict>
         </hits>
-    
     return if (matches($accept-header, '[+/]json'))
         then
             let $transformedOutput := xslt:transform($hits, 'xslt/corpus_search_result_json.xslt', map{ 'query': $query})
