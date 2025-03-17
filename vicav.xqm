@@ -2451,12 +2451,12 @@ declare function vicav:get_hits_context($result as element(json)?) as element(te
                         $line/Left/_[1]/text()
                      else if (count($line/Right/_) > 0) then
                         $line/Right/_[1]/text() else ""
-        let $u := (# db:copynode false #) { collection('vicav_corpus')
+        let $annotationBlock := (# db:copynode false #) { collection('vicav_corpus')
           /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, "CorpusID")]/text() = $docId]         
         /tei:text/tei:body/tei:div/tei:annotationBlock[tei:u[@xml:id = $uId]] }
       (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
       (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
-        return $u update {insert node attribute {'hits'} {string-join($tokenId, ' ')} as first into . }
+        return $annotationBlock update {insert node (attribute {'hits'} {string-join($tokenId, ' ')}, attribute {'docRef'} {$docId} ) as first into . }
   return $hits
   ]``, map{"result": $result}, 'hits_context_vicav_get')}</hits>
 };
