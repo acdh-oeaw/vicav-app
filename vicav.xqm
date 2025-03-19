@@ -201,16 +201,13 @@ declare function vicav:get_categories($mainCategories){
       let $subcategories := $category/tei:category
       return
         if (empty($subcategories)) then
-          map:entry($id, map { "title": $title })
+          map:entry($id, $title)
         else
-          map:entry($id, map { 
-            "title": $title, 
-            "subcategories": map:merge(
+          map:merge(
               for $sub in $subcategories
               return map:entry(string($sub/@xml:id), string($sub/tei:catDesc))
             )
-          })
-    ))
+        ))
 };
 
 declare function vicav:get_featurelist(){
