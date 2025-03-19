@@ -1995,7 +1995,7 @@ declare function vicav:_get_data_words($type as xs:string*, $query as xs:string*
                 $base[if (empty($query)) then true() else starts-with(vicav:tr(.), vicav:tr($query))]
 
     let $results := for $w in $words
-        return replace(normalize-space($w), '[\s&#160;]', '')
+        return normalize-unicode(replace(normalize-space($w), '[\s&#160;]', ''), 'NFC')
 
     let $out :=
     for $result in distinct-values($results)
