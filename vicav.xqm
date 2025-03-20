@@ -1732,6 +1732,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
 
     for $id in $item/id
     group by $loc
+    order by count($id) descending
 
     let $s := for $i in $item/id
     return $i/text() || ","
