@@ -283,10 +283,11 @@ function attachAgeSliderHandler($root) {
 }
 
 function compareQuery(query, success_callback, $root) {
+	var url = 'explore_samples?'+ query;
+	console.log('Query url: ' +url);
 	var wrapper = $('.grid-wrap > *', $root)
 	wrapper.hide()
 	$('.grid-wrap', $root).append(LoadingRoller);
-	var url = 'explore_samples?'+ query;
 	$.ajax({
 		url: url,
 		dataType: 'html',
@@ -451,7 +452,7 @@ $(document).on('DOMNodeInserted', "[data-snippetid='compare-features']", functio
  * Handle clicking on a link which triggers opening an Explore features window on a given feature.
  */
 function compareFeatureLink(feature, $root) {
-	let query = 'type=lingfeatures&features=' + feature + '&xslt=cross_features_02.xslt';
+	let query = 'type=lingfeatures&features=' + feature.replaceAll(/#/g, '%23') + '&xslt=cross_features_02.xslt';
 	compareQuery(query, function(result, query) {
         if (result.includes('error type="user authentication"')) {
             alert('Error: authentication did not work');
