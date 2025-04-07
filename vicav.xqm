@@ -197,7 +197,7 @@ declare function vicav:get_categories($mainCategories){
        map:merge((
       for $category in $mainCategories
       let $id := string($category/@xml:id)
-      let $title := string($category/tei:catDesc)
+      let $title := string($category/@n)
       let $subcategories := $category/tei:category
       return
         if (empty($subcategories)) then
@@ -205,7 +205,7 @@ declare function vicav:get_categories($mainCategories){
         else
           map:merge(
               for $sub in $subcategories
-              return map:entry(string($sub/@xml:id), string($sub/tei:catDesc))
+              return map:entry(string($sub/@xml:id), string($sub/@n))
             )
         ))
 };
