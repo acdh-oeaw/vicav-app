@@ -2316,18 +2316,19 @@ declare
 %rest:GET
 %rest:query-param("query", "{$query}")
 %rest:query-param("print", "{$print}")
+%rest:query-param("render", "{$render}", "html")
 %rest:query-param("xslt", "{$xslt}", "corpus_search_result.xslt")
 %rest:produces("application/xml")
 %rest:produces("application/json")
 %rest:produces('application/problem+json')
 %rest:produces('application/problem+xml')
-function vicav:search_corpus($query as xs:string, $print as xs:string?, $xslt as xs:string?) {
+function vicav:search_corpus($query as xs:string, $print as xs:string?, $render as xs:string, $xslt as xs:string?) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_search_corpus#3, [$query, $print, $xslt], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_search_corpus#4, [$query, $print, $render, $xslt], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };
 
-declare function vicav:_search_corpus($query as xs:string, $print as xs:string?, $xslt as xs:string?) {
+declare function vicav:_search_corpus($query as xs:string, $print as xs:string?, $render as xs:string, $xslt as xs:string?) {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
     
     let $query-parts := if (starts-with($query, "[")) then
@@ -2406,7 +2407,11 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
         </hits>
     return if (matches($accept-header, '[+/]json'))
         then
-            let $transformedOutput := xslt:transform($hits, 'xslt/corpus_search_result_json.xslt', map{ 'query': $query})
+            let $transformedOutput := if ($render eq "html") 
+            then xslt:transform($hits, 'xslt/corpus_search_result_json_html.xslt', map{'query': $query})
+            else if ($render eq "json")
+            then xslt:transform($hits, 'xslt/corpus_search_result_json.xslt', map{'query': $query})
+            else $hits 
             return serialize($transformedOutput, map {"method": "json", "indent": "no"})
         else
             let $out := vicav:transform($hits, $xslt, $print, map{ 'query': $query })
@@ -2465,6 +2470,7 @@ declare function vicav:_corpus_text(
         $size as xs:integer?,
         $hits as xs:string?,
         $print as xs:string?,
+        $render as xs:string,
         $xslt as xs:string
     ) {
     let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
@@ -2475,10 +2481,10 @@ declare function vicav:_corpus_text(
     
     let $assetsBaseURIpattern := (collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
-        /tei:prefixDef[@ident="assets"]/@matchPattern, '')[1]
+        /tei:prefixDef[@ident="publicAssets"]/@matchPattern, '')[1]
     let $assetsBaseURIto := (collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
-        /tei:prefixDef[@ident="assets"]/@replacementPattern, '')[1]
+        /tei:prefixDef[@ident="publicAssets"]/@replacementPattern, '')[1]
     let $teiDoc := collection('vicav_corpus')
         //tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, 'CorpusID')]/text() = $docId],
         $notFound := if (not(exists($teiDoc))) then
@@ -2524,10 +2530,15 @@ declare function vicav:_corpus_text(
 
     return if (matches($accept-header, '[+/]json'))
         then 
-            let $out := xslt:transform($doc, 'xslt/corpus_utterances_json.xslt', map{
-                "hits_str": $hits_str, "assetsBaseURIpattern": $assetsBaseURIpattern,  
-                "assetsBaseURIto": $assetsBaseURIto
+            let $out := if ($render eq "html") 
+            then xslt:transform($doc, 'xslt/corpus_utterances_json_html.xslt', map{
+                "hits_str": $hits_str
             })
+            else if ($render eq "json")
+            then xslt:transform($doc, 'xslt/corpus_utterances_json.xslt', map{
+                "hits_str": $hits_str
+            })
+            else $doc
             return serialize($out, map {"method": "json", "indent": "no"})
         else
             let $out := vicav:transform($doc, $xslt, $print, 
@@ -2555,14 +2566,15 @@ declare
 %rest:query-param("size", "{$size}")
 %rest:query-param("hits", "{$hits}")
 %rest:query-param("print", "{$print}")
+%rest:query-param("render", "{$render}", "html")
 %rest:query-param("xslt", "{$xslt}", "corpus_utterances.xslt")
 %rest:produces("application/xml")
 %rest:produces("application/json")
 %rest:produces('application/problem+json')
 %rest:produces('application/problem+xml')
-function vicav:corpus_text($docId as xs:string, $page as xs:integer?, $size as xs:integer?, $hits as xs:string?, $print as xs:string?, $xslt as xs:string) {
+function vicav:corpus_text($docId as xs:string, $page as xs:integer?, $size as xs:integer?, $hits as xs:string?, $print as xs:string?, $render as xs:string, $xslt as xs:string) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_corpus_text#6, [$docId, $page, $size, $hits, $print, $xslt], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_corpus_text#7, [$docId, $page, $size, $hits, $print, $render, $xslt], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };
 
