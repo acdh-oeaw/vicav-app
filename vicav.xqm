@@ -197,20 +197,17 @@ declare function vicav:get_categories($mainCategories){
        map:merge((
       for $category in $mainCategories
       let $id := string($category/@xml:id)
-      let $title := string($category/tei:catDesc)
+      let $title := string($category/@n)
       let $subcategories := $category/tei:category
       return
         if (empty($subcategories)) then
-          map:entry($id, map { "title": $title })
+          map:entry($id, $title)
         else
-          map:entry($id, map { 
-            "title": $title, 
-            "subcategories": map:merge(
+          map:merge(
               for $sub in $subcategories
-              return map:entry(string($sub/@xml:id), string($sub/tei:catDesc))
+              return map:entry(string($sub/@xml:id), string($sub/@n))
             )
-          })
-    ))
+        ))
 };
 
 declare function vicav:get_featurelist(){
@@ -1735,6 +1732,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
 
     for $id in $item/id
     group by $loc
+    order by count($id) descending
 
     let $s := for $i in $item/id
     return $i/text() || ","
@@ -1998,7 +1996,7 @@ declare function vicav:_get_data_words($type as xs:string*, $query as xs:string*
                 $base[if (empty($query)) then true() else starts-with(vicav:tr(.), vicav:tr($query))]
 
     let $results := for $w in $words
-        return replace(normalize-space($w), '[\s&#160;]', '')
+        return normalize-unicode(replace(normalize-space($w), '[\s&#160;]', ''), 'NFC')
 
     let $out :=
     for $result in distinct-values($results)
