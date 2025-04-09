@@ -11,10 +11,10 @@
     
     <xsl:template match="tei:u">
         <xsl:apply-templates select="@*"/>
-        <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap" mode="array"/></_0024_0024>
+        <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap|tei:media" mode="array"/></_0024_0024>
     </xsl:template>
     
-    <xsl:template match="tei:w|tei:pc|tei:gap" mode="array">
+    <xsl:template match="tei:w|tei:pc|tei:gap|tei:media" mode="array">
         <_ type="object">
             <xsl:element name="{local-name()}">
                 <xsl:attribute name="type">object</xsl:attribute>
