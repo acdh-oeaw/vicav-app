@@ -100,7 +100,7 @@
 
     <xsl:template match="panel|item">
         <_ type="object">
-          <xsl:apply-templates select="@* except @type"/>
+          <xsl:apply-templates select="@* except (@type, @targetType)"/>
           <title><xsl:value-of select="normalize-space(string-join(text(), ' '))"/></title>
           <type><xsl:value-of select="local-name()"/></type>
           <targetType>
