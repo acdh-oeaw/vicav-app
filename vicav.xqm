@@ -179,7 +179,8 @@ declare function vicav:get_insert_data($type as xs:string) {
     case "insert_variety_data" return <_ type="object">{vicav:get_variety_data()}</_>
     case "insert_taxonomy" return <_ type="object">{vicav:get_taxonomy()}</_>
     case "insert_list_of_corpus_characters" return vicav:get_list_of_corpus_characters()
-    default return <_ type="object">{json:parse(vicav:_get_tei_doc_list(replace($type, '^insert_', '')))/json/*}</_>
+    case "insert_vicav_biblio" return <_ type="object">{vicav:_get_vicav_biblio_data("xml_for_parser")/json/*}</_>
+    default return <_ type="object">{vicav:_get_tei_doc_list(replace($type, '^insert_', ''), "xml_for_parser")/json/*}</_>
 };
 
 declare function vicav:get_list_of_corpus_characters() as element(specialCharacters) {
@@ -2223,15 +2224,21 @@ declare function vicav:_get_data_list($type as xs:string*) {
 declare
 %rest:path("/vicav/tei_doc_list")
 %rest:query-param("type", "{$type}")
+%rest:query-param("render", "{$render}}", "json")
 %rest:produces('application/json')
+%rest:produces('application/xml')
 %rest:GET
-function vicav:get_tei_doc_list($type as xs:string*) {
+function vicav:get_tei_doc_list($type as xs:string*, $render as xs:string) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_get_tei_doc_list#1, [$type], map:merge((cors:header(()), map{'Content-Type': 'application/json;charset=UTF-8'}))
+    vicav:_get_tei_doc_list#2, [$type, $render], map:merge((cors:header(()),
+      if ($render = "json") 
+      then map{'Content-Type': 'application/json;charset=UTF-8'}
+      else map{'Content-Type': 'application/xml;charset=UTF-8'}) 
+    )
   )
 };
 
-declare function vicav:_get_tei_doc_list($type as xs:string*) {
+declare function vicav:_get_tei_doc_list($type as xs:string*, $render as xs:string) {
   let $noType := if (not(exists($type))) then
         error(xs:QName('response-codes:_422'), 
          $api-problem:codes_to_message(422),
@@ -2251,8 +2258,43 @@ declare function vicav:_get_tei_doc_list($type as xs:string*) {
       $corpusIDs := $corpus//tei:idno[ends-with(@type, 'CorpusID')]/text()!xs:string(.),
       $IDtypes :=  distinct-values($corpus//tei:idno/@type),
       $IDsContainingData := collection($type)//tei:TEI[.//tei:w]//tei:idno[@type = $IDtypes][. = $corpusIDs]!xs:string(.),
-      $corpus := $corpus update { .//tei:TEI[.//tei:idno[@type = $IDtypes][. = $IDsContainingData]]!(insert node attribute {"hasTEIw"} {"true"} as first into .) }
-  return serialize(xslt:transform($corpus, 'xslt/teiCorpusTeiHeader-json.xslt'), map {'method': 'json'})
+      $corpus := $corpus update { .//tei:TEI[.//tei:idno[@type = $IDtypes][. = $IDsContainingData]]!(insert node attribute {"hasTEIw"} {"true"} as first into .) },
+      $xml_for_parser := xslt:transform($corpus, 'xslt/teiCorpusTeiHeader-json.xslt')
+  return if ($render = "json") 
+  then serialize($xml_for_parser, map {'method': 'json', 'indent': 'no'})
+  else if ($render = "xml_for_parser")
+  then $xml_for_parser
+  else $corpus
+};
+
+
+declare
+%rest:path("/vicav/biblio_data")
+%rest:query-param("render", "{$render}}", "json")
+%rest:produces('application/json')
+%rest:produces('application/xml')
+%rest:GET
+function vicav:get_vicav_biblio_data($render as xs:string) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_vicav_biblio_data#1, [$render], map:merge((cors:header(()),
+      if ($render = "json") 
+      then map{'Content-Type': 'application/json;charset=UTF-8'}
+      else map{'Content-Type': 'application/xml;charset=UTF-8'}) 
+    )
+  )
+};
+
+declare function vicav:_get_vicav_biblio_data($render as xs:string) { 
+  let $corpus := try { collection('vicav_biblio')//tei:TEI } catch err:FODC0002 {
+    error(xs:QName('response-codes:_404'), 
+     $api-problem:codes_to_message(404),
+     'There are no TEI documents of type vicav_biblio')},
+    $xml_for_parser := xslt:transform($corpus, 'xslt/xml-to-basex-json-xml.xsl')    
+  return if ($render = "json") 
+  then serialize($xml_for_parser, map {'method': 'json', 'indent': 'no'})
+  else if ($render = "xml_for_parser")
+  then $xml_for_parser
+  else $corpus
 };
 
 (:****************************************************************************:)
