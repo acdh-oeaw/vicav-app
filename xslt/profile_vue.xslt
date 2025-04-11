@@ -20,9 +20,9 @@
         <gallery>
             <xsl:for-each select="./tei:figure">
                 <a>
-                    <xsl:attribute name="href" select="concat($images-base-path, ./tei:graphic/@url)"/>
+                    <xsl:attribute name="href" select="concat($images-base-path, ./tei:graphic[@type='thumbnail']/@url)"/>
                     <img>
-                        <xsl:attribute name="src" select="concat($images-base-path, 'thumb/', ./tei:graphic/@url)"/>
+                        <xsl:attribute name="src" select="concat($images-base-path, 'thumb/', ./tei:graphic[@type='thumbnail']/@url)"/>
                         <xsl:attribute name="alt" select="./tei:head"/>
                     </img>
                 </a>
@@ -30,14 +30,24 @@
         </gallery>
     </xsl:template>
                 
-    <xsl:template match="tei:p[@rendition='#slideshow']">       
+    <xsl:template match="tei:p[@rendition='#slideshow']">
+        <xsl:variable name="thumbnailPath">
+            <xsl:choose>
+                <xsl:when test="tei:graphic[@type = 'thumbnail']/@url != tei:graphic[@type = 'fullscale']/@url">
+                    <xsl:value-of select="concat($images-base-path, tei:graphic[@type = 'thumbnail']/@url)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="concat($images-base-path, 'thumb/',  tei:graphic[@type = 'fullscale']/@url)"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
         <gallery>
             <xsl:for-each select="./tei:figure">
                 <a>
-                    <xsl:attribute name="href" select="concat($images-base-path, ./tei:link/@target)"/>
+                    <xsl:attribute name="href" select="concat($images-base-path, ./tei:graphic[@type='fullscale']/@url)"/>
                     <img>
                         <xsl:attribute name="alt" select="tei:head"/>
-                        <xsl:attribute name="src" select="concat($images-base-path, 'thumb/', ./tei:link/@target)"/>
+                        <xsl:attribute name="src" select="$thumbnailPath"/>
                     </img>
                 </a>
             </xsl:for-each>
@@ -45,16 +55,28 @@
     </xsl:template>
 
     <xsl:template match="//tei:div[@type='gallery']">
-        <div class="h3Profile"><xsl:value-of select="./tei:head"/></div>
+        <xsl:if test="tei:head">
+            <div class="h3Profile"><xsl:value-of select="./tei:head"/></div>
+        </xsl:if>
         <gallery>
-            <xsl:for-each select="./tei:link">
-            <a>
-                <xsl:attribute name="href" select="concat($images-base-path, ./@target)"/>
-                <img>
-                    <xsl:attribute name="src" select="concat($images-base-path, 'thumb/',  ./@target)"/>
-                    <xsl:attribute name="alt" select="./tei:head"/>
-                </img>
-            </a>
+            <xsl:for-each select="./tei:figure">
+                <xsl:variable name="thumbnailPath">
+                    <xsl:choose>
+                        <xsl:when test="tei:graphic[@type = 'thumbnail']/@url != tei:graphic[@type = 'fullscale']/@url">
+                            <xsl:value-of select="concat($images-base-path, tei:graphic[@type = 'thumbnail']/@url)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="concat($images-base-path, 'thumb/',  tei:graphic[@type = 'fullscale']/@url)"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                <a>
+                    <xsl:attribute name="href" select="concat($images-base-path, tei:graphic[@type='fullscale']/@url)"/>
+                    <img>
+                        <xsl:attribute name="src" select="$thumbnailPath"/>
+                        <xsl:attribute name="alt" select="./tei:head"/>
+                    </img>
+                </a>
             </xsl:for-each>
         </gallery>
     </xsl:template>
