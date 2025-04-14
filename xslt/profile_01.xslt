@@ -33,8 +33,8 @@
             <div class="profileHeader">
                 <div class="dvImgProfile">
                     <xsl:if test="//tei:head/tei:figure/tei:head">
-                        <img src="{concat($images-base-path,//tei:head/tei:figure[1]/tei:graphic[@type='thumbnail']/@url)}">
-                        </img>
+                        <xsl:variable name="thumbnail-url" select="//tei:head/tei:figure[1]/tei:graphic[@type='thumbnail']/@url" as="xs:string"/>
+                        <img src="{concat($images-base-path,$thumbnail-url)}"/>
                         <div class="imgCaption">
                             <xsl:apply-templates select="//tei:head/tei:figure[1]/tei:head"/>
                         </div>                                           
@@ -112,7 +112,7 @@
                 </table>
             </div>
         
-            <xsl:apply-templates select="//tei:body/tei:div/tei:div"/>     
+            <xsl:apply-templates select="//tei:body/tei:div/(tei:div|tei:figure)"/>     
 
 
             <xsl:if test="count(//tei:head/tei:figure) = 2">
@@ -348,14 +348,14 @@
 
     <xsl:template match="tei:div[@type=['sampleText', 'lingFeatures', 'bibliography']]">
         <xsl:if test="count(./tei:p/tei:ref) > 0">
-            <xsl:copy>
+            <div>
                 <xsl:apply-templates select="./tei:head"/>
-                <xsl:copy select="./tei:p">
+                <p>
                     <xsl:apply-templates select="./tei:ref">
                         <xsl:sort select="number(replace(./text(), '([a-zA-Z]+)(\d+)/.+', '$2'))" data-type="number" order="ascending"/>
                     </xsl:apply-templates>
-                </xsl:copy>
-            </xsl:copy>
+                </p>
+            </div>
         </xsl:if>
     </xsl:template>
 

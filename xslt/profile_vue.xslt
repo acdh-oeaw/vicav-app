@@ -29,7 +29,33 @@
             </xsl:for-each>
         </gallery>
     </xsl:template>
-                
+            
+            
+    <xsl:template match="tei:figure[not(@rendition)]">
+        <div class="figure">
+            <div class="gallery-item">
+                <xsl:variable name="thumbnailPath">
+                    <xsl:choose>
+                        <xsl:when test="tei:graphic[@type = 'thumbnail']/@url != tei:graphic[@type = 'fullscale']/@url">
+                            <xsl:value-of select="concat($images-base-path, tei:graphic[@type = 'thumbnail']/@url)"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:value-of select="concat($images-base-path, 'thumb/',  tei:graphic[@type = 'fullscale']/@url)"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:variable>
+                <a>
+                    <xsl:attribute name="href" select="concat($images-base-path, ./tei:graphic[@type='fullscale']/@url)"/>
+                    <xsl:attribute name="title" select="tei:head"/>
+                    <img>
+                        <xsl:attribute name="src" select="$thumbnailPath"/>
+                    </img>
+                </a>
+                <div class="imgCaption"><xsl:value-of select="tei:head[@type='imgCaption']"/></div>
+            </div>
+        </div>
+    </xsl:template>
+    
     <xsl:template match="tei:figure[@rendition='#slideshow']">
         <gallery>
             <xsl:for-each select="./tei:figure">
@@ -54,7 +80,7 @@
         </gallery>
     </xsl:template>
 
-    <xsl:template match="//tei:figure[@rendigion='#gallery']">
+    <xsl:template match="tei:figure[@rendition='#gallery']">
         <xsl:if test="tei:head">
             <div class="h3Profile"><xsl:value-of select="./tei:head"/></div>
         </xsl:if>
