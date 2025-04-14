@@ -30,7 +30,7 @@
         </gallery>
     </xsl:template>
                 
-    <xsl:template match="tei:p[@rendition='#slideshow']">
+    <xsl:template match="tei:figure[@rendition='#slideshow']">
         <gallery>
             <xsl:for-each select="./tei:figure">
                 <xsl:variable name="thumbnailPath">
@@ -54,7 +54,7 @@
         </gallery>
     </xsl:template>
 
-    <xsl:template match="//tei:div[@type='gallery']">
+    <xsl:template match="//tei:figure[@rendigion='#gallery']">
         <xsl:if test="tei:head">
             <div class="h3Profile"><xsl:value-of select="./tei:head"/></div>
         </xsl:if>

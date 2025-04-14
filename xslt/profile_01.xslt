@@ -141,7 +141,7 @@
             <xsl:variable select="count(tei:figure) - 1" name="total"/>
             <xsl:for-each select="subsequence(tei:figure, 2)">
                 <xsl:variable select="position()" name="pos"/>
-                
+                <xsl:variable name="thumbnail-url" select="./tei:graphic[@type='thumbnail']/@url" as="xs:string"/>
                 <!-- Full-width images with number text -->
                 <div class="mySlides slider-fade">
                     <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
@@ -250,19 +250,19 @@
     <xsl:template match="tei:teiHead[@type='imgCaption']"><xsl:apply-templates/></xsl:template>
     <xsl:template match="tei:teiHeader"></xsl:template>
 
-    <xsl:template match="tei:p[@rendition='#slideshow']">
+    <xsl:template match="tei:figure[@rendition='#slideshow']">
         <div class="slider-container">
             <xsl:variable select="count(./tei:figure)" name="total"/>
             <xsl:for-each select="./tei:figure">
                 <xsl:variable select="position()" name="pos"/>
-                
+                <xsl:variable name="image-url" select="./tei:graphic[@type='fullscale']/@url" as="xs:string"/>
                 <!-- Full-width images with number text -->
                 <div class="mySlides slider-fade">
                     <div class="numbertext"><xsl:value-of select="$pos"/> / <xsl:value-of select="$total"/></div>
                     <a>
-                        <xsl:attribute name="href" select="concat($images-base-path, ./tei:graphic[@type='fullscale']/@url)"/>
+                        <xsl:attribute name="href" select="concat($images-base-path, $image-url)"/>
                         <img>
-                            <xsl:attribute name="src" select="concat($images-base-path, ./tei:graphic[@type='fullscale']/@url)"/>
+                            <xsl:attribute name="src" select="concat($images-base-path, $image-url)"/>
                         </img>
                     </a>
                 </div>
@@ -282,9 +282,10 @@
                     <xsl:attribute name="style" select="concat('width: ', count(./tei:figure) * 100, 'px')"/>
                     <xsl:for-each select="./tei:figure">
                         <xsl:variable select="position()" name="pos"/>
+                        <xsl:variable name="image-url" select="./tei:graphic[@type='thumbnail']/@url"/>
                         <div class="column">
                             <img class="demo cursor" style="width:100px; height: 100px">
-                                <xsl:attribute name="src" select="concat($images-base-path, ./tei:graphic[@type='thumbnail']/@url)"/>
+                                <xsl:attribute name="src" select="concat($images-base-path, $image-url)"/>
                                 <xsl:attribute name="data-showslide" select="$pos"/>
                                 <xsl:attribute name="alt" select="./tei:head"/>
                             </img>
@@ -305,10 +306,11 @@
     </xsl:template>
 
     <xsl:template match="tei:media">
+        <xsl:variable name="image-url" select="./@url" as="xs:string"/>
         <video width="320" height="240" controls="true">
         <source>
                   <xsl:attribute name="type" select="./@mimeType" />
-                  <xsl:attribute name="src" select="concat($images-base-path, ./@url)" />
+                  <xsl:attribute name="src" select="concat($images-base-path, $image-url)" />
         </source>
         Your browser does not support the video tag.
         </video>
@@ -412,10 +414,10 @@
         </a>
     </xsl:template>
 
-    <xsl:template match="//tei:div[@type='gallery']">
+    <xsl:template match="//tei:div[@type='gallery']|//tei:figure[@rendition='#gallery'] ">
         <div class="h3Profile"><xsl:value-of select="./tei:head"/></div>
         <gallery>
-            <xsl:for-each select="./tei:graphic[@type='fullscale']">
+            <xsl:for-each select="./tei:figure/tei:graphic[@type='fullscale']">
             <a>
                 <xsl:attribute name="href" select="concat($images-base-path, ./@url)"/>
                 <img>
@@ -427,7 +429,7 @@
         </gallery>
     </xsl:template>
 
-    <xsl:template match="tei:figure">
+    <xsl:template match="tei:figure[parent::tei:figure[@rendition='#gallery'] or parent::tei:div[@type = 'gallery']]">
         <div>
             <xsl:attribute name="class" select="'figure'"/>
             <xsl:if test="@rendition = '#right'">
@@ -459,11 +461,11 @@
         </div>
     </xsl:template>
 
-    <xsl:template match="//tei:div[@type='gallery']">
+    <xsl:template match="//tei:div[@type='gallery']|//tei:figure[@rendition='#gallery']">
         <div class="h3Profile"><xsl:value-of select="./tei:head"/></div>
         <div class="slider-container">
-            <xsl:variable select="count(./tei:graphic[@type='fullscale'])" name="total"/>
-            <xsl:for-each select="./tei:graphic[@type='fullscale']">
+            <xsl:variable select="count(.//tei:graphic[@type='fullscale'])" name="total"/>
+            <xsl:for-each select="./tei:figure/tei:graphic[@type='fullscale']">
                 <xsl:variable select="position()" name="pos"/>
 
                   <!-- Full-width images with number text -->
@@ -490,8 +492,8 @@
           <!-- Thumbnail images -->
           <div class="thumbs-wrapper">
               <div class="row">
-                <xsl:attribute name="style" select="concat('width: ', count(./tei:graphic[@type='fullscale']) * 100, 'px')"/>
-                <xsl:for-each select="./tei:graphic[@type='fullscale']">
+                <xsl:attribute name="style" select="concat('width: ', count(.//tei:graphic[@type='fullscale']) * 100, 'px')"/>
+                <xsl:for-each select="./tei:figure">
                     <xsl:variable select="position()" name="pos"/>
                     <div class="column">
                       <img class="demo cursor" style="width:100px; height: 100px">
