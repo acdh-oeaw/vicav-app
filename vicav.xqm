@@ -2285,7 +2285,11 @@ function vicav:get_vicav_biblio_data($render as xs:string) {
 };
 
 declare function vicav:_get_vicav_biblio_data($render as xs:string) { 
-  let $corpus := try { collection('vicav_biblio')//tei:TEI } catch err:FODC0002 {
+  let $corpus := try {
+      collection('vicav_biblio')//tei:TEI update {
+        insert node attribute {"id"} {"vicav_biblio"} as first into . 
+      }
+    } catch err:FODC0002 {
     error(xs:QName('response-codes:_404'), 
      $api-problem:codes_to_message(404),
      'There are no TEI documents of type vicav_biblio')},
