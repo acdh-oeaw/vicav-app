@@ -2286,7 +2286,7 @@ function vicav:get_vicav_biblio_data($render as xs:string) {
 
 declare function vicav:_get_vicav_biblio_data($render as xs:string) { 
   let $corpus := try {
-      collection('vicav_biblio')//tei:TEI update {
+      collection('vicav_biblio')//tei:TEI[.//tei:listBibl] update {
         insert node attribute {"id"} {"vicav_biblio"} as first into . 
       }
     } catch err:FODC0002 {
