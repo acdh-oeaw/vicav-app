@@ -51,7 +51,7 @@
                         <xsl:attribute name="src" select="$thumbnailPath"/>
                     </img>
                 </a>
-                <div class="imgCaption"><xsl:value-of select="tei:head[@type='imgCaption']"/></div>
+                <div class="imgCaption"><xsl:value-of select="tei:head[@type='imgCaption' or not (@type)]"/></div>
             </div>
         </div>
     </xsl:template>

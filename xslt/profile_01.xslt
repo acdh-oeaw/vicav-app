@@ -429,7 +429,7 @@
         </gallery>
     </xsl:template>
 
-    <xsl:template match="tei:figure[parent::tei:figure[@rendition='#gallery'] or parent::tei:div[@type = 'gallery']]">
+    <xsl:template match="tei:figure">
         <div>
             <xsl:attribute name="class" select="'figure'"/>
             <xsl:if test="@rendition = '#right'">
