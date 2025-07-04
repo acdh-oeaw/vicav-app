@@ -3,7 +3,8 @@
     xmlns:map="http://www.w3.org/2005/xpath-functions/map"
     xmlns:acdh="http://acdh.oeaw.ac.at"
     xmlns:tei="http://www.tei-c.org/ns/1.0"
-    exclude-result-prefixes="tei acdh"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    exclude-result-prefixes="xs tei acdh xs"
     version="3.0">    
     <xsl:import href="utterances-to-json.xsl"/>
     <xsl:preserve-space elements="span"/>
