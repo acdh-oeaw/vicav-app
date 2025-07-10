@@ -117,7 +117,7 @@ version="3.1">
             </xsl:if>
             
             <xsl:choose>
-                <xsl:when test="string-length($w/tei:fs/tei:f[@name='pos'])>0 or string-length($w/tei:fs/tei:f[@name='lemma'])>0 or string-length($w/tei:fs/tei:f[@name='translation'])>0 or string-length($w/tei:fs/tei:f[@name='variant'])>0 or string-length($w/tei:fs/tei:f[@name='comment']) > 0 or string-length($w/tei:fs/tei:f[@name='informant'])>0">
+                <xsl:when test="string-length($w/tei:fs/tei:f[@name='pos'])>0 or string-length($w/tei:fs/tei:f[@name='lemma'])>0 or string-length($w/tei:fs/tei:f[@name='translation'])>0 or string-length($w/tei:fs/tei:f[@name='variant'])>0 or string-length($w/tei:fs/tei:f[@name='comment']) > 0 or $w/tei:fs/tei:f[@name='informant']/string-length(.) > 0">
                     <xsl:attribute name="data-toggle">tooltip</xsl:attribute></xsl:when>
                 <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
