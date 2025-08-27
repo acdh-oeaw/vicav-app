@@ -93,9 +93,17 @@
                     </xsl:choose>
                 </targetType>
                 <xsl:copy-of select="./params"/>
-                <xsl:if test="exists($current-query)">
-                    <queryString><xsl:value-of select="$current-query||'+'||(locName, alt)[1]"/></queryString>
-                </xsl:if>
+                <xsl:variable name="locationQuery" select="$translateType(@type)||':'||(locName, alt)[1]"/>
+                <xsl:choose>
+                    <xsl:when test="exists($current-query) and 
+                                    ($current-query ne '.*') and
+                                    not(contains($current-query, $locationQuery))">
+                        <queryString><xsl:value-of select="$current-query||'+'||$locationQuery"/></queryString>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <queryString><xsl:value-of select="$locationQuery"/></queryString>
+                    </xsl:otherwise>
+                </xsl:choose>
             </properties>
         </_>
     </xsl:template>

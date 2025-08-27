@@ -11,7 +11,10 @@
     "func:openDict_Cairo()": "dc_arz_eng_publ",
     "func:openDict_Baghdad()": "dc_acm_baghdad_eng_publ",
     "func:openDict_MSA()": "dc_ar_eng_publ"
-  }'/>
+    }'/>
+  <xsl:variable name="autoDictQueryFuncToDictID" select='map{
+      "func:autoDictQuery(&apos;_tunis&apos;": "dc_tunico"
+      }'/>
     
   <xsl:function name="tei:getLinkAttributes" as="attribute()+">
     <xsl:param name="target" as="attribute()"/>
@@ -22,6 +25,10 @@
         </xsl:when>
         <xsl:when test="starts-with($target, 'func:openDict_')">
           <xsl:sequence select="('DictQuery', $openDictFuncToDictID($target), replace($target, 'func:openDict_([^(]+)\(.*', '$1 Dictionary Query'))"/>
+        </xsl:when>
+        <xsl:when test="starts-with($target, 'func:autoDictQuery')">
+          <xsl:variable name="targetParts" select="tokenize($target, ',')"/>
+          <xsl:sequence select="('DictQuery', $autoDictQueryFuncToDictID($targetParts[1]), replace($targetParts[1], 'func:autoDictQuery\(.(.+)', '$1 Dictionary Query'), translate($targetParts[2], '&apos;&apos; )', ''), translate($targetParts[3], '&apos;&apos; )', ''))"/> 
         </xsl:when>
         <xsl:when test="starts-with($target, 'zotid:')">
           <xsl:sequence select="('BiblioEntries', '', $target/../text(), $target)"/>
@@ -64,19 +71,25 @@
         <xsl:sequence>
           <xsl:variable name="target-type" select="upper-case(substring($targetSplit[1], 1, 1))||substring($targetSplit[1], 2)"/>
           <xsl:attribute name="data-target-type"><xsl:value-of select="$target-type"/></xsl:attribute>
-          <xsl:if test="exists($targetSplit[2]) and $targetSplit[2] != '' and $target-type != 'WMap'">
+          <xsl:if test="exists($targetSplit[2]) and $targetSplit[2] != '' and not($target-type = ('WMap', 'DictQuery'))">
             <xsl:attribute name="data-text-id"><xsl:value-of select="$targetSplit[2]"/></xsl:attribute>
           </xsl:if>
           <xsl:if test="exists($targetSplit[2]) and $target-type = 'WMap'">
             <xsl:attribute name="data-endpoint"><xsl:value-of select="$targetSplit[2]"/></xsl:attribute>
           </xsl:if>          
-          <xsl:if test="exists($targetSplit[3]) and $target-type != 'WMap'">
+          <xsl:if test="exists($targetSplit[3]) and not($target-type = ('WMap'))">
             <xsl:attribute name="data-label"><xsl:value-of select="translate($targetSplit[3], '_', ' ')"/></xsl:attribute>
           </xsl:if>
-          <xsl:if test="exists($targetSplit[4])">
-            <xsl:attribute name="data-query-string"><xsl:value-of select="$targetSplit[4]"/></xsl:attribute>
-          </xsl:if>
-          <xsl:for-each select="$targetSplit[position() > 4]"><xsl:attribute name="data-query-string-{position() + 1}"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>      
+          <xsl:choose>
+            <xsl:when test="$target-type eq 'DictQuery'">
+              <xsl:attribute name="data-params">{"textId":"<xsl:value-of select="$targetSplit[2]"/>","q":"<xsl:value-of select="$targetSplit[4]"/>", "queryString": "<xsl:value-of select="translate($targetSplit[3], '_', ' ')"/>"}</xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:if test="exists($targetSplit[4])">
+                <xsl:attribute name="data-query-string"><xsl:value-of select="$targetSplit[4]"/></xsl:attribute>
+              </xsl:if>
+              <xsl:for-each select="$targetSplit[position() > 4]"><xsl:attribute name="data-query-string-{position() + 1}"><xsl:value-of select="."/></xsl:attribute></xsl:for-each>   </xsl:otherwise>
+          </xsl:choose>   
         </xsl:sequence>
       </xsl:otherwise>
     </xsl:choose>
