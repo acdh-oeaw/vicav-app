@@ -14,6 +14,13 @@
         <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap|tei:media" mode="array"/></_0024_0024>
     </xsl:template>
     
+    <xsl:template match="tei:u" mode="array">
+        <_ type="object">
+          <xsl:apply-templates select="@*"/>
+          <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap|tei:media" mode="array"/></_0024_0024>
+        </_>
+    </xsl:template>
+    
     <xsl:template match="tei:w|tei:pc|tei:gap|tei:media" mode="array">
         <_ type="object">
             <xsl:element name="{local-name()}">

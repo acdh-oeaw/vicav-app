@@ -389,25 +389,6 @@ jobs:
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
-  _3-shawi:
-    needs: [setup_workflow_env, generate_workflow_vars_shawi, _1-shawi, _2]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
-    secrets: inherit
-    with:
-      environment: ${{ needs.generate_workflow_vars_shawi.outputs.environment}}
-      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth) }}
-      DOCKER_TAG:
-        ${{ needs.setup_workflow_env.outputs.registry_root }}${{
-        needs.setup_workflow_env.outputs.image_name }}-shawi
-      APP_NAME:
-        ${{ needs.generate_workflow_vars_shawi.outputs.APP_NAME }}-${{
-        needs.generate_workflow_vars_shawi.outputs.environment_short }}
-      APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
-      PUBLIC_URL: ${{ needs.generate_workflow_vars_shawi.outputs.PUBLIC_URL }}
-      do_not_generate_additional_host_names: "true"
-      POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
-      default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
-      submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _3-tunocent:
     needs: [setup_workflow_env, generate_workflow_vars_tunocent, _1-tunocent, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
@@ -423,25 +404,6 @@ jobs:
         needs.generate_workflow_vars_tunocent.outputs.environment_short }}
       APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
       PUBLIC_URL: ${{ needs.generate_workflow_vars_tunocent.outputs.PUBLIC_URL }}
-      do_not_generate_additional_host_names: "true"
-      POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
-      default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
-      submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
-  _3-wibarab:
-    needs: [setup_workflow_env, generate_workflow_vars_wibarab, _1-wibarab, _2]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
-    secrets: inherit
-    with:
-      environment: ${{ needs.generate_workflow_vars_wibarab.outputs.environment}}
-      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth) }}
-      DOCKER_TAG:
-        ${{ needs.setup_workflow_env.outputs.registry_root }}${{
-        needs.setup_workflow_env.outputs.image_name }}-wibarab
-      APP_NAME:
-        ${{ needs.generate_workflow_vars_wibarab.outputs.APP_NAME }}-${{
-        needs.generate_workflow_vars_wibarab.outputs.environment_short }}
-      APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
-      PUBLIC_URL: ${{ needs.generate_workflow_vars_wibarab.outputs.PUBLIC_URL }}
       do_not_generate_additional_host_names: "true"
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
