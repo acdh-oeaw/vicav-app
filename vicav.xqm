@@ -1194,7 +1194,7 @@ declare function vicav:_get_text($id as xs:string, $xsltfn as xs:string?) {
     let $id := replace($id, '^li_', '')
     let $generateTeiMarker := exists($xsltfn)
     let $xsltfn := if (exists($xsltfn)) then $xsltfn else "vicavTexts.xslt" 
-    let $results := collection("/vicav_texts")//tei:div[@xml:id=$id] 
+    let $results := collection("/vicav_texts")[.//tei:div[@xml:id=$id]|.//tei:idno[ends-with(@type, 'CorpusID')][. = $id]]//tei:body 
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $style := doc($stylePath)
     let $sHTML := xslt:transform-text($results, $style, map{
