@@ -112,6 +112,69 @@ jobs:
       environment_short: ${{ needs.setup_workflow_env.outputs.environment_short }}
       PUBLIC_URL: ${{ steps.generate_public_url.outputs.public_url }}
       APP_NAME: ${{ needs.setup_workflow_env.outputs.APP_NAME }}
+  generate_workflow_vars_shawi:
+    needs: [setup_workflow_env]
+    environment:
+      name: ${{ needs.setup_workflow_env.outputs.environment }}-shawi
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate PUBLIC_URL if not set
+        id: generate_public_url
+        run: |
+          kube_ingress_base_domain="${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"
+          public_url="${{ needs.setup_workflow_env.outputs.PUBLIC_URL || vars.PUBLIC_URL }}"
+          if [ "${public_url}x" == 'x' ]
+          then public_url=https://shawi-${{ needs.setup_workflow_env.outputs.environment_short }}.${kube_ingress_base_domain}
+          fi
+          echo "public_url=$public_url" >> $GITHUB_OUTPUT
+      - name: Populate environment variables from template environment
+        id: populate_env_vars
+        if: ${{ github.ref_name != 'main' }}
+        # A fine grained personal access token needs to be set on repository level
+        # This token needs to have the following permissions:
+        # - "Variables" repository permissions (write)
+        # - "Environments" repository permissions (write)
+        env:
+          GH_PROMPT_DISABLED: "true"
+          GH_TOKEN: ${{ secrets.ENVIRONMENT_WRITE_TOKEN}}
+          ref_name: ${{ needs.setup_workflow_env.outputs.environment_uenc }}-shawi
+          template_ref_name: devel-shawi
+        run: |
+          # This was refactored using CoPilot
+          fetch_gh_env_vars() {
+            local environment=$1
+            gh api \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              /repos/${{ github.repository }}/environments/${environment}/variables \
+              -q '.variables[]|select(.name|startswith("SERVICE_ID") or startswith("K8S_SECRET_"))|delpaths([["created_at"],["updated_at"]])'
+          }
+          post_var_as_json_to_env() {
+            local var=$1
+            local environment=$2
+            echo -n $var | gh api \
+              --method POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              /repos/${{ github.repository }}/environments/${environment}/variables \
+              --input -
+          }
+          if [ "$GH_TOKEN"x != 'x' ]
+          then
+            VARS_TEMPLATE=$(fetch_gh_env_vars "review%2F${{ env.template_ref_name}}")
+            if [ "$(fetch_gh_env_vars "review%2F${{ env.ref_name }}")"x = "x" ]
+            then
+            for var in $VARS_TEMPLATE
+              do
+                post_var_as_json_to_env "$var" "review%2F${{ env.ref_name }}"
+              done
+            fi
+          fi
+    outputs:
+      environment: ${{ needs.setup_workflow_env.outputs.environment }}-shawi
+      environment_short: shawi-${{ needs.setup_workflow_env.outputs.environment_short }}
+      PUBLIC_URL: ${{ steps.generate_public_url.outputs.public_url }}
+      APP_NAME: ${{ needs.setup_workflow_env.outputs.APP_NAME }}
   generate_workflow_vars_tunocent:
     needs: [setup_workflow_env]
     environment:
@@ -175,6 +238,69 @@ jobs:
       environment_short: tunocent-${{ needs.setup_workflow_env.outputs.environment_short }}
       PUBLIC_URL: ${{ steps.generate_public_url.outputs.public_url }}
       APP_NAME: ${{ needs.setup_workflow_env.outputs.APP_NAME }}
+  generate_workflow_vars_wibarab:
+    needs: [setup_workflow_env]
+    environment:
+      name: ${{ needs.setup_workflow_env.outputs.environment }}-wibarab
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate PUBLIC_URL if not set
+        id: generate_public_url
+        run: |
+          kube_ingress_base_domain="${{ vars.KUBE_INGRESS_BASE_DOMAIN }}"
+          public_url="${{ needs.setup_workflow_env.outputs.PUBLIC_URL || vars.PUBLIC_URL }}"
+          if [ "${public_url}x" == 'x' ]
+          then public_url=https://wibarab-${{ needs.setup_workflow_env.outputs.environment_short }}.${kube_ingress_base_domain}
+          fi
+          echo "public_url=$public_url" >> $GITHUB_OUTPUT
+      - name: Populate environment variables from template environment
+        id: populate_env_vars
+        if: ${{ github.ref_name != 'main' }}
+        # A fine grained personal access token needs to be set on repository level
+        # This token needs to have the following permissions:
+        # - "Variables" repository permissions (write)
+        # - "Environments" repository permissions (write)
+        env:
+          GH_PROMPT_DISABLED: "true"
+          GH_TOKEN: ${{ secrets.ENVIRONMENT_WRITE_TOKEN}}
+          ref_name: ${{ needs.setup_workflow_env.outputs.environment_uenc }}-wibarab
+          template_ref_name: devel-wibarab
+        run: |
+          # This was refactored using CoPilot
+          fetch_gh_env_vars() {
+            local environment=$1
+            gh api \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              /repos/${{ github.repository }}/environments/${environment}/variables \
+              -q '.variables[]|select(.name|startswith("SERVICE_ID") or startswith("K8S_SECRET_"))|delpaths([["created_at"],["updated_at"]])'
+          }
+          post_var_as_json_to_env() {
+            local var=$1
+            local environment=$2
+            echo -n $var | gh api \
+              --method POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              /repos/${{ github.repository }}/environments/${environment}/variables \
+              --input -
+          }
+          if [ "$GH_TOKEN"x != 'x' ]
+          then
+            VARS_TEMPLATE=$(fetch_gh_env_vars "review%2F${{ env.template_ref_name}}")
+            if [ "$(fetch_gh_env_vars "review%2F${{ env.ref_name }}")"x = "x" ]
+            then
+            for var in $VARS_TEMPLATE
+              do
+                post_var_as_json_to_env "$var" "review%2F${{ env.ref_name }}"
+              done
+            fi
+          fi
+    outputs:
+      environment: ${{ needs.setup_workflow_env.outputs.environment }}-wibarab
+      environment_short: wibarab-${{ needs.setup_workflow_env.outputs.environment_short }}
+      PUBLIC_URL: ${{ steps.generate_public_url.outputs.public_url }}
+      APP_NAME: ${{ needs.setup_workflow_env.outputs.APP_NAME }}
   _1:
     needs: [setup_workflow_env, generate_workflow_vars]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
@@ -199,6 +325,32 @@ jobs:
       BUILDPACK_URL: ${{ needs.setup_workflow_env.outputs.BUILDPACK_URL }}
       registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
       image_name: ${{ needs.setup_workflow_env.outputs.image_name }}-tunocent
+      default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
+      submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+  _1-shawi:
+    needs: [setup_workflow_env, generate_workflow_vars_shawi]
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
+    secrets: inherit
+# if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
+    with:
+      environment: ${{ needs.generate_workflow_vars_shawi.outputs.environment}}
+      BUILDPACK_URL: ${{ needs.setup_workflow_env.outputs.BUILDPACK_URL }}
+      registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
+      image_name: ${{ needs.setup_workflow_env.outputs.image_name }}-shawi
+      default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
+      submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+  _1-wibarab:
+    needs: [setup_workflow_env, generate_workflow_vars_wibarab]
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
+    secrets: inherit
+# if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
+    with:
+      environment: ${{ needs.generate_workflow_vars_wibarab.outputs.environment}}
+      BUILDPACK_URL: ${{ needs.setup_workflow_env.outputs.BUILDPACK_URL }}
+      registry_root: ${{ needs.setup_workflow_env.outputs.registry_root }}
+      image_name: ${{ needs.setup_workflow_env.outputs.image_name }}-wibarab
       default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
@@ -237,6 +389,25 @@ jobs:
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+  _3-shawi:
+    needs: [setup_workflow_env, generate_workflow_vars_shawi, _1-shawi, _2]
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      environment: ${{ needs.generate_workflow_vars_shawi.outputs.environment}}
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth) }}
+      DOCKER_TAG:
+        ${{ needs.setup_workflow_env.outputs.registry_root }}${{
+        needs.setup_workflow_env.outputs.image_name }}-shawi
+      APP_NAME:
+        ${{ needs.generate_workflow_vars_shawi.outputs.APP_NAME }}-${{
+        needs.generate_workflow_vars_shawi.outputs.environment_short }}
+      APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
+      PUBLIC_URL: ${{ needs.generate_workflow_vars_shawi.outputs.PUBLIC_URL }}
+      do_not_generate_additional_host_names: "true"
+      POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
+      default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
+      submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _3-tunocent:
     needs: [setup_workflow_env, generate_workflow_vars_tunocent, _1-tunocent, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
@@ -252,6 +423,25 @@ jobs:
         needs.generate_workflow_vars_tunocent.outputs.environment_short }}
       APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
       PUBLIC_URL: ${{ needs.generate_workflow_vars_tunocent.outputs.PUBLIC_URL }}
+      do_not_generate_additional_host_names: "true"
+      POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
+      default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
+      submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+  _3-wibarab:
+    needs: [setup_workflow_env, generate_workflow_vars_wibarab, _1-wibarab, _2]
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      environment: ${{ needs.generate_workflow_vars_wibarab.outputs.environment}}
+      fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth) }}
+      DOCKER_TAG:
+        ${{ needs.setup_workflow_env.outputs.registry_root }}${{
+        needs.setup_workflow_env.outputs.image_name }}-wibarab
+      APP_NAME:
+        ${{ needs.generate_workflow_vars_wibarab.outputs.APP_NAME }}-${{
+        needs.generate_workflow_vars_wibarab.outputs.environment_short }}
+      APP_ROOT: ${{ needs.setup_workflow_env.outputs.APP_ROOT }}
+      PUBLIC_URL: ${{ needs.generate_workflow_vars_wibarab.outputs.PUBLIC_URL }}
       do_not_generate_additional_host_names: "true"
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
