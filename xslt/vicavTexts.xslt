@@ -19,10 +19,6 @@
      <xsl:output-character character="&gt;" string="&gt;"/>
     <xsl:output-character character="&amp;" string="&amp;"/>
   </xsl:character-map>
-  
-  <xsl:template match="/">
-    <div><xsl:apply-templates/></div>
-  </xsl:template>
 
   <xsl:template match="tei:cell">
     <td>
@@ -38,6 +34,7 @@
   </xsl:template>
  
   <xsl:template match="tei:div">
+      <div>
       <!-- Label of the panel is in n -->
       <xsl:if test="@n"><xsl:attribute name="name"><xsl:value-of select="@n"/></xsl:attribute></xsl:if>
       
@@ -64,6 +61,7 @@
           
           <xsl:otherwise><xsl:apply-templates/></xsl:otherwise>
       </xsl:choose>
+      </div>
   </xsl:template>
     
   <xsl:template match="tei:div[@type='displayContainer']"><p id="displayContainer">-</p></xsl:template>   
