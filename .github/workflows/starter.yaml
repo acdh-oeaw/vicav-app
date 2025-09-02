@@ -15,6 +15,7 @@ jobs:
 # or see the switch on ref_name script below
       environment: ${{ steps.get_environment_from_git_ref.outputs.environment }}
       environment_short: ${{ steps.get_environment_from_git_ref.outputs.environment_short }}
+      environment_uenc: ${{ steps.get_environment_from_git_ref.outputs.environment_uenc }}
       image_name: vicav-app
       registry_root: ghcr.io/${{ github.repository }}/
       default_port: "5000"
@@ -41,10 +42,12 @@ jobs:
             echo "environment=production"
             echo "environment=production" >> $GITHUB_OUTPUT
             echo "environment_short=prod" >> $GITHUB_OUTPUT
+            echo "environment_uenc=prod" >> $GITHUB_OUTPUT
           else
             echo "environment=review/${{ github.ref_name }}"
             echo "environment=review/${{ github.ref_name }}" >> $GITHUB_OUTPUT
             echo "environment_short=$(echo -n ${{ github.ref_name }} | sed 's/\(feat\(ure\)\{0,1\}\|fix\|chore\|perf\|refactor\|style\|test\)[_/]//' | tr '_' '-' | tr '[:upper:]' '[:lower:]' | cut -c -48 )" >> $GITHUB_OUTPUT
+            echo "environment_uenc=$(echo -n ${{ github.ref_name }} | sed 's~/~%2F~g')" >> $GITHUB_OUTPUT
           fi
   generate_workflow_vars:
     needs: [setup_workflow_env]
@@ -71,7 +74,7 @@ jobs:
         env:
           GH_PROMPT_DISABLED: "true"
           GH_TOKEN: ${{ secrets.ENVIRONMENT_WRITE_TOKEN}}
-          ref_name: ${{ github.ref_name }}
+          ref_name: ${{ needs.setup_workflow_env.outputs.environment_uenc }}
           template_ref_name: devel
         run: |
           # This was refactored using CoPilot
@@ -134,7 +137,7 @@ jobs:
         env:
           GH_PROMPT_DISABLED: "true"
           GH_TOKEN: ${{ secrets.ENVIRONMENT_WRITE_TOKEN}}
-          ref_name: ${{ github.ref_name }}-tunocent
+          ref_name: ${{ needs.setup_workflow_env.outputs.environment_uenc }}-tunocent
           template_ref_name: devel-tunocent
         run: |
           # This was refactored using CoPilot
@@ -174,7 +177,7 @@ jobs:
       APP_NAME: ${{ needs.setup_workflow_env.outputs.APP_NAME }}
   _1:
     needs: [setup_workflow_env, generate_workflow_vars]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
     secrets: inherit
     # if you run this outside of of an org that provides KUBE_CONFIG etc as a secret, you need to specify every secret you want to pass by name
     with:
@@ -188,7 +191,7 @@ jobs:
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _1-tunocent:
     needs: [setup_workflow_env, generate_workflow_vars_tunocent]
-    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-herokuish-and-push-to-registry.yaml@main
+    uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
     with:

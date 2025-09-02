@@ -5,7 +5,7 @@
     exclude-result-prefixes="#all"
     version="3.1">
     
-    <xsl:output method="xml" indent="no"/>
+    <xsl:output method="xml" indent="yes"/>
     
     <xsl:template match="t:teiCorpus">
         <json type="object">
@@ -19,7 +19,10 @@
     <xsl:template match="t:titleStmt">
         <titleStmt type="object">
             <titles type="array"><xsl:apply-templates select="t:title" mode="arrayItem"/></titles>
-            <xsl:apply-templates select="@*|* except (t:respStmt, t:title)"/>
+            <xsl:if test="t:author[*|@*|text()]">
+                <authors type="array"><xsl:apply-templates select="t:author" mode="arrayItem"/></authors>
+            </xsl:if>
+            <xsl:apply-templates select="@*|* except (t:respStmt, t:title, t:author)"/>
             <respStmts type="array"><xsl:apply-templates select="t:respStmt" mode="arrayItem"/></respStmts>
         </titleStmt>
     </xsl:template>
@@ -61,6 +64,13 @@
         </classDecl>
     </xsl:template>
     
+    <xsl:template match="t:textClass">
+        <textClass type="object">
+            <xsl:apply-templates select="@*|* except t:catRef"/>
+            <catRefs type="array"><xsl:apply-templates select="t:catRef" mode="arrayItem"/></catRefs>
+        </textClass>
+    </xsl:template>
+    
     <xsl:template match="t:taxonomy">
         <_ type="object">
             <categories type="array"><xsl:apply-templates select="t:category" mode="arrayItem"/></categories>
@@ -73,7 +83,6 @@
         </settlement>
     </xsl:template>
     
-
     <xsl:template match="t:listPrefixDef">
         <listPrefixDef type="array">
             <xsl:apply-templates select="t:prefixDef" mode="arrayItem"/>
@@ -86,13 +95,28 @@
         </listPerson>
     </xsl:template>
     
+    <xsl:template match="t:person" mode="arrayItem">
+        <_ type="object">
+            <xsl:apply-templates select="@*|* except t:ptr"/>
+            <ptrs type="array"><xsl:apply-templates select="t:ptr" mode="arrayItem"/></ptrs>
+        </_>
+    </xsl:template>
+    
+    <xsl:template match="t:address">
+        <address type="array">
+           <xsl:apply-templates select="t:addrLine" mode="arrayItem"/>
+        </address>
+    </xsl:template>    
+    
     <xsl:template match="t:*" mode="arrayItem">
+        <xsl:if test="*|@*|text()">
         <_ type="object">
             <xsl:apply-templates select="@*|*"/>
             <xsl:if test="normalize-space(string-join(./text(), ' ')) ne '' and normalize-space(string-join(.//text(), ' ')) ne ''">
                 <_0024 type="string"><xsl:value-of select="normalize-space(string-join(.//text(), ' '))"/></_0024>
             </xsl:if>
         </_>
+        </xsl:if>
     </xsl:template>
     
     <xsl:template match="t:*">
