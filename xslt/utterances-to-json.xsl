@@ -49,9 +49,7 @@
                 <xsl:element name="{@type}s">
                     <xsl:attribute name="type">array</xsl:attribute>
                     <xsl:for-each select="$same-elements">
-                        <_ type="object">                           
-                            <xsl:value-of select="."/>  
-                        </_>
+                        <_><xsl:value-of select="."/></_>
                     </xsl:for-each>
                 </xsl:element>
             </xsl:when>
