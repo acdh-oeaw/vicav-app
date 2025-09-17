@@ -1986,7 +1986,7 @@ declare function vicav:_get_data_words($type as xs:string*, $query as xs:string*
             $collection/tei:teiCorpus/tei:TEI/tei:text/tei:body/tei:div[@type="sampleText"]/tei:p/tei:s
             else if ($collName = "lingfeatures") then
             $collection/tei:TEI/tei:text/tei:body/tei:div/tei:div[@type="featureGroup"]/tei:cit[@type="featureSample"]/tei:quote
-            else $collection/tei:TEI/tei:text/tei:body/tei:div/tei:annotationBlock/tei:u/tei:w
+            else $collection/tei:TEI/tei:text/tei:body/tei:div/tei:div/tei:u/tei:w
         
         return if ($collName = ["samples", "lingfeatures"]) then
             (
@@ -2504,7 +2504,7 @@ declare function vicav:get_hits_context($result as element(json)?) as element(te
                         $line/Right/_[1]/text() else ""
         let $annotationBlock := (# db:copynode false #) { collection('vicav_corpus')
           /descendant::tei:TEI[./tei:teiHeader/tei:fileDesc/tei:publicationStmt/tei:idno[ends-with(@type, "CorpusID")]/text() = $docId]         
-        /tei:text/tei:body/tei:div/tei:annotationBlock[tei:u[@xml:id = $uId]] }
+        /tei:text/tei:body/tei:div/tei:div[tei:u[@xml:id = $uId]] }
       (: , $_ := admin:write-log(serialize($hits), 'INFO') :)
       (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
         return $annotationBlock update {insert node (attribute {'hits'} {string-join($tokenId, ' ')}, attribute {'docRef'} {$docId} ) as first into . }
@@ -2540,7 +2540,7 @@ declare function vicav:_corpus_text(
          $api-problem:codes_to_message(404),
          'Text with id '||$docId||' does not exist') else (),
         $annotationBlocks := subsequence($teiDoc
-        /tei:text/tei:body/tei:div/tei:annotationBlock, ($p - 1)*$s+1, $s),
+        /tei:text/tei:body/tei:div/tei:div, ($p - 1)*$s+1, $s),
         $notFound := if (not(exists($annotationBlocks))) then
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
