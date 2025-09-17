@@ -5,7 +5,7 @@
     exclude-result-prefixes="tei acdh"
     version="3.0">
     
-    <xsl:import href="xml-to-basex-json-xml.xsl"/>
+    <xsl:import href="../3rd-party/vleserver_basex/vleserver/data/xml-to-basex-json-xml.xsl"/>
     
     <xsl:variable name="dictById" select="map:merge(//tei:entry!map {data(./@xml:id): .})"/>
     
@@ -34,12 +34,31 @@
         </_>
     </xsl:template>
     
-    <xsl:template match="tei:gram">
+    <xsl:template match="tei:gram[some $type in @type satisfies count(../tei:gram[@type = $type]) = 1]">
         <xsl:element name="{@type}">
             <xsl:value-of select="."/>
         </xsl:element>
     </xsl:template>
     
+    <xsl:template match="tei:gram[some $type in @type satisfies count(../tei:gram[@type = $type]) > 1]">
+        <xsl:variable name="type" select="data(@type)"/>
+        <xsl:variable name="same-elements" select="../tei:gram[@type = $type]"/>
+        <xsl:variable name="this" select="."/>
+        <xsl:choose>
+            <xsl:when test="$same-elements[1][. = $this]">
+                <xsl:element name="{@type}s">
+                    <xsl:attribute name="type">array</xsl:attribute>
+                    <xsl:for-each select="$same-elements">
+                        <_ type="object">                           
+                            <xsl:value-of select="."/>  
+                        </_>
+                    </xsl:for-each>
+                </xsl:element>
+            </xsl:when>
+            <xsl:otherwise/>
+        </xsl:choose>
+    </xsl:template>
+       
     <xsl:template match="tei:w[count((text(),*)) > 1]">        
         <xsl:apply-templates select="@*"/>
         <_0024_0024 type="array">
