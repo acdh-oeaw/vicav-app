@@ -4,6 +4,7 @@
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:tei="http://www.tei-c.org/ns/1.0" version="2.0">
     
+    <xsl:output indent="yes"/>
     <xsl:param name="query"></xsl:param>
 
     <xsl:function name="acdh:index-of-node">
@@ -19,12 +20,12 @@
 
     <!-- TODO: Add links to document? -->
     
-    <xsl:template match="/hits">
+    <xsl:template match="/tei:hits">
         <div class="corpus-search-results">
         <h2 xml:space="preserve">Search results for <xsl:value-of select="$query"/></h2>
 
-        <xsl:for-each select="./hit">
-            <xsl:variable name="token" select="token/text()"/>
+            <xsl:for-each select="./tei:div">
+            <xsl:variable name="token" select="(@hits, token/text())"/>
             <xsl:variable name="w" select="./tei:u/tei:w[@xml:id = $token]"/>
             
             <xsl:if test="count($w) > 1">
