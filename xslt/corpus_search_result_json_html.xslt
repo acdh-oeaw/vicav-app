@@ -6,7 +6,7 @@
     exclude-result-prefixes="tei acdh xs"
     version="2.0">
 
-    <xsl:output method="xml" indent="yes"/>
+    <xsl:output method="xml" indent="no"/>
     <xsl:param name="query"></xsl:param>
     <xsl:param name="exit-on-node-index-not-found">no</xsl:param>
 
@@ -32,7 +32,7 @@
     <xsl:function name="acdh:render-hit">
         <xsl:param name="hit"/>
 
-        <xsl:variable name="token" select="if ($hit/token/text()) then $hit/token/text() else tokenize($hit/@hits)"/>
+        <xsl:variable name="token" select="if ($hit/@hits, $hit/token/text()) then tokenize(($hit/@hits, $hit/token/text())) else tokenize($hit/@hits)"/>
         <xsl:variable name="w" select="$hit//tei:w[@xml:id = $token]"/>
 
         <xsl:variable select="acdh:index-of-node($hit/tei:u/(tei:w|tei:pc), $w[1])" name="word_pos_start"/>
@@ -95,11 +95,11 @@
     <xsl:template match="tei:hits">
         <query><xsl:value-of select="$query"/></query>
         <hits>
-          <xsl:apply-templates select="./tei:annotationBlock"/>
+          <xsl:apply-templates select="./tei:div"/>
         </hits>
     </xsl:template>
     
-    <xsl:template match="tei:annotationBlock">
+    <xsl:template match="tei:div">
         <xsl:variable select=".." name="hits"/>
         <xsl:variable select="." name="hit"/>
         <_ type="object">
