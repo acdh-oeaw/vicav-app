@@ -2295,7 +2295,7 @@ declare function vicav:_get_vicav_biblio_data($render as xs:string) {
     error(xs:QName('response-codes:_404'), 
      $api-problem:codes_to_message(404),
      'There are no TEI documents of type vicav_biblio')},
-    $xml_for_parser := xslt:transform($corpus, 'xslt/xml-to-basex-json-xml.xsl')    
+    $xml_for_parser := xslt:transform($corpus, '3rd-party/vleserver_basex/vleserver/data/xml-to-basex-json-xml.xsl')    
   return if ($render = "json") 
   then serialize($xml_for_parser, map {'method': 'json', 'indent': 'no'})
   else if ($render = "xml_for_parser")
