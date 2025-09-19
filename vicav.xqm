@@ -1192,7 +1192,11 @@ declare function vicav:_get_text($id as xs:string, $xsltfn as xs:string?) {
     let $id := replace($id, '^li_', '')
     let $generateTeiMarker := exists($xsltfn)
     let $xsltfn := if (exists($xsltfn)) then $xsltfn else "vicavTexts.xslt" 
-    let $results := collection("/vicav_texts")[.//tei:div[@xml:id=$id]|.//tei:idno[ends-with(@type, 'CorpusID')][. = $id]]//tei:body 
+    let $results := collection("vicav_texts")[.//tei:div[@xml:id=$id]|.//tei:idno[ends-with(@type, 'CorpusID')][. = $id]]//tei:body,
+        $doc-exists := if (exists($results)) then true()
+                       else error(xs:QName('response-codes:_404'), 
+                       $api-problem:codes_to_message(404),
+                       'A document with xml:id '||$id|| ' does not exist in vicav_texts.')
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $prerenderedHtml := try { doc($results/base-uri() => replace('.(xml|odd)$','.html')) } catch basex:doc {()}
     return if ($prerenderedHtml and not($generateTeiMarker)) then serialize($prerenderedHtml, map{"method": "xhtml"}) else
