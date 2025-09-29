@@ -103,11 +103,9 @@ declare
 %rest:produces('application/problem+json')   
 %rest:produces('application/problem+xml')
 function vicav:project_config() {
-  let $hash := if (exists(try{collection('prerendered_json')} catch err:FODC0002 {()}))
-               then xs:string(collection('prerendered_json')//json/ETag/text())
-               else ()
+  let $hash := try {xs:string(collection('prerendered_json')//json/ETag/text())} catch err:FODC0002 {()}
     , $hashBrowser := request:header('If-None-Match', '')
-  return if ($hash and ($hash = $hashBrowser)) then api-problem:return_problem(prof:current-ns(),
+  return if ($hash = $hashBrowser) then api-problem:return_problem(prof:current-ns(),
     <problem xmlns="urn:ietf:rfc:7807">
       <type>https://tools.ietf.org/html/rfc7231#section-6</type>
       <title>{$api-problem:codes_to_message(304)}</title>
@@ -148,7 +146,7 @@ function vicav:_project_config() {
         then collection('prerendered_json')//json
          update {insert node <cached type="boolean">true</cached> as first into ./projectConfig,
        .//text()[contains(., '{{host_name}}')]!(replace value of node . with replace(., '{{host_name}}/{{path}}', $publicURI, 'q'))}
-        else vicav:project_config_json_as_xml($publicURI) update {insert node <cached type="boolean">false</cached> as first into ./json/projectConfig}
+        else vicav:project_config_json_as_xml($publicURI) update {insert node <cached type="boolean">false</cached> as first into .//projectConfig}
       return serialize($jsonAsXML, map {"method": "json", "indent": "no"})
     else let $renderedMenu := xslt:transform($config/menu, 'xslt/menu.xslt')
       return <project><config>{$config}</config><renderedMenu>{$renderedMenu}</renderedMenu></project>
