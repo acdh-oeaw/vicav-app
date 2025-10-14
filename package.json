@@ -48,6 +48,7 @@
   },
   "basex": {
     "parallel": "128",
-    "gzip": "true"
+    "gzip": "true",
+    "parserestxq": "-1"
   }
 }
