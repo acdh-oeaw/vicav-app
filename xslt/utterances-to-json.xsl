@@ -9,19 +9,19 @@
     
     <xsl:variable name="dictById" select="map:merge(//tei:entry!map {data(./@xml:id): .})"/>
     
-    <xsl:template match="tei:u">
+    <xsl:template match="tei:u|tei:phr|tei:seg">
         <xsl:apply-templates select="@*"/>
-        <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap|tei:media" mode="array"/></_0024_0024>
+        <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap|tei:media|tei:phr|tei:seg" mode="array"/></_0024_0024>
     </xsl:template>
     
-    <xsl:template match="tei:u" mode="array">
+    <xsl:template match="tei:u|tei:phr|tei:seg" mode="array">
         <_ type="object">
           <xsl:apply-templates select="@*"/>
-          <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap|tei:media" mode="array"/></_0024_0024>
+            <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap|tei:media|tei:phr|tei:seg" mode="array"/></_0024_0024>
         </_>
     </xsl:template>
     
-    <xsl:template match="tei:w|tei:pc|tei:gap|tei:media" mode="array">
+    <xsl:template match="tei:w|tei:pc|tei:gap|tei:media|tei:phr|tei:seg" mode="array">
         <_ type="object">
             <xsl:element name="{local-name()}">
                 <xsl:attribute name="type">object</xsl:attribute>
