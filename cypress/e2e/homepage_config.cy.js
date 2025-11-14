@@ -1,6 +1,21 @@
 describe('Home page', function() {
     const BASEX_ROOT = Cypress.env('BASEX_ROOT') || '/app/.heroku/basex'
     const BASEX_PWD = Cypress.env('BASEX_admin_pw') || 'admin'
+    
+	// We change the project config in this test which does never happen that fast in production.
+	// Chromium/Electron would cache the config and the test fails.
+	// This forcibly disables the cache of chrome based browsers.
+	// This means Firefox will probably fail.
+	if (Cypress.browser.family === 'chromium') {
+	Cypress.automation('remote:debugger:protocol', {
+		command: 'Network.enable',
+		params: {}
+	});
+	Cypress.automation('remote:debugger:protocol', {
+		command: 'Network.setCacheDisabled',
+		params: { cacheDisabled: true }
+	});
+	}
 
 	it('should show Tunisia with different config', function() {
     	cy.exec(`${BASEX_ROOT}/bin/basexclient -Uadmin -P${BASEX_PWD} -c "OPEN vicav_projects; REPLACE vicav.xml ${Cypress.config()['fileServerFolder']}/fixtures/vicav_projects/map.xml"`)
@@ -23,7 +38,7 @@ describe('Home page', function() {
 			expect(response.body.projectConfig).to.exist
 			expect(response.body.projectConfig.cached).to.be.true
 			expect(response.body.ETag).to.exist
-			expect(response.headers['cache-control']).to.contain('max-age=2')
+			expect(response.headers['cache-control']).to.contain('max-age=30')
 			expect(response.headers['cache-control']).to.contain('must-revalidate')
 		})
 		cy.visit('http://localhost:8984/vicav/')
@@ -37,6 +52,7 @@ describe('Home page', function() {
 
 	it('should show whole Middle-East by deafult', function() {
     	cy.exec(`${BASEX_ROOT}/bin/basexclient -Uadmin -P${BASEX_PWD} -c "OPEN vicav_projects; REPLACE vicav.xml ${Cypress.config()['fileServerFolder']}/fixtures/vicav_projects/vicav.xml"`)
+
 		cy.request({
 			method: 'PUT',
 			url: 'http://localhost:8984/vicav/project',
