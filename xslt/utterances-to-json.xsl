@@ -11,17 +11,17 @@
     
     <xsl:template match="tei:u|tei:phr|tei:seg">
         <xsl:apply-templates select="@*"/>
-        <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap|tei:media|tei:phr|tei:seg" mode="array"/></_0024_0024>
+        <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap|tei:media|tei:phr|tei:seg|tei:milestone" mode="array"/></_0024_0024>
     </xsl:template>
     
     <xsl:template match="tei:u|tei:phr|tei:seg" mode="array">
         <_ type="object">
           <xsl:apply-templates select="@*"/>
-            <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap|tei:media|tei:phr|tei:seg" mode="array"/></_0024_0024>
+            <_0024_0024 type="array"><xsl:apply-templates select="tei:w|tei:pc|tei:gap|tei:media|tei:phr|tei:seg|tei:milestone" mode="array"/></_0024_0024>
         </_>
     </xsl:template>
     
-    <xsl:template match="tei:w|tei:pc|tei:gap|tei:media|tei:phr|tei:seg" mode="array">
+    <xsl:template match="tei:w|tei:pc|tei:gap|tei:media|tei:phr|tei:seg|tei:milestone" mode="array">
         <_ type="object">
             <xsl:element name="{local-name()}">
                 <xsl:attribute name="type">object</xsl:attribute>
