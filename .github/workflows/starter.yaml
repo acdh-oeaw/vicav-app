@@ -304,8 +304,14 @@ jobs:
   get_data_git_ref:
     needs: [setup_workflow_env, generate_workflow_vars]
     runs-on: ubuntu-latest
-    environment: ${{ needs.generate_workflow_vars.outputs.environment }}
+    environment:
+      name: ${{ needs.generate_workflow_vars.outputs.environment }}
     steps:
+      - name: Debug vars
+        run: |
+          echo "environment=${{ needs.generate_workflow_vars.outputs.environment }}"
+          echo "K8S_SECRET_CONTENT_REPO=${{ vars.K8S_SECRET_CONTENT_REPO }}"
+          echo "K8S_SECRET_CONTENT_BRANCH=${{ vars.K8S_SECRET_CONTENT_BRANCH }}"
       - name: Get data git
         uses: actions/checkout@v4
         with:
