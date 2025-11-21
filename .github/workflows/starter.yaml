@@ -304,8 +304,7 @@ jobs:
   get_data_git_ref:
     needs: [setup_workflow_env, generate_workflow_vars]
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ needs.setup_workflow_env.outputs.environment }}
+    environment: ${{ needs.setup_workflow_env.outputs.environment }}
     steps:
       - name: Get data git
         uses: actions/checkout@v4
