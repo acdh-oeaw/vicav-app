@@ -3,7 +3,7 @@
     xmlns:acdh="http://acdh.oeaw.ac.at"
     xmlns:tei="http://www.tei-c.org/ns/1.0"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    exclude-result-prefixes="tei acdh"
+    exclude-result-prefixes="xs tei acdh xsl"
     version="2.0">
     <xsl:import href="utterances-to-json.xsl"/>
 
