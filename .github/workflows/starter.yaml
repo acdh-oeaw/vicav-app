@@ -312,17 +312,14 @@ jobs:
           echo "environment=${{ needs.generate_workflow_vars.outputs.environment }}"
           echo "K8S_SECRET_CONTENT_REPO=${{ vars.K8S_SECRET_CONTENT_REPO }}"
           echo "K8S_SECRET_CONTENT_BRANCH=${{ vars.K8S_SECRET_CONTENT_BRANCH }}"
-      - name: Get data git
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ vars.K8S_SECRET_CONTENT_REPO }}
-          ref: ${{ vars.K8S_SECRET_CONTENT_BRANCH }}
-      - name: Get contaienr sha tag
+      - name: Get data git sha tag        
         id: get_container_sha_tag
         run: |
+          git clone --depth=${{ needs.setup_workflow_env.outputs.fetch-depth }} --branch=${{ vars.K8S_SECRET_CONTENT_BRANCH }} ${{ vars.K8S_SECRET_CONTENT_REPO }}
+          cd $(basename ${{ vars.K8S_SECRET_CONTENT_REPO }} .git)
           echo "data_git_ref=$(git describe --tags --always)" >> $GITHUB_OUTPUT
     outputs:
-      data_git_ref: ${{ steps.get_data_git_ref.outputs.data_git_ref }}
+      data_git_ref: ${{ steps.get_container_sha_tag.outputs.data_git_ref }}
   _1:
     needs: [setup_workflow_env, generate_workflow_vars, get_data_git_ref]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
