@@ -13,9 +13,9 @@ jobs:
 # as there is no way yet to get the active environment
       # environment: review/dev
 # or see the switch on ref_name script below
-      environment: ${{ steps.get_environment_from_git_ref.outputs.environment }}
-      environment_short: ${{ steps.get_environment_from_git_ref.outputs.environment_short }}
-      environment_uenc: ${{ steps.get_environment_from_git_ref.outputs.environment_uenc }}
+      environment: ${{ steps.get_environment_from_git_desc.outputs.environment }}
+      environment_short: ${{ steps.get_environment_from_git_desc.outputs.environment_short }}
+      environment_uenc: ${{ steps.get_environment_from_git_desc.outputs.environment_uenc }}
       image_name: vicav-app
       registry_root: ghcr.io/${{ github.repository }}/
       default_port: "5000"
@@ -35,7 +35,7 @@ jobs:
 #-----------------------------------------------------------------------------------------------------
     steps:
       - name: Get environment from git ref
-        id: get_environment_from_git_ref
+        id: get_environment_from_git_desc
         run: |
           echo "Running on branch ${{ github.ref_name }}"
           if [ "${{ github.ref }}" = "refs/heads/master" ]; then
@@ -301,7 +301,7 @@ jobs:
       environment_short: wibarab-${{ needs.setup_workflow_env.outputs.environment_short }}
       PUBLIC_URL: ${{ steps.generate_public_url.outputs.public_url }}
       APP_NAME: ${{ needs.setup_workflow_env.outputs.APP_NAME }}
-  get_data_git_ref:
+  get_data_git_desc:
     needs: [setup_workflow_env, generate_workflow_vars]
     runs-on: ubuntu-latest
     environment:
@@ -316,10 +316,10 @@ jobs:
           echo "K8S_SECRET_CONTENT_BRANCH=${{ vars.K8S_SECRET_CONTENT_BRANCH }}"
           git clone --depth=${{ needs.setup_workflow_env.outputs.fetch-depth }} --branch=${{ vars.K8S_SECRET_CONTENT_BRANCH }} ${{ vars.K8S_SECRET_CONTENT_REPO }}
           cd $(basename ${{ vars.K8S_SECRET_CONTENT_REPO }} .git)
-          echo "data_git_ref=$(git describe --tags --always)" >> $GITHUB_OUTPUT
+          echo "data_git_desc=$(git describe --tags --always)" >> $GITHUB_OUTPUT
     outputs:
-      data_git_ref: ${{ steps.get_container_sha_tag.outputs.data_git_ref }}
-  get_data_git_ref_shawi:
+      data_git_desc: ${{ steps.get_container_sha_tag.outputs.data_git_desc }}
+  get_data_git_desc_shawi:
     needs: [setup_workflow_env, generate_workflow_vars_shawi]
     runs-on: ubuntu-latest
     environment:
@@ -334,10 +334,10 @@ jobs:
           echo "K8S_SECRET_CONTENT_BRANCH=${{ vars.K8S_SECRET_CONTENT_BRANCH }}"
           git clone --depth=${{ needs.setup_workflow_env.outputs.fetch-depth }} --branch=${{ vars.K8S_SECRET_CONTENT_BRANCH }} ${{ vars.K8S_SECRET_CONTENT_REPO }}
           cd $(basename ${{ vars.K8S_SECRET_CONTENT_REPO }} .git)
-          echo "data_git_ref=$(git describe --tags --always)" >> $GITHUB_OUTPUT
+          echo "data_git_desc=$(git describe --tags --always)" >> $GITHUB_OUTPUT
     outputs:
-      data_git_ref: ${{ steps.get_container_sha_tag.outputs.data_git_ref }}
-  get_data_git_ref_tunocent:
+      data_git_desc: ${{ steps.get_container_sha_tag.outputs.data_git_desc }}
+  get_data_git_desc_tunocent:
     needs: [setup_workflow_env, generate_workflow_vars_tunocent]
     runs-on: ubuntu-latest
     environment:
@@ -352,10 +352,10 @@ jobs:
           echo "K8S_SECRET_CONTENT_BRANCH=${{ vars.K8S_SECRET_CONTENT_BRANCH }}"
           git clone --depth=${{ needs.setup_workflow_env.outputs.fetch-depth }} --branch=${{ vars.K8S_SECRET_CONTENT_BRANCH }} ${{ vars.K8S_SECRET_CONTENT_REPO }}
           cd $(basename ${{ vars.K8S_SECRET_CONTENT_REPO }} .git)
-          echo "data_git_ref=$(git describe --tags --always)" >> $GITHUB_OUTPUT
+          echo "data_git_desc=$(git describe --tags --always)" >> $GITHUB_OUTPUT
     outputs:
-      data_git_ref: ${{ steps.get_container_sha_tag.outputs.data_git_ref }}
-  get_data_git_ref_wibarab:
+      data_git_desc: ${{ steps.get_container_sha_tag.outputs.data_git_desc }}
+  get_data_git_desc_wibarab:
     needs: [setup_workflow_env, generate_workflow_vars_wibarab]
     runs-on: ubuntu-latest
     environment:
@@ -370,11 +370,11 @@ jobs:
           echo "K8S_SECRET_CONTENT_BRANCH=${{ vars.K8S_SECRET_CONTENT_BRANCH }}"
           git clone --depth=${{ needs.setup_workflow_env.outputs.fetch-depth }} --branch=${{ vars.K8S_SECRET_CONTENT_BRANCH }} ${{ vars.K8S_SECRET_CONTENT_REPO }}
           cd $(basename ${{ vars.K8S_SECRET_CONTENT_REPO }} .git)
-          echo "data_git_ref=$(git describe --tags --always)" >> $GITHUB_OUTPUT
+          echo "data_git_desc=$(git describe --tags --always)" >> $GITHUB_OUTPUT
     outputs:
-      data_git_ref: ${{ steps.get_container_sha_tag.outputs.data_git_ref }}
+      data_git_desc: ${{ steps.get_container_sha_tag.outputs.data_git_desc }}
   _1:
-    needs: [setup_workflow_env, generate_workflow_vars, get_data_git_ref]
+    needs: [setup_workflow_env, generate_workflow_vars, get_data_git_desc]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
     secrets: inherit
     # if you run this outside of of an org that provides KUBE_CONFIG etc as a secret, you need to specify every secret you want to pass by name
@@ -387,9 +387,9 @@ jobs:
       PUBLIC_URL: ${{ needs.generate_workflow_vars.outputs.PUBLIC_URL }}
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth) }}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
-      container_tags_prefix: ${{ needs.get_data_git_ref.outputs.data_git_ref }}-
+      container_tags_prefix: ${{ needs.get_data_git_desc.outputs.data_git_desc }}-
   _1-tunocent:
-    needs: [setup_workflow_env, generate_workflow_vars_tunocent, get_data_git_ref_tunocent]
+    needs: [setup_workflow_env, generate_workflow_vars_tunocent, get_data_git_desc_tunocent]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
@@ -401,8 +401,9 @@ jobs:
       default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+      container_tags_prefix: ${{ needs.get_data_git_desc_tunocent.outputs.data_git_desc }}-
   _1-shawi:
-    needs: [setup_workflow_env, generate_workflow_vars_shawi, get_data_git_ref_shawi]
+    needs: [setup_workflow_env, generate_workflow_vars_shawi, get_data_git_desc_shawi]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
@@ -414,8 +415,9 @@ jobs:
       default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+      container_tags_prefix: ${{ needs.get_data_git_desc_shawi.outputs.data_git_desc }}-
   _1-wibarab:
-    needs: [setup_workflow_env, generate_workflow_vars_wibarab, get_data_git_ref_wibarab]
+    needs: [setup_workflow_env, generate_workflow_vars_wibarab, get_data_git_desc_wibarab]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
     secrets: inherit
 # if you run this outside of acdh-oeaw yo uneed to specify every secret you want to pass by name
@@ -427,6 +429,7 @@ jobs:
       default_port: ${{ needs.setup_workflow_env.outputs.default_port }}
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth)}}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+      container_tags_prefix: ${{ needs.get_data_git_desc_wibarab.outputs.data_git_desc }}-
   _2:
     needs: [setup_workflow_env, generate_workflow_vars]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/herokuish-tests-db-url.yaml@main
@@ -444,7 +447,7 @@ jobs:
       POSTGRES_ENABLED: false
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
   _3:
-    needs: [setup_workflow_env, generate_workflow_vars, get_data_git_ref, _1, _2]
+    needs: [setup_workflow_env, generate_workflow_vars, get_data_git_desc, _1, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
@@ -462,9 +465,9 @@ jobs:
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
-      container_tags_prefix: ${{ needs.get_data_git_ref.outputs.data_git_ref }}-
+      container_tags_prefix: ${{ needs.get_data_git_desc.outputs.data_git_desc }}-
   _3-shawi:
-    needs: [setup_workflow_env, generate_workflow_vars_shawi, get_data_git_ref_shawi, _1-shawi, _2]
+    needs: [setup_workflow_env, generate_workflow_vars_shawi, get_data_git_desc_shawi, _1-shawi, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
@@ -482,8 +485,9 @@ jobs:
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+      container_tags_prefix: ${{ needs.get_data_git_desc_shawi.outputs.data_git_desc }}-
   _3-tunocent:
-    needs: [setup_workflow_env, generate_workflow_vars_tunocent, get_data_git_ref_tunocent, _1-tunocent, _2]
+    needs: [setup_workflow_env, generate_workflow_vars_tunocent, get_data_git_desc_tunocent, _1-tunocent, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
@@ -501,8 +505,9 @@ jobs:
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+      container_tags_prefix: ${{ needs.get_data_git_desc_tunocent.outputs.data_git_desc }}-
   _3-wibarab:
-    needs: [setup_workflow_env, generate_workflow_vars_wibarab, get_data_git_ref_wibarab, _1-wibarab, _2]
+    needs: [setup_workflow_env, generate_workflow_vars_wibarab, get_data_git_desc_wibarab, _1-wibarab, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
@@ -520,3 +525,4 @@ jobs:
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+      container_tags_prefix: ${{ needs.get_data_git_desc_wibarab.outputs.data_git_desc }}-
