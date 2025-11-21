@@ -301,6 +301,23 @@ jobs:
       environment_short: wibarab-${{ needs.setup_workflow_env.outputs.environment_short }}
       PUBLIC_URL: ${{ steps.generate_public_url.outputs.public_url }}
       APP_NAME: ${{ needs.setup_workflow_env.outputs.APP_NAME }}
+  get_data_git_ref:
+    needs: [setup_workflow_env, generate_workflow_vars]
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.setup_workflow_env.outputs.environment }}
+    steps:
+      - name: Get data git
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.K8S_SECRET_CONTENT_REPO }}
+          ref: ${{ vars.K8S_SECRET_CONTENT_BRANCH }}
+      - name: Get contaienr sha tag
+        id: get_container_sha_tag
+        run: |
+          echo "data_git_ref=$(git describe --tags --always)" >> $GITHUB_OUTPUT
+    outputs:
+      data_git_ref: ${{ steps.get_data_git_ref.outputs.data_git_ref }}
   _1:
     needs: [setup_workflow_env, generate_workflow_vars]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
@@ -315,6 +332,7 @@ jobs:
       PUBLIC_URL: ${{ needs.generate_workflow_vars.outputs.PUBLIC_URL }}
       fetch-depth: ${{ fromJson(needs.setup_workflow_env.outputs.fetch-depth) }}
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+      container_tags_prefix: ${{ needs.get_data_git_ref.outputs.data_git_ref }}-
   _1-tunocent:
     needs: [setup_workflow_env, generate_workflow_vars_tunocent]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/build-dockerfile-and-push-to-registry.yaml@main
@@ -389,6 +407,7 @@ jobs:
       POSTGRES_ENABLED: ${{ needs.setup_workflow_env.outputs.POSTGRES_ENABLED == 'true'}}
       default_port: "${{ needs.setup_workflow_env.outputs.default_port}}"
       submodules: ${{ needs.setup_workflow_env.outputs.submodules }}
+      container_tags_prefix: ${{ needs.get_data_git_ref.outputs.data_git_ref }}-
   _3-shawi:
     needs: [setup_workflow_env, generate_workflow_vars_shawi, _1-shawi, _2]
     uses: acdh-oeaw/gl-autodevops-minimal-port/.github/workflows/deploy.yml@main
