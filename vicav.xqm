@@ -2253,7 +2253,7 @@ declare function vicav:_get_tei_doc_list($type as xs:string*, $render as xs:stri
          'There are no TEI documents of type '||$type)},
       $filename := if (not(exists($corpus)) and exists(collection($type)//tei:TEI))
         then
-          let $pathParts := tokenize(collection($type)//tei:TEI[1]/base-uri(), '/')
+          let $pathParts := tokenize((collection($type)//tei:TEI)[1]/base-uri(), '/')
           return string-join(subsequence($pathParts, 1, count($pathParts) - 1), '/')||"/corpus.xml"
         else collection($type)//tei:teiCorpus/base-uri(),
       $corpus := if (not(exists($corpus)) and exists(collection($type)//tei:TEI))
