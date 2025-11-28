@@ -103,7 +103,9 @@ declare
 %rest:produces('application/problem+json')   
 %rest:produces('application/problem+xml')
 function vicav:project_config() {
-  let $hash := try {xs:string(collection('prerendered_json')//json/ETag/text())} catch err:FODC0002 {()}
+  let (:~ $_ := error(xs:QName('response-codes:_503'), 
+                                $api-problem:codes_to_message(503), ''), ~:)
+      $hash := try {xs:string(collection('prerendered_json')//json/ETag/text())} catch err:FODC0002 {()}
     , $hashBrowser := request:header('If-None-Match', '')
   return if ($hash = $hashBrowser) then api-problem:return_problem(prof:current-ns(),
     <problem xmlns="urn:ietf:rfc:7807">
