@@ -2708,7 +2708,11 @@ declare function vicav:_get_dict_markers() {
     "properties": map{
       "type": "reg",
       "name": "Cairo",
-      "hitCount": 1
+      "hitCount": 1,
+      "targetType": "Text",
+      "params": map {
+         "textId": "dictFrontPage_Cairo"
+      }
     }},
     map {
     "type": "Feature",
@@ -2722,7 +2726,11 @@ declare function vicav:_get_dict_markers() {
     "properties": map{
       "type": "reg",
       "name": "Damascus",
-      "hitCount": 1
+      "hitCount": 1,
+      "targetType": "Text",
+      "params": map {
+         "textId": "dictFrontPage_Damascus"
+      }
     }},
     map {
     "type": "Feature",
@@ -2736,7 +2744,11 @@ declare function vicav:_get_dict_markers() {
     "properties": map{
       "type": "reg",
       "name": "Tunis",
-      "hitCount": 1
+      "hitCount": 1,
+      "targetType": "Text",
+      "params": map {
+         "textId": "dictFrontPage_Tunis"
+      }
     }},
     map {
     "type": "Feature",
@@ -2750,7 +2762,11 @@ declare function vicav:_get_dict_markers() {
     "properties": map{
       "type": "reg",
       "name": "Baghdad",
-      "hitCount": 1
+      "hitCount": 1,
+      "targetType": "Text",
+      "params": map {
+         "textId": "dictFrontPage_Baghdad"
+      }
     }}
   ], map{"method": "json", "indent": "no"})
 };

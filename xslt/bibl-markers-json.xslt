@@ -69,16 +69,6 @@
                 <alt><xsl:value-of select="alt"/></alt>
                 </xsl:if>
                 <hitCount><xsl:value-of select="freq"/></hitCount>
-                <textId>
-                    <xsl:choose>
-                        <xsl:when test="exists(@xml:id)">
-                            <xsl:value-of select="@xml:id"/>
-                        </xsl:when>
-                        <xsl:when test="exists(textId)">
-                            <xsl:value-of select="textId"/>
-                        </xsl:when>
-                    </xsl:choose>
-                </textId>
                 <targetType>
                     <xsl:choose>
                         <xsl:when test="exists(targetType)">
@@ -92,18 +82,32 @@
                         </xsl:when>
                     </xsl:choose>
                 </targetType>
-                <xsl:copy-of select="./params"/>
-                <xsl:variable name="locationQuery" select="$translateType(@type)||':'||(locName, alt)[1]"/>
-                <xsl:choose>
-                    <xsl:when test="exists($current-query) and 
-                                    ($current-query ne '.*') and
-                                    not(contains($current-query, $locationQuery))">
-                        <queryString><xsl:value-of select="$current-query||'+'||$locationQuery"/></queryString>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <queryString><xsl:value-of select="$locationQuery"/></queryString>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <params>
+                  <xsl:copy-of select="./params/*"/>
+                  <xsl:variable name="locationQuery" select="$translateType(@type)||':'||(locName, alt)[1]"/>
+                  <xsl:choose>
+                      <xsl:when test="exists($current-query) and 
+                                      ($current-query ne '.*') and
+                                      not(contains($current-query, $locationQuery))">
+                          <queryString><xsl:value-of select="$current-query||'+'||$locationQuery"/></queryString>
+                      </xsl:when>
+                      <xsl:otherwise>
+                          <queryString><xsl:value-of select="$locationQuery"/></queryString>
+                      </xsl:otherwise>
+                  </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="exists(@xml:id)">                      
+                          <textId>
+                            <xsl:value-of select="@xml:id"/>
+                          </textId>
+                        </xsl:when>
+                        <xsl:when test="exists(textId)">                      
+                          <textId>
+                            <xsl:value-of select="textId"/>
+                          </textId>
+                        </xsl:when>
+                    </xsl:choose>
+                </params>
             </properties>
         </_>
     </xsl:template>
