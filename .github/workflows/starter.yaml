@@ -38,7 +38,7 @@ jobs:
         id: get_environment_from_git_desc
         run: |
           echo "Running on branch ${{ github.ref_name }}"
-          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+          if [ "${{ github.ref }}" = "refs/heads/master" ] || [[ "${{ github.ref }}" =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$ ]] ; then
             echo "environment=production"
             echo "environment=production" >> $GITHUB_OUTPUT
             echo "environment_short=prod" >> $GITHUB_OUTPUT
