@@ -192,7 +192,6 @@ jobs:
           then git clone --depth=80 --branch=${{ vars.K8S_SECRET_CONTENT_BRANCH }} ${{ vars.K8S_SECRET_CONTENT_REPO }}
           else git clone --depth=${{ needs.setup_workflow_env.outputs.fetch-depth }} --branch=${{ vars.K8S_SECRET_CONTENT_BRANCH }} ${{ vars.K8S_SECRET_CONTENT_REPO }}
           fi
-          git clone --depth=${{ needs.setup_workflow_env.outputs.fetch-depth }} --branch=${{ vars.K8S_SECRET_CONTENT_BRANCH }} ${{ vars.K8S_SECRET_CONTENT_REPO }}
           cd $(basename ${{ vars.K8S_SECRET_CONTENT_REPO }} .git)
           if [ "${{ vars.ONLY_TAGS }}" = 'true' ]
           then echo "data_git_desc=$(git describe --tags --abbrev=0 || git describe --tags --always)" >> $GITHUB_OUTPUT
