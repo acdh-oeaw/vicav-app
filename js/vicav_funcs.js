@@ -166,12 +166,13 @@ function onDictMapClick(e) {
 L.Icon.Default.prototype.options.iconSize = [13, 35];
 L.Icon.Default.prototype.options.iconAnchor = [2, 35];
 
-// we use a cop of the North Star map style: https://blog.mapbox.com/designing-north-star-c8574e299c94
+// we use a copy of the North Star map style: https://blog.mapbox.com/designing-north-star-c8574e299c94
 // mapbox://styles/osiam/cl4mxp3zk003v15ufbeb1ynbc
-// to copy and edit the VICAV North Star style use this link https://api.mapbox.com/styles/v1/acdh-ch-tech/cllp2n7aj004a01r7fl637bq1.html?title=copy&access_token=pk.eyJ1IjoiYWNkaC1jaC10ZWNoIiwiYSI6ImNsZXpnMDdpODBlc2Q0MGwzOGZmaWNveDgifQ.yYx8e9PdsDl-NzOpGXAL7g&zoomwheel=true&fresh=true#4.6/31.38/26.74
+// mapbox://styles/acdh/cmk6qpn6q00jp01s6e9i6gevn
+// to copy and edit the VICAV North Star style use this link https://api.mapbox.com/styles/v1/acdh/cmk6qpn6q00jp01s6e9i6gevn.html?title=copy&access_token=pk.eyJ1IjoiYWNkaCIsImEiOiJjbWoxOHBsNjEwZjc5M2VyNzBvZ2x2ejlkIn0.itr6_jU4L58IgS2H8aDySA&zoomwheel=true&fresh=true#3.96/38.13/18.19
 // map style from acetin ~2017 https://api.mapbox.com/styles/v1/acetin/cjb22mkrf16qf2spyl3u1vee3.html?title=copy&access_token=pk.eyJ1IjoiYWNldGluIiwiYSI6ImNqYjIybG5xdTI4OWYyd285dmsydGFkZWQifQ.xG4sN5u8h-BoXaej6OjkXw&zoomwheel=true&fresh=true#4.6/31.38/26.74
 var mainMap = L.map('dvMainMap').setView([19.064, 24.544], 4);
-L.tileLayer('https://api.mapbox.com/styles/v1/acdh-ch-tech/cllp2n7aj004a01r7fl637bq1/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWNkaC1jaC10ZWNoIiwiYSI6ImNsZXpnMDdpODBlc2Q0MGwzOGZmaWNveDgifQ.yYx8e9PdsDl-NzOpGXAL7g', {
+L.tileLayer('https://api.mapbox.com/styles/v1/acdh/cmk6qpn6q00jp01s6e9i6gevn/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWNkaCIsImEiOiJjbWs2cm1hd3IwazAxM3FyM2w2Nmlla3FoIn0.Mo_tDzjCHUxPBHbHtAjAeQ', {
     maxZoom: 20,
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
