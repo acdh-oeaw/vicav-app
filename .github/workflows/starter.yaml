@@ -190,7 +190,10 @@ jobs:
           echo "K8S_SECRET_CONTENT_BRANCH=${{ vars.K8S_SECRET_CONTENT_BRANCH }}"
           git clone --depth=${{ needs.setup_workflow_env.outputs.fetch-depth }} --branch=${{ vars.K8S_SECRET_CONTENT_BRANCH }} ${{ vars.K8S_SECRET_CONTENT_REPO }}
           cd $(basename ${{ vars.K8S_SECRET_CONTENT_REPO }} .git)
-          echo "data_git_desc=$(git describe --tags --always)" >> $GITHUB_OUTPUT
+          if [ "${{ vars.ONLY_TAGS }}" = 'true' ]
+          then echo "data_git_desc=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+          else echo "data_git_desc=$(git describe --tags --always)" >> $GITHUB_OUTPUT
+          fi         
     outputs:
       data_git_desc: ${{ steps.get_container_sha_tag.outputs.data_git_desc }}
   get_data_git_desc_tunocent:
@@ -208,7 +211,10 @@ jobs:
           echo "K8S_SECRET_CONTENT_BRANCH=${{ vars.K8S_SECRET_CONTENT_BRANCH }}"
           git clone --depth=${{ needs.setup_workflow_env.outputs.fetch-depth }} --branch=${{ vars.K8S_SECRET_CONTENT_BRANCH }} ${{ vars.K8S_SECRET_CONTENT_REPO }}
           cd $(basename ${{ vars.K8S_SECRET_CONTENT_REPO }} .git)
-          echo "data_git_desc=$(git describe --tags --always)" >> $GITHUB_OUTPUT
+          if [ "${{ vars.ONLY_TAGS }}" = 'true' ]
+          then echo "data_git_desc=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+          else echo "data_git_desc=$(git describe --tags --always)" >> $GITHUB_OUTPUT
+          fi  
     outputs:
       data_git_desc: ${{ steps.get_container_sha_tag.outputs.data_git_desc }}
   _1:
