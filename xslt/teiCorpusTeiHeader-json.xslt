@@ -129,6 +129,15 @@
         </xsl:element>
     </xsl:template>
     
+    <xsl:template match="t:idno[@type = 'teiSource']">
+        <teiSource__idno type="object">
+            <xsl:apply-templates select="@*|*"/>
+            <xsl:if test="normalize-space(string-join(./text(), ' ')) ne '' and normalize-space(string-join(.//text(), ' ')) ne ''">
+                <_0024 type="string"><xsl:value-of select="normalize-space(string-join(.//text(), ' '))"/></_0024>
+            </xsl:if>
+        </teiSource__idno>
+    </xsl:template>
+    
     <xsl:template match="t:text"/> <!-- not interested in content -->
     
     <xsl:template match="@*">

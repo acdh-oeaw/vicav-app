@@ -103,7 +103,9 @@ declare
 %rest:produces('application/problem+json')   
 %rest:produces('application/problem+xml')
 function vicav:project_config() {
-  let $hash := try {xs:string(collection('prerendered_json')//json/ETag/text())} catch err:FODC0002 {()}
+  let (:~ $_ := error(xs:QName('response-codes:_503'), 
+                                $api-problem:codes_to_message(503), ''), ~:)
+      $hash := try {xs:string(collection('prerendered_json')//json/ETag/text())} catch err:FODC0002 {()}
     , $hashBrowser := request:header('If-None-Match', '')
   return if ($hash = $hashBrowser) then api-problem:return_problem(prof:current-ns(),
     <problem xmlns="urn:ietf:rfc:7807">
@@ -2251,18 +2253,30 @@ declare function vicav:_get_tei_doc_list($type as xs:string*, $render as xs:stri
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
          'There are no TEI documents of type '||$type)},
+      $filename := if (not(exists($corpus)) and exists(collection($type)//tei:TEI))
+        then
+          let $pathParts := tokenize((collection($type)//tei:TEI)[1]/base-uri(), '/')
+          return string-join(subsequence($pathParts, 1, count($pathParts) - 1), '/')||"/corpus.xml"
+        else collection($type)//tei:teiCorpus/base-uri(),
       $corpus := if (not(exists($corpus)) and exists(collection($type)//tei:TEI))
         then <teiCorpus xmlns="http://www.tei-c.org/ns/1.0">{collection($type)//tei:TEI!. update {delete node (./tei:text,./tei:standOff)}}</teiCorpus>
         else $corpus,
-      $corpus := if (exists($corpus/@xml:id)) then $corpus else $corpus update { insert node attribute {"id"} {$type} as first into . }, 
+      $corpus := if (exists($corpus/@xml:id)) then $corpus else $corpus update { insert node attribute {"id"} {$type} as first into . },
+      $corpus := if (exists($corpus/@xml:base)) then $corpus else $corpus update { insert node attribute {"document-uri"} {$filename} as first into . },
       $notFound := if (not(exists($corpus))) then
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
          'There are no TEI documents of type '||$type) else (),
       $corpusIDs := $corpus//tei:idno[ends-with(@type, 'CorpusID')]/text()!xs:string(.),
       $IDtypes :=  distinct-values($corpus//tei:idno/@type),
-      $IDsContainingData := collection($type)//tei:TEI[.//tei:w]//tei:idno[@type = $IDtypes][. = $corpusIDs]!xs:string(.),
-      $corpus := $corpus update { .//tei:TEI[.//tei:idno[@type = $IDtypes][. = $IDsContainingData]]!(insert node attribute {"hasTEIw"} {"true"} as first into .) },
+      $IDsContainingData := map:merge((collection($type)//tei:TEI[.//tei:w]//tei:idno[@type = $IDtypes][. = $corpusIDs]!map {xs:string(.): ./base-uri()})),
+      $corpus := $corpus update {
+        for $dataTEI in .//tei:TEI[.//tei:idno[@type = $IDtypes][. = map:keys($IDsContainingData)]]
+        return (
+          insert node attribute {"hasTEIw"} {"true"} as first into $dataTEI,
+          insert node attribute {"document-uri"} {$IDsContainingData($dataTEI//tei:idno[@type = $IDtypes][. = $corpusIDs])} as first into $dataTEI
+        )
+      },
       $xml_for_parser := xslt:transform($corpus, 'xslt/teiCorpusTeiHeader-json.xslt')
   return if ($render = "json") 
   then serialize($xml_for_parser, map {'method': 'json', 'indent': 'no'})
@@ -2694,7 +2708,11 @@ declare function vicav:_get_dict_markers() {
     "properties": map{
       "type": "reg",
       "name": "Cairo",
-      "hitCount": 1
+      "hitCount": 1,
+      "targetType": "Text",
+      "params": map {
+         "textId": "dictFrontPage_Cairo"
+      }
     }},
     map {
     "type": "Feature",
@@ -2708,7 +2726,11 @@ declare function vicav:_get_dict_markers() {
     "properties": map{
       "type": "reg",
       "name": "Damascus",
-      "hitCount": 1
+      "hitCount": 1,
+      "targetType": "Text",
+      "params": map {
+         "textId": "dictFrontPage_Damascus"
+      }
     }},
     map {
     "type": "Feature",
@@ -2722,7 +2744,11 @@ declare function vicav:_get_dict_markers() {
     "properties": map{
       "type": "reg",
       "name": "Tunis",
-      "hitCount": 1
+      "hitCount": 1,
+      "targetType": "Text",
+      "params": map {
+         "textId": "dictFrontPage_Tunis"
+      }
     }},
     map {
     "type": "Feature",
@@ -2736,7 +2762,11 @@ declare function vicav:_get_dict_markers() {
     "properties": map{
       "type": "reg",
       "name": "Baghdad",
-      "hitCount": 1
+      "hitCount": 1,
+      "targetType": "Text",
+      "params": map {
+         "textId": "dictFrontPage_Baghdad"
+      }
     }}
   ], map{"method": "json", "indent": "no"})
 };
