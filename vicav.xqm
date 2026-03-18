@@ -494,33 +494,33 @@ declare
 %rest:path("/vicav/sample")
 %rest:query-param("coll", "{$coll}")
 %rest:query-param("id", "{$id}")
-%rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("xslt", "{$xsltfn}", "sampletext_01.xslt")
 %rest:query-param("print", "{$print}")
 
 %rest:GET
 
-function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:string*, $print as xs:string*) {
-    let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $xsltfn := if (exists($xsltfn)) then $xsltfn else "sampletext_01.xslt"
-    
+function vicav:get_sample($coll as xs:string, $id as xs:string, $xsltfn as xs:string*, $print as xs:string*) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_sample#4, [$coll, $id, $xsltfn, $print], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_sample($coll as xs:string, $id as xs:string, $xsltfn as xs:string, $print as xs:string*) {
     let $assetsBaseURIpattern := (collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
         /tei:prefixDef[@ident="assets"]/@matchPattern, "")[1]
     let $assetsBaseURIto := (collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
         /tei:prefixDef[@ident="assets"]/@replacementPattern, "")[1]
-    let $q := 'collection("' || $coll || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
-    let $query := $ns || $q
-    let $results := xquery:eval($query)
-    return 
-        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
+    let $results := collection( $coll || vicav:get_project_db())/descendant::tei:TEI[@xml:id=$id]
+    return
         vicav:transform($results, $xsltfn, $print, map{
             "assetsBaseURIpattern": $assetsBaseURIpattern,
             "assetsBaseURIto": $assetsBaseURIto,
             "print-url": concat(
                 request:uri(), "?", request:query(), "&amp;print=true" 
             )
-        }))
+        })
 };
 
 
