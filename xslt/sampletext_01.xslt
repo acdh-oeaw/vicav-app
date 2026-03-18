@@ -81,7 +81,7 @@
                     </source>
                 </audio>                
             </xsl:if>
-            <xsl:apply-templates select="./tei:text/tei:body/tei:div[@type='sampleText']/tei:p/tei:s"/>
+            <xsl:apply-templates select="./tei:text/tei:body/tei:div[@type=('sampleText', 'corpusText')]/(tei:p/tei:s, tei:u)"/>
         </div> 
     </xsl:template>
 </xsl:stylesheet>
