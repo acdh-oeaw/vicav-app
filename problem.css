@@ -1,0 +1,83 @@
+/* This was generated using a prompt to Academic-AI, chatGPT 5, March 2026 */
+
+/* Namespace of the problem data (default in the XML) */
+@namespace p "urn:ietf:rfc:7807";
+
+/* Card-like container with a reddish theme */
+p|problem {
+  --fg: #1a0b0b;       /* main text */
+  --muted: #7a3a3a;    /* secondary text */
+  --bg: #fff8f8;       /* soft reddish background */
+  --accent: #c1121f;   /* primary accent red */
+
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--fg);
+  background: var(--bg);
+  line-height: 1.4;
+  display: block;
+  max-width: 70ch;
+  margin: 1rem auto;
+  padding: 1rem 1.25rem;
+
+  border: 1px solid #f0caca;               /* light red border */
+  border-radius: .5rem;
+  box-shadow: 0 1px 6px rgba(193, 18, 31, .12); /* subtle red-tinted shadow */
+}
+
+/* Stack direct child elements vertically */
+p|problem > * {
+  display: block;
+  margin: .35rem 0;
+}
+
+/* Emphasize the title */
+p|problem > p|title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #8b0e17; /* deeper red for headline */
+}
+
+/* Add labels before fields */
+p|problem > p|type::before     { content: "Type: ";     color: var(--muted); }
+p|problem > p|instance::before { content: "Instance: "; color: var(--muted); }
+p|problem > p|status::before   { content: "Status: ";   color: var(--muted); }
+p|problem > p|took::before     { content: "Took: ";     color: var(--muted); }
+
+/* Highlight the status value a bit more */
+p|problem > p|status {
+  font-weight: 700;
+  color: #b00020; /* Material-ish error red */
+}
+
+/* Make detail block stand out with a red accent */
+p|problem > p|detail {
+  padding: .5rem .75rem;
+  background: #fff0f0;           /* faint red background */
+  border-left: 3px solid #e03131; /* red accent bar */
+  border-radius: .25rem;
+  white-space: pre-wrap;
+}
+
+/* Monospace trace block with a light red frame */
+p|problem > p|trace {
+  margin-top: .25rem;
+  padding: .5rem .75rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: .9rem;
+  background: #fff5f5;       /* very light red */
+  border: 1px solid #f3c2c2; /* soft red border */
+  border-radius: .25rem;
+  white-space: pre-wrap;     /* preserve line breaks/indentation */
+}
+
+/* Optional: small section label before the trace */
+p|problem > p|trace::before {
+  content: "Trace";
+  display: block;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: .25rem;
+}
+
+/* Note: Turning type/instance into clickable links is not possible with pure CSS.
+   Use XSLT or server-side rendering to wrap those values in anchor tags if needed. */

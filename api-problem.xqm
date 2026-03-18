@@ -134,7 +134,8 @@ declare %private function _:get_serialization_method($ret as item()) as map(xs:s
 
 declare function _:return_problem($start-time-ns as xs:integer, $problem as element(rfc7807:problem), $header-elements as map(xs:string, xs:string)?) as item()+ {
 let $accept-header := try { req:header("ACCEPT") } catch basex:http { 'application/problem+xml' },
-    $header-elements := map:merge(($header-elements, map{'Content-Type': if (matches($accept-header, '[+/]json')) then 'application/problem+json' else if (matches($accept-header, 'application/xhtml\+xml')) then 'application/xml' else 'application/problem+xml'})),
+    $content-type := if (matches($accept-header, '[+/]json')) then 'application/problem+json' else if (matches($accept-header, 'application/xhtml\+xml')) then 'application/xml' else 'application/problem+xml',
+    $header-elements := map:merge((map{'Content-Type': $content-type}, $header-elements)),
     $output :=  if (matches($accept-header, '[+/]json')) then map{'method': 'json', 'media-type': 'application/problem+json'} else if (matches($accept-header, 'application/xhtml\+xml')) then map{'method': 'xhtml', 'media-type': 'application/xhtml+xml'} else map{'method': 'xml', 'media-type': 'application/problem+xml'},
     $error-status := if ($problem/rfc7807:status castable as xs:integer) then xs:integer($problem/rfc7807:status) else 400
 return (web:response-header($output, $header-elements, map{'message': $problem/rfc7807:title, 'status': $error-status}),
@@ -245,7 +246,7 @@ declare %private function _:on_accept_to_json($problem as element(rfc7807:proble
   then _:to-json-map(<json type="object" objects="{$objects}" arrays="{$arrays}">{$problem/*}</json>)
   (: BaseX native function: :)
   (: json:serialize(<json type="object" objects="{$objects}" arrays="{$arrays}">{$problem/* transform with {delete node @xml:space}}</json>, map {'format': 'direct'}) :)
-  else $problem
+  else (processing-instruction {"xml-stylesheet"} {'type="text/css" href="problem.css"'}, $problem)
 };
 
 declare function _:to-json-map($json-xml as element(json)) {
