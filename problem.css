@@ -1,83 +1,115 @@
-/* This was generated using a prompt to Academic-AI, chatGPT 5, March 2026 */
+/* CSS created by Academinc-AI, GPT-5, March 2026 */
+/* Purpose: Style RFC 7807 problem XML in a reddish theme, highlighting <detail>;
+   all other tag names are rendered as labels. */
 
-/* Namespace of the problem data (default in the XML) */
+/* Bind the RFC 7807 namespace so element selectors work in XML */
 @namespace p "urn:ietf:rfc:7807";
 
-/* Card-like container with a reddish theme */
+/* Color system (applied as custom properties on the root element) */
 p|problem {
-  --fg: #1a0b0b;       /* main text */
-  --muted: #7a3a3a;    /* secondary text */
-  --bg: #fff8f8;       /* soft reddish background */
-  --accent: #c1121f;   /* primary accent red */
+  --accent: #d64545;
+  --accent-strong: #b93434;
+  --text: #421f1f;
+  --label: #7a2b2b;
+  --bg-soft: #fff5f5;
+  --bg-strong: #ffeaea;
+  --border: #f0b3b3;
 
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color: var(--fg);
-  background: var(--bg);
-  line-height: 1.4;
   display: block;
-  max-width: 70ch;
-  margin: 1rem auto;
+  box-sizing: border-box;
+  max-width: 840px;
+  margin: 1.5rem auto;
   padding: 1rem 1.25rem;
-
-  border: 1px solid #f0caca;               /* light red border */
-  border-radius: .5rem;
-  box-shadow: 0 1px 6px rgba(193, 18, 31, .12); /* subtle red-tinted shadow */
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+  color: var(--text);
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--accent);
+  border-radius: 8px;
+  line-height: 1.5;
 }
 
-/* Stack direct child elements vertically */
+/* Ensure all known children flow as blocks with spacing */
 p|problem > * {
   display: block;
-  margin: .35rem 0;
+  margin: 0.5rem 0;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
-/* Emphasize the title */
-p|problem > p|title {
+/* Headline styling for the title value (still labeled via ::before) */
+p|title {
   font-size: 1.1rem;
-  font-weight: 600;
-  color: #8b0e17; /* deeper red for headline */
-}
-
-/* Add labels before fields */
-p|problem > p|type::before     { content: "Type: ";     color: var(--muted); }
-p|problem > p|instance::before { content: "Instance: "; color: var(--muted); }
-p|problem > p|status::before   { content: "Status: ";   color: var(--muted); }
-p|problem > p|took::before     { content: "Took: ";     color: var(--muted); }
-
-/* Highlight the status value a bit more */
-p|problem > p|status {
   font-weight: 700;
-  color: #b00020; /* Material-ish error red */
+  color: var(--accent-strong);
 }
 
-/* Make detail block stand out with a red accent */
-p|problem > p|detail {
-  padding: .5rem .75rem;
-  background: #fff0f0;           /* faint red background */
-  border-left: 3px solid #e03131; /* red accent bar */
-  border-radius: .25rem;
-  white-space: pre-wrap;
-}
-
-/* Monospace trace block with a light red frame */
-p|problem > p|trace {
-  margin-top: .25rem;
-  padding: .5rem .75rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  font-size: .9rem;
-  background: #fff5f5;       /* very light red */
-  border: 1px solid #f3c2c2; /* soft red border */
-  border-radius: .25rem;
-  white-space: pre-wrap;     /* preserve line breaks/indentation */
-}
-
-/* Optional: small section label before the trace */
-p|problem > p|trace::before {
-  content: "Trace";
-  display: block;
+/* Emphasize detail (key information) */
+p|detail {
+  background: var(--bg-strong);
+  border-left: 4px solid var(--accent);
+  padding: 0.6rem 0.75rem;
+  border-radius: 4px;
   font-weight: 600;
-  color: var(--muted);
-  margin-bottom: .25rem;
+  color: var(--text);
 }
 
-/* Note: Turning type/instance into clickable links is not possible with pure CSS.
-   Use XSLT or server-side rendering to wrap those values in anchor tags if needed. */
+/* Monospace, preserve line breaks for stack traces */
+p|trace {
+  white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  background: #fff1f1;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  padding: 0.5rem 0.6rem;
+}
+
+/* Subdued secondary items */
+p|took,
+p|instance,
+p|type {
+  color: #5a2c2c;
+}
+
+/* Render tag names as labels for all elements except <detail> */
+p|type::before,
+p|title::before,
+p|instance::before,
+p|status::before,
+p|took::before {
+  display: inline-block;
+  min-width: 6.5rem;
+  font-weight: 700;
+  text-transform: none;
+  color: var(--label);
+  opacity: 0.95;
+  content: attr(data-label); /* fallback hook if authors set data-label manually */
+}
+
+p|trace::before {
+  display: inline-block;
+  min-width: 3.5rem;
+  font-weight: 700;
+  text-transform: none;
+  color: var(--label);
+  opacity: 0.95;
+  content: attr(data-label); /* fallback hook if authors set data-label manually */
+}
+
+/* Provide default label text via specific rules (overrides the generic content above) */
+p|type::before     { content: "Type:"; }
+p|title::before    { content: "Title:"; }
+p|instance::before { content: "Instance:"; }
+p|status::before   { content: "Status:"; }
+p|trace::before    { content: "Trace:"; }
+p|took::before     { content: "Took:"; }
+
+/* Small layout polish */
+p|problem > p|status { margin-top: 0.25rem; }
+p|problem > p|title  { margin-top: 0.25rem; }
+p|problem > p|detail { margin-top: 0.25rem; }
+
+p|problem > *:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
