@@ -512,7 +512,7 @@ declare function vicav:_get_sample($coll as xs:string, $id as xs:string, $xsltfn
     let $assetsBaseURIto := (collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
         /tei:prefixDef[@ident="assets"]/@replacementPattern, "")[1]
-    let $results := collection( $coll || vicav:get_project_db())/descendant::tei:TEI[@xml:id=$id]
+    let $results := (collection( $coll || vicav:get_project_db())/descendant::tei:TEI[@xml:id=$id])[1]
     return
         vicav:transform($results, $xsltfn, $print, map{
             "assetsBaseURIpattern": $assetsBaseURIpattern,
