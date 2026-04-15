@@ -2249,7 +2249,7 @@ declare function vicav:_get_tei_doc_list($type as xs:string*, $render as xs:stri
         error(xs:QName('response-codes:_422'), 
          $api-problem:codes_to_message(422),
          'You need to specify a type') else (),
-      $corpus := try { collection($type)//tei:teiCorpus } catch err:FODC0002 {
+      $corpus := try { (collection($type)//tei:teiCorpus)[last()] } catch err:FODC0002 {
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
          'There are no TEI documents of type '||$type)},
