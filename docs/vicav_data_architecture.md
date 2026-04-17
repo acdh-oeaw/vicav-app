@@ -148,28 +148,7 @@ Informants in a data document are encoded in the document's local participant li
 
 The list of places is encoded within `/teiCorpus/standOff/listPlace`. This semantically neutral position takes into account that places play various roles in a corpus.   
 
-Each place is represented by a `<place>` element which … 
-
-* MUST have an `@xml:id`
-* MUST contain ONE `<settlement>` element with exactly ONE `<name xml:lang="en">` containing the place's name in English (which will be used for displaying a label for the place in the application); moreover, `<settlement>` MAY contain several other `<name>` elements with different values in `@xml:lang`.
-* MAY contain exactly one `<region>` element containing a text node with the region's name in English (which can be used in the frontend to group places)
-* MUST contain exactly one `<country>` element containing a text node with the region's name in English
-* MUST contain exactly one `<location>` element with `<geo>` containing the coordinates of the place in decimal notation
-* MAY contain several `<idno>` elements providing authority file identifiers for the settlement in question  
-
-```xml
-<place xml:id="place0134">
-    <settlement>
-       <name xml:lang="en">Tajerouine</name>
-       <name xml:lang="aeb">Tāžirwīn</name>
-    </settlement>
-    <region>Kef</region>
-    <country>Tunisia</country>
-    <location>
-        <geo>35.97545, 8.5505</geo>
-    </location>
-</place>
-```
+For a description of the strucutre of the entries in the list, please refer to the VICAV Geodata ODD.
 
 #### Referencing Places
 
