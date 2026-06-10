@@ -177,7 +177,7 @@ declare function vicav:get_insert_data($type as xs:string) {
   switch ($type)
     case "insert_featurelist" return <_ type="object">{vicav:get_featurelist()}</_>
     case "insert_variety_data" return <_ type="object">{vicav:get_variety_data()}</_>
-    case "insert_taxonomy" return <_ type="object">{vicav:get_taxonomy()}</_>
+    case "insert_taxonomy" return <_ type="array">{vicav:get_taxonomy()}</_>
     case "insert_list_of_corpus_characters" return vicav:get_list_of_corpus_characters()
     case "insert_vicav_biblio" return <_ type="object">{vicav:_get_vicav_biblio_data("xml_for_parser")/json/*}</_>
     default return <_ type="object">{vicav:_get_tei_doc_list(replace($type, '^insert_', ''), "xml_for_parser")/json/*}</_>
@@ -195,21 +195,19 @@ declare function vicav:get_variety_data() {
 };
 
 declare function vicav:get_categories($mainCategories){
-       map:merge((
+      array{
       for $category in $mainCategories
       let $id := string($category/@xml:id)
       let $title := string($category/@n)
       let $subcategories := $category/tei:category
       return
-        if (empty($subcategories)) then
-          map:entry($id, $title)
-        else
-          map:merge(
-              for $sub in $subcategories
-              return map:entry(string($sub/@xml:id), string($sub/@n))
-            )
-        ))
-};
+      (map { $id : $title },
+      for $sub in $subcategories
+      return
+        map { string($sub/@xml:id) : string($sub/@n) }
+      ) 
+    }
+  };
 
 declare function vicav:get_featurelist(){
   let $docs := collection('wibarab_features')//tei:TEI
