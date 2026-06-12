@@ -177,7 +177,7 @@ declare function vicav:get_insert_data($type as xs:string) {
   switch ($type)
     case "insert_featurelist" return <_ type="object">{vicav:get_featurelist()}</_>
     case "insert_variety_data" return <_ type="object">{vicav:get_variety_data()}</_>
-    case "insert_taxonomy" return <_ type="object">{vicav:get_taxonomy()}</_>
+    case "insert_taxonomy" return <_ type="array">{vicav:get_taxonomy()}</_>
     case "insert_list_of_corpus_characters" return vicav:get_list_of_corpus_characters()
     case "insert_vicav_biblio" return <_ type="object">{vicav:_get_vicav_biblio_data("xml_for_parser")/json/*}</_>
     default return <_ type="object">{vicav:_get_tei_doc_list(replace($type, '^insert_', ''), "xml_for_parser")/json/*}</_>
@@ -195,21 +195,19 @@ declare function vicav:get_variety_data() {
 };
 
 declare function vicav:get_categories($mainCategories){
-       map:merge((
+      array{
       for $category in $mainCategories
       let $id := string($category/@xml:id)
       let $title := string($category/@n)
       let $subcategories := $category/tei:category
       return
-        if (empty($subcategories)) then
-          map:entry($id, $title)
-        else
-          map:merge(
-              for $sub in $subcategories
-              return map:entry(string($sub/@xml:id), string($sub/@n))
-            )
-        ))
-};
+      (map { $id : $title },
+      for $sub in $subcategories
+      return
+        map { string($sub/@xml:id) : string($sub/@n) }
+      ) 
+    }
+  };
 
 declare function vicav:get_featurelist(){
   let $docs := collection('wibarab_features')//tei:TEI
@@ -260,11 +258,13 @@ function vicav:prerender_project_config() {
     vicav:project_config_json_as_xml#1, [$publicURI], map:merge((cors:header(()), vicav:return_content_header()))
   ),
       $res := if (matches($accept-header, '[+/]json')) 
-        then ($jsonAsXml[1],$jsonAsXml[2]) 
+        then ($jsonAsXml[1],$jsonAsXml[2])
         else ($jsonAsXml[1],serialize($jsonAsXml[2], map {'method': 'xml'}))
   return (
-    if (db:exists('prerendered_json')) then db:replace('prerendered_json', $prerenderedFileName, $jsonAsXml[2])
-    else db:create('prerendered_json', $jsonAsXml[2], $prerenderedFileName),
+    if (not($jsonAsXml[2] instance of map(xs:string, item()))) then
+      if (db:exists('prerendered_json')) then db:replace('prerendered_json', $prerenderedFileName, $jsonAsXml[2])
+      else db:create('prerendered_json', $jsonAsXml[2], $prerenderedFileName)
+    else (),
     update:output($res)
   )
 };
@@ -2487,12 +2487,12 @@ declare function vicav:get_noske_search_result($noske_host as xs:string, $query-
     declare variable $noske_host as xs:string external;
     declare variable $query-parts as xs:string+ external;
     let $request := $noske_host || '/bonito/run.cgi/first?corpname=' || vicav:get_project_name()
-        || '&amp;queryselector=cqlrow&amp;cql='||$query-parts||'&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=0&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
+        || '&amp;queryselector=cqlrow&amp;cql='||encode-for-uri($query-parts)||'&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=0&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
       (: , $_ := admin:write-log($request, 'INFO') :)
       return http:send-request(<http:request method='get'/>,
         $request)[2]/*  
   ]``, map {"noske_host": $noske_host, "query-parts": $query-parts}, 'noske_search_results_vicav_get', true())
-  , $_ := admin:write-log(serialize($res), 'INFO')
+  (: , $_ := admin:write-log(serialize($res), 'INFO') :)
   return $res
 };
 
