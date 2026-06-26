@@ -10,7 +10,7 @@
     "func:openDict_Tunis()": "dc_tunico",
     "func:openDict_Cairo()": "dc_arz_eng_publ",
     "func:openDict_Baghdad()": "dc_acm_baghdad_eng_publ",
-    "func:openDict_MSA()": "dc_ar_eng_publ"
+    "func:openDict_MSA()": "dc_ar_en_publ"
     }'/>
   <xsl:variable name="autoDictQueryFuncToDictID" select='map{
       "func:autoDictQuery(&apos;_tunis&apos;": "dc_tunico"
