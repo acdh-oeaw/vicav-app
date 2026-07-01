@@ -19,7 +19,7 @@ VICAV-compatible datasets share a set of common corpus-like data types, i.e. TEI
 
 * Feature Lists
 * Sample Texts
-* Unmonitored Speech (dialogues, narration)
+* Unmonitored Speech (dialogues, narration and similar more or less spontaneous speech)
 
 Moreover, VICAV-compatible dataset can contain:
 
@@ -28,10 +28,40 @@ Moreover, VICAV-compatible dataset can contain:
 * Bibliographies
 * Paratexts
 
-Next to these default data types, projects can define their own specific type of data which can be published via VICAV (see below).
-
 Since the main content of a VICAV-compatible data set is contained within those documents, they are called **Data Documents** in contrast to the **Corpus Document** which holds corpus-wide metadata and points to all the available **Data Documents**.
 
+
+
+
+Each VICAV data document should declare itself to be an instance of one of the VICAV datatypes by referencing the [centrally managed text classes taxonomy](https://github.com/acdh-oeaw/vicav-library/blob/main/vicav_textClasses.xml). It must contain a `<catRef>` element within `teiHeader/profileDesc/textClass` pointing to the relevant `<catDesc>` element in the taxonomy.
+
+
+```xml
+<!-- in the VICAV text classes taxonomy -->              
+<taxonomy xml:id="datatypes.vicav">
+   <desc>VICAV Default Data Types</desc>
+   <category xml:id="datatypes.vicav.fl" n="FL">
+      <catDesc>
+         <name xml:lang="en">VICAV Feature List</name>
+      </catDesc>
+   </category>
+</taxonomy>
+
+<!-- in a TEI document --> 
+<textClass>
+    <catRef target="vtc:datatypes.vicav.fl"/>
+</textClass>
+```
+
+The `vtc:` prefix (standing for "VICAV Text Classes") should be defined in a `<prefixDef>` Element in the `<teiHeader>`: 
+
+```xml
+<prefixDef ident="vtc" matchPattern="^(.+)$" replacementPattern="../vicav-library/vicav_textClasses.xml">
+   <p>Private URIs using the <code>vtc</code> prefix are pointers to the list of VICAV text classes.</p>
+</prefixDef>
+```
+
+Next to these default data types, projects can define their own specific type of data which can be published via VICAV (see below).
 
 ## Corpus Document
 
@@ -146,22 +176,22 @@ Informants in a data document are encoded in the document's local participant li
 
 ### Places
 
-The list of places is encoded within `/teiCorpus/standOff/listPlace`. This semantically neutral position takes into account that places play various roles in a corpus.   
+The list of places is encoded within `/teiCorpus/standOff/listPlace`. This semantically neutral position takes into account that places play various roles in a corpus.
 
-For a description of the strucutre of the entries in the list, please refer to the VICAV Geodata ODD.
+For a description of the strucutre of the entries in the list, please refer to the [VICAV Geodata ODD](https://github.com/acdh-oeaw/vicav-library/blob/main/802_tei_odd/vicav_geodata.odd).
 
 #### Referencing Places
 
 Most of the TEI documents document have attached metadata of their geographic relevance, e.g. where its content was collected or for which geographic region its data is representative. This is encoded in a `<place>` element within `teiHeader/profileDesc/settingDesc`. For the time being, we assume that there is exactly ONE empty `<place>` element within `<settingDesc>` which points to a `<place>` entry within `/teiCorpus/standOff/listPlace` via a `@sameAs` attribute.
 
 ```xml
-<!-- in the data document -->
+<!-- In a data document -->
 <settingDesc>
     <place sameAs="corpus:place0134"/>
 </settingDesc>
 ```
 
-### Data Type Taxonomy 
+### Custom Data Type Taxonomy 
 
 Next to the common VICAV data types mentioned above, a project can also define its own data types. These need to be listed in a `<taxonomy>` element in the Corpus Document within `/teiCorpus/teiHeader/encodingDesc/classDecl/taxonomy`. 
 
@@ -171,10 +201,7 @@ Each data type is represented by a `<category>` element which …
 * MUST have an `@n` attribute with an abbreviated label for the data type which can be  
 * MUST have an `<catDesc>` element with `<name>` containing a name for the data type
 
-
-##### Referencing the data type taxonomy
-
-Each TEI Header must contain a `<catRef>` element within `teiHeader/profileDesc/textClass` pointing to the relevant `<catDesc>` element in the corpus document.
+Data documents should reference the project-specific datatypes taxonomy similar to the VICAV datatypes taxonomy (replacing the `vtc:` prefix with the `corpus:` prefix). 
 
 ```xml
 <!-- in the corpus document-->
@@ -272,8 +299,17 @@ Especially in case of transcriptions of unmonitored speech or sample texts, the 
 
 **TODO**s Add information regarding
 * types auf media files (master/derived)
-* locationsx
+* locations
 * availibility
+
+
+## VICAV datasets repository layout
+
+**TODO** Describe the standard layout of a VICAV dataset repository. 
+
+* corpus.xml on top level
+* one directory per datatype with a subdirectory named after the project acronym
+* VICAV Library repository included as a submodule
 
 
 ## VICAV Platform 
@@ -288,7 +324,7 @@ It may be necessary that a new type of data needs to be defined which can then b
 
 * A description text
 * an entry in the data type taxonomy in the datasets' corpus document
-* an ODD
+* an ODD and RNG schema
 
 
 ## How VICAV App uses the data 
