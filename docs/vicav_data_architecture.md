@@ -17,12 +17,12 @@ The VICAV application framework provides the following basic functionality:
 Each VICAV instance is populated from data sourced coming from three layers:
 
 * *VICAV Library*: A central repository with data shared across all VICAV datasets. Next to the VICAV bibliography, the gazetteer and the taxonomy of text classes, this also includes common ODDs and schemas for the defalut data types.
-* *Dataset Catalogue*: Each VICAV dataset is described in a *Dataset Catalogue*. Next to a complete list of recordings in the dataset this includes data shared across all resources in the dataset in question, esp. list of participants, custom vocabularies (keywords) or project-specific data types. Dataset Catalogues are described further below.
+* *Dataset Catalogue*: Each VICAV dataset is described in a *Dataset Catalogue*. Next to a complete list of recordings in the dataset this includes data shared across all resources in the dataset in question, esp. list of participants, custom vocabularies (keywords) or project-specific data types. Dataset Catalogues are described further [below](#dataset-catalogues).
 * *Data Documents*: These are single TEI documents providing one data point (e.g. one feature list, one transcription, one language profile)
 
 ## Default data types
 
-The data documents in a VICAV dataset follow a predefined structure and comparable content:
+Documents in a VICAV dataset follow a predefined structure and comparable content. Usual types of documents are: 
 
 * Feature Lists
 * Sample Texts
@@ -35,8 +35,7 @@ Moreover, VICAV-compatible dataset can contain:
 * Bibliographies
 * Paratexts
 
-
-Each VICAV data document declares its datatype in its header (see below).
+The list of data types is centrally managed in the [text classes taxonomy](https://github.com/acdh-oeaw/vicav-library/blob/main/vicav_textClasses.xml) in the *VICAV Library* . Each VICAV data document declares its datatype in its header (see [below](#datatype-declaration)).
 
 ## Dataset Catalogues
 
@@ -123,6 +122,7 @@ The `<person>` element …
  
  * We chose `<idno>` since we assume that only pseudonyms / identifiers should be encoded in TEI documents, not clear names. 
  * Even if `@xml:id` and `<idno>` in most cases are the same, we assume that an informant's identifier might have to contain characters not allowed in `xs:NCname`.
+ * Age groups should be described in a `<taxonomy>` element in the data catalogue and in the project-specific ODD.
 
 
 #### Referencing the participants list
@@ -236,7 +236,7 @@ The `vtc:` prefix (standing for "VICAV Text Classes") should be defined in a `<p
 </prefixDef>
 ```
 
-Next to these default data types, projects can define their own specific type of data which can be published via VICAV (see below).
+Next to these default data types, projects can define their own specific type of data which can be published via VICAV (see [below](#defining-custom-data-types)).
 
 ### Referencing Places
 
@@ -312,12 +312,10 @@ Especially in case of transcriptions of unmonitored speech or sample texts, the 
 
 ## Defining custom data types 
 
-**TOOD** *What's needed if someone needs a new data type?*
-
 Next to the common VICAV data types mentioned above, a project can also define a custom data type which can then be listed, displayed or searched. The actual functionality depends, of course, on the implementation in the VICAV framework, however the data structures to describe the data type is generic and require:
 
 * a description text (a custom paratext document)
-* an entry in the data type taxonomy in the datasets' Dataset Catalogue (see below)
+* an entry in the data type taxonomy in the datasets' Dataset Catalogue (see [below](#custom-data-type-taxonomy))
 * an ODD and RNG schema
 
 
