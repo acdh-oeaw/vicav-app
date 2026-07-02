@@ -179,7 +179,8 @@ declare function vicav:get_insert_data($type as xs:string) {
     case "insert_variety_data" return <_ type="object">{vicav:get_variety_data()}</_>
     case "insert_taxonomy" return <_ type="array">{vicav:get_taxonomy()}</_>
     case "insert_list_of_corpus_characters" return vicav:get_list_of_corpus_characters()
-    case "insert_vicav_biblio" return <_ type="object">{vicav:_get_vicav_biblio_data("xml_for_parser")/json/*}</_>
+    case "insert_vicav_biblio" return <_ type="object">{vicav:_get_json_serializable_tei_list_data("vicav_biblio", "listBibl","xml_for_parser")/json/*}</_>
+    case "insert_vicav_geo" return <_ type="object">{vicav:_get_json_serializable_tei_list_data("vicav_geo", "listPlace","xml_for_parser")/json/*}</_>
     default return <_ type="object">{vicav:_get_tei_doc_list(replace($type, '^insert_', ''), "xml_for_parser")/json/*}</_>
 };
 
@@ -2294,7 +2295,7 @@ declare
 %rest:GET
 function vicav:get_vicav_biblio_data($render as xs:string) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_get_vicav_biblio_data#1, [$render], map:merge((cors:header(()),
+    vicav:_get_json_serializable_tei_list_data#3, ['vicav_biblio', 'listBibl', $render], map:merge((cors:header(()),
       if ($render = "json") 
       then map{'Content-Type': 'application/json;charset=UTF-8'}
       else map{'Content-Type': 'application/xml;charset=UTF-8'}) 
@@ -2302,15 +2303,31 @@ function vicav:get_vicav_biblio_data($render as xs:string) {
   )
 };
 
-declare function vicav:_get_vicav_biblio_data($render as xs:string) { 
+declare
+%rest:path("/vicav/geo_data")
+%rest:query-param("render", "{$render}}", "json")
+%rest:produces('application/json')
+%rest:produces('application/xml')
+%rest:GET
+function vicav:get_geo_biblio_data($render as xs:string) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_json_serializable_tei_list_data#3, ['vicav_geo', 'listPlace', $render], map:merge((cors:header(()),
+      if ($render = "json") 
+      then map{'Content-Type': 'application/json;charset=UTF-8'}
+      else map{'Content-Type': 'application/xml;charset=UTF-8'}) 
+    )
+  )
+};
+
+declare function vicav:_get_json_serializable_tei_list_data($collectionName as xs:string, $listLocalName as xs:string, $render as xs:string) { 
   let $corpus := try {
-      collection('vicav_biblio')//tei:TEI[.//tei:listBibl] update {
-        insert node attribute {"id"} {"vicav_biblio"} as first into . 
+      collection($collectionName)//tei:TEI[.//*[local-name()=$listLocalName]] update {
+        insert node attribute {"id"} {$collectionName} as first into . 
       }
     } catch err:FODC0002 {
     error(xs:QName('response-codes:_404'), 
      $api-problem:codes_to_message(404),
-     'There are no TEI documents of type vicav_biblio')},
+     'There are no TEI documents of type '||$collectionName)},
     $xml_for_parser := xslt:transform($corpus, '3rd-party/vleserver_basex/vleserver/data/xml-to-basex-json-xml.xsl')    
   return if ($render = "json") 
   then serialize($xml_for_parser, map {'method': 'json', 'indent': 'no'})
