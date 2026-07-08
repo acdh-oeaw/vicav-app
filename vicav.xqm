@@ -2336,6 +2336,54 @@ declare function vicav:_get_json_serializable_tei_list_data($collectionName as x
   else $corpus
 };
 
+declare
+%rest:path("/vicav/geojson_gazetteer")
+%rest:produces('application/json')
+%rest:GET
+function vicav:get_geojson_gazetteer() {
+    api-problem:or_result (prof:current-ns(),
+    vicav:_get_geojson_gazetteer#0, [],  map:merge((cors:header(()),
+      map{'Content-Type': 'application/json;charset=UTF-8'})))
+};
+
+declare function vicav:_get_geojson_gazetteer() {
+  let $vicav_geo_json := xslt:transform(collection("vicav_geo")/tei:TEI/tei:text/tei:body/tei:listPlace, '3rd-party/vleserver_basex/vleserver/data/xml-to-basex-json-xml.xsl')
+  return
+<json type="object" arrays="features coordinates" objects="properties geometry">
+  <type>FeatureCollection</type>
+  <features>{
+    for $place in collection("vicav_geo")/tei:TEI/tei:text/tei:body/tei:listPlace/*
+    where normalize-space($place/tei:location/tei:geo[@decls="#dd"]) ne ""
+    return
+    <_ type="object">
+      <geometry>
+        <coordinates>{
+          (: try { 
+            let $c1 := (xs:double(tokenize($place/tei:location/tei:geo[@decls="#dd"], ',| ')[last()]), 999999.0)[1],
+                $c2 := (xs:double(tokenize($place/tei:location/tei:geo[@decls="#dd"],',| ')[1]), 999999.0)[1], 
+                $encoded := (<_ type="number">{$c1}</_>,
+                             <_ type="number">{$c2}</_>)
+            return $encoded
+           } catch err:FORG0002 { 
+            <_ type="number">666666.0</_>,
+            <_ type="number">666666.0</_>
+          } :)
+          <_ type="number">{tokenize($place/tei:location/tei:geo[@decls="#dd"], ',| ')[last()]}</_>,
+          <_ type="number">{tokenize($place/tei:location/tei:geo[@decls="#dd"], ',| ')[1]}</_> }
+        </coordinates>
+        <type>Point</type>
+     </geometry>
+     <id>{data($place/@xml:id)}</id>
+     <properties>{ $vicav_geo_json//*[_0040id = $place/@xml:id]/* }</properties>
+     <type>Feature</type>
+    </_>}
+  </features>
+  <properties>
+    <description>GEOJSON of the VICAV gazetteer</description>
+  </properties>
+</json>
+};
+
 (:****************************************************************************:)
 (:** MANAGEMENT FUNCS ********************************************************:)
 (:****************************************************************************:)
