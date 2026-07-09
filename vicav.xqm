@@ -345,9 +345,9 @@ declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:str
         else if (contains($query, 'author:')) then
            '[.//tei:author/tei:surname[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else if (contains($query, 'geo:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
-           '[.//tei:note[@type="tag"]/tei:name[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           '[.//tei:placeName[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else if (contains($query, 'vt:')) then
-           '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           '[.//tei:ref[@target = "'||$query||'"]]'
         else if (contains($query, 'prj:')) then
            '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else if (starts-with($query, 'zotid:')) then
@@ -373,6 +373,7 @@ declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:str
     'let $date := $art/tei:monogr[1]/tei:imprint[1]/tei:date[1] ' ||
     'order by $author[1],$date[1] return $art'
     let $query2 := $ns || $q
+    let $_ := admin:write-log($query2, "INFO")
     let $results := xquery:eval($query2)
     
     let $num := count($results)
@@ -1655,10 +1656,10 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
               '[.//tei:pubPlace[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'author:')) then
               '[.//[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
-           else if (contains($query, 'geo:') or contains($query, 'geo_reg:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
-              '[.//tei:note[@type="tag"]/tei:name[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           else if (contains($query, 'geo:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
+              '[.//tei:placeName[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'vt:')) then
-              '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+              '[.//tei:ref[@target = "'||$query||'"]]'
            else if (contains($query, 'prj:')) then
               '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else
