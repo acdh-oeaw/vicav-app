@@ -1682,6 +1682,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
 
     let $ns := 'declare namespace tei = "http://www.tei-c.org/ns/1.0";'
     let $query := $ns || $q
+    (: let $_ := admin:write-log($query, "INFO") :)
     let $tempresults := xquery:eval($query)
 
     let $out :=
@@ -1690,45 +1691,26 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
             let $geos :=
                 $scope!(switch (.)
                     case 'geo_reg'
-                        return $subj/tei:note/tei:note[(tei:name/@type = 'reg') or (tei:name/@type = 'geo') or (tei:name/@type = 'diaGroup')][tei:geo]
-                    case 'geo'
-                        return $subj/tei:note/tei:note[tei:name/@type = 'geo'][tei:geo]
-                    case 'diaGroup'
-                        return $subj/tei:note/tei:note[tei:name/@type = 'diaGroup'][tei:geo]
-                    case 'reg'
-                        return $subj/tei:note/tei:note[tei:name/@type = 'reg'][tei:geo]
-            default return ())
+                        return $subj//tei:place[@type = ('reg', 'geo', 'diaGroup')]//tei:geo[@decls="#dd"]
+                    default
+                        return $subj//tei:place[@type = $scope]//tei:geo[@decls="#dd"]
+                )
     
     for $geo in $geos
     return
-        let $id := $subj/@corresp
+        let $place := $geo/ancestor::tei:place,
+            $id := $place/@xml:id/data()
         
         return
-            if (string-length($geo/tei:name) > 0)
+            if (string-length($place/tei:placeName[@type = "prefLabel"][1]) > 0)
             then
                 (
-               (: let $type := fn:substring-before($geo, ':')
-                let $altItem := replace($geo, 'geo:|reg:', '')
-                let $locname := fn:substring-before($altItem, '[')
-                let $locname := fn:normalize-space($locname)
-                let $locname := fn:replace($locname, '''', '&#180;')
-                let $sa := fn:substring-after($altItem, '[')
-                let $geodata := fn:substring-before($sa, ']')
-                :)
-                let $type := $geo/tei:name/@type
-                let $altItem := $geo/tei:name/text()
-                let $locname := $geo/tei:name/text()
-                let $geodata := $geo/tei:geo/text()
+                let $type := $place/@type/data()
+                let $locname := $place/tei:placeName[@type = "prefLabel"]/text()
+                let $geodata := $geo/text()
                 
                 return
-(:                    if (string-length($locname) = 0) then
-                        (
-                        <item>{$type}<geo></geo><loc>{$altItem}</loc><id>{$id}</id></item>
-                        )
-                    else
-                        ( :)
-                        <item>{$type}<geo>{$geodata}</geo><loc>{$locname}</loc><id>{$id}</id></item>
-                       (: )                :)
+                        <item type="{$type}"><geo>{$geodata}</geo><loc>{$locname}</loc><id>{$id}</id></item>
                 )
             else ()
 
