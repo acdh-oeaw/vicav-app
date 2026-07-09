@@ -2352,8 +2352,10 @@ declare function vicav:_get_geojson_gazetteer() {
 <json type="object" arrays="features coordinates" objects="properties geometry">
   <type>FeatureCollection</type>
   <features>{
-    for $place in collection("vicav_geo")/tei:TEI/tei:text/tei:body/tei:listPlace/*
-    where normalize-space($place/tei:location/tei:geo[@decls="#dd"]) ne ""
+    for $placesByType in collection("vicav_geo")/tei:TEI/tei:text/tei:body/tei:listPlace/*
+    where normalize-space($placesByType/tei:location/tei:geo[@decls="#dd"]) ne ""
+    group by $type := $placesByType/@type
+    for $place in $placesByType
     return
     <_ type="object">
       <geometry>
@@ -2374,7 +2376,7 @@ declare function vicav:_get_geojson_gazetteer() {
         <type>Point</type>
      </geometry>
      <id>{data($place/@xml:id)}</id>
-     <properties>{ $vicav_geo_json//*[_0040id = $place/@xml:id]/* }</properties>
+     <properties>{ $vicav_geo_json//*[_0040id = $place/@xml:id and _0040type = $type]/* }</properties>
      <type>Feature</type>
     </_>}
   </features>
