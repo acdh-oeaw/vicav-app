@@ -177,6 +177,7 @@ declare function vicav:get_insert_data($type as xs:string) {
   switch ($type)
     case "insert_featurelist" return <_ type="object">{vicav:get_featurelist()}</_>
     case "insert_variety_data" return <_ type="object">{vicav:get_variety_data()}</_>
+    case "insert_vicav_geojson" return <_ type="object">{vicav:_get_geojson_gazetteer()}</_>
     case "insert_taxonomy" return <_ type="array">{vicav:get_taxonomy()}</_>
     case "insert_list_of_corpus_characters" return vicav:get_list_of_corpus_characters()
     case "insert_vicav_biblio" return <_ type="object">{vicav:_get_json_serializable_tei_list_data("vicav_biblio", "listBibl","xml_for_parser")/json/*}</_>
