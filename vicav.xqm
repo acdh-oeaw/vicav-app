@@ -177,7 +177,7 @@ declare function vicav:get_insert_data($type as xs:string) {
   switch ($type)
     case "insert_featurelist" return <_ type="object">{vicav:get_featurelist()}</_>
     case "insert_variety_data" return <_ type="object">{vicav:get_variety_data()}</_>
-    case "insert_vicav_geojson" return <_ type="object">{vicav:_get_geojson_gazetteer()}</_>
+    case "insert_vicav_geojson" return <_ type="object">{vicav:_get_geojson_gazetteer()/*}</_>
     case "insert_taxonomy" return <_ type="array">{vicav:get_taxonomy()}</_>
     case "insert_list_of_corpus_characters" return vicav:get_list_of_corpus_characters()
     case "insert_vicav_biblio" return <_ type="object">{vicav:_get_json_serializable_tei_list_data("vicav_biblio", "listBibl","xml_for_parser")/json/*}</_>
@@ -2331,19 +2331,38 @@ function vicav:get_geojson_gazetteer() {
 };
 
 declare function vicav:_get_geojson_gazetteer() {
-  let $vicav_geo_json := xslt:transform(collection("vicav_geo")/tei:TEI/tei:text/tei:body/tei:listPlace, '3rd-party/vleserver_basex/vleserver/data/xml-to-basex-json-xml.xsl')
+  let $vicav_geo_json := xslt:transform(collection("vicav_geo")/tei:TEI/tei:text/tei:body/tei:listPlace, '3rd-party/vleserver_basex/vleserver/data/xml-to-basex-json-xml.xsl'),
+      $lookup := <json type="object">
+      <referencedBy type="array">{
+      for $db in db:list()
+      let $geoRefs := collection($db)//@*[starts-with(., "geo:")]
+      where count($geoRefs) > 0
+      return <_ type="object">
+        <source>{$db}</source>
+        <ids type="array">{
+          for $geoRef in $geoRefs
+          let $nextElemWithID := (($geoRef/ancestor::tei:*[@xml:id])[1]/@xml:id, $geoRef/ancestor::tei:teiHeader//tei:idno[ends-with(@type, "CorpusID")])
+          group by $refAndId := data($geoRef)||data($nextElemWithID)
+          return<_ type="object">
+            <reference>{data($geoRef[1])}</reference>
+            <id>{data($nextElemWithID[1])}</id>
+          </_>}
+        </ids>
+      </_>}
+      </referencedBy>
+      </json>
   return
-<json type="object" arrays="features coordinates" objects="properties geometry">
+<json type="object">
   <type>FeatureCollection</type>
-  <features>{
+  <features type="array">{
     for $placesByType in collection("vicav_geo")/tei:TEI/tei:text/tei:body/tei:listPlace/*
     where normalize-space($placesByType/tei:location/tei:geo[@decls="#dd"]) ne ""
     group by $type := $placesByType/@type
     for $place in $placesByType
     return
     <_ type="object">
-      <geometry>
-        <coordinates>{
+      <geometry type="object">
+        <coordinates type="array">{
           (: try { 
             let $c1 := (xs:double(tokenize($place/tei:location/tei:geo[@decls="#dd"], ',| ')[last()]), 999999.0)[1],
                 $c2 := (xs:double(tokenize($place/tei:location/tei:geo[@decls="#dd"],',| ')[1]), 999999.0)[1], 
@@ -2360,11 +2379,18 @@ declare function vicav:_get_geojson_gazetteer() {
         <type>Point</type>
      </geometry>
      <id>{data($place/@xml:id)}</id>
-     <properties>{ $vicav_geo_json//*[_0040id = $place/@xml:id and _0040type = $type]/* }</properties>
+     <properties type="object">{
+       let $referencedBy := $lookup//referencedBy
+         update (
+           delete nodes .//_[ids][not(some $ref in ids/_/reference satisfies $ref = "geo:"||$place/@xml:id)],
+           delete nodes .//_[reference != "geo:"||$place/@xml:id]
+         )
+       return ($vicav_geo_json//*[_0040id = $place/@xml:id and _0040type = $type]/*, $referencedBy) 
+     }</properties>
      <type>Feature</type>
     </_>}
   </features>
-  <properties>
+  <properties type="object">
     <description>GEOJSON of the VICAV gazetteer</description>
   </properties>
 </json>
