@@ -259,12 +259,12 @@ function vicav:prerender_project_config() {
     vicav:project_config_json_as_xml#1, [$publicURI], map:merge((cors:header(()), vicav:return_content_header()))
   ),
       $res := if (matches($accept-header, '[+/]json')) 
-        then ($jsonAsXml[1],$jsonAsXml[2])
-        else ($jsonAsXml[1],serialize($jsonAsXml[2], map {'method': 'xml'}))
+        then ($jsonAsXml[1],$jsonAsXml[last()])
+        else ($jsonAsXml[1],serialize(subsequence($jsonAsXml, 2), map {'method': 'xml'}))
   return (
     if (not($jsonAsXml[2] instance of map(xs:string, item()))) then
-      if (db:exists('prerendered_json')) then db:replace('prerendered_json', $prerenderedFileName, $jsonAsXml[2])
-      else db:create('prerendered_json', $jsonAsXml[2], $prerenderedFileName)
+      if (db:exists('prerendered_json')) then db:replace('prerendered_json', $prerenderedFileName, $jsonAsXml[last()])
+      else db:create('prerendered_json', $jsonAsXml[last()], $prerenderedFileName)
     else (),
     update:output($res)
   )
