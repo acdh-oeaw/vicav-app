@@ -2341,8 +2341,8 @@ declare function vicav:_get_geojson_gazetteer() {
         <source>{$db}</source>
         <ids type="array">{
           for $geoRef in $geoRefs
-          let $nextElemWithID := (($geoRef/ancestor::tei:*[@xml:id])[1]/@xml:id, $geoRef/ancestor::tei:teiHeader//tei:idno[ends-with(@type, "CorpusID")])
-          group by $refAndId := data($geoRef)||data($nextElemWithID)
+          let $nextElemWithID := ($geoRef/ancestor::tei:teiHeader//tei:idno[ends-with(@type, "CorpusID")], ($geoRef/ancestor::tei:*[@xml:id])[1]/@xml:id)
+          group by $refAndId := data($geoRef)||data($nextElemWithID[1])
           return<_ type="object">
             <reference>{data($geoRef[1])}</reference>
             <id>{data($nextElemWithID[1])}</id>
