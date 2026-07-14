@@ -248,11 +248,12 @@ declare
 %updating
 %rest:path("/vicav/project")
 %rest:PUT
+%rest:query-param("summarize", "{$summarize}")
 %rest:produces("application/xml")
 %rest:produces("application/json")
 %rest:produces('application/problem+json')   
 %rest:produces('application/problem+xml')
-function vicav:prerender_project_config() {
+function vicav:prerender_project_config($summarize as xs:boolean?) {
   let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' },
       $publicURI := '{{host_name}}/{{path}}',
       $prerenderedFileName := $publicURI||'/prerendered_json.xml',
@@ -267,7 +268,13 @@ function vicav:prerender_project_config() {
       if (db:exists('prerendered_json')) then db:replace('prerendered_json', $prerenderedFileName, $jsonAsXml[last()])
       else db:create('prerendered_json', $jsonAsXml[last()], $prerenderedFileName)
     else (),
-    update:output($res)
+    if ($summarize = true())
+    then
+      let $resBody := if ($res[2] instance of xs:string) then parse-xml-fragment($res[2]) else $res[2]
+      return update:output(
+      ``[`{$res[1]//http:response/@status}` `{$res[1]//http:response/@message}`: generated json data for `{$resBody//projectConfig/title}`]``
+      )
+    else update:output($res)
   )
 };
 
