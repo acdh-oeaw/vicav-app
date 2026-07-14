@@ -2338,7 +2338,16 @@ function vicav:get_geojson_gazetteer() {
 };
 
 declare function vicav:_get_geojson_gazetteer() {
-  let $vicav_geo_json := xslt:transform(collection("vicav_geo")/tei:TEI/tei:text/tei:body/tei:listPlace, '3rd-party/vleserver_basex/vleserver/data/xml-to-basex-json-xml.xsl'),
+  let $prerendered := try { <json type="object">{collection("prerendered_json")//staticData/geo/_[properties/description = "GEOJSON of the VICAV gazetteer"]/*}</json> }
+      catch err:FODC0002 { () }
+  return if (exists($prerendered)) then $prerendered else
+  let $vicav_geo := try { collection("vicav_geo") }
+      catch err:FODC0002 {
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'Gazetteer vicav_geo is not available')
+      },
+      $vicav_geo_json := xslt:transform($vicav_geo/tei:TEI/tei:text/tei:body/tei:listPlace, '3rd-party/vleserver_basex/vleserver/data/xml-to-basex-json-xml.xsl'),
       $lookup := <json type="object">
       <referencedBy type="array">{
       for $db in db:list()
@@ -2362,7 +2371,7 @@ declare function vicav:_get_geojson_gazetteer() {
 <json type="object">
   <type>FeatureCollection</type>
   <features type="array">{
-    for $placesByType in collection("vicav_geo")/tei:TEI/tei:text/tei:body/tei:listPlace/*
+    for $placesByType in $vicav_geo/tei:TEI/tei:text/tei:body/tei:listPlace/*
     where normalize-space($placesByType/tei:location/tei:geo[@decls="#dd"]) ne ""
     group by $type := $placesByType/@type
     for $place in $placesByType
