@@ -179,7 +179,7 @@ declare function _:pass($code as xs:QName, $description as xs:string?, $value as
 
 declare %private function _:inject-runtime($start as xs:integer, $ret) {
   if ($ret instance of map(*)) then map:merge(($ret, map {'took': _:runtime($start)}))
-  else if ($ret instance of element(json) and not($ret/*:took)) then <json>{($ret/(@*, *), <took>{_:runtime($start)}</took>)}</json>
+  else if ($ret instance of element(json) and not($ret/*:took)) then <json>{($ret/@*, $ret/*, <took>{_:runtime($start)}</took>)}</json>
   else if ($ret instance of element(rfc7807:problem) and not($ret/*:took)) then <problem xmlns="urn:ietf:rfc:7807">{($ret/(@*, *), <took>{_:runtime($start)}</took>)}</problem>
   else $ret
 };
