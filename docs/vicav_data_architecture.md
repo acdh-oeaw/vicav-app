@@ -105,12 +105,12 @@ While the content of `<resp>` is generally not enforced, there are a few execpti
 
 ### Informants
 
-Each informant is represented by a `<person>` element in the **main participants list** at `/teiCorpus/teiHeader/profileDesc/particDesc/listPerson`. 
+Each informant is represented by a `<person>` element in the data catalogue's **main participants list** at `/teiCorpus/teiHeader/profileDesc/particDesc/listPerson`. 
 
 The `<person>` element …
 
 * MUST have an `@xml:id` AND an `<idno>` element with the ID/sigil of the person
-* MUST have `@sex` and `@age` (= age group) attributes: Both are used by the VICAV application to provide filter options.
+* MUST have a `@sex` attribute
 * MAY contain `<ptr type="patricipatedIn">` elements to reference the data documents which they have contributed to.
 * MAY contain a `<state type="consent">` construct to indicate what consent the person has given
 * MAY contain a `<birth>` element which provides…
@@ -122,7 +122,8 @@ The `<person>` element …
  
  * We chose `<idno>` since we assume that only pseudonyms / identifiers should be encoded in TEI documents, not clear names. 
  * Even if `@xml:id` and `<idno>` in most cases are the same, we assume that an informant's identifier might have to contain characters not allowed in `xs:NCname`.
- * Age groups should be described in a `<taxonomy>` element in the data catalogue and in the project-specific ODD.
+ 
+ **Age groups** should be described in the data catalogue and in the project-specific ODD. **TODO: take decision on exact format cf. https://github.com/acdh-oeaw/vicav-content/issues/37 ** 
 
 
 #### Referencing the participants list
@@ -165,10 +166,50 @@ The list of places is encoded within `/teiCorpus/standOff/listPlace`. This seman
 * CHECK if that is the case and whether the list in the Catalogue document is used anywhere in the application. 
 * CHECK if there is any need to include places directly in the Dataset Catalogue.
 
+### Bibliographic references, campaigns and other sources
+
+Any language resource in a VICAV-compatible dataset should contain provenance information. 
+
+#### Bibliography
+
+All bibliographic references collected by a project should go into the central VICAV bibliography, hosted on Zotero.
+
+If a project wants to document resulting publications or other research output, it should mark them with the tag `out:{profile acronym}`, e.g. `out:WIBARAB`. To document talks and conference presentations, the tag `prs:{profile acronym}`, e.g. `prs:SHAWI` should be used. 
+
+
+#### Campaigns
+
+Fieldwork campaigns in which data has been collected should be described in a sources document:
+
+```xml 
+<event type="campaign" from-iso="1974-01-01" to-iso="1978-12-31" xml:id="SDN_1974-1978_SR">
+   <head>Sudan Fieldwork Campaign Stefan Reichmuth 1974 and 1978</head>
+   <desc>
+      <listPerson type="participants">
+         <person>
+            <persName>Stefan Reichmuth</persName>
+         </person>
+      </listPerson>
+      <placeName ref="geo:sudan"/>
+   </desc>
+   <note>Digitalized cassettes of Reichmuth's fieldwork in Eastern Sudan in 1974 and in Khartoum in 1978</note>
+</event>
+```
+
+These are referenced from the `settingDesc` element in the data document header's `profileDesc` section:
+
+```xml 
+<settingDesc corresp="sources:LEB_2023_AID">
+   <setting>
+      <placeName sameAs="geo:el_karantina">Karantina</placeName>
+   </setting>
+</settingDesc>
+```
+ 
 
 
 <!-- Revisit! -->
-### References to data documents
+### Referencing data documents from the dataset catalogue
 
 In its `<body>`, each `<TEI>` element in the Dataset Catalogue should contain references to the data document(s) derived from it in the dataset:
 
@@ -212,6 +253,11 @@ Each data document should declare its type by referencing the [centrally managed
 
 
 ```xml
+<!-- in a data document --> 
+<textClass>
+    <catRef  scheme="vtc:datatypes.vicav" target="vtc:datatypes.vicav.fl"/>
+</textClass>
+
 <!-- in the VICAV text classes taxonomy -->              
 <taxonomy xml:id="datatypes.vicav">
    <desc>VICAV Default Data Types</desc>
@@ -222,13 +268,9 @@ Each data document should declare its type by referencing the [centrally managed
    </category>
 </taxonomy>
 
-<!-- in a data document --> 
-<textClass>
-    <catRef  scheme="vtc:datatypes.vicav" target="vtc:datatypes.vicav.fl"/>
-</textClass>
 ```
 
-The `vtc:` prefix (standing for "VICAV Text Classes") should be defined in a `<prefixDef>` Element in the document's `<teiHeader>` and point to the VICAV Text Classes taxonomy in *VICAV Library*: 
+The prefix `vtc:` (standing for "VICAV Text Classes") should be defined in a `<prefixDef>` Element in the document's `<teiHeader>` and point to the VICAV Text Classes taxonomy in *VICAV Library*: 
 
 ```xml
 <prefixDef ident="vtc" matchPattern="^(.+)$" replacementPattern="../vicav-library/vicav_textClasses.xml">
@@ -296,6 +338,48 @@ Especially in case of transcriptions of unmonitored speech or sample texts, the 
 * locations
 * availibility
 
+#### Images 
+
+Images are used in several places in VICAV datasets, e.g. in language profiles or paratexts, usually used in figures:
+
+```xml 
+<figure>
+   <graphic url="AinSoltane1.jpg" decls="#profile_Ain_Soltane_01_graphic001" type="thumbnail"/>
+</figure>
+```
+Captions can be encoded using the `head` element within `figure`.
+
+In order to have a clickable thumbnail image with a version with full resolution, embed a second `graphic` element within `figure`: 
+
+<figure rendition="#small">
+   <graphic type="fullscale" decls="#profile_Bou_Omrane_01_graphic003" url="The_mountain_village_of_Bou_Omrane_(4).jpg"/>
+   <graphic url="thumb/The_mountain_village_of_Bou_Omrane_(4).jpg" decls="#profile_Bou_Omrane_01_graphic003" type="thumbnail"/>
+   <head>The mountain village of Bou Omrane</head>
+</figure>
+
+
+Additionally, each image should be represented by a metadata section in `/TEI/standOff` providing information on the creator of the image and the license which is referenced using the `@decls` attribute:
+
+```xml
+   <standOff>
+      <listBibl type="graphics">
+         <bibl type="image" xml:id="profile_Ain_Soltane_01_graphic001">
+            <name type="filename">AinSoltane1.jpg</name>
+            <respStmt>
+               <resp>creator</resp>
+               <persName ref="corpus:SBM">Maiz Sara Ben</persName>
+            </respStmt>
+            <availability status="free">
+               <licence target="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</licence>
+            </availability>
+         </bibl>
+      </listBibl>
+   </standOff>
+```
+
+Images of a VICAV dataset should reside in a dedicated `assets` directory within a datatype, e.g. `vicav_profiles/{dataset-acronym}/images`. Thumbnails should be stored in subdirectory with the same name as the full-resolution version: `vicav_profiles/{dataset-acronym}/images/thumb`.
+
+
 
 ## VICAV datasets repository layout
 
@@ -304,6 +388,10 @@ Especially in case of transcriptions of unmonitored speech or sample texts, the 
 * corpus.xml on top level
 * one directory per datatype with a subdirectory named after the project acronym
 * VICAV Library repository included as a submodule
+
+General rules:
+
+* All files in a VICAV dataset repostiory should conform to the [filenaming rules of ARCHE](https://arche.acdh.oeaw.ac.at/browser/filenames-formats-metadata#filenames). For file and directory naming use only alphanumeric characters without special characters such as quotes, punctuation marks, characters with diacritics, spaces, slashes and the like. Underscores (_) and hyphens (-) can be used. Additionally, file names should conform to the rules of an NCName as defined in the [XML Specification](https://www.w3.org/TR/REC-xml-names/#NT-NCName), i.e. esp. start with [A-Z].
 
 
 ## VICAV Platform 
