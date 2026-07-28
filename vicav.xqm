@@ -160,7 +160,7 @@ declare function vicav:project_config_json_as_xml($publicURI as xs:string) {
         $jsonAsXML := xslt:transform($config, 'xslt/menu-json.xslt', map{
           'baseURIPublic': $publicURI,
           'teiSource': json:serialize(map:merge((collection('vicav_texts')//tei:body/tei:div/@xml:id!
-            map{.: ./ancestor::tei:TEI//tei:publicationStmt/tei:idno/text()}
+            map{.: ./ancestor::tei:TEI//tei:publicationStmt/tei:idno[@type="teiSource"]/text()}
           )))
         }),
         $jsonAsXML := $jsonAsXML update {
