@@ -353,6 +353,8 @@ declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:str
            '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else if (starts-with($query, 'zotid:')) then
            '[@corresp = "http://zotero.org/groups/2165756/items/' || substring-after($query, ':') ||'"]'
+        else if (starts-with($query, 'id:') or starts-with($query, 'zot:')) then
+           '[@xml:id = "' || substring-after($query, ':') ||'"]'
         else
            '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'  
     
@@ -374,7 +376,7 @@ declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:str
     'let $date := $art/tei:monogr[1]/tei:imprint[1]/tei:date[1] ' ||
     'order by $author[1],$date[1] return $art'
     let $query2 := $ns || $q
-    let $_ := admin:write-log($query2, "INFO")
+    (: let $_ := admin:write-log($query2, "INFO") :)
     let $results := xquery:eval($query2)
     
     let $num := count($results)
