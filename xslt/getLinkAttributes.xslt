@@ -41,6 +41,9 @@
           <xsl:sequence select="('WMap', 'bibl_markers_tei', replace($target,'^mapMarkers:([^/]+)(/[^/,]+)?', '$1')), replace($target,'^mapMarkers:([^/]+)(/[^/,]+)?', '$1')"/>
           <!-- The part after the / is the label for the new window. We get those labels using the lookup table.  -->
         </xsl:when>
+        <xsl:when test="starts-with($target, 'geo:')">
+          <xsl:sequence select="('WMap', 'gazetteer', replace($target,'^geo:(.+)', '$1')), replace($target,'^geo:(.+)', '$1')"/>
+        </xsl:when>
         <xsl:when test="starts-with($target, 'text:')">
           <xsl:sequence select="('Text', replace($target,'^text:([^/]+)(/[^/,]+)?', '$1'), $captionFromMenuID(replace($target,'^text:([^/]+)(/[^/,]+)?', '$1')))"/>
           <!-- The part after the / is the label for the new window. We get those labels using the lookup table.  -->
