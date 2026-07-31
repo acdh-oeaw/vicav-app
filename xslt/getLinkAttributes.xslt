@@ -10,7 +10,7 @@
     "func:openDict_Tunis()": "dc_tunico",
     "func:openDict_Cairo()": "dc_arz_eng_publ",
     "func:openDict_Baghdad()": "dc_acm_baghdad_eng_publ",
-    "func:openDict_MSA()": "dc_ar_eng_publ"
+    "func:openDict_MSA()": "dc_ar_en_publ"
     }'/>
   <xsl:variable name="autoDictQueryFuncToDictID" select='map{
       "func:autoDictQuery(&apos;_tunis&apos;": "dc_tunico"
@@ -40,6 +40,9 @@
         <xsl:when test="starts-with($target, 'mapMarkers:')">
           <xsl:sequence select="('WMap', 'bibl_markers_tei', replace($target,'^mapMarkers:([^/]+)(/[^/,]+)?', '$1')), replace($target,'^mapMarkers:([^/]+)(/[^/,]+)?', '$1')"/>
           <!-- The part after the / is the label for the new window. We get those labels using the lookup table.  -->
+        </xsl:when>
+        <xsl:when test="starts-with($target, 'geo:')">
+          <xsl:sequence select="('WMap', 'gazetteer', replace($target,'^geo:(.+)', '$1')), replace($target,'^geo:(.+)', '$1')"/>
         </xsl:when>
         <xsl:when test="starts-with($target, 'text:')">
           <xsl:sequence select="('Text', replace($target,'^text:([^/]+)(/[^/,]+)?', '$1'), $captionFromMenuID(replace($target,'^text:([^/]+)(/[^/,]+)?', '$1')))"/>

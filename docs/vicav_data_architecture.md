@@ -1,7 +1,7 @@
 # VICAV Framework Data Architecture
-Daniel Schopper, 10/2024
+Daniel Schopper, 10/2024 (Update 07/2026)
 
-VICAV is both a service providing a research platform which collects data from several projets into one environment, and the underlying software of this platform which can be customized to host a single data set from a specific project in a dedicated application. This document describes the architecture of such a dataset and the rules which it needs to follow if it should be published in an instance of the VICAV application framework.
+VICAV is both a service providing a research platform which collects data from several projects into one environment, and the underlying software of this platform which can be customized to host a single dataset from a specific project in a dedicated application. This document describes the architecture of such a dataset and the rules which it needs to follow if it should be published in an instance of the VICAV application framework.
 
 The VICAV application framework provides the following basic functionality:
 
@@ -12,53 +12,57 @@ The VICAV application framework provides the following basic functionality:
 * query all documents of a given type
 * cross-link between query results and documents
 
+## Key concepts
+
+Each VICAV instance is populated from data sourced coming from three layers:
+
+* *VICAV Library*: A central repository with data shared across all VICAV datasets. Next to the VICAV bibliography, the gazetteer and the taxonomy of text classes, this also includes common ODDs and schemas for the defalut data types.
+* *Dataset Catalogue*: Each VICAV dataset is described in a *Dataset Catalogue*. Next to a complete list of recordings in the dataset this includes data shared across all resources in the dataset in question, esp. list of participants, custom vocabularies (keywords) or project-specific data types. Dataset Catalogues are described further [below](#dataset-catalogues).
+* *Data Documents*: These are single TEI documents providing one data point (e.g. one feature list, one transcription, one language profile)
 
 ## Default data types
 
-VICAV-compatible datasets share a set of common corpus-like data types, i.e. TEI documents with a similar structure and comparable content:
+Documents in a VICAV dataset follow a predefined structure and comparable content. Usual types of documents are: 
 
 * Feature Lists
 * Sample Texts
-* Unmonitored Speech (dialogues, narration)
+* Unmonitored Speech (dialogues, narration and similar more or less spontaneous speech)
 
 Moreover, VICAV-compatible dataset can contain:
 
 * Glossaries or dictionaries
-* Profiles (describing the socio-demographic or linguistic particularities of a given place)
+* Language Profiles (describing the socio-demographic or linguistic particularities of a given place)
 * Bibliographies
 * Paratexts
 
-Next to these default data types, projects can define their own specific type of data which can be published via VICAV (see below).
+The list of data types is centrally managed in the [text classes taxonomy](https://github.com/acdh-oeaw/vicav-library/blob/main/vicav_textClasses.xml) in the *VICAV Library* . Each VICAV data document declares its datatype in its header (see [below](#datatype-declaration)).
 
-Since the main content of a VICAV-compatible data set is contained within those documents, they are called **Data Documents** in contrast to the **Corpus Document** which holds corpus-wide metadata and points to all the available **Data Documents**.
+## Dataset Catalogues
 
+Each dataset is represented by a "Dataset Catalogue", i.e. a [TEI Corpus Document](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-teiCorpus.html) which contains information common to all data documents in one central place. The Dataset Catalogue has an identifier within `/TEI/teiHeader/fileDesc/publicationStmt/idno`. The name of the dataset is encoded within `/TEI/teiHeader/fileDesc/titleStmt/title[@level="s"]`.
 
-## Corpus Document
-
-Each data set is represented by one [TEI Corpus Document](https://www.tei-c.org/release/doc/tei-p5-doc/en/html/ref-teiCorpus.html) which contains information common to all data documents in one central place. The corpus document has an identifier within `/TEI/teiHeader/fileDesc/publicationStmt/idno`. The name of the dataset is encoded within `/TEI/teiHeader/fileDesc/titleStmt/title[@level="s"]`.
-
-The corpus document contains a series of `<TEI>` elements, each representing one data document. 
+The Dataset Catalogue contains a series of `<TEI>` elements, each representing one data document. 
 
 ```xml
 <teiCorpus xml:id="tunocentDataset">
    <teiHeader>
       <fileDesc>
          <titleStmt>
-            <title level="s">TUNOCENT Data Set</title>
+            <title level="s">TUNOCENT dataset</title>
             <!-- ... -->
          </titleStmt>
       </fileDesc>
    </teiHeader>
-   <!-- one <TEI> element for each recording/data point including references to derived data document where applicable -->
+   <!-- one <TEI> element for each data point / recording including references to derived data document where applicable -->
    <TEI><!-- ... --></TEI>
 </teiCorpus>
 ```
 
-The main principle of this architecture is that information common to all data is centrally defined in the TEI Corpus document whereas the data documents only contain pointers to these where needed.
+The main principle of this architecture is that information common to all data specifc to the dataset is centrally defined whereas the data documents only contain pointers to these where needed.
 
 ### Team Members and their responsibilities
 
-Each team member is represented in the corpus document by a `<person>` element in the **Team Member List** at `/teiCorpus/standOff/listPerson[@type="projectTeam"]`. This is the authoratitve place where other documents point to when referencing the person in question and where the application is fetching labels and other metadata for display.
+Each team member is represented in the Dataset Catalogue by a `<person>` element in the **Team Member List** at `/teiCorpus/standOff/listPerson[@type="projectTeam"]`. This is the authoratitve place where other documents point to when referencing the person in question and where the application is fetching labels and other metadata for display.
 
 The `<person>` element …
 
@@ -73,10 +77,10 @@ Each data document references relevant team members and their contribution in a 
 Each `<respStmt>` … 
 
 * MUST contain only one `<resp>` element. Thus, if a contributor had several roles in the creation of a document, the whole `<respStmt>` repeats
-* MUST contain only one empty `<persName>` element pointing to the team list in the corpus document via `@ref`:
+* MUST contain only one empty `<persName>` element pointing to the team list in the Dataset Catalogue via `@ref`:
 
 ```xml
-<!-- In the Corpus document -->
+<!-- In the Dataset Catalogue -->
 <listPerson type="projectTeam">
    <head>Team Members</head>
    <person xml:id="VRB">
@@ -88,12 +92,12 @@ Each `<respStmt>` …
 <!-- In a data document -->
 <respStmt>
    <resp>author</resp>
-   <persName ref="corpus:MM"/></persName>
+   <persName ref="corpus:VRB"/></persName>
 </respStmt>
 ```
 
 **Note:**     
-While the content of `<resp>` is generally not enforced, there are two execptions which are relevant for displaying data in the VICAV app framework: 
+While the content of `<resp>` is generally not enforced, there are a few execptions which are relevant for displaying data in the VICAV app framework:
 
 * The members mainly responsible for a profile, a sample text or a feature list are encoded in a `<respStmt>` with `<resp>author</resp>` (irrespective of the seemingly difficult use of the term *author* in such a case)
 * Interviewers are encoded as `<resp>interviewer</resp>`
@@ -101,20 +105,25 @@ While the content of `<resp>` is generally not enforced, there are two execption
 
 ### Informants
 
-Each informant is represented by a `<person>` element in the **main participants list** at `/teiCorpus/teiHeader/profileDesc/particDesc/listPerson`. 
+Each informant is represented by a `<person>` element in the data catalogue's **main participants list** at `/teiCorpus/teiHeader/profileDesc/particDesc/listPerson`. 
 
 The `<person>` element …
 
 * MUST have an `@xml:id` AND an `<idno>` element with the ID/sigil of the person
-* MUST have `@sex` and `@age` attributes 
-* CAN contain `<ptr type="patricipatedIn">` elements to reference the data documents which they have contributed to.
-* CAN contain one `<note>` element for further information on the person
-
+* MUST have a `@sex` attribute
+* MAY contain `<ptr type="patricipatedIn">` elements to reference the data documents which they have contributed to.
+* MAY contain a `<state type="consent">` construct to indicate what consent the person has given
+* MAY contain a `<birth>` element which provides…
+   * an empty `<placeName>` with  `@sameAs` pointing to the VICAV gazetteer 
+   * a `<date>` element containing the decade of birth (e.g. "1950s") and `@notBefore`/`@notAfter` to translate this into a machine-readable period. (e.g. `<date notBefore="1990" notAfter="1999">1990s</date>`)
+* MAY contain one `<note>` element for further information on the person
 
  *Remarks:*
  
  * We chose `<idno>` since we assume that only pseudonyms / identifiers should be encoded in TEI documents, not clear names. 
  * Even if `@xml:id` and `<idno>` in most cases are the same, we assume that an informant's identifier might have to contain characters not allowed in `xs:NCname`.
+ 
+ **Age groups** should be described in the data catalogue and in the project-specific ODD. **TODO: take decision on exact format cf. https://github.com/acdh-oeaw/vicav-content/issues/37 ** 
 
 
 #### Referencing the participants list
@@ -123,14 +132,12 @@ Informants in a data document are encoded in the document's local participant li
 
 
 ```xml
-<!-- in the corpus document -->
-
+<!-- in the Dataset Catalogue -->
 <particDesc>
    <listPerson>
       <head>Informants</head>
       <person sex="f" age="56" xml:id="AinDifla1">
          <idno>AinDifla1</idno>
-         <ptr type="participatedIn" target="corpus.xml#aindifla1_f_56_tun1"/>
       </person>
    </listPerson>
 </particDesc>
@@ -139,97 +146,77 @@ Informants in a data document are encoded in the document's local participant li
 <particDesc>
    <listPerson>
       <head>Informants</head>
-      <person sameAs="corpus:Frikhat5"/>
+      <person sameAs="corpus:AinDifla1"/>
    </listPerson>
 </particDesc>
 ```
 
 ### Places
 
-The list of places is encoded within `/teiCorpus/standOff/listPlace`. This semantically neutral position takes into account that places play various roles in a corpus.   
+The list of places is encoded within `/teiCorpus/standOff/listPlace`. This semantically neutral position takes into account that places play various roles in a corpus. It should only contain places which are relevant to the data points in the dataset in question. Each place is represented by a `<place>` element containing exactly one empty `<placeName>` element wiht a `@sameAs` attribute pointing to a `<place>` entry in the central [VICAV Gazetteer](https://github.com/acdh-oeaw/vicav-library/blob/main/vicav_geo/vicav_geodata.xml) in the *VICAV Library*.
 
-Each place is represented by a `<place>` element which … 
-
-* MUST have an `@xml:id`
-* MUST contain ONE `<settlement>` element with exactly ONE `<name xml:lang="en">` containing the place's name in English (which will be used for displaying a label for the place in the application); moreover, `<settlement>` MAY contain several other `<name>` elements with different values in `@xml:lang`.
-* MAY contain exactly one `<region>` element containing a text node with the region's name in English (which can be used in the frontend to group places)
-* MUST contain exactly one `<country>` element containing a text node with the region's name in English
-* MUST contain exactly one `<location>` element with `<geo>` containing the coordinates of the place in decimal notation
-* MAY contain several `<idno>` elements providing authority file identifiers for the settlement in question  
-
-```xml
-<place xml:id="place0134">
-    <settlement>
-       <name xml:lang="en">Tajerouine</name>
-       <name xml:lang="aeb">Tāžirwīn</name>
-    </settlement>
-    <region>Kef</region>
-    <country>Tunisia</country>
-    <location>
-        <geo>35.97545, 8.5505</geo>
-    </location>
-</place>
+```xml 
+<listPlace>
+   <head>Places in the WIBARAB dataset</head>
+   <place sameAs="geo:place0134"/>
+</listPerson>
 ```
 
-#### Referencing Places
+**TODO**
+* CHECK if that is the case and whether the list in the Catalogue document is used anywhere in the application. 
+* CHECK if there is any need to include places directly in the Dataset Catalogue.
 
-Most of the TEI documents document have attached metadata of their geographic relevance, e.g. where its content was collected or for which geographic region its data is representative. This is encoded in a `<place>` element within `teiHeader/profileDesc/settingDesc`. For the time being, we assume that there is exactly ONE empty `<place>` element within `<settingDesc>` which points to a `<place>` entry within `/teiCorpus/standOff/listPlace` via a `@sameAs` attribute.
+### Bibliographic references, campaigns and other sources
 
-```xml
-<!-- in the data document -->
-<settingDesc>
-    <place sameAs="corpus:place0134"/>
+Any language resource in a VICAV-compatible dataset should contain provenance information. 
+
+#### Bibliography
+
+All bibliographic references collected by a project should go into the central VICAV bibliography, hosted on Zotero.
+
+If a project wants to document resulting publications or other research output, it should mark them with the tag `out:{profile acronym}`, e.g. `out:WIBARAB`. To document talks and conference presentations, the tag `prs:{profile acronym}`, e.g. `prs:SHAWI` should be used. 
+
+
+#### Campaigns
+
+Fieldwork campaigns in which data has been collected should be described in a sources document:
+
+```xml 
+<event type="campaign" from-iso="1974-01-01" to-iso="1978-12-31" xml:id="SDN_1974-1978_SR">
+   <head>Sudan Fieldwork Campaign Stefan Reichmuth 1974 and 1978</head>
+   <desc>
+      <listPerson type="participants">
+         <person>
+            <persName>Stefan Reichmuth</persName>
+         </person>
+      </listPerson>
+      <placeName ref="geo:sudan"/>
+   </desc>
+   <note>Digitalized cassettes of Reichmuth's fieldwork in Eastern Sudan in 1974 and in Khartoum in 1978</note>
+</event>
+```
+
+These are referenced from the `settingDesc` element in the data document header's `profileDesc` section:
+
+```xml 
+<settingDesc corresp="sources:LEB_2023_AID">
+   <setting>
+      <placeName sameAs="geo:el_karantina">Karantina</placeName>
+   </setting>
 </settingDesc>
 ```
+ 
 
-### Data Type Taxonomy 
-
-Next to the common VICAV data types mentioned above, a project can also define its own data types. These need to be listed in a `<taxonomy>` element in the Corpus Document within `/teiCorpus/teiHeader/encodingDesc/classDecl/taxonomy`. 
-
-Each data type is represented by a `<category>` element which …
-
-* MUST have an `@xml:id`
-* MUST have an `@n` attribute with an abbreviated label for the data type which can be  
-* MUST have an `<catDesc>` element with `<name>` containing a name for the data type
-
-
-##### Referencing the data type taxonomy
-
-Each TEI Header must contain a `<catRef>` element within `teiHeader/profileDesc/textClass` pointing to the relevant `<catDesc>` element in the corpus document.
-
-```xml
-<!-- in the corpus document-->
-<taxonomy xml:id="datatypes.tunocent">
-   <category xml:id="datatypes.tunocent.tun" n="TUN">
-      <catDesc>
-         <name xml:lang="en">TUNOCENT Questionnaire</name>
-      </catDesc>
-   </category>
-</taxonomy>
-
-<!-- in a TEI document --> 
-<textClass>
-    <catRef target="corpus:datatypes.tunocent.tun"/>
-</textClass>
-```
-
-**Notes:**    
-* In order to avoid identifier conflicts, the ids of dataset-specific data types should be prefixed with the project name, e.g. `datatypes.tunocent.tun`
-* The default VICAV data types are prefixed with in `datatypes.vicav`:
-    * `datatypes.vicav.p`
-    * `datatypes.vicav.st`
-    * `datatypes.vicav.fl`
-* Please note that the datatype identies must only contain lowercase characters and dots (see section below "Data Document references") 
 
 <!-- Revisit! -->
-### Data Document references
+### Referencing data documents from the dataset catalogue
 
-In its `<body>`, each `<TEI>` element in the corpus document should contain references to the data document(s) derived from it in the data set:
+In its `<body>`, each `<TEI>` element in the Dataset Catalogue should contain references to the data document(s) derived from it in the dataset:
 
-* `<xi:include>` element pointing to all TEI documents contained in the data set
-* `<TEI>` stubs for audio recordings
+* `<xi:include>` element pointing to all TEI documents contained in the dataset
+* `<TEI>` stubs for audio recordings which have not been transcribed.
 
-If a recording has been reworked into a properly-encoded TEI document (e.g. a sample text or a feature list document), the stub in the corpus document points to the respective TEI document it its `<body>`:
+If a recording has been transcribed and encoded into a properly-encoded TEI document (e.g. a sample text or a feature list document), the stub in the Dataset Catalogue points to the respective TEI document it its `<body>`:
 
 ```xml
  <body>
@@ -250,7 +237,7 @@ In order one is able to reference the value of `@target`, there should be a `<pr
 </prefixDef>
 ```
 
-## Data Document Level
+## Data Document level
 
 Each data document must be encoded within a `<TEI>` element. Documents can be stored as one file each, or grouped together within one file in a `<teiCorpus>` element.
 
@@ -259,6 +246,62 @@ Each document …
 * MUST have an `@xml:id` on its root `<TEI>` element 
 * MUST have an `<idno>` within `TEI/fileDesc/publicationStmt`.
 * MUST have a title encoded in `<title level="a">` within `TEI/fileDesc/titleStmt`. The name of the dataset must be encoded in a sibling `<title level="s">` element.
+
+### Datatype declaration
+
+Each data document should declare its type by referencing the [centrally managed text classes taxonomy](https://github.com/acdh-oeaw/vicav-library/blob/main/vicav_textClasses.xml). It must contain a `<catRef>` element within `teiHeader/profileDesc/textClass` pointing to the relevant `<catDesc>` element in the taxonomy.
+
+
+```xml
+<!-- in a data document --> 
+<textClass>
+    <catRef  scheme="vtc:datatypes.vicav" target="vtc:datatypes.vicav.fl"/>
+</textClass>
+
+<!-- in the VICAV text classes taxonomy -->              
+<taxonomy xml:id="datatypes.vicav">
+   <desc>VICAV Default Data Types</desc>
+   <category xml:id="datatypes.vicav.fl" n="FL">
+      <catDesc>
+         <name xml:lang="en">VICAV Feature List</name>
+      </catDesc>
+   </category>
+</taxonomy>
+
+```
+
+The prefix `vtc:` (standing for "VICAV Text Classes") should be defined in a `<prefixDef>` Element in the document's `<teiHeader>` and point to the VICAV Text Classes taxonomy in *VICAV Library*: 
+
+```xml
+<prefixDef ident="vtc" matchPattern="^(.+)$" replacementPattern="../vicav-library/vicav_textClasses.xml">
+   <p>Private URIs using the <code>vtc</code> prefix are pointers to the list of VICAV text classes.</p>
+</prefixDef>
+```
+
+Next to these default data types, projects can define their own specific type of data which can be published via VICAV (see [below](#defining-custom-data-types)).
+
+### Referencing Places
+
+Most of the data documents have attached metadata of their geographic relevance, e.g. where its content was collected or for which geographic region its data is representative. 
+
+```xml
+<!-- In a data document -->
+<settingDesc corresp="sources:KUW_2022_GK">
+   <setting>
+      <place sameAs="geo:place0134"/>
+   </setting>
+</settingDesc>
+```
+
+If a project has collected data in several campaigns, these can be documented in a dedicated sources document. The recording can be related to the respective campaign by adding a `@corresp` attribute to `<settingDesc>`.
+
+The `geo:` prefix used in the example above is defined in a `<prefixDef>` elment in the data document's header:
+
+```xml
+<prefixDef ident="geo" matchPattern="^(.+)$" replacementPattern="../../vicav_library/vicav_biblio/vicav_geodata.xml#$1">
+   <p>Private URIs using the <code>geo</code> prefix are pointers to the <att>xml:id</att> attribute on a <gi>place</gi> element in the <ref target="https://github.com/acdh-oeaw/vicav-content/blob/master/vicav_biblio/vicav_geodata.xml">VICAV Gazetteer</ref>.</p>
+</prefixDef>
+```
 
 ### Media Files
 
@@ -290,11 +333,65 @@ Especially in case of transcriptions of unmonitored speech or sample texts, the 
 ```
 
 
-
 **TODO**s Add information regarding
 * types auf media files (master/derived)
-* locationsx
+* locations
 * availibility
+
+#### Images 
+
+Images are used in several places in VICAV datasets, e.g. in language profiles or paratexts, usually used in figures:
+
+```xml 
+<figure>
+   <graphic url="AinSoltane1.jpg" decls="#profile_Ain_Soltane_01_graphic001" type="thumbnail"/>
+</figure>
+```
+Captions can be encoded using the `head` element within `figure`.
+
+In order to have a clickable thumbnail image with a version with full resolution, embed a second `graphic` element within `figure`: 
+
+<figure rendition="#small">
+   <graphic type="fullscale" decls="#profile_Bou_Omrane_01_graphic003" url="The_mountain_village_of_Bou_Omrane_(4).jpg"/>
+   <graphic url="thumb/The_mountain_village_of_Bou_Omrane_(4).jpg" decls="#profile_Bou_Omrane_01_graphic003" type="thumbnail"/>
+   <head>The mountain village of Bou Omrane</head>
+</figure>
+
+
+Additionally, each image should be represented by a metadata section in `/TEI/standOff` providing information on the creator of the image and the license which is referenced using the `@decls` attribute:
+
+```xml
+   <standOff>
+      <listBibl type="graphics">
+         <bibl type="image" xml:id="profile_Ain_Soltane_01_graphic001">
+            <name type="filename">AinSoltane1.jpg</name>
+            <respStmt>
+               <resp>creator</resp>
+               <persName ref="corpus:SBM">Maiz Sara Ben</persName>
+            </respStmt>
+            <availability status="free">
+               <licence target="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0</licence>
+            </availability>
+         </bibl>
+      </listBibl>
+   </standOff>
+```
+
+Images of a VICAV dataset should reside in a dedicated `assets` directory within a datatype, e.g. `vicav_profiles/{dataset-acronym}/images`. Thumbnails should be stored in subdirectory with the same name as the full-resolution version: `vicav_profiles/{dataset-acronym}/images/thumb`.
+
+
+
+## VICAV datasets repository layout
+
+**TODO** Describe the standard layout of a VICAV dataset repository. 
+
+* corpus.xml on top level
+* one directory per datatype with a subdirectory named after the project acronym
+* VICAV Library repository included as a submodule
+
+General rules:
+
+* All files in a VICAV dataset repostiory should conform to the [filenaming rules of ARCHE](https://arche.acdh.oeaw.ac.at/browser/filenames-formats-metadata#filenames). For file and directory naming use only alphanumeric characters without special characters such as quotes, punctuation marks, characters with diacritics, spaces, slashes and the like. Underscores (_) and hyphens (-) can be used. Additionally, file names should conform to the rules of an NCName as defined in the [XML Specification](https://www.w3.org/TR/REC-xml-names/#NT-NCName), i.e. esp. start with [A-Z].
 
 
 ## VICAV Platform 
@@ -303,13 +400,46 @@ Especially in case of transcriptions of unmonitored speech or sample texts, the 
 
 ## Defining custom data types 
 
-**TOOD** *What's needed if someone needs a new data type?*
+Next to the common VICAV data types mentioned above, a project can also define a custom data type which can then be listed, displayed or searched. The actual functionality depends, of course, on the implementation in the VICAV framework, however the data structures to describe the data type is generic and require:
 
-It may be necessary that a new type of data needs to be defined which can then be listed, displayed or searched. The actualy functionality depends, of course, on the data itself. The mini
+* a description text (a custom paratext document)
+* an entry in the data type taxonomy in the datasets' Dataset Catalogue (see [below](#custom-data-type-taxonomy))
+* an ODD and RNG schema
 
-* A description text
-* an entry in the data type taxonomy in the datasets' corpus document
-* an ODD
+
+### Custom Data Type Taxonomy 
+
+Custom data types need to be listed in a `<taxonomy>` element in the project's Dataset Catalogue within `/teiCorpus/teiHeader/encodingDesc/classDecl/taxonomy`. Each data type is represented by a `<category>` element which …
+
+* MUST have an `@xml:id`
+* MUST have an `@n` attribute with an abbreviated label for the data type which can be  
+* MUST have an `<catDesc>` element with `<name>` containing a name for the data type
+
+Data documents should reference the project-specific datatypes taxonomy similar to the VICAV datatypes taxonomy (replacing the `vtc:` prefix with the `corpus:` prefix). 
+
+```xml
+<!-- in the Dataset Catalogue-->
+<taxonomy xml:id="datatypes.tunocent">
+   <category xml:id="datatypes.tunocent.tun" n="TUN">
+      <catDesc>
+         <name xml:lang="en">TUNOCENT Questionnaire</name>
+      </catDesc>
+   </category>
+</taxonomy>
+
+<!-- in a TEI document --> 
+<textClass>
+    <catRef scheme="corpus:datatypes.tunocent" target="corpus:datatypes.tunocent.tun"/>
+</textClass>
+```
+
+**Notes:**    
+* the `@scheme` attribute provides a reference to the data types `<taxonomy>` element.
+* In order to avoid identifier conflicts, the ids of dataset-specific data types should be prefixed with the project name, e.g. `datatypes.tunocent.tun`
+* The default VICAV data types are prefixed with in `datatypes.vicav` (e.g.`datatypes.vicav.p`
+for *Profiles*, `datatypes.vicav.st` for *Sample Texts* or  `datatypes.vicav.fl` for *Feature Lists*)
+* Please note that the datatype identies must only contain lowercase characters and dots (see section below "Data Document references")
+
 
 
 ## How VICAV App uses the data 

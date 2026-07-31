@@ -14,5 +14,5 @@ declare
 };
 
 declare function _:_taxonomy(){
-  serialize(<json type="object">{vicav:get_taxonomy()}</json>, map { "method": "json", "indent": "yes" })
+  serialize(<json type="array">{vicav:get_taxonomy()}</json>, map { "method": "json", "indent": "yes" })
 };

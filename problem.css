@@ -1,0 +1,115 @@
+/* CSS created by Academinc-AI, GPT-5, March 2026 */
+/* Purpose: Style RFC 7807 problem XML in a reddish theme, highlighting <detail>;
+   all other tag names are rendered as labels. */
+
+/* Bind the RFC 7807 namespace so element selectors work in XML */
+@namespace p "urn:ietf:rfc:7807";
+
+/* Color system (applied as custom properties on the root element) */
+p|problem {
+  --accent: #d64545;
+  --accent-strong: #b93434;
+  --text: #421f1f;
+  --label: #7a2b2b;
+  --bg-soft: #fff5f5;
+  --bg-strong: #ffeaea;
+  --border: #f0b3b3;
+
+  display: block;
+  box-sizing: border-box;
+  max-width: 840px;
+  margin: 1.5rem auto;
+  padding: 1rem 1.25rem;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+  color: var(--text);
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-left: 6px solid var(--accent);
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+/* Ensure all known children flow as blocks with spacing */
+p|problem > * {
+  display: block;
+  margin: 0.5rem 0;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* Headline styling for the title value (still labeled via ::before) */
+p|title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent-strong);
+}
+
+/* Emphasize detail (key information) */
+p|detail {
+  background: var(--bg-strong);
+  border-left: 4px solid var(--accent);
+  padding: 0.6rem 0.75rem;
+  border-radius: 4px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Monospace, preserve line breaks for stack traces */
+p|trace {
+  white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  background: #fff1f1;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  padding: 0.5rem 0.6rem;
+}
+
+/* Subdued secondary items */
+p|took,
+p|instance,
+p|type {
+  color: #5a2c2c;
+}
+
+/* Render tag names as labels for all elements except <detail> */
+p|type::before,
+p|title::before,
+p|instance::before,
+p|status::before,
+p|took::before {
+  display: inline-block;
+  min-width: 6.5rem;
+  font-weight: 700;
+  text-transform: none;
+  color: var(--label);
+  opacity: 0.95;
+  content: attr(data-label); /* fallback hook if authors set data-label manually */
+}
+
+p|trace::before {
+  display: inline-block;
+  min-width: 3.5rem;
+  font-weight: 700;
+  text-transform: none;
+  color: var(--label);
+  opacity: 0.95;
+  content: attr(data-label); /* fallback hook if authors set data-label manually */
+}
+
+/* Provide default label text via specific rules (overrides the generic content above) */
+p|type::before     { content: "Type:"; }
+p|title::before    { content: "Title:"; }
+p|instance::before { content: "Instance:"; }
+p|status::before   { content: "Status:"; }
+p|trace::before    { content: "Trace:"; }
+p|took::before     { content: "Took:"; }
+
+/* Small layout polish */
+p|problem > p|status { margin-top: 0.25rem; }
+p|problem > p|title  { margin-top: 0.25rem; }
+p|problem > p|detail { margin-top: 0.25rem; }
+
+p|problem > *:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}

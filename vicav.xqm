@@ -160,7 +160,7 @@ declare function vicav:project_config_json_as_xml($publicURI as xs:string) {
         $jsonAsXML := xslt:transform($config, 'xslt/menu-json.xslt', map{
           'baseURIPublic': $publicURI,
           'teiSource': json:serialize(map:merge((collection('vicav_texts')//tei:body/tei:div/@xml:id!
-            map{.: ./ancestor::tei:TEI//tei:publicationStmt/tei:idno/text()}
+            map{.: ./ancestor::tei:TEI//tei:publicationStmt/tei:idno[@type="teiSource"]/text()}
           )))
         }),
         $jsonAsXML := $jsonAsXML update {
@@ -177,9 +177,11 @@ declare function vicav:get_insert_data($type as xs:string) {
   switch ($type)
     case "insert_featurelist" return <_ type="object">{vicav:get_featurelist()}</_>
     case "insert_variety_data" return <_ type="object">{vicav:get_variety_data()}</_>
-    case "insert_taxonomy" return <_ type="object">{vicav:get_taxonomy()}</_>
+    case "insert_vicav_geojson" return <_ type="object">{vicav:_get_geojson_gazetteer()/*}</_>
+    case "insert_taxonomy" return <_ type="array">{vicav:get_taxonomy()}</_>
     case "insert_list_of_corpus_characters" return vicav:get_list_of_corpus_characters()
-    case "insert_vicav_biblio" return <_ type="object">{vicav:_get_vicav_biblio_data("xml_for_parser")/json/*}</_>
+    case "insert_vicav_biblio" return <_ type="object">{vicav:_get_json_serializable_tei_list_data("vicav_biblio", "listBibl","xml_for_parser")/json/*}</_>
+    case "insert_vicav_geo" return <_ type="object">{vicav:_get_json_serializable_tei_list_data("vicav_geo", "listPlace","xml_for_parser")/json/*}</_>
     default return <_ type="object">{vicav:_get_tei_doc_list(replace($type, '^insert_', ''), "xml_for_parser")/json/*}</_>
 };
 
@@ -195,21 +197,19 @@ declare function vicav:get_variety_data() {
 };
 
 declare function vicav:get_categories($mainCategories){
-       map:merge((
+      array{
       for $category in $mainCategories
       let $id := string($category/@xml:id)
       let $title := string($category/@n)
       let $subcategories := $category/tei:category
       return
-        if (empty($subcategories)) then
-          map:entry($id, $title)
-        else
-          map:merge(
-              for $sub in $subcategories
-              return map:entry(string($sub/@xml:id), string($sub/@n))
-            )
-        ))
-};
+      (map { $id : $title },
+      for $sub in $subcategories
+      return
+        map { string($sub/@xml:id) : string($sub/@n) }
+      ) 
+    }
+  };
 
 declare function vicav:get_featurelist(){
   let $docs := collection('wibarab_features')//tei:TEI
@@ -248,11 +248,12 @@ declare
 %updating
 %rest:path("/vicav/project")
 %rest:PUT
+%rest:query-param("summarize", "{$summarize}")
 %rest:produces("application/xml")
 %rest:produces("application/json")
 %rest:produces('application/problem+json')   
 %rest:produces('application/problem+xml')
-function vicav:prerender_project_config() {
+function vicav:prerender_project_config($summarize as xs:boolean?) {
   let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' },
       $publicURI := '{{host_name}}/{{path}}',
       $prerenderedFileName := $publicURI||'/prerendered_json.xml',
@@ -260,12 +261,20 @@ function vicav:prerender_project_config() {
     vicav:project_config_json_as_xml#1, [$publicURI], map:merge((cors:header(()), vicav:return_content_header()))
   ),
       $res := if (matches($accept-header, '[+/]json')) 
-        then ($jsonAsXml[1],$jsonAsXml[2]) 
-        else ($jsonAsXml[1],serialize($jsonAsXml[2], map {'method': 'xml'}))
+        then ($jsonAsXml[1],$jsonAsXml[last()])
+        else ($jsonAsXml[1],serialize(subsequence($jsonAsXml, 2), map {'method': 'xml'}))
   return (
-    if (db:exists('prerendered_json')) then db:replace('prerendered_json', $prerenderedFileName, $jsonAsXml[2])
-    else db:create('prerendered_json', $jsonAsXml[2], $prerenderedFileName),
-    update:output($res)
+    if (not($jsonAsXml[2] instance of map(xs:string, item()))) then
+      if (db:exists('prerendered_json')) then db:replace('prerendered_json', $prerenderedFileName, $jsonAsXml[last()])
+      else db:create('prerendered_json', $jsonAsXml[last()], $prerenderedFileName)
+    else (),
+    if ($summarize = true())
+    then
+      let $resBody := if ($res[2] instance of xs:string) then parse-xml-fragment($res[2]) else $res[2]
+      return update:output(
+      ``[`{$res[1]//http:response/@status}` `{$res[1]//http:response/@message}`: generated json data for `{$resBody//projectConfig/title}`]``
+      )
+    else update:output($res)
   )
 };
 
@@ -344,13 +353,15 @@ declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:str
         else if (contains($query, 'author:')) then
            '[.//tei:author/tei:surname[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else if (contains($query, 'geo:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
-           '[.//tei:note[@type="tag"]/tei:name[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           '[.//tei:placeName[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else if (contains($query, 'vt:')) then
-           '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           '[.//tei:ref[@target = "'||$query||'"]]'
         else if (contains($query, 'prj:')) then
            '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else if (starts-with($query, 'zotid:')) then
            '[@corresp = "http://zotero.org/groups/2165756/items/' || substring-after($query, ':') ||'"]'
+        else if (starts-with($query, 'id:') or starts-with($query, 'zot:')) then
+           '[@xml:id = "' || substring-after($query, ':') ||'"]'
         else
            '[.//node()[text() contains text "' || $query || '" using wildcards using diacritics sensitive]]'  
     
@@ -372,6 +383,7 @@ declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:str
     'let $date := $art/tei:monogr[1]/tei:imprint[1]/tei:date[1] ' ||
     'order by $author[1],$date[1] return $art'
     let $query2 := $ns || $q
+    (: let $_ := admin:write-log($query2, "INFO") :)
     let $results := xquery:eval($query2)
     
     let $num := count($results)
@@ -494,33 +506,33 @@ declare
 %rest:path("/vicav/sample")
 %rest:query-param("coll", "{$coll}")
 %rest:query-param("id", "{$id}")
-%rest:query-param("xslt", "{$xsltfn}")
+%rest:query-param("xslt", "{$xsltfn}", "sampletext_01.xslt")
 %rest:query-param("print", "{$print}")
 
 %rest:GET
 
-function vicav:get_sample($coll as xs:string*, $id as xs:string*, $xsltfn as xs:string*, $print as xs:string*) {
-    let $ns := "declare namespace tei = 'http://www.tei-c.org/ns/1.0';"
-    let $xsltfn := if (exists($xsltfn)) then $xsltfn else "sampletext_01.xslt"
-    
+function vicav:get_sample($coll as xs:string, $id as xs:string, $xsltfn as xs:string*, $print as xs:string*) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_sample#4, [$coll, $id, $xsltfn, $print], map:merge((cors:header(()), vicav:return_content_header()))
+  )
+};
+
+declare function vicav:_get_sample($coll as xs:string, $id as xs:string, $xsltfn as xs:string, $print as xs:string*) {
     let $assetsBaseURIpattern := (collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
         /tei:prefixDef[@ident="assets"]/@matchPattern, "")[1]
     let $assetsBaseURIto := (collection("vicav_corpus")
         /tei:teiCorpus/tei:teiHeader/tei:encodingDesc/tei:listPrefixDef
         /tei:prefixDef[@ident="assets"]/@replacementPattern, "")[1]
-    let $q := 'collection("/vicav_samples' || vicav:get_project_db() || '")/descendant::tei:TEI[@xml:id="' || $id || '"]'
-    let $query := $ns || $q
-    let $results := xquery:eval($query)
-    return 
-        (web:response-header(map {'method': 'basex'}, map:merge((cors:header(()), vicav:return_content_header()))),
+    let $results := (collection( $coll || vicav:get_project_db())/descendant::tei:TEI[@xml:id=$id])[1]
+    return
         vicav:transform($results, $xsltfn, $print, map{
             "assetsBaseURIpattern": $assetsBaseURIpattern,
             "assetsBaseURIto": $assetsBaseURIto,
             "print-url": concat(
                 request:uri(), "?", request:query(), "&amp;print=true" 
             )
-        }))
+        })
 };
 
 
@@ -1654,10 +1666,10 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
               '[.//tei:pubPlace[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'author:')) then
               '[.//[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
-           else if (contains($query, 'geo:') or contains($query, 'geo_reg:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
-              '[.//tei:note[@type="tag"]/tei:name[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           else if (contains($query, 'geo:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
+              '[.//tei:placeName[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else if (contains($query, 'vt:')) then
-              '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+              '[.//tei:ref[@target = "'||$query||'"]]'
            else if (contains($query, 'prj:')) then
               '[.//tei:note[@type="tag"][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
            else
@@ -1681,6 +1693,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
 
     let $ns := 'declare namespace tei = "http://www.tei-c.org/ns/1.0";'
     let $query := $ns || $q
+    (: let $_ := admin:write-log($query, "INFO") :)
     let $tempresults := xquery:eval($query)
 
     let $out :=
@@ -1689,45 +1702,26 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
             let $geos :=
                 $scope!(switch (.)
                     case 'geo_reg'
-                        return $subj/tei:note/tei:note[(tei:name/@type = 'reg') or (tei:name/@type = 'geo') or (tei:name/@type = 'diaGroup')][tei:geo]
-                    case 'geo'
-                        return $subj/tei:note/tei:note[tei:name/@type = 'geo'][tei:geo]
-                    case 'diaGroup'
-                        return $subj/tei:note/tei:note[tei:name/@type = 'diaGroup'][tei:geo]
-                    case 'reg'
-                        return $subj/tei:note/tei:note[tei:name/@type = 'reg'][tei:geo]
-            default return ())
+                        return $subj//tei:place[@type = ('reg', 'geo', 'diaGroup')]//tei:geo[@decls="#dd"]
+                    default
+                        return $subj//tei:place[@type = $scope]//tei:geo[@decls="#dd"]
+                )
     
     for $geo in $geos
     return
-        let $id := $subj/@corresp
+        let $place := $geo/ancestor::tei:place,
+            $id := $place/@xml:id/data()
         
         return
-            if (string-length($geo/tei:name) > 0)
+            if (string-length($place/tei:placeName[@type = "prefLabel"][1]) > 0)
             then
                 (
-               (: let $type := fn:substring-before($geo, ':')
-                let $altItem := replace($geo, 'geo:|reg:', '')
-                let $locname := fn:substring-before($altItem, '[')
-                let $locname := fn:normalize-space($locname)
-                let $locname := fn:replace($locname, '''', '&#180;')
-                let $sa := fn:substring-after($altItem, '[')
-                let $geodata := fn:substring-before($sa, ']')
-                :)
-                let $type := $geo/tei:name/@type
-                let $altItem := $geo/tei:name/text()
-                let $locname := $geo/tei:name/text()
-                let $geodata := $geo/tei:geo/text()
+                let $type := $place/@type/data()
+                let $locname := $place/tei:placeName[@type = "prefLabel"]/text()
+                let $geodata := $geo/text()
                 
                 return
-(:                    if (string-length($locname) = 0) then
-                        (
-                        <item>{$type}<geo></geo><loc>{$altItem}</loc><id>{$id}</id></item>
-                        )
-                    else
-                        ( :)
-                        <item>{$type}<geo>{$geodata}</geo><loc>{$locname}</loc><id>{$id}</id></item>
-                       (: )                :)
+                        <item type="{$type}"><geo>{$geodata}</geo><loc>{$locname}</loc><id>{$id}</id></item>
                 )
             else ()
 
@@ -2249,7 +2243,7 @@ declare function vicav:_get_tei_doc_list($type as xs:string*, $render as xs:stri
         error(xs:QName('response-codes:_422'), 
          $api-problem:codes_to_message(422),
          'You need to specify a type') else (),
-      $corpus := try { collection($type)//tei:teiCorpus } catch err:FODC0002 {
+      $corpus := try { (collection($type)//tei:teiCorpus)[last()] } catch err:FODC0002 {
         error(xs:QName('response-codes:_404'), 
          $api-problem:codes_to_message(404),
          'There are no TEI documents of type '||$type)},
@@ -2294,7 +2288,7 @@ declare
 %rest:GET
 function vicav:get_vicav_biblio_data($render as xs:string) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_get_vicav_biblio_data#1, [$render], map:merge((cors:header(()),
+    vicav:_get_json_serializable_tei_list_data#3, ['vicav_biblio', 'listBibl', $render], map:merge((cors:header(()),
       if ($render = "json") 
       then map{'Content-Type': 'application/json;charset=UTF-8'}
       else map{'Content-Type': 'application/xml;charset=UTF-8'}) 
@@ -2302,21 +2296,122 @@ function vicav:get_vicav_biblio_data($render as xs:string) {
   )
 };
 
-declare function vicav:_get_vicav_biblio_data($render as xs:string) { 
+declare
+%rest:path("/vicav/geo_data")
+%rest:query-param("render", "{$render}}", "json")
+%rest:produces('application/json')
+%rest:produces('application/xml')
+%rest:GET
+function vicav:get_geo_biblio_data($render as xs:string) {
+  api-problem:or_result (prof:current-ns(),
+    vicav:_get_json_serializable_tei_list_data#3, ['vicav_geo', 'listPlace', $render], map:merge((cors:header(()),
+      if ($render = "json") 
+      then map{'Content-Type': 'application/json;charset=UTF-8'}
+      else map{'Content-Type': 'application/xml;charset=UTF-8'}) 
+    )
+  )
+};
+
+declare function vicav:_get_json_serializable_tei_list_data($collectionName as xs:string, $listLocalName as xs:string, $render as xs:string) { 
   let $corpus := try {
-      collection('vicav_biblio')//tei:TEI[.//tei:listBibl] update {
-        insert node attribute {"id"} {"vicav_biblio"} as first into . 
+      collection($collectionName)//tei:TEI[.//*[local-name()=$listLocalName]] update {
+        insert node attribute {"id"} {$collectionName} as first into . 
       }
     } catch err:FODC0002 {
     error(xs:QName('response-codes:_404'), 
      $api-problem:codes_to_message(404),
-     'There are no TEI documents of type vicav_biblio')},
+     'There are no TEI documents of type '||$collectionName)},
     $xml_for_parser := xslt:transform($corpus, '3rd-party/vleserver_basex/vleserver/data/xml-to-basex-json-xml.xsl')    
   return if ($render = "json") 
   then serialize($xml_for_parser, map {'method': 'json', 'indent': 'no'})
   else if ($render = "xml_for_parser")
   then $xml_for_parser
   else $corpus
+};
+
+declare
+%rest:path("/vicav/geojson_gazetteer")
+%rest:produces('application/json')
+%rest:GET
+function vicav:get_geojson_gazetteer() {
+    api-problem:or_result (prof:current-ns(),
+    vicav:_get_geojson_gazetteer#0, [],  map:merge((cors:header(()),
+      map{'Content-Type': 'application/json;charset=UTF-8'})))
+};
+
+declare function vicav:_get_geojson_gazetteer() {
+  let $prerendered := try { <json type="object">{collection("prerendered_json")//staticData/geo/_[properties/description = "GEOJSON of the VICAV gazetteer"]/*}</json> }
+      catch err:FODC0002 { () }
+  return if (exists($prerendered)) then $prerendered else
+  let $vicav_geo := try { collection("vicav_geo") }
+      catch err:FODC0002 {
+        error(xs:QName('response-codes:_404'), 
+         $api-problem:codes_to_message(404),
+         'Gazetteer vicav_geo is not available')
+      },
+      $vicav_geo_json := xslt:transform($vicav_geo/tei:TEI/tei:text/tei:body/tei:listPlace, '3rd-party/vleserver_basex/vleserver/data/xml-to-basex-json-xml.xsl'),
+      $lookup := <json type="object">
+      <referencedBy type="array">{
+      for $db in db:list()
+      let $geoRefs := collection($db)//@*[starts-with(., "geo:")]
+      where count($geoRefs) > 0
+      return <_ type="object">
+        <source>{$db}</source>
+        <ids type="array">{
+          for $geoRef in $geoRefs
+          let $nextElemWithID := ($geoRef/ancestor::tei:teiHeader//tei:idno[ends-with(@type, "CorpusID")], ($geoRef/ancestor::tei:*[@xml:id])[1]/@xml:id)
+          group by $refAndId := data($geoRef)||data($nextElemWithID[1])
+          return<_ type="object">
+            <reference>{data($geoRef[1])}</reference>
+            <id>{data($nextElemWithID[1])}</id>
+          </_>}
+        </ids>
+      </_>}
+      </referencedBy>
+      </json>
+  return
+<json type="object">
+  <type>FeatureCollection</type>
+  <features type="array">{
+    for $placesByType in $vicav_geo/tei:TEI/tei:text/tei:body/tei:listPlace/*
+    where normalize-space($placesByType/tei:location/tei:geo[@decls="#dd"]) ne ""
+    group by $type := $placesByType/@type
+    for $place in $placesByType
+    return
+    <_ type="object">
+      <geometry type="object">
+        <coordinates type="array">{
+          (: try { 
+            let $c1 := (xs:double(tokenize($place/tei:location/tei:geo[@decls="#dd"], ',| ')[last()]), 999999.0)[1],
+                $c2 := (xs:double(tokenize($place/tei:location/tei:geo[@decls="#dd"],',| ')[1]), 999999.0)[1], 
+                $encoded := (<_ type="number">{$c1}</_>,
+                             <_ type="number">{$c2}</_>)
+            return $encoded
+           } catch err:FORG0002 { 
+            <_ type="number">666666.0</_>,
+            <_ type="number">666666.0</_>
+          } :)
+          <_ type="number">{tokenize($place/tei:location/tei:geo[@decls="#dd"], ',| ')[last()]}</_>,
+          <_ type="number">{tokenize($place/tei:location/tei:geo[@decls="#dd"], ',| ')[1]}</_> }
+        </coordinates>
+        <type>Point</type>
+     </geometry>
+     <id>{data($place/@xml:id)}</id>
+     <properties type="object">{
+       let $referencedBy := $lookup//referencedBy
+         update (
+           delete nodes .//_[ids][not(some $ref in ids/_/reference satisfies $ref = "geo:"||$place/@xml:id)],
+           delete nodes .//_[reference != "geo:"||$place/@xml:id]
+         )
+       return ($vicav_geo_json//*[_0040id = $place/@xml:id and _0040type = $type]/*, $referencedBy) 
+     }</properties>
+     <type>Feature</type>
+    </_>}
+  </features>
+  <properties type="object">
+    <description>GEOJSON of the VICAV gazetteer</description>
+  </properties>
+</json>
 };
 
 (:****************************************************************************:)
@@ -2487,12 +2582,12 @@ declare function vicav:get_noske_search_result($noske_host as xs:string, $query-
     declare variable $noske_host as xs:string external;
     declare variable $query-parts as xs:string+ external;
     let $request := $noske_host || '/bonito/run.cgi/first?corpname=' || vicav:get_project_name()
-        || '&amp;queryselector=cqlrow&amp;cql='||$query-parts||'&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=0&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
+        || '&amp;queryselector=cqlrow&amp;cql='||encode-for-uri($query-parts)||'&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=0&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
       (: , $_ := admin:write-log($request, 'INFO') :)
       return http:send-request(<http:request method='get'/>,
         $request)[2]/*  
   ]``, map {"noske_host": $noske_host, "query-parts": $query-parts}, 'noske_search_results_vicav_get', true())
-  , $_ := admin:write-log(serialize($res), 'INFO')
+  (: , $_ := admin:write-log(serialize($res), 'INFO') :)
   return $res
 };
 
