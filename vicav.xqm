@@ -177,6 +177,7 @@ declare function vicav:get_insert_data($type as xs:string) {
   switch ($type)
     case "insert_featurelist" return <_ type="object">{vicav:get_featurelist()}</_>
     case "insert_variety_data" return <_ type="object">{vicav:get_variety_data()}</_>
+    case "insert_guided_tour_data" return <_ type="array">{vicav:get_guided_tour_data()}</_>
     case "insert_vicav_geojson" return <_ type="object">{vicav:_get_geojson_gazetteer()/*}</_>
     case "insert_taxonomy" return <_ type="array">{vicav:get_taxonomy()}</_>
     case "insert_list_of_corpus_characters" return vicav:get_list_of_corpus_characters()
@@ -194,6 +195,10 @@ declare function vicav:get_list_of_corpus_characters() as element(specialCharact
 
 declare function vicav:get_variety_data() {
   collection("wibarab_varieties")//json/*
+};
+
+declare function vicav:get_guided_tour_data() {
+  collection("guided_tour")//json/*
 };
 
 declare function vicav:get_categories($mainCategories){
