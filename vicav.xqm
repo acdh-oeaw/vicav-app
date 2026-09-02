@@ -504,7 +504,7 @@ declare function vicav:_get_document_transformed($coll as xs:string, $id as xs:s
 
 declare
 %rest:path("/vicav/sample")
-%rest:query-param("coll", "{$coll}")
+%rest:query-param("coll", "{$coll}", "vicav_samples")
 %rest:query-param("id", "{$id}")
 %rest:query-param("xslt", "{$xsltfn}", "sampletext_01.xslt")
 %rest:query-param("print", "{$print}")
