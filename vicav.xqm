@@ -2509,6 +2509,12 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
         else ()
       (: , $_ := admin:write-log(serialize($result[2], map{'method': 'json'}), 'INFO') :)
 
+    let $noskeError := if ($result/error) then 
+        error(xs:QName('response-codes:_400'), 
+         $api-problem:codes_to_message(400),
+         ``[`{$result/request/cql}`: `{$result/error}`]``)
+        else ()
+
 (:let consecutiveIDs
         json.Lines.map((line) => {
           const key = line.Refs.map((ref) => {return ref.split('=')[1]}).join();
@@ -2536,7 +2542,7 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
 
     let $consecutiveIds := []
     (:let $docUandIds := map:merge():)
-
+    
     let $hits := vicav:get_hits_context($result),      
         $referenced_ids := $hits//@ana[starts-with(., '#')]!substring(., 2),
         $annot := db:attribute('vicav_corpus', $referenced_ids)/.. 
