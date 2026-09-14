@@ -40,8 +40,8 @@
   },
   "homepage": "https://github.com/acdh-oeaw/vicav-app#readme",
   "engines": {
-    "node": "22.x",
-    "npm": "10.x",
+    "node": "24.x",
+    "npm": "11.x",
     "jvm": "17",
     "basex": "9.7.4",
     "saxon": "12.5"
@@ -50,5 +50,8 @@
     "parallel": "128",
     "gzip": "true",
     "parserestxq": "-1"
+  },
+  "allowScripts": {
+    "cypress@13.17.0": true
   }
 }
