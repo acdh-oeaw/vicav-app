@@ -629,7 +629,7 @@ declare function vicav:explore-query(
             return $a
         else ()
 
-    let $age_q := if (not(empty($age_bounds)) and ($age_bounds[2] != "100" or $age_bounds[1] != "0")) then
+    let $age_q := if (not(empty($age_bounds)) and ($age_bounds[2] != "200" or $age_bounds[1] != "0")) then
         vicav:and((
             '(number(./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]/@age) > ' || min($age_bounds) || ')',
             ' (number(./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person[1]/@age) < ' || max($age_bounds) || ')'
@@ -1076,6 +1076,7 @@ declare
 %rest:query-param("highlight", "{$highlight}")
 %rest:query-param("page", "{$page}")
 %rest:query-param("print", "{$print}")
+%rest:query-param("xslt", "{$xsltfn}")
 %rest:GET
 function vicav:compare(
     $type as xs:string, 
@@ -1086,10 +1087,11 @@ function vicav:compare(
     $comment as xs:string*,
     $highlight as xs:string*, 
     $page as xs:string*,   
-    $print as xs:string*
+    $print as xs:string*,
+    $xsltfn as xs:string?
     ) {
 api-problem:or_result (prof:current-ns(),
-    vicav:_get_compare#9, [
+    vicav:_get_compare#10, [
         $type, 
         $ids,
         $word,
@@ -1098,7 +1100,8 @@ api-problem:or_result (prof:current-ns(),
         $comment,
         $highlight, 
         $page,   
-        $print
+        $print,
+        $xsltfn
     ], map:merge((cors:header(()), vicav:return_content_header()))
 )  
 };
@@ -1112,7 +1115,8 @@ declare function vicav:_get_compare(
     $comment as xs:string*,
     $highlight as xs:string*, 
     $page as xs:string*,   
-    $print as xs:string*
+    $print as xs:string*,
+    $xsltfn as xs:string?
 )  {
     let $resourcetype := if (empty($type) or $type = '') then 
         "samples"
@@ -1128,7 +1132,7 @@ declare function vicav:_get_compare(
     let $sorted := for $entry in $data
                     order by ($entry/@ana, $entry/@n)[1]
                     return $entry
-    let $paged := subsequence($sorted, ($pagevalue - 1) * 100 + 1, $pagevalue * 100)
+    let $paged := subsequence($sorted, ($pagevalue - 1) * 200 + 1, $pagevalue * 200)
 
     let $ress := 
         for $item in $paged
@@ -1137,10 +1141,10 @@ declare function vicav:_get_compare(
         <feature name="{$feature}" label="{$item[1]/tei:lbl}" count="{count($item)}">
             {for $item-in-feature in $item 
             group by $region := vicav:get-root($item-in-feature)/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:region
-            return <region name="{$region}" count="{count($item)}">{
+            return <region name="{$region}" count="{count($item-in-feature)}">{
                 for $item-in-region in $item-in-feature
                 group by $settlement := vicav:get-root($item-in-region)/tei:teiHeader/tei:profileDesc/tei:settingDesc/tei:place/tei:settlement/tei:name[@xml:lang="en"]
-                return <settlement name="{$settlement}">{
+                return <settlement name="{$settlement}" count="{count($item-in-region)}">{
                     for $i in $item-in-region
                     return 
                         <item xml:id="{vicav:get-root($i)/@xml:id}" 
@@ -1160,10 +1164,11 @@ declare function vicav:_get_compare(
 
     (: let $features := distinct-values(($data/@ana, $data/@n)) :)
 
-    let $ress1 := <items count="{count($data)}" pages="{(count($data) idiv 100) + 1}">{$ress}</items>
+    let $ress1 := <items count="{count($data)}" pages="{(count($data) idiv 200) + 1}">{$ress}</items>
     (: return $ress1  :)
+    let $xsltfn := if (exists($xsltfn)) then $xsltfn else "cross_" || $resourcetype || "_03.xslt"
 
-    return vicav:transform($ress1, "cross_" || $resourcetype || "_03.xslt", $print, map {
+    return vicav:transform($ress1, $xsltfn, $print, map {
         (: "features": $features or , :)
         "page": $pagevalue,
         "filter-features": $filter-features,
