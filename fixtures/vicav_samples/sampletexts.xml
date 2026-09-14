@@ -39,7 +39,16 @@
             </publicationStmt>
             <sourceDesc>
                <p>This is an original digital text</p>
-            </sourceDesc>
+            </sourceDesc>        
+         </fileDesc>
+         <profileDesc>
+            <particDesc>
+               <listPerson>
+                  <person sex="m" age="20">
+                     <idno>Tunis1</idno>
+                  </person>
+               </listPerson>
+            </particDesc>
             <settingDesc>
                <place>
                   <settlement><name xml:lang="en">Tunis2</name></settlement>
@@ -50,7 +59,7 @@
                   </location>
                </place>
             </settingDesc>
-         </fileDesc>
+         </profileDesc>
       </teiHeader>
       <text>
          <body>

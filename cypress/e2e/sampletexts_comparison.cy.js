@@ -39,10 +39,10 @@ describe('VICAV Compare samples window', function() {
 
 					cy.scrollTo(0, 200)
 				    cy.get('.person-wrapper .tagit input').type('Tes', {force: true})
-//				    cy.get('.tagit-autocomplete .ui-menu-item').then(() => {
-//					    cy.contains('Test1/m/20').click()
-//				    })
-//
+				    cy.get('.tagit-autocomplete .ui-menu-item').then(() => {
+					    cy.contains('Test1/m/20').click()
+				    })
+
 				    cy.get('.features-wrapper [type=text]').type('1')
 				    cy.contains('Compare texts').click()
 				    cy.get('[data-snippetID=compare-samples-result]').then((el) => {
