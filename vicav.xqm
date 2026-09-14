@@ -610,7 +610,7 @@ declare function vicav:explore-query(
             return "'" || $p || "'" 
 
     let $person_q := if (not(empty($ps))) then
-        '(./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person/text() = ['|| string-join($ps, ',') ||'])'
+        '(./tei:teiHeader/tei:profileDesc/tei:particDesc/tei:listPerson/tei:person//text() = ('|| string-join($ps, ',') ||'))'
         else ''
 
     let $words_q := for $w in tokenize($word, ',')
@@ -694,6 +694,7 @@ declare function vicav:explore-data(
     $sex as xs:string*
 ) as element() {
     let $query := vicav:explore-query($collection, $location, $word, $person, $age, $sex)
+    let $_ := admin:write-log($query, 'INFO')
     let $results := xquery:eval($query)
 
     let $ress :=
