@@ -183,6 +183,27 @@
     <p><xsl:apply-templates/></p>
   </xsl:template>
   
+  <xsl:template match="tei:p/tei:quote">
+    <span class="tei_quote"><xsl:apply-templates/></span>
+  </xsl:template>
+  <xsl:template match="tei:quote/tei:s[@n]">
+    <span class="tei_s">
+      <xsl:if test="@xml:lang = ('ar')">&#x202E;</xsl:if>
+      <xsl:choose>
+        <xsl:when test="@n='1'">&#x2776;</xsl:when>
+        <xsl:when test="@n='2'">&#x2777;</xsl:when>
+        <xsl:when test="@n='3'">&#x2778;</xsl:when>
+        <xsl:when test="@n='4'">&#x2779;</xsl:when>
+        <xsl:when test="@n='5'">&#x277a;</xsl:when>
+        <xsl:when test="@n='6'">&#x277b;</xsl:when>
+        <xsl:when test="@n='7'">&#x277c;</xsl:when>
+        <xsl:when test="@n='8'">&#x277d;</xsl:when>
+        <xsl:when test="@n='9'">&#x277e;</xsl:when>
+      </xsl:choose>
+      <xsl:apply-templates/><br/>
+    </span>    
+  </xsl:template>
+  
   <xsl:template match="tei:ref[starts-with(@target,'http:') or starts-with(@target,'https:')]">
       <a target="_blank" class="aVicText">
           <xsl:attribute name="href"><xsl:value-of select="@target"/></xsl:attribute>
