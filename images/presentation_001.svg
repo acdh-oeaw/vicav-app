@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" width="100%" height="100%">
+  <!-- Easel Back Leg -->
+  <line x1="50" y1="76" x2="50" y2="114" stroke="#524e3c" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Easel Front Legs -->
+  <line x1="45" y1="78" x2="22" y2="114" stroke="#524e3c" stroke-width="2" stroke-linecap="round" />
+  <line x1="55" y1="78" x2="78" y2="114" stroke="#524e3c" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Board Drop Shadow -->
+  <rect x="23" y="16" width="58" height="66" rx="4" fill="#69644d" />
+
+  <!-- Main Presentation Board -->
+  <rect x="19" y="12" width="58" height="66" rx="4" fill="#f4f1e8" stroke="#524e3c" stroke-width="2" />
+
+  <!-- Top Clamp / Binder -->
+  <rect x="42" y="9" width="16" height="7" rx="2" fill="#d9cb9e" stroke="#524e3c" stroke-width="1.5" />
+
+  <!-- Title Plate / Label -->
+  <rect x="26" y="19" width="44" height="15" rx="2" fill="#fffee8" stroke="#524e3c" stroke-width="1.5" />
+  <line x1="31" y1="24.5" x2="65" y2="24.5" stroke="#524e3c" stroke-width="2.2" stroke-linecap="round" />
+  <line x1="36" y1="29.5" x2="60" y2="29.5" stroke="#524e3c" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Content Section 1: Bullet & Lines -->
+  <circle cx="28" cy="42" r="1.5" fill="#a49c7f" stroke="#524e3c" stroke-width="1" />
+  <line x1="33" y1="42" x2="67" y2="42" stroke="#524e3c" stroke-width="2" stroke-linecap="round" />
+  <line x1="33" y1="47" x2="58" y2="47" stroke="#524e3c" stroke-width="1.5" stroke-linecap="round" />
+
+  <!-- Content Section 2: Bullet & Lines -->
+  <circle cx="28" cy="55" r="1.5" fill="#a49c7f" stroke="#524e3c" stroke-width="1" />
+  <line x1="33" y1="55" x2="68" y2="55" stroke="#524e3c" stroke-width="2" stroke-linecap="round" />
+  <line x1="33" y1="60" x2="62" y2="60" stroke="#524e3c" stroke-width="1.5" stroke-linecap="round" />
+
+  <!-- Content Section 3: Bullet & Lines -->
+  <circle cx="28" cy="68" r="1.5" fill="#a49c7f" stroke="#524e3c" stroke-width="1" />
+  <line x1="33" y1="68" x2="64" y2="68" stroke="#524e3c" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Bottom Tray / Ledge -->
+  <rect x="15" y="78" width="66" height="4" rx="1.5" fill="#a49c7f" stroke="#524e3c" stroke-width="1.5" />
+
+  <!-- Leaning Pointer Stick -->
+  <line x1="82" y1="106" x2="64" y2="35" stroke="#524e3c" stroke-width="1.8" stroke-linecap="round" />
+  <line x1="80" y1="98" x2="82" y2="106" stroke="#524e3c" stroke-width="3" stroke-linecap="round" />
+  <circle cx="64" cy="35" r="1.5" fill="#d9cb9e" />
+</svg>

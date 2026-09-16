@@ -38,6 +38,7 @@
                       <xsl:when test="@type='book'"><xsl:attribute name="class">dvBibBook</xsl:attribute></xsl:when>
                       <xsl:when test="@type='bookSection'"><xsl:attribute name="class">dvBibBookSection</xsl:attribute></xsl:when>
                       <xsl:when test="@type='thesis'"><xsl:attribute name="class">dvThesis</xsl:attribute></xsl:when>
+                      <xsl:when test="@type='presentation'"><xsl:attribute name="class">dvPresentation</xsl:attribute></xsl:when>
                   </xsl:choose>
                                    
                   <!-- AUTHORS -->
@@ -72,6 +73,12 @@
                                         </xsl:choose>
                                     </xsl:for-each>
                                 </xsl:when>
+                                <xsl:when test="node()/tei:respStmt[tei:resp = 'presenter']">
+                                    <xsl:for-each select="node()/tei:respStmt/tei:persName">
+                                        <xsl:value-of select="tei:surname"/>,<span xml:space="preserve"><xsl:text> </xsl:text></span>
+                                        <xsl:value-of select="tei:forename"/><span xml:space="preserve"><xsl:text> </xsl:text></span>
+                                    </xsl:for-each>
+                                </xsl:when>
                                 <xsl:otherwise>(No author in record)</xsl:otherwise>
                             </xsl:choose>
                             
@@ -89,12 +96,13 @@
                      <i class="fa fa-file-text" aria-hidden="true"></i> -->
                      
                      <xsl:choose>
-                         <xsl:when test="@type='thesis'"><img class="imgBiblItem" src="images/book_001.jpg"/></xsl:when>
-                         <xsl:when test="@type='book'"><img class="imgBiblItem" src="images/book_001.jpg"/></xsl:when>
-                         <xsl:when test="@type='bookSection'"><img class="imgBiblItem" src="images/booksection_001.jpg"/></xsl:when>
-                         <xsl:when test="@type='journalArticle'"><img class="imgBiblItem" src="images/article_001.jpg"/></xsl:when>
-                         <xsl:when test="@type='conferencePaper'"><img class="imgBiblItem" src="images/article_001.jpg"/></xsl:when>
-                         <xsl:when test="@type='encyclopediaArticle'"><img class="imgBiblItem" src="images/article_001.jpg"/></xsl:when>
+                         <xsl:when test="@type='thesis'"><img class="imgBiblItem" src="images/book_001.svg"/></xsl:when>
+                         <xsl:when test="@type='book'"><img class="imgBiblItem" src="images/book_001.svg"/></xsl:when>
+                         <xsl:when test="@type='bookSection'"><img class="imgBiblItem" src="images/booksection_001.svg"/></xsl:when>
+                         <xsl:when test="@type='journalArticle'"><img class="imgBiblItem" src="images/article_001.svg"/></xsl:when>
+                         <xsl:when test="@type='conferencePaper'"><img class="imgBiblItem" src="images/article_001.svg"/></xsl:when>
+                         <xsl:when test="@type='encyclopediaArticle'"><img class="imgBiblItem" src="images/article_001.svg"/></xsl:when>                         
+                         <xsl:when test="@type='presentation'"><img class="imgBiblItem" src="images/presentation_001.svg"/></xsl:when>
                      </xsl:choose>
 
                      <!-- Thesis -->
@@ -166,6 +174,10 @@
                           <xsl:value-of select="tei:monogr[1]/tei:title[1]"/>
                       </xsl:if>
                       
+                      <!-- presentation -->                      
+                      <xsl:if test="@type='presentation'">
+                          <xsl:value-of select="tei:monogr[1]/tei:title[@level = 'm']"/>
+                      </xsl:if>
                       
                       <!-- ORT, Verlag -->
                       <xsl:if test="string-length(tei:monogr[1]/tei:imprint[1]/tei:pubPlace[1])&gt;0">
