@@ -176,7 +176,9 @@
                       
                       <!-- presentation -->                      
                       <xsl:if test="@type='presentation'">
-                          <xsl:value-of select="tei:monogr[1]/tei:title[@level = 'm']"/>
+                          <xsl:value-of select="tei:monogr[1]/tei:title[@level = 'm']"/><br/>
+                          <xsl:if test="tei:monogr[1]/tei:meeting/tei:name/text()" xml:space="preseve"><em>Conference:&#xa0;<xsl:value-of select="tei:monogr[1]/tei:meeting/tei:name/text()"/></em>.<br/></xsl:if>
+                          <span xml:space="preseve"><xsl:value-of select="tei:monogr[1]/tei:meeting/tei:date"/> </span>
                       </xsl:if>
                       
                       <!-- ORT, Verlag -->
@@ -193,7 +195,9 @@
                          .<span xml:space="preserve"><xsl:text> </xsl:text></span><xsl:value-of select="tei:monogr[1]/tei:imprint[1]/tei:date[1]"/>
                      </xsl:if>
                       
-                     <xsl:text>.</xsl:text>
+                      <xsl:text>.</xsl:text>
+                      <xsl:if test="tei:monogr[1]/tei:imprint/tei:note[@type='url']"><br/>
+                          <a href="{tei:monogr[1]/tei:imprint/tei:note[@type='url']}" target="_blank">Read more...</a>                               </xsl:if>
 
                      <!-- ZOTERO ID 
                      <xsl:if test="@corresp">
