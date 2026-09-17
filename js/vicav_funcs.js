@@ -51,8 +51,8 @@ var containerCount = 0;
 var lastTextPanelID = '';
 var panelIDs =[];
 var globalPreservePanel = -1;
-var uiVersion = "v3.1.14-18-g7c30c71";
-var dataVersion = "b8008f5";
+var uiVersion = "@version@";
+var dataVersion = "@data-version@";
 
 /*
 To create a new Version
