@@ -234,6 +234,13 @@
         <xsl:element name="{local-name()}"><xsl:value-of select="."/></xsl:element>
     </xsl:template>
     
+    <xsl:template match="*[_]">
+       <xsl:element name="{local-name(.)}">
+         <xsl:attribute name="type">array</xsl:attribute>
+         <xsl:apply-templates/>
+       </xsl:element>
+    </xsl:template>
+    
     <xsl:template match="*">
        <xsl:element name="{local-name(.)}"><xsl:apply-templates/></xsl:element>
     </xsl:template>
