@@ -2508,7 +2508,9 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
         return string-join(($query-words!('[word="' || encode-for-uri(.)
             || '"]')))
 
-    let $noske_host := vicav:get_config()//noskeHost
+    let $noske_host := if (exists(environment-variable('NOSKE_HOST'))) 
+      then environment-variable('NOSKE_HOST')
+      else vicav:get_config()//noskeHost
         
     let $result := if ($noske_host) then
         vicav:get_noske_search_result($noske_host, $query-parts)
@@ -2601,12 +2603,7 @@ declare function vicav:get_noske_search_result($noske_host as xs:string, $query-
     let $request := $noske_host || '/bonito/run.cgi/first?corpname=' || vicav:get_project_name()
         || '&amp;queryselector=cqlrow&amp;cql='||encode-for-uri($query-parts)||'&amp;default_attr=word&amp;attrs=wid&amp;kwicleftctx=0&amp;kwicrightctx=0&amp;refs=u.id,doc.id&amp;pagesize=100000'
       (: , $_ := admin:write-log($request, 'INFO') :)
-      return http:send-request(<http:request method='get'>{
-        let $request-id := try { request:header("X-REQUEST-ID") } catch basex:http { () },
-            $traceparent := try { request:header("TRACEPARENT") } catch basex:http { () }
-        return (if (exists($request-id)) then <http:header name="X-REQUEST-ID" value="{$request-id}"/> else (),
-                if (exists($traceparent)) then <http:header name="TRACEPARENT" value="{$traceparent}"/> else ())
-      }</http:request>,
+      return http:send-request(<http:request method='get'/>,
         $request)[2]/*  
   ]``, map {"noske_host": $noske_host, "query-parts": $query-parts}, 'noske_search_results_vicav_get', true())
   (: , $_ := admin:write-log(serialize($res), 'INFO') :)
