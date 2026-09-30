@@ -10,7 +10,7 @@
     <xsl:output method="xml" indent="no"/>
     <xsl:param name="query"></xsl:param>
     <xsl:template match="/">
-        <json objects="json hits">
+        <json objects="json hits" numbers="_0040page _0040pageSize _0040count">
             <xsl:apply-templates mode="docwrap"/>
         </json>
     </xsl:template>
