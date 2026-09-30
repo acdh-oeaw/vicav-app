@@ -2485,6 +2485,8 @@ declare
 %rest:path("/vicav/corpus")
 %rest:GET
 %rest:query-param("query", "{$query}")
+%rest:query-param("page", "{$page}", 1)
+%rest:query-param("pageSize", "{$pageSize}", 100)
 %rest:query-param("print", "{$print}")
 %rest:query-param("render", "{$render}", "html")
 %rest:query-param("xslt", "{$xslt}", "corpus_search_result.xslt")
@@ -2492,14 +2494,18 @@ declare
 %rest:produces("application/json")
 %rest:produces('application/problem+json')
 %rest:produces('application/problem+xml')
-function vicav:search_corpus($query as xs:string, $print as xs:string?, $render as xs:string, $xslt as xs:string?) {
+function vicav:search_corpus($query as xs:string, $page as xs:integer, $pageSize as xs:integer, $print as xs:string?, $render as xs:string, $xslt as xs:string?) {
   api-problem:or_result (prof:current-ns(),
-    vicav:_search_corpus#4, [$query, $print, $render, $xslt], map:merge((cors:header(()), vicav:return_content_header()))
+    vicav:_search_corpus#6, [$query, $page, $pageSize, $print, $render, $xslt], map:merge((cors:header(()), vicav:return_content_header()))
   )
 };
 
-declare function vicav:_search_corpus($query as xs:string, $print as xs:string?, $render as xs:string, $xslt as xs:string?) {
-    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' }
+declare function vicav:_search_corpus($query as xs:string, $page as xs:integer, $pageSize as xs:integer, $print as xs:string?, $render as xs:string, $xslt as xs:string?) {
+    let $accept-header := try { request:header("ACCEPT") } catch basex:http { 'application/xhtml+xml' },
+        $pageSizeTooLarge := if ($pageSize > 100) then
+        error(xs:QName('response-codes:_400'), 
+         $api-problem:codes_to_message(400),
+         'pageSize '||$pageSize||' is too large. For performance reasons pageSize greater than 100 are not allowed.') else ()
     
     let $query-parts := if (starts-with($query, "[")) then
         $query
@@ -2522,7 +2528,9 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
          $api-problem:codes_to_message(400),
          ``[`{$result/request/cql}`: `{$result/error}`]``)
         else ()
-
+    
+    let $pagedLines := subsequence($result/Lines/*, (($page - 1) * $pageSize) + 1, $pageSize),
+        $result := $result update replace node ./Lines with <Lines page="{$page}" pageSize="{$pageSize}" count="{count($result/Lines/*)}">{$pagedLines}</Lines>
 (:let consecutiveIDs
         json.Lines.map((line) => {
           const key = line.Refs.map((ref) => {return ref.split('=')[1]}).join();
@@ -2565,7 +2573,7 @@ declare function vicav:_search_corpus($query as xs:string, $print as xs:string?,
                 group by $ident := $pd/@ident
                 return $pd[1],
         $hits := <hits xmlns="http://www.tei-c.org/ns/1.0">
-          {$hits/*}
+          {($hits/@*, $hits/*)}
           <standOff>
             {$annot}
           </standOff>
@@ -2618,8 +2626,8 @@ declare function vicav:get_config() {
 };
 
 declare function vicav:get_hits_context($result as element(json)?) as element(tei:hits) {
-  if (not($result) or count($result/Lines/_) = 0) then <hits xmlns="http://www.tei-c.org/ns/1.0"/> else 
-  <hits xmlns="http://www.tei-c.org/ns/1.0">{
+  if (not($result) or count($result/Lines/_) = 0) then <hits xmlns="http://www.tei-c.org/ns/1.0">{$result/*:Lines/@*}</hits> else 
+  <hits xmlns="http://www.tei-c.org/ns/1.0">{($result/*:Lines/@*,
   util:eval(``[declare namespace tei = 'http://www.tei-c.org/ns/1.0';
   declare variable $result as element(json) external;
   let $hits := for $line in $result/Lines/_
@@ -2639,7 +2647,7 @@ declare function vicav:get_hits_context($result as element(json)?) as element(te
       (: , $_ := file:write(file:resolve-path('hits.xml', file:base-dir()), $hits, map { "method": "xml"}) :)
         return $annotationBlock update {insert node (attribute {'hits'} {string-join($tokenId, ' ')}, attribute {'docRef'} {$docId} ) as first into . }
   return $hits
-  ]``, map{"result": $result}, 'hits_context_vicav_get')}</hits>
+  ]``, map{"result": $result}, 'hits_context_vicav_get'))}</hits>
 };
 
 declare function vicav:_corpus_text(

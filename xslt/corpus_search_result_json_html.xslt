@@ -6,7 +6,7 @@
     exclude-result-prefixes="tei acdh xs"
     version="2.0">
 
-    <xsl:output method="xml" indent="no"/>
+    <xsl:output method="xml" indent="yes"/>
     <xsl:param name="query"></xsl:param>
     <xsl:param name="exit-on-node-index-not-found">no</xsl:param>
 
@@ -93,6 +93,7 @@
     </xsl:template>
 
     <xsl:template match="tei:hits">
+        <xsl:apply-templates select="@*"/>
         <query><xsl:value-of select="$query"/></query>
         <hits>
           <xsl:apply-templates select="./tei:div"/>
@@ -130,6 +131,6 @@
     </xsl:template>
 
     <xsl:template match="@*">
-        <xsl:element name="{local-name()}"><xsl:value-of select="."/></xsl:element>
+        <xsl:element name="{'_0040'||local-name()}"><xsl:value-of select="."/></xsl:element>
     </xsl:template>
 </xsl:stylesheet>
