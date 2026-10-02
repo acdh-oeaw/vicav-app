@@ -1216,8 +1216,9 @@ function vicav:get_text($id as xs:string, $xsltfn as xs:string?) {
 declare function vicav:_get_text($id as xs:string, $xsltfn as xs:string?) {
     let $id := replace($id, '^li_', '')
     let $generateTeiMarker := exists($xsltfn)
-    let $xsltfn := if (exists($xsltfn)) then $xsltfn else "vicavTexts.xslt" 
-    let $results := collection("vicav_texts")[.//tei:div[@xml:id=$id]|.//tei:idno[ends-with(@type, 'CorpusID')][. = $id]]//tei:body,
+    let $xsltfn := if (exists($xsltfn)) then $xsltfn else "vicavTexts.xslt"
+    let $collections := if (db:exists('wibarab_features')) then (collection("wibarab_features"),collection("vicav_texts")) else collection("vicav_texts")
+    let $results := $collections[.//tei:div[@xml:id=$id]|.//tei:idno[ends-with(@type, 'CorpusID')][. = $id]|.//tei:TEI[@xml:id=$id]]//tei:body,
         $doc-exists := if (exists($results)) then true()
                        else error(xs:QName('response-codes:_404'), 
                        $api-problem:codes_to_message(404),
@@ -1225,7 +1226,8 @@ declare function vicav:_get_text($id as xs:string, $xsltfn as xs:string?) {
     let $stylePath := file:base-dir() || 'xslt/' || $xsltfn
     let $prerenderedHtml := try { doc($results/base-uri() => replace('.(xml|odd)$','.html')) } catch basex:doc {()}
     return if ($prerenderedHtml and not($generateTeiMarker)) then serialize($prerenderedHtml, map{"method": "xhtml"}) else
-    let $style := doc($stylePath)
+    let $style := doc($stylePath),
+        $results := $results update insert node attribute {'xml:id'} {$id} as first into .
     let $sHTML := xslt:transform-text($results, $style, map{
       'param-base-path': replace(util:get-base-uri-public(), '/text', ''),
       'tei-link-marker': xs:string($generateTeiMarker)})
