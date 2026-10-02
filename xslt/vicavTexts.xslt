@@ -32,6 +32,42 @@
       <xsl:apply-templates/>
     </td>
   </xsl:template>
+  
+  <xsl:template match="tei:event/tei:head">
+    <td>
+      <xsl:value-of select="."/>
+    </td>
+  </xsl:template>
+
+  <xsl:template match="tei:event/tei:note">
+    <xsl:if test="ancestor::tei:listeEvent[@xml:id='personal_communication'] and not(exists(../tei:placeName))">
+      <td></td>
+    </xsl:if>
+    <td>
+      <xsl:value-of select="."/>
+    </td>
+  </xsl:template>
+  
+  <xsl:template match="tei:listPerson">
+    <td>
+      <xsl:for-each select="tei:person">
+        <xsl:value-of select="tei:persName"/>
+        <xsl:for-each select="tei:langKnowledge/tei:langKnown">
+          <xsl:text xml:space="preserve"> (</xsl:text><xsl:value-of select="@corresp/data()"/><xsl:text>)</xsl:text>
+        </xsl:for-each>
+        <xsl:if test="position() != last()"><xsl:text xml:space="preserve">, </xsl:text></xsl:if>
+      </xsl:for-each>
+    </td>
+  </xsl:template>
+  
+  <xsl:template match="tei:placeName">
+    <td>
+      <xsl:value-of select="(@ref/data(), text())[1]"/>
+    </td>
+    <xsl:if test="not(exists(../tei:note))">
+      <td></td>
+    </xsl:if>
+  </xsl:template>
  
   <xsl:template match="tei:div">
       <div>
@@ -291,7 +327,7 @@
       </span>
   </xsl:template>
 
-  <xsl:template match="tei:row">
+  <xsl:template match="tei:row|tei:event">
     <tr>
       <xsl:apply-templates/>
     </tr>
@@ -322,5 +358,34 @@
       </xsl:choose>
       <xsl:apply-templates/>
     </table>
+  </xsl:template>
+  
+  <xsl:template match="tei:listEvent[@xml:id='campaigns_communication']">
+    <table>
+      <tr><th></th><th>Participants</th><th>Location</th><th>Notes</th></tr>
+      <xsl:apply-templates/>
+    </table>
+  </xsl:template>
+  
+  <xsl:template match="tei:listEvent[@xml:id='personal_communication']">
+    <table>
+      <tr><th></th><th>Participants</th><th>Notes</th></tr>
+      <xsl:apply-templates/>
+    </table>
+  </xsl:template>
+
+  <xsl:template match="tei:list[@type='featureValues']">
+    <table>
+      <tr><th></th><th>Description</th></tr>
+      <xsl:apply-templates/>
+    </table>
+  </xsl:template>
+  
+  <xsl:template match="tei:list[@type='featureValues']/tei:item">
+    <tr><td><xsl:value-of select="tei:label"/></td><td><xsl:value-of select="tei:desc"/></td></tr>
+  </xsl:template>
+  
+  <xsl:template match="tei:div[@type='featureValueObservations']">
+    <p><a href="#" data-target-type="ListMap" data-params='{{"queryString":"{//tei:body/@xml:id/data()}:ANY"}}'>Show feature value observations</a></p>
   </xsl:template>
 </xsl:stylesheet>

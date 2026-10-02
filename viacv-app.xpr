@@ -1584,8 +1584,10 @@
     </meta>
     <projectTree name="viacv-app.xpr">
         <folder path="../../../basexshawi/shawi-data/"/>
+        <folder path="../../featuredb/"/>
         <folder path="../../tunocent-content/"/>
         <folder path="../../vicav-content/"/>
         <folder path="."/>
+        <folder path="../../wibarab-data/"/>
     </projectTree>
 </project>
