@@ -11,6 +11,7 @@
   <!-- we make sure that $images-base-path always has a trailing slash -->
   <xsl:include href="concat-path-inc.xslt"/>
   <xsl:variable name="images-base-path" select="tei:concat-path('images')"/>
+  <xsl:variable name="static-base-path" select="tei:concat-path('../static')"/>
   <xsl:variable name="docs-base-path" select="tei:concat-path('')"/>
   <xsl:include href="getLinkAttributes.xslt"/>
   
@@ -341,9 +342,9 @@
                   <xsl:value-of select="tei:cell[3]"/>&#160;<i>(<xsl:value-of select="tei:cell[4]"/>)</i>
                   <audio controls="controls" preload="none" class="audio">
                       <source type="audio/mp4">
-                          <xsl:attribute name="src">/static/<xsl:value-of select='tei:cell[5]/tei:ptr/@target'/></xsl:attribute>
+                          <xsl:attribute name="src"><xsl:value-of select="$static-base-path"/><xsl:value-of select='tei:cell[5]/tei:ptr/@target'/></xsl:attribute>
                       </source>
-                      <a><xsl:attribute name="href">/static/<xsl:value-of select="tei:cell[5]/tei:ptr/@target"/></xsl:attribute>
+                    <a><xsl:attribute name="href"><xsl:value-of select="$static-base-path"/><xsl:value-of select="tei:cell[5]/tei:ptr/@target"/></xsl:attribute>
                           </a>
                   </audio>
               </div>
