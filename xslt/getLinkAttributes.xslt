@@ -73,6 +73,12 @@
       <xsl:otherwise>
         <xsl:sequence>
           <xsl:variable name="target-type" select="upper-case(substring($targetSplit[1], 1, 1))||substring($targetSplit[1], 2)"/>
+          <xsl:variable name="target-type">
+              <xsl:choose>
+                <xsl:when test="$target-type = 'Sample'">SampleText</xsl:when>
+                <xsl:otherwise><xsl:value-of select="$target-type"/></xsl:otherwise>
+              </xsl:choose>
+          </xsl:variable>
           <xsl:attribute name="data-target-type"><xsl:value-of select="$target-type"/></xsl:attribute>
           <xsl:if test="exists($targetSplit[2]) and $targetSplit[2] != '' and not($target-type = ('WMap', 'DictQuery'))">
             <xsl:attribute name="data-text-id"><xsl:value-of select="$targetSplit[2]"/></xsl:attribute>
