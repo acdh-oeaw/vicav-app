@@ -190,6 +190,13 @@
                 <scope></scope>
               </params>
             </xsl:when>
+            <xsl:when test="contains(@xml:id, 'avCorpusTextsGeoRegMarkers')">
+              <params>
+                <endpoint>data_markers</endpoint>
+                <queryString type="string"></queryString>
+                <scope></scope>
+              </params>
+            </xsl:when>
             <xsl:when test="contains(@xml:id, 'liBiblNewQuery')">
               <params>
                 <queryString type="string"></queryString>
