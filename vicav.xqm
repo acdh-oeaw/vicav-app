@@ -358,7 +358,7 @@ declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:str
         else if (contains($query, 'author:')) then
            '[.//tei:author/tei:surname[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else if (contains($query, 'geo:') or contains($query, 'reg:') or contains($query, 'diaGroup:')) then
-           '[.//tei:placeName[text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
+           '[.//tei:placeName[../../tei:place[@type="'||substring-before($query, ':')||'"]][text() contains text "' || substring-after($query, ':') || '" using wildcards using diacritics sensitive]]'
         else if (contains($query, 'vt:')) then
            '[.//tei:ref[@target = "'||$query||'"]]'
         else if (contains($query, 'prj:')) then
@@ -388,7 +388,7 @@ declare function vicav:_query_biblio_tei($query as xs:string*, $xsltfn as xs:str
     'let $date := $art/tei:monogr[1]/tei:imprint[1]/tei:date[1] ' ||
     'order by $author[1],$date[1] return $art'
     let $query2 := $ns || $q
-    (: let $_ := admin:write-log($query2, "INFO") :)
+    let $_ := admin:write-log($query2, "INFO")
     let $results := xquery:eval($query2)
     
     let $num := count($results)
