@@ -1706,19 +1706,17 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
 
     let $ns := 'declare namespace tei = "http://www.tei-c.org/ns/1.0";'
     let $query := $ns || $q
-    (: let $_ := admin:write-log($query, "INFO") :)
+    let $_ := admin:write-log($query, "INFO")
     let $tempresults := xquery:eval($query)
-
+    
+    let $scpoe := if (some $scope in $scope satisfies $scope = 'geo_reg')
+      then ('reg', 'geo', 'diaGroup')
+      else $scope
     let $out :=
         for $subj in $tempresults
         return
             let $geos :=
-                $scope!(switch (.)
-                    case 'geo_reg'
-                        return $subj//tei:place[@type = ('reg', 'geo', 'diaGroup')]//tei:geo[@decls="#dd"]
-                    default
-                        return $subj//tei:place[@type = $scope]//tei:geo[@decls="#dd"]
-                )
+                $scope!$subj//tei:place[@type = $scope]//tei:geo[@decls="#dd"]
     
     for $geo in $geos
     return
@@ -1753,7 +1751,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
 
     return
     (:if (string-length($geo[1]/loc) > 0) then:)
-        <r>{$item[1]/@type}{$geo[1]}<alt>{$loc}</alt><freq>{count($id)}</freq></r>
+        <r>{$item[1]/@type}{$geo[1]}<alt>{$loc}</alt><freq>{count($id) div count($scope)}</freq></r>
        
        (:
         (if ($item/type = 'geo') then
