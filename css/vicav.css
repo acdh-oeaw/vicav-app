@@ -200,6 +200,10 @@ body .navbar ul.navbar-nav .navbar-icons a:hover{
     max-width: 100%;
 }
 
+.content-panel img.imgBiblItem {
+    max-width: 7%;
+}
+
 
 /* Search Overlay */
 .search-container{
