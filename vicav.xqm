@@ -1706,7 +1706,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
 
     let $ns := 'declare namespace tei = "http://www.tei-c.org/ns/1.0";'
     let $query := $ns || $q
-    let $_ := admin:write-log($query, "INFO")
+    (: let $_ := admin:write-log($query, "INFO") :)
     let $tempresults := xquery:eval($query)
     
     let $scope := if ($scope = 'geo_reg')
