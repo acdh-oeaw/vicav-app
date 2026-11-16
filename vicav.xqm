@@ -1709,7 +1709,7 @@ declare function vicav:_get_bibl_markers_tei($query as xs:string, $scope as xs:s
     let $_ := admin:write-log($query, "INFO")
     let $tempresults := xquery:eval($query)
     
-    let $scpoe := if (some $scope in $scope satisfies $scope = 'geo_reg')
+    let $scope := if ($scope = 'geo_reg')
       then ('reg', 'geo', 'diaGroup')
       else $scope
     let $out :=
